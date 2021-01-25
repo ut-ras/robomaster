@@ -1,2 +1,4 @@
-# robomaster
-Main repository for UT RoboMaster team
+# Robomaster
+UT RoboMaster team - Main Branch
+
+Change branches to view each subsystem!
