@@ -1,0 +1,784 @@
+EESchema Schematic File Version 4
+EELAYER 30 0
+EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 1 1
+Title ""
+Date ""
+Rev ""
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Comp
+L SamacSys_Parts:INA3221AIRGVR IC?
+U 1 1 604D78CB
+P 1600 4150
+F 0 "IC?" H 3044 3996 50  0000 L CNN
+F 1 "INA3221AIRGVR" H 3044 3905 50  0000 L CNN
+F 2 "QFN65P400X400X100-17N-D" H 2850 4650 50  0001 L CNN
+F 3 "http://www.ti.com/lit/ds/symlink/ina3221.pdf" H 2850 4550 50  0001 L CNN
+F 4 "26V, Triple, Bi-Directional, Low-/High-Side, I2C Out Current/Voltage Monitor w/Alerts" H 2850 4450 50  0001 L CNN "Description"
+F 5 "1" H 2850 4350 50  0001 L CNN "Height"
+F 6 "Texas Instruments" H 2850 4250 50  0001 L CNN "Manufacturer_Name"
+F 7 "INA3221AIRGVR" H 2850 4150 50  0001 L CNN "Manufacturer_Part_Number"
+F 8 "595-INA3221AIRGVR" H 2850 4050 50  0001 L CNN "Mouser Part Number"
+F 9 "https://www.mouser.co.uk/ProductDetail/Texas-Instruments/INA3221AIRGVR/?qs=3AcK5DacLboHys8907TVUQ%3D%3D" H 2850 3950 50  0001 L CNN "Mouser Price/Stock"
+F 10 "INA3221AIRGVR" H 2850 3850 50  0001 L CNN "Arrow Part Number"
+F 11 "https://www.arrow.com/en/products/ina3221airgvr/texas-instruments" H 2850 3750 50  0001 L CNN "Arrow Price/Stock"
+	1    1600 4150
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+12V #PWR?
+U 1 1 604D9EDE
+P 3200 1250
+F 0 "#PWR?" H 3200 1100 50  0001 C CNN
+F 1 "+12V" H 3215 1423 50  0000 C CNN
+F 2 "" H 3200 1250 50  0001 C CNN
+F 3 "" H 3200 1250 50  0001 C CNN
+	1    3200 1250
+	0    -1   -1   0   
+$EndComp
+$Comp
+L Device:R_US R?
+U 1 1 604DF3C0
+P 4100 1250
+F 0 "R?" V 3895 1250 50  0000 C CNN
+F 1 "6 mΩ, 1%, 3W" V 3986 1250 50  0000 C CNN
+F 2 "" V 4140 1240 50  0001 C CNN
+F 3 "~" H 4100 1250 50  0001 C CNN
+	1    4100 1250
+	0    1    1    0   
+$EndComp
+Text GLabel 4450 1250 2    50   Input ~ 0
+Motor4-
+Wire Wire Line
+	4250 1250 4450 1250
+Text Notes 3350 850  0    50   ~ 0
+Connect to high-side of motor
+$Comp
+L power:+12V #PWR?
+U 1 1 604E7E35
+P 3200 1550
+F 0 "#PWR?" H 3200 1400 50  0001 C CNN
+F 1 "+12V" H 3215 1723 50  0000 C CNN
+F 2 "" H 3200 1550 50  0001 C CNN
+F 3 "" H 3200 1550 50  0001 C CNN
+	1    3200 1550
+	0    -1   -1   0   
+$EndComp
+$Comp
+L Device:R_US R?
+U 1 1 604E7E3B
+P 4100 1550
+F 0 "R?" V 3895 1550 50  0000 C CNN
+F 1 "6 mΩ, 1%, 3W" V 3986 1550 50  0000 C CNN
+F 2 "" V 4140 1540 50  0001 C CNN
+F 3 "~" H 4100 1550 50  0001 C CNN
+	1    4100 1550
+	0    1    1    0   
+$EndComp
+Text GLabel 4450 1550 2    50   Input ~ 0
+Motor5-
+Wire Wire Line
+	4250 1550 4450 1550
+$Comp
+L power:+12V #PWR?
+U 1 1 604E8873
+P 3200 1850
+F 0 "#PWR?" H 3200 1700 50  0001 C CNN
+F 1 "+12V" H 3215 2023 50  0000 C CNN
+F 2 "" H 3200 1850 50  0001 C CNN
+F 3 "" H 3200 1850 50  0001 C CNN
+	1    3200 1850
+	0    -1   -1   0   
+$EndComp
+$Comp
+L Device:R_US R?
+U 1 1 604E8879
+P 4100 1850
+F 0 "R?" V 3895 1850 50  0000 C CNN
+F 1 "6 mΩ, 1%, 3W" V 3986 1850 50  0000 C CNN
+F 2 "" V 4140 1840 50  0001 C CNN
+F 3 "~" H 4100 1850 50  0001 C CNN
+	1    4100 1850
+	0    1    1    0   
+$EndComp
+Text GLabel 4450 1850 2    50   Input ~ 0
+Motor6-
+Wire Wire Line
+	4250 1850 4450 1850
+$Comp
+L power:GND #PWR?
+U 1 1 604FEFD5
+P 1600 4350
+F 0 "#PWR?" H 1600 4100 50  0001 C CNN
+F 1 "GND" V 1605 4222 50  0000 R CNN
+F 2 "" H 1600 4350 50  0001 C CNN
+F 3 "" H 1600 4350 50  0001 C CNN
+	1    1600 4350
+	0    1    1    0   
+$EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 60501C00
+P 2100 3400
+F 0 "#PWR?" H 2100 3150 50  0001 C CNN
+F 1 "GND" H 2105 3227 50  0000 C CNN
+F 2 "" H 2100 3400 50  0001 C CNN
+F 3 "" H 2100 3400 50  0001 C CNN
+	1    2100 3400
+	-1   0    0    1   
+$EndComp
+Wire Wire Line
+	2100 3400 2100 3450
+Wire Wire Line
+	3200 1250 3400 1250
+Wire Wire Line
+	3200 1550 3400 1550
+Wire Wire Line
+	3200 1850 3400 1850
+Text GLabel 3400 1150 2    50   Input ~ 0
+Motor4+
+Wire Wire Line
+	3400 1150 3400 1250
+Connection ~ 3400 1250
+Wire Wire Line
+	3400 1250 3950 1250
+Text GLabel 3400 1450 2    50   Input ~ 0
+Motor5+
+Wire Wire Line
+	3400 1450 3400 1550
+Text GLabel 3400 1750 2    50   Input ~ 0
+Motor6+
+Wire Wire Line
+	3400 1750 3400 1850
+Connection ~ 3400 1550
+Wire Wire Line
+	3400 1550 3950 1550
+Connection ~ 3400 1850
+Wire Wire Line
+	3400 1850 3950 1850
+$Comp
+L power:+12V #PWR?
+U 1 1 6051F9B8
+P 1200 1250
+F 0 "#PWR?" H 1200 1100 50  0001 C CNN
+F 1 "+12V" H 1215 1423 50  0000 C CNN
+F 2 "" H 1200 1250 50  0001 C CNN
+F 3 "" H 1200 1250 50  0001 C CNN
+	1    1200 1250
+	0    -1   -1   0   
+$EndComp
+$Comp
+L Device:R_US R?
+U 1 1 6051F9BE
+P 2100 1250
+F 0 "R?" V 1895 1250 50  0000 C CNN
+F 1 "6 mΩ, 1%, 3W" V 1986 1250 50  0000 C CNN
+F 2 "" V 2140 1240 50  0001 C CNN
+F 3 "~" H 2100 1250 50  0001 C CNN
+	1    2100 1250
+	0    1    1    0   
+$EndComp
+Text GLabel 2450 1250 2    50   Input ~ 0
+Motor1-
+Wire Wire Line
+	2250 1250 2450 1250
+$Comp
+L power:+12V #PWR?
+U 1 1 6051F9C6
+P 1200 1550
+F 0 "#PWR?" H 1200 1400 50  0001 C CNN
+F 1 "+12V" H 1215 1723 50  0000 C CNN
+F 2 "" H 1200 1550 50  0001 C CNN
+F 3 "" H 1200 1550 50  0001 C CNN
+	1    1200 1550
+	0    -1   -1   0   
+$EndComp
+$Comp
+L Device:R_US R?
+U 1 1 6051F9CC
+P 2100 1550
+F 0 "R?" V 1895 1550 50  0000 C CNN
+F 1 "6 mΩ, 1%, 3W" V 1986 1550 50  0000 C CNN
+F 2 "" V 2140 1540 50  0001 C CNN
+F 3 "~" H 2100 1550 50  0001 C CNN
+	1    2100 1550
+	0    1    1    0   
+$EndComp
+Text GLabel 2450 1550 2    50   Input ~ 0
+Motor2-
+Wire Wire Line
+	2250 1550 2450 1550
+$Comp
+L power:+12V #PWR?
+U 1 1 6051F9D4
+P 1200 1850
+F 0 "#PWR?" H 1200 1700 50  0001 C CNN
+F 1 "+12V" H 1215 2023 50  0000 C CNN
+F 2 "" H 1200 1850 50  0001 C CNN
+F 3 "" H 1200 1850 50  0001 C CNN
+	1    1200 1850
+	0    -1   -1   0   
+$EndComp
+$Comp
+L Device:R_US R?
+U 1 1 6051F9DA
+P 2100 1850
+F 0 "R?" V 1895 1850 50  0000 C CNN
+F 1 "6 mΩ, 1%, 3W" V 1986 1850 50  0000 C CNN
+F 2 "" V 2140 1840 50  0001 C CNN
+F 3 "~" H 2100 1850 50  0001 C CNN
+	1    2100 1850
+	0    1    1    0   
+$EndComp
+Text GLabel 2450 1850 2    50   Input ~ 0
+Motor3-
+Wire Wire Line
+	2250 1850 2450 1850
+Wire Wire Line
+	1200 1250 1400 1250
+Wire Wire Line
+	1200 1550 1400 1550
+Wire Wire Line
+	1200 1850 1400 1850
+Text GLabel 1400 1150 2    50   Input ~ 0
+Motor1+
+Wire Wire Line
+	1400 1150 1400 1250
+Connection ~ 1400 1250
+Wire Wire Line
+	1400 1250 1950 1250
+Text GLabel 1400 1450 2    50   Input ~ 0
+Motor2+
+Wire Wire Line
+	1400 1450 1400 1550
+Text GLabel 1400 1750 2    50   Input ~ 0
+Motor3+
+Wire Wire Line
+	1400 1750 1400 1850
+Connection ~ 1400 1550
+Wire Wire Line
+	1400 1550 1950 1550
+Connection ~ 1400 1850
+Wire Wire Line
+	1400 1850 1950 1850
+$Comp
+L power:+12V #PWR?
+U 1 1 60533A9A
+P 5200 1250
+F 0 "#PWR?" H 5200 1100 50  0001 C CNN
+F 1 "+12V" H 5215 1423 50  0000 C CNN
+F 2 "" H 5200 1250 50  0001 C CNN
+F 3 "" H 5200 1250 50  0001 C CNN
+	1    5200 1250
+	0    -1   -1   0   
+$EndComp
+$Comp
+L Device:R_US R?
+U 1 1 60533AA0
+P 6100 1250
+F 0 "R?" V 5895 1250 50  0000 C CNN
+F 1 "6 mΩ, 1%, 3W" V 5986 1250 50  0000 C CNN
+F 2 "" V 6140 1240 50  0001 C CNN
+F 3 "~" H 6100 1250 50  0001 C CNN
+	1    6100 1250
+	0    1    1    0   
+$EndComp
+Text GLabel 6450 1250 2    50   Input ~ 0
+Motor7-
+Wire Wire Line
+	6250 1250 6450 1250
+$Comp
+L power:+12V #PWR?
+U 1 1 60533AA8
+P 5200 1550
+F 0 "#PWR?" H 5200 1400 50  0001 C CNN
+F 1 "+12V" H 5215 1723 50  0000 C CNN
+F 2 "" H 5200 1550 50  0001 C CNN
+F 3 "" H 5200 1550 50  0001 C CNN
+	1    5200 1550
+	0    -1   -1   0   
+$EndComp
+$Comp
+L Device:R_US R?
+U 1 1 60533AAE
+P 6100 1550
+F 0 "R?" V 5895 1550 50  0000 C CNN
+F 1 "6 mΩ, 1%, 3W" V 5986 1550 50  0000 C CNN
+F 2 "" V 6140 1540 50  0001 C CNN
+F 3 "~" H 6100 1550 50  0001 C CNN
+	1    6100 1550
+	0    1    1    0   
+$EndComp
+Text GLabel 6450 1550 2    50   Input ~ 0
+Motor8-
+Wire Wire Line
+	6250 1550 6450 1550
+Wire Wire Line
+	5200 1250 5400 1250
+Wire Wire Line
+	5200 1550 5400 1550
+Text GLabel 5400 1150 2    50   Input ~ 0
+Motor7+
+Wire Wire Line
+	5400 1150 5400 1250
+Connection ~ 5400 1250
+Wire Wire Line
+	5400 1250 5950 1250
+Text GLabel 5400 1450 2    50   Input ~ 0
+Motor8+
+Wire Wire Line
+	5400 1450 5400 1550
+Connection ~ 5400 1550
+Wire Wire Line
+	5400 1550 5950 1550
+Text GLabel 3250 4150 2    50   Input ~ 0
+Motor1+
+Text GLabel 3250 4250 2    50   Input ~ 0
+Motor1-
+Wire Wire Line
+	3250 4150 3000 4150
+Wire Wire Line
+	3000 4250 3250 4250
+Text GLabel 2300 3450 1    50   Input ~ 0
+Motor2+
+Text GLabel 2400 3450 1    50   Input ~ 0
+Motor2-
+Text GLabel 1600 4250 0    50   Input ~ 0
+Motor3+
+Text GLabel 1600 4150 0    50   Input ~ 0
+Motor3-
+Text GLabel 2200 5250 3    50   Input ~ 0
+SCL
+Text GLabel 2300 5250 3    50   Input ~ 0
+SDA
+Text GLabel 7900 1550 3    50   Input ~ 0
+SCL
+Text GLabel 8300 1550 3    50   Input ~ 0
+SDA
+$Comp
+L Device:R_US R?
+U 1 1 6053D935
+P 7900 1400
+F 0 "R?" V 7695 1400 50  0000 C CNN
+F 1 "10kΩ" V 7786 1400 50  0000 C CNN
+F 2 "" V 7940 1390 50  0001 C CNN
+F 3 "~" H 7900 1400 50  0001 C CNN
+	1    7900 1400
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+3.3V #PWR?
+U 1 1 60540B90
+P 8100 1200
+F 0 "#PWR?" H 8100 1050 50  0001 C CNN
+F 1 "+3.3V" H 8115 1373 50  0000 C CNN
+F 2 "" H 8100 1200 50  0001 C CNN
+F 3 "" H 8100 1200 50  0001 C CNN
+	1    8100 1200
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R_US R?
+U 1 1 6053E48A
+P 8300 1400
+F 0 "R?" V 8505 1400 50  0000 C CNN
+F 1 "10kΩ" V 8414 1400 50  0000 C CNN
+F 2 "" V 8340 1390 50  0001 C CNN
+F 3 "~" H 8300 1400 50  0001 C CNN
+	1    8300 1400
+	-1   0    0    1   
+$EndComp
+Wire Wire Line
+	7900 1200 7900 1250
+Wire Wire Line
+	7900 1200 8100 1200
+Wire Wire Line
+	8100 1200 8300 1200
+Wire Wire Line
+	8300 1200 8300 1250
+Connection ~ 8100 1200
+$Comp
+L power:+3.3V #PWR?
+U 1 1 605548A0
+P 1400 4450
+F 0 "#PWR?" H 1400 4300 50  0001 C CNN
+F 1 "+3.3V" H 1415 4623 50  0000 C CNN
+F 2 "" H 1400 4450 50  0001 C CNN
+F 3 "" H 1400 4450 50  0001 C CNN
+	1    1400 4450
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	1400 4450 1450 4450
+$Comp
+L Device:C C?
+U 1 1 605548A7
+P 1450 4700
+F 0 "C?" V 1198 4700 50  0000 C CNN
+F 1 "0.1uF" V 1289 4700 50  0000 C CNN
+F 2 "" H 1488 4550 50  0001 C CNN
+F 3 "~" H 1450 4700 50  0001 C CNN
+	1    1450 4700
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	1450 4550 1450 4450
+$Comp
+L power:GND #PWR?
+U 1 1 605548B0
+P 1450 4850
+F 0 "#PWR?" H 1450 4600 50  0001 C CNN
+F 1 "GND" V 1455 4722 50  0000 R CNN
+F 2 "" H 1450 4850 50  0001 C CNN
+F 3 "" H 1450 4850 50  0001 C CNN
+	1    1450 4850
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	1600 4450 1450 4450
+Connection ~ 1450 4450
+$Comp
+L Device:R_US R?
+U 1 1 60561775
+P 3050 3000
+F 0 "R?" V 2845 3000 50  0000 C CNN
+F 1 "10kΩ" V 2936 3000 50  0000 C CNN
+F 2 "" V 3090 2990 50  0001 C CNN
+F 3 "~" H 3050 3000 50  0001 C CNN
+	1    3050 3000
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	3000 4350 3700 4350
+Wire Wire Line
+	3700 4350 3700 3000
+Wire Wire Line
+	3700 3000 3200 3000
+Wire Wire Line
+	2900 3000 2200 3000
+Wire Wire Line
+	2200 3000 2200 3450
+$Comp
+L power:+3.3V #PWR?
+U 1 1 60566159
+P 2200 3000
+F 0 "#PWR?" H 2200 2850 50  0001 C CNN
+F 1 "+3.3V" H 2215 3173 50  0000 C CNN
+F 2 "" H 2200 3000 50  0001 C CNN
+F 3 "" H 2200 3000 50  0001 C CNN
+	1    2200 3000
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+3.3V #PWR?
+U 1 1 605676A0
+P 5350 5350
+F 0 "#PWR?" H 5350 5200 50  0001 C CNN
+F 1 "+3.3V" H 5365 5523 50  0000 C CNN
+F 2 "" H 5350 5350 50  0001 C CNN
+F 3 "" H 5350 5350 50  0001 C CNN
+	1    5350 5350
+	-1   0    0    1   
+$EndComp
+Text Notes 950  5300 0    50   ~ 0
+I2C Address: 0b1000000\n
+Text Notes 1000 2500 0    50   ~ 0
+Max Shunt Voltage Input: 163.8 mV\nMax Expected Motor Current: 10A (Double to 20A to be safe)\n->R = 163.8 / 20 = 8.19mΩ -> Choose 6mΩ\n--->Max Power = 2.4W -> Choose 3W\n--->Max Current = 163.8 / 6 = 27.3A
+Connection ~ 2200 3000
+$Comp
+L SamacSys_Parts:INA3221AIRGVR IC?
+U 1 1 60591279
+P 4850 4150
+F 0 "IC?" H 6294 3996 50  0000 L CNN
+F 1 "INA3221AIRGVR" H 6294 3905 50  0000 L CNN
+F 2 "QFN65P400X400X100-17N-D" H 6100 4650 50  0001 L CNN
+F 3 "http://www.ti.com/lit/ds/symlink/ina3221.pdf" H 6100 4550 50  0001 L CNN
+F 4 "26V, Triple, Bi-Directional, Low-/High-Side, I2C Out Current/Voltage Monitor w/Alerts" H 6100 4450 50  0001 L CNN "Description"
+F 5 "1" H 6100 4350 50  0001 L CNN "Height"
+F 6 "Texas Instruments" H 6100 4250 50  0001 L CNN "Manufacturer_Name"
+F 7 "INA3221AIRGVR" H 6100 4150 50  0001 L CNN "Manufacturer_Part_Number"
+F 8 "595-INA3221AIRGVR" H 6100 4050 50  0001 L CNN "Mouser Part Number"
+F 9 "https://www.mouser.co.uk/ProductDetail/Texas-Instruments/INA3221AIRGVR/?qs=3AcK5DacLboHys8907TVUQ%3D%3D" H 6100 3950 50  0001 L CNN "Mouser Price/Stock"
+F 10 "INA3221AIRGVR" H 6100 3850 50  0001 L CNN "Arrow Part Number"
+F 11 "https://www.arrow.com/en/products/ina3221airgvr/texas-instruments" H 6100 3750 50  0001 L CNN "Arrow Price/Stock"
+	1    4850 4150
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 6059127F
+P 4850 4350
+F 0 "#PWR?" H 4850 4100 50  0001 C CNN
+F 1 "GND" V 4855 4222 50  0000 R CNN
+F 2 "" H 4850 4350 50  0001 C CNN
+F 3 "" H 4850 4350 50  0001 C CNN
+	1    4850 4350
+	0    1    1    0   
+$EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 60591285
+P 5350 3400
+F 0 "#PWR?" H 5350 3150 50  0001 C CNN
+F 1 "GND" H 5355 3227 50  0000 C CNN
+F 2 "" H 5350 3400 50  0001 C CNN
+F 3 "" H 5350 3400 50  0001 C CNN
+	1    5350 3400
+	-1   0    0    1   
+$EndComp
+Wire Wire Line
+	5350 3400 5350 3450
+Text GLabel 6500 4150 2    50   Input ~ 0
+Motor4+
+Text GLabel 6500 4250 2    50   Input ~ 0
+Motor4-
+Wire Wire Line
+	6500 4150 6250 4150
+Wire Wire Line
+	6250 4250 6500 4250
+Text GLabel 5550 3450 1    50   Input ~ 0
+Motor5+
+Text GLabel 5650 3450 1    50   Input ~ 0
+Motor5-
+Text GLabel 4850 4250 0    50   Input ~ 0
+Motor6+
+Text GLabel 4850 4150 0    50   Input ~ 0
+Motor6-
+Text GLabel 5450 5250 3    50   Input ~ 0
+SCL
+Text GLabel 5550 5250 3    50   Input ~ 0
+SDA
+$Comp
+L power:+3.3V #PWR?
+U 1 1 605912AF
+P 4650 4450
+F 0 "#PWR?" H 4650 4300 50  0001 C CNN
+F 1 "+3.3V" H 4665 4623 50  0000 C CNN
+F 2 "" H 4650 4450 50  0001 C CNN
+F 3 "" H 4650 4450 50  0001 C CNN
+	1    4650 4450
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	4650 4450 4700 4450
+$Comp
+L Device:C C?
+U 1 1 605912B6
+P 4700 4700
+F 0 "C?" V 4448 4700 50  0000 C CNN
+F 1 "0.1uF" V 4539 4700 50  0000 C CNN
+F 2 "" H 4738 4550 50  0001 C CNN
+F 3 "~" H 4700 4700 50  0001 C CNN
+	1    4700 4700
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4700 4550 4700 4450
+$Comp
+L power:GND #PWR?
+U 1 1 605912BD
+P 4700 4850
+F 0 "#PWR?" H 4700 4600 50  0001 C CNN
+F 1 "GND" V 4705 4722 50  0000 R CNN
+F 2 "" H 4700 4850 50  0001 C CNN
+F 3 "" H 4700 4850 50  0001 C CNN
+	1    4700 4850
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4850 4450 4700 4450
+Connection ~ 4700 4450
+$Comp
+L Device:R_US R?
+U 1 1 605912C5
+P 6300 3000
+F 0 "R?" V 6095 3000 50  0000 C CNN
+F 1 "10kΩ" V 6186 3000 50  0000 C CNN
+F 2 "" V 6340 2990 50  0001 C CNN
+F 3 "~" H 6300 3000 50  0001 C CNN
+	1    6300 3000
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	6250 4350 6950 4350
+Wire Wire Line
+	6950 4350 6950 3000
+Wire Wire Line
+	6950 3000 6450 3000
+Wire Wire Line
+	6150 3000 5450 3000
+Wire Wire Line
+	5450 3000 5450 3450
+$Comp
+L power:+3.3V #PWR?
+U 1 1 605912D0
+P 5450 3000
+F 0 "#PWR?" H 5450 2850 50  0001 C CNN
+F 1 "+3.3V" H 5465 3173 50  0000 C CNN
+F 2 "" H 5450 3000 50  0001 C CNN
+F 3 "" H 5450 3000 50  0001 C CNN
+	1    5450 3000
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5350 5350 5350 5250
+Text Notes 4200 5300 0    50   ~ 0
+I2C Address: 0b1000001
+Connection ~ 5450 3000
+$Comp
+L power:GND #PWR?
+U 1 1 605AFA40
+P 8300 4350
+F 0 "#PWR?" H 8300 4100 50  0001 C CNN
+F 1 "GND" V 8305 4222 50  0000 R CNN
+F 2 "" H 8300 4350 50  0001 C CNN
+F 3 "" H 8300 4350 50  0001 C CNN
+	1    8300 4350
+	0    1    1    0   
+$EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 605AFA46
+P 8800 3400
+F 0 "#PWR?" H 8800 3150 50  0001 C CNN
+F 1 "GND" H 8805 3227 50  0000 C CNN
+F 2 "" H 8800 3400 50  0001 C CNN
+F 3 "" H 8800 3400 50  0001 C CNN
+	1    8800 3400
+	-1   0    0    1   
+$EndComp
+Wire Wire Line
+	8800 3400 8800 3450
+Text GLabel 9950 4150 2    50   Input ~ 0
+Motor7+
+Text GLabel 9950 4250 2    50   Input ~ 0
+Motor7-
+Wire Wire Line
+	9950 4150 9700 4150
+Wire Wire Line
+	9700 4250 9950 4250
+Text GLabel 9000 3450 1    50   Input ~ 0
+Motor8+
+Text GLabel 9100 3450 1    50   Input ~ 0
+Motor8-
+Text GLabel 8900 5250 3    50   Input ~ 0
+SCL
+Text GLabel 9000 5250 3    50   Input ~ 0
+SDA
+$Comp
+L power:+3.3V #PWR?
+U 1 1 605AFA70
+P 8100 4450
+F 0 "#PWR?" H 8100 4300 50  0001 C CNN
+F 1 "+3.3V" H 8115 4623 50  0000 C CNN
+F 2 "" H 8100 4450 50  0001 C CNN
+F 3 "" H 8100 4450 50  0001 C CNN
+	1    8100 4450
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	8100 4450 8150 4450
+$Comp
+L Device:C C?
+U 1 1 605AFA77
+P 8150 4700
+F 0 "C?" V 7898 4700 50  0000 C CNN
+F 1 "0.1uF" V 7989 4700 50  0000 C CNN
+F 2 "" H 8188 4550 50  0001 C CNN
+F 3 "~" H 8150 4700 50  0001 C CNN
+	1    8150 4700
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	8150 4550 8150 4450
+$Comp
+L power:GND #PWR?
+U 1 1 605AFA7E
+P 8150 4850
+F 0 "#PWR?" H 8150 4600 50  0001 C CNN
+F 1 "GND" V 8155 4722 50  0000 R CNN
+F 2 "" H 8150 4850 50  0001 C CNN
+F 3 "" H 8150 4850 50  0001 C CNN
+	1    8150 4850
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	8300 4450 8150 4450
+Connection ~ 8150 4450
+$Comp
+L Device:R_US R?
+U 1 1 605AFA86
+P 9750 3000
+F 0 "R?" V 9545 3000 50  0000 C CNN
+F 1 "10kΩ" V 9636 3000 50  0000 C CNN
+F 2 "" V 9790 2990 50  0001 C CNN
+F 3 "~" H 9750 3000 50  0001 C CNN
+	1    9750 3000
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	9700 4350 10400 4350
+Wire Wire Line
+	10400 4350 10400 3000
+Wire Wire Line
+	10400 3000 9900 3000
+Wire Wire Line
+	9600 3000 8900 3000
+Wire Wire Line
+	8900 3000 8900 3450
+$Comp
+L power:+3.3V #PWR?
+U 1 1 605AFA91
+P 8900 3000
+F 0 "#PWR?" H 8900 2850 50  0001 C CNN
+F 1 "+3.3V" H 8915 3173 50  0000 C CNN
+F 2 "" H 8900 3000 50  0001 C CNN
+F 3 "" H 8900 3000 50  0001 C CNN
+	1    8900 3000
+	1    0    0    -1  
+$EndComp
+Text Notes 7650 5300 0    50   ~ 0
+I2C Address: 0b1000010
+Connection ~ 8900 3000
+$Comp
+L power:GND #PWR?
+U 1 1 605BB7EE
+P 2100 5400
+F 0 "#PWR?" H 2100 5150 50  0001 C CNN
+F 1 "GND" V 2105 5272 50  0000 R CNN
+F 2 "" H 2100 5400 50  0001 C CNN
+F 3 "" H 2100 5400 50  0001 C CNN
+	1    2100 5400
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2100 5250 2100 5400
+Text GLabel 8800 5250 3    50   Input ~ 0
+SDA
+$Comp
+L SamacSys_Parts:INA3221AIRGVR IC?
+U 1 1 605AFA3A
+P 8300 4150
+F 0 "IC?" H 9744 3996 50  0000 L CNN
+F 1 "INA3221AIRGVR" H 9744 3905 50  0000 L CNN
+F 2 "QFN65P400X400X100-17N-D" H 9550 4650 50  0001 L CNN
+F 3 "http://www.ti.com/lit/ds/symlink/ina3221.pdf" H 9550 4550 50  0001 L CNN
+F 4 "26V, Triple, Bi-Directional, Low-/High-Side, I2C Out Current/Voltage Monitor w/Alerts" H 9550 4450 50  0001 L CNN "Description"
+F 5 "1" H 9550 4350 50  0001 L CNN "Height"
+F 6 "Texas Instruments" H 9550 4250 50  0001 L CNN "Manufacturer_Name"
+F 7 "INA3221AIRGVR" H 9550 4150 50  0001 L CNN "Manufacturer_Part_Number"
+F 8 "595-INA3221AIRGVR" H 9550 4050 50  0001 L CNN "Mouser Part Number"
+F 9 "https://www.mouser.co.uk/ProductDetail/Texas-Instruments/INA3221AIRGVR/?qs=3AcK5DacLboHys8907TVUQ%3D%3D" H 9550 3950 50  0001 L CNN "Mouser Price/Stock"
+F 10 "INA3221AIRGVR" H 9550 3850 50  0001 L CNN "Arrow Part Number"
+F 11 "https://www.arrow.com/en/products/ina3221airgvr/texas-instruments" H 9550 3750 50  0001 L CNN "Arrow Price/Stock"
+	1    8300 4150
+	1    0    0    -1  
+$EndComp
+$EndSCHEMATC

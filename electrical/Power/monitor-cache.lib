@@ -1,0 +1,124 @@
+EESchema-LIBRARY Version 2.4
+#encoding utf-8
+#
+# Device_C
+#
+DEF Device_C C 0 10 N Y 1 F N
+F0 "C" 25 100 50 H V L CNN
+F1 "Device_C" 25 -100 50 H V L CNN
+F2 "" 38 -150 50 H I C CNN
+F3 "" 0 0 50 H I C CNN
+$FPLIST
+ C_*
+$ENDFPLIST
+DRAW
+P 2 0 1 20 -80 -30 80 -30 N
+P 2 0 1 20 -80 30 80 30 N
+X ~ 1 0 150 110 D 50 50 1 1 P
+X ~ 2 0 -150 110 U 50 50 1 1 P
+ENDDRAW
+ENDDEF
+#
+# Device_R_US
+#
+DEF Device_R_US R 0 0 N Y 1 F N
+F0 "R" 100 0 50 V V C CNN
+F1 "Device_R_US" -100 0 50 V V C CNN
+F2 "" 40 -10 50 V I C CNN
+F3 "" 0 0 50 H I C CNN
+$FPLIST
+ R_*
+$ENDFPLIST
+DRAW
+P 2 0 1 0 0 -90 0 -100 N
+P 2 0 1 0 0 90 0 100 N
+P 5 0 1 0 0 -30 40 -45 0 -60 -40 -75 0 -90 N
+P 5 0 1 0 0 30 40 15 0 0 -40 -15 0 -30 N
+P 5 0 1 0 0 90 40 75 0 60 -40 45 0 30 N
+X ~ 1 0 150 50 D 50 50 1 1 P
+X ~ 2 0 -150 50 U 50 50 1 1 P
+ENDDRAW
+ENDDEF
+#
+# SamacSys_Parts_INA3221AIRGVR
+#
+DEF SamacSys_Parts_INA3221AIRGVR IC 0 30 Y Y 1 F N
+F0 "IC" 1250 700 50 H V L CNN
+F1 "SamacSys_Parts_INA3221AIRGVR" 1250 600 50 H V L CNN
+F2 "QFN65P400X400X100-17N-D" 1250 500 50 H I L CNN
+F3 "http://www.ti.com/lit/ds/symlink/ina3221.pdf" 1250 400 50 H I L CNN
+F4 "26V, Triple, Bi-Directional, Low-/High-Side, I2C Out Current/Voltage Monitor w/Alerts" 1250 300 50 H I L CNN "Description"
+F5 "1" 1250 200 50 H I L CNN "Height"
+F6 "Texas Instruments" 1250 100 50 H I L CNN "Manufacturer_Name"
+F7 "INA3221AIRGVR" 1250 0 50 H I L CNN "Manufacturer_Part_Number"
+F8 "595-INA3221AIRGVR" 1250 -100 50 H I L CNN "Mouser Part Number"
+F9 "https://www.mouser.co.uk/ProductDetail/Texas-Instruments/INA3221AIRGVR/?qs=3AcK5DacLboHys8907TVUQ%3D%3D" 1250 -200 50 H I L CNN "Mouser Price/Stock"
+F10 "INA3221AIRGVR" 1250 -300 50 H I L CNN "Arrow Part Number"
+F11 "https://www.arrow.com/en/products/ina3221airgvr/texas-instruments" 1250 -400 50 H I L CNN "Arrow Price/Stock"
+DRAW
+P 5 0 1 6 200 500 1200 500 1200 -900 200 -900 200 500 N
+X IN-3 1 0 0 200 R 50 50 0 0 P
+X PV 10 1400 -200 200 L 50 50 0 0 P
+X IN-1 11 1400 -100 200 L 50 50 0 0 P
+X IN+1 12 1400 0 200 L 50 50 0 0 P
+X TC 13 900 700 200 D 50 50 0 0 P
+X IN-2 14 800 700 200 D 50 50 0 0 P
+X IN+2 15 700 700 200 D 50 50 0 0 P
+X VPU 16 600 700 200 D 50 50 0 0 P
+X GND_2 17 500 700 200 D 50 50 0 0 P
+X IN+3 2 0 -100 200 R 50 50 0 0 P
+X GND_1 3 0 -200 200 R 50 50 0 0 P
+X VS 4 0 -300 200 R 50 50 0 0 P
+X A0 5 500 -1100 200 U 50 50 0 0 P
+X SCL 6 600 -1100 200 U 50 50 0 0 P
+X SDA 7 700 -1100 200 U 50 50 0 0 P
+X WARNING 8 800 -1100 200 U 50 50 0 0 P
+X CRITICAL 9 1400 -300 200 L 50 50 0 0 P
+ENDDRAW
+ENDDEF
+#
+# power_+12V
+#
+DEF power_+12V #PWR 0 0 Y Y 1 F P
+F0 "#PWR" 0 -150 50 H I C CNN
+F1 "power_+12V" 0 140 50 H V C CNN
+F2 "" 0 0 50 H I C CNN
+F3 "" 0 0 50 H I C CNN
+DRAW
+P 2 0 1 0 -30 50 0 100 N
+P 2 0 1 0 0 0 0 100 N
+P 2 0 1 0 0 100 30 50 N
+X +12V 1 0 0 0 U 50 50 1 1 W N
+ENDDRAW
+ENDDEF
+#
+# power_+3.3V
+#
+DEF power_+3.3V #PWR 0 0 Y Y 1 F P
+F0 "#PWR" 0 -150 50 H I C CNN
+F1 "power_+3.3V" 0 140 50 H V C CNN
+F2 "" 0 0 50 H I C CNN
+F3 "" 0 0 50 H I C CNN
+ALIAS +3.3V
+DRAW
+P 2 0 1 0 -30 50 0 100 N
+P 2 0 1 0 0 0 0 100 N
+P 2 0 1 0 0 100 30 50 N
+X +3V3 1 0 0 0 U 50 50 1 1 W N
+ENDDRAW
+ENDDEF
+#
+# power_GND
+#
+DEF power_GND #PWR 0 0 Y Y 1 F P
+F0 "#PWR" 0 -250 50 H I C CNN
+F1 "power_GND" 0 -150 50 H V C CNN
+F2 "" 0 0 50 H I C CNN
+F3 "" 0 0 50 H I C CNN
+DRAW
+P 6 0 1 0 0 0 0 -50 50 -50 0 -100 -50 -50 0 -50 N
+X GND 1 0 0 0 D 50 50 1 1 W N
+ENDDRAW
+ENDDEF
+#
+#End Library
