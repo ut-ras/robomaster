@@ -11,7 +11,6 @@
     <option name="taproot:docs:source_paths">src</option>
     <option name="taproot:rebuild_modm">True</option>
     <!-- This project comes with a pre-generated drivers.hpp file and build script. You can edit them without Taproot attempting to replace them. -->
-    <option name="taproot:core:generate_driver_hpp">False</option>
     <option name="taproot:build:include_sconstruct">False</option>
 
     <!-- For RoboMaster Development Board Type A -->
