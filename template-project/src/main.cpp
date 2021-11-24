@@ -34,7 +34,8 @@
 #include "tap/architecture/profiler.hpp"
 
 /* communication includes ---------------------------------------------------*/
-#include "tap/drivers_singleton.hpp"
+#include "drivers.hpp"
+#include "drivers_singleton.hpp"
 
 /* error handling includes --------------------------------------------------*/
 #include "tap/errors/create_errors.hpp"
@@ -42,19 +43,17 @@
 /* control includes ---------------------------------------------------------*/
 #include "tap/architecture/clock.hpp"
 
-using tap::Drivers;
-
 /* define timers here -------------------------------------------------------*/
 tap::arch::PeriodicMilliTimer sendMotorTimeout(2);
 
 // Place any sort of input/output initialization here. For example, place
 // serial init stuff here.
-static void initializeIo(tap::Drivers *drivers);
+static void initializeIo(src::Drivers *drivers);
 
 // Anything that you would like to be called place here. It will be called
 // very frequently. Use PeriodicMilliTimers if you don't want something to be
 // called as frequently.
-static void updateIo(tap::Drivers *drivers);
+static void updateIo(src::Drivers *drivers);
 
 int main()
 {
@@ -67,7 +66,7 @@ int main()
      *      robot loop we must access the singleton drivers to update
      *      IO states and run the scheduler.
      */
-    tap::Drivers *drivers = tap::DoNotUse_getDrivers();
+    src::Drivers *drivers = src::DoNotUse_getDrivers();
 
     Board::initialize();
     initializeIo(drivers);
@@ -86,7 +85,6 @@ int main()
         if (sendMotorTimeout.execute())
         {
             PROFILE(drivers->profiler, drivers->mpu6500.periodicIMUUpdate, ());
-            PROFILE(drivers->profiler, drivers->errorController.updateLedDisplay, ());
             PROFILE(drivers->profiler, drivers->commandScheduler.run, ());
             PROFILE(drivers->profiler, drivers->djiMotorTxHandler.processCanSendData, ());
             PROFILE(drivers->profiler, drivers->terminalSerial.update, ());
@@ -96,7 +94,7 @@ int main()
     return 0;
 }
 
-static void initializeIo(tap::Drivers *drivers)
+static void initializeIo(src::Drivers *drivers)
 {
     drivers->analog.init();
     drivers->pwm.init();
@@ -112,7 +110,7 @@ static void initializeIo(tap::Drivers *drivers)
     drivers->djiMotorTerminalSerialHandler.init();
 }
 
-static void updateIo(tap::Drivers *drivers)
+static void updateIo(src::Drivers *drivers)
 {
 #ifdef PLATFORM_HOSTED
     tap::motorsim::SimHandler::updateSims();
