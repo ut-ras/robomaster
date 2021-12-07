@@ -9,6 +9,7 @@
                 "template-project/taproot/test",
                 "template-project/test"
             ],
+            "compilerPath": "g++",
             "intelliSenseMode": "gcc-x64",
             "browse": { "limitSymbolsToIncludedHeaders": true }
         },
@@ -19,6 +20,7 @@
                 "${default}",
                 "template-project/taproot/sim-modm/hosted-linux/modm/src"
             ],
+            "compilerPath": "g++",
             "intelliSenseMode": "gcc-x64",
             "browse": { "limitSymbolsToIncludedHeaders": true }
         },
@@ -31,6 +33,7 @@
                 "template-project/taproot/modm/ext/cmsis/device",
                 "template-project/taproot/modm/ext/cmsis/dsp"        
             ],
+            "compilerPath": "arm-none-eabi-g++",
             "intelliSenseMode": "gcc-arm",
             "browse": { "limitSymbolsToIncludedHeaders": true }
         }
