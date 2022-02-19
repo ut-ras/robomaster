@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2021 UT Robomaster
+ * Copyright (c) 2020-2021 Advanced Robotics at the University of Washington <robomstr@uw.edu>
  *
  * This file is part of ut-robomaster.
  *
