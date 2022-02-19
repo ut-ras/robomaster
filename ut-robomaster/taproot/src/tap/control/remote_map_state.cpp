@@ -128,22 +128,19 @@ void RemoteMapState::initNegKeys(uint16_t negKeys)
 
 void RemoteMapState::initKeys(const std::list<Remote::Key> &keySet)
 {
-    uint16_t keys = std::accumulate(
-        keySet.begin(),
-        keySet.end(),
-        0,
-        [](int acc, Remote::Key key) { return acc |= 1 << static_cast<uint16_t>(key); });
+    uint16_t keys = std::accumulate(keySet.begin(), keySet.end(), 0, [](int acc, Remote::Key key) {
+        return acc |= 1 << static_cast<uint16_t>(key);
+    });
     initKeys(keys);
 }
 
 void RemoteMapState::initNegKeys(const std::list<Remote::Key> &negKeySet)
 {
     // extract a bit form of the key set.
-    uint16_t negKeys = std::accumulate(
-        negKeySet.begin(),
-        negKeySet.end(),
-        0,
-        [](int acc, Remote::Key key) { return acc |= 1 << static_cast<uint16_t>(key); });
+    uint16_t negKeys =
+        std::accumulate(negKeySet.begin(), negKeySet.end(), 0, [](int acc, Remote::Key key) {
+            return acc |= 1 << static_cast<uint16_t>(key);
+        });
     initNegKeys(negKeys);
 }
 

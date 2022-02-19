@@ -69,9 +69,6 @@ void DJISerial::initialize()
         case Uart::UartPort::Uart1:
             drivers->uart.init<Uart::UartPort::Uart1, 115200>();
             break;
-        case Uart::UartPort::Uart2:
-            drivers->uart.init<Uart::UartPort::Uart2, 115200>();
-            break;
         case Uart::UartPort::Uart3:
             drivers->uart.init<Uart::UartPort::Uart3, 115200>();
             break;
@@ -116,7 +113,9 @@ bool DJISerial::send()
     {
         return false;
         // the message did not completely send
-        RAISE_ERROR(drivers, "the message did not completely send");
+        RAISE_ERROR(
+            drivers,
+            "the message did not completely send");
     }
     txMessage.messageTimestamp = arch::clock::getTimeMilliseconds();
     return true;
@@ -170,7 +169,9 @@ void DJISerial::updateSerial()
                         SERIAL_RX_BUFF_SIZE - (FRAME_HEADER_LENGTH + FRAME_CRC16_LENGTH))
                 {
                     djiSerialRxState = SERIAL_HEADER_SEARCH;
-                    RAISE_ERROR(drivers, "invalid message length received");
+                    RAISE_ERROR(
+                        drivers,
+                        "invalid message length received");
                     return;
                 }
 
@@ -182,7 +183,9 @@ void DJISerial::updateSerial()
                     if (!verifyCRC8(frameHeader, FRAME_HEADER_LENGTH - 3, CRC8))
                     {
                         djiSerialRxState = SERIAL_HEADER_SEARCH;
-                        RAISE_ERROR(drivers, "CRC8 failure");
+                        RAISE_ERROR(
+                            drivers,
+                            "CRC8 failure");
                         return;
                     }
                 }
@@ -225,7 +228,9 @@ void DJISerial::updateSerial()
                     if (currCrc16 != CRC16)
                     {
                         djiSerialRxState = SERIAL_HEADER_SEARCH;
-                        RAISE_ERROR(drivers, "CRC16 failure");
+                        RAISE_ERROR(
+                            drivers,
+                            "CRC16 failure");
                         return;
                     }
                 }
@@ -244,7 +249,9 @@ void DJISerial::updateSerial()
                 (frameCurrReadByte > newMessage.length + 2 && rxCrcEnabled))
             {
                 frameCurrReadByte = 0;
-                RAISE_ERROR(drivers, "Invalid message length");
+                RAISE_ERROR(
+                    drivers,
+                    "Invalid message length");
                 djiSerialRxState = SERIAL_HEADER_SEARCH;
             }
             break;

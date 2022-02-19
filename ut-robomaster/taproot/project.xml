@@ -16,7 +16,7 @@
     <option name="modm:platform:uart:3:buffer.rx">512</option>
     <option name="modm:platform:uart:6:buffer.rx">256</option>
     <option name="modm:platform:uart:6:buffer.tx">256</option>
-    <option name="modm:target">stm32f427iih6</option>
+    <option name="modm:target">stm32f407igh6</option>
   </options>
   <modules>
     <module>modm:architecture:clock</module>
@@ -50,12 +50,9 @@
     <module>modm:platform:uart:6</module>
     <module>modm:platform:adc:1</module>
     <module>modm:platform:spi:1</module>
-    <module>modm:platform:i2c:2</module>
-    <module>modm:platform:timer:3</module>
-    <module>modm:platform:timer:12</module>
-    <module>modm:platform:spi:5</module>
-    <module>modm:platform:uart:2</module>
-    <module>modm:ui:display</module>
-    <module>modm:ui:menu</module>
+    <module>modm:platform:timer:1</module>
+    <module>modm:platform:timer:4</module>
+    <module>modm:platform:timer:10</module>
+    <module>modm:platform:adc:3</module>
   </modules>
 </library>

@@ -22,7 +22,7 @@
 
 namespace tap::serial::bound_ports
 {
-static constexpr Uart::UartPort TERMINAL_SERIAL_UART_PORT = Uart::UartPort::Uart3;
+    static constexpr Uart::UartPort TERMINAL_SERIAL_UART_PORT = Uart::UartPort::Uart1;
 }  // namespace tap::serial::bound_ports
 
 #endif  // UART_TERMINAL_DEVICE_CONSTANTS_HPP_

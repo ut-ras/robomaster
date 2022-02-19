@@ -26,21 +26,19 @@
 #include "tap/mock/can_mock.hpp"
 #include "tap/mock/can_rx_handler_mock.hpp"
 #include "tap/mock/command_mapper_mock.hpp"
-#include "tap/mock/command_scheduler_mock.hpp"
 #include "tap/mock/control_operator_interface_mock.hpp"
 #include "tap/mock/digital_mock.hpp"
 #include "tap/mock/dji_motor_terminal_serial_handler_mock.hpp"
 #include "tap/mock/dji_motor_tx_handler_mock.hpp"
 #include "tap/mock/error_controller_mock.hpp"
 #include "tap/mock/leds_mock.hpp"
-#include "tap/mock/mpu6500_mock.hpp"
-#include "tap/mock/mpu6500_terminal_serial_handler_mock.hpp"
 #include "tap/mock/pwm_mock.hpp"
 #include "tap/mock/ref_serial_mock.hpp"
 #include "tap/mock/remote_mock.hpp"
 #include "tap/mock/scheduler_terminal_handler_mock.hpp"
 #include "tap/mock/terminal_serial_mock.hpp"
 #include "tap/mock/uart_mock.hpp"
+#include "tap/mock/command_scheduler_mock.hpp"
 #else
 #include "tap/architecture/profiler.hpp"
 #include "tap/communication/can/can.hpp"
@@ -49,19 +47,17 @@
 #include "tap/communication/gpio/digital.hpp"
 #include "tap/communication/gpio/leds.hpp"
 #include "tap/communication/gpio/pwm.hpp"
-#include "tap/communication/sensors/mpu6500/mpu6500.hpp"
-#include "tap/communication/sensors/mpu6500/mpu6500_terminal_serial_handler.hpp"
 #include "tap/communication/serial/ref_serial.hpp"
 #include "tap/communication/serial/remote.hpp"
 #include "tap/communication/serial/terminal_serial.hpp"
 #include "tap/communication/serial/uart.hpp"
 #include "tap/control/command_mapper.hpp"
-#include "tap/control/command_scheduler.hpp"
 #include "tap/control/control_operator_interface.hpp"
 #include "tap/control/scheduler_terminal_handler.hpp"
 #include "tap/errors/error_controller.hpp"
 #include "tap/motor/dji_motor_terminal_serial_handler.hpp"
 #include "tap/motor/dji_motor_tx_handler.hpp"
+#include "tap/control/command_scheduler.hpp"
 #endif
 
 namespace tap
@@ -83,7 +79,6 @@ protected:
           digital(),
           leds(),
           pwm(),
-          mpu6500(this),
           refSerial(this),
           remote(this),
           uart(),
@@ -94,14 +89,12 @@ protected:
           errorController(this),
           djiMotorTerminalSerialHandler(this),
           djiMotorTxHandler(this),
-          mpu6500TerminalSerialHandler(this),
 #ifdef ENV_UNIT_TESTS
           commandScheduler(this)
 #else
           commandScheduler(this, true)
 #endif
-    {
-    }
+          {}
 
 #if defined(PLATFORM_HOSTED) && defined(ENV_UNIT_TESTS)
     arch::Profiler profiler;
@@ -111,7 +104,6 @@ protected:
     testing::NiceMock<mock::DigitalMock> digital;
     testing::NiceMock<mock::LedsMock> leds;
     testing::NiceMock<mock::PwmMock> pwm;
-    testing::NiceMock<mock::Mpu6500Mock> mpu6500;
     testing::NiceMock<mock::RefSerialMock> refSerial;
     testing::NiceMock<mock::RemoteMock> remote;
     testing::NiceMock<mock::UartMock> uart;
@@ -122,7 +114,6 @@ protected:
     testing::StrictMock<mock::ErrorControllerMock> errorController;
     testing::NiceMock<mock::DjiMotorTerminalSerialHandlerMock> djiMotorTerminalSerialHandler;
     testing::NiceMock<mock::DjiMotorTxHandlerMock> djiMotorTxHandler;
-    testing::NiceMock<mock::Mpu6500TerminalSerialHandlerMock> mpu6500TerminalSerialHandler;
     testing::NiceMock<mock::CommandSchedulerMock> commandScheduler;
 #else
 public:
@@ -133,7 +124,6 @@ public:
     gpio::Digital digital;
     gpio::Leds leds;
     gpio::Pwm pwm;
-    sensors::Mpu6500 mpu6500;
     serial::RefSerial refSerial;
     Remote remote;
     serial::Uart uart;
@@ -144,7 +134,6 @@ public:
     errors::ErrorController errorController;
     motor::DjiMotorTerminalSerialHandler djiMotorTerminalSerialHandler;
     motor::DjiMotorTxHandler djiMotorTxHandler;
-    sensors::Mpu6500TerminalSerialHandler mpu6500TerminalSerialHandler;
     control::CommandScheduler commandScheduler;
 #endif
 };  // class Drivers
