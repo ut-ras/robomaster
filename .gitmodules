@@ -1,0 +1,3 @@
+[submodule "taproot"]
+	path = taproot
+	url = https://gitlab.com/aruw/controls/taproot.git
