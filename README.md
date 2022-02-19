@@ -76,7 +76,7 @@ updated the project name references. However, you will also want to update the c
 each header:
 
 ```
-Copyright (c) 2020-2021 Advanced Robotics at the University of Washington <robomstr@uw.edu>
+Copyright (c) 2020-2021 UT Robomaster
 ```
 
 To refer to your own team, year and email. Do so in all template source files, **excluding files in

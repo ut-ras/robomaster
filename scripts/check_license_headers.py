@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 #
-# Copyright (c) 2020-2021 Advanced Robotics at the University of Washington <robomstr@uw.edu>
+# Copyright (c) 2020-2021 UT Robomaster
 #
 # This file is part of template-project.
 #
@@ -34,7 +34,7 @@ options:\n\
     --update Adds licenses to files that don't have a license header (optional)"
 LICENSED_SOURCE_FILE_EXTENSIONS = ['.cpp', '.hpp', '.h']
 LICENSE_HEADER = '/*\n\
- * Copyright (c) 2020-2021 Advanced Robotics at the University of Washington <robomstr@uw.edu>\n\
+ * Copyright (c) 2020-2021 UT Robomaster\n\
  *\n\
  * This file is part of template-project.\n\
  *\n\

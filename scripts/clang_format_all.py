@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 #
-# Copyright (c) 2020-2021 Advanced Robotics at the University of Washington <robomstr@uw.edu>
+# Copyright (c) 2020-2021 UT Robomaster
 #
 # This file is part of template-project.
 #
