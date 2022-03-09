@@ -13,7 +13,7 @@
             "group": "build",
             "problemMatcher": [],
             "options": {
-                "cwd": "${workspaceRoot}/template-project"
+                "cwd": "${workspaceRoot}/ut-robomaster"
             }
         },
         {
@@ -23,13 +23,10 @@
                 "panel": "new"
             },
             "command": "pipenv run scons run",
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            },
+            "group": "build",
             "problemMatcher": [],
             "options": {
-                "cwd": "${workspaceRoot}/template-project"
+                "cwd": "${workspaceRoot}/ut-robomaster"
             }
         },
         {
@@ -42,7 +39,7 @@
             "group": "build",
             "problemMatcher": [],
             "options": {
-                "cwd": "${workspaceRoot}/template-project"
+                "cwd": "${workspaceRoot}/ut-robomaster"
             }
         },
         {
@@ -55,7 +52,7 @@
             "group": "build",
             "problemMatcher": [],
             "options": {
-                "cwd": "${workspaceRoot}/template-project"
+                "cwd": "${workspaceRoot}/ut-robomaster"
             }
         },
         {
@@ -68,7 +65,7 @@
             "group": "build",
             "problemMatcher": [],
             "options": {
-                "cwd": "${workspaceRoot}/template-project"
+                "cwd": "${workspaceRoot}/ut-robomaster"
             }
         },
         {
@@ -81,7 +78,7 @@
             "group": "build",
             "problemMatcher": [],
             "options": {
-                "cwd": "${workspaceRoot}/template-project"
+                "cwd": "${workspaceRoot}/ut-robomaster"
             }
         },
         {
@@ -107,7 +104,7 @@
             "group": "build",
             "problemMatcher": [],
             "options": {
-                "cwd": "${workspaceRoot}/template-project"
+                "cwd": "${workspaceRoot}/tut-robomaster"
             }
         },
         {
@@ -117,10 +114,13 @@
                 "panel": "new"
             },
             "command": "pipenv run lbuild build",
-            "group": "none",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
             "problemMatcher": [],
             "options": {
-                "cwd": "${workspaceRoot}/template-project"
+                "cwd": "${workspaceRoot}/ut-robomaster"
             }
         },
         {
@@ -133,7 +133,7 @@
             "group": "none",
             "problemMatcher": [],
             "options": {
-                "cwd": "${workspaceRoot}/template-project"
+                "cwd": "${workspaceRoot}/ut-robomaster"
             }
         }
     ]
