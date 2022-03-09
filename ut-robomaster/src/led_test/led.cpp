@@ -1,16 +1,22 @@
 #include "tap/communication/gpio/leds.hpp"
+#include "led.hpp"
 
 using namespace tap;
 using namespace tap::gpio;
 
-namespace led_test
+using namespace led_test;
+
+tap::gpio::Leds test;
+
+void led_test::init()
 {
-
-void ledOn(){
-    tap::gpio::Leds::init();
-    tap::gpio::Leds::set(Leds::LedPin::Green, false);
+    test.init();
 }
-// void LedTest::ledOff(){
 
-// } 
+void led_test::ledOn(){
+    while (1)
+    {
+        test.set(Leds::LedPin::Green, true);
+    }
 }
+

@@ -104,7 +104,7 @@
             "group": "build",
             "problemMatcher": [],
             "options": {
-                "cwd": "${workspaceRoot}/tut-robomaster"
+                "cwd": "${workspaceRoot}/ut-robomaster"
             }
         },
         {

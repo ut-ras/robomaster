@@ -1,0 +1,7 @@
+make.exe -f C:\Users\eddie\Code\312H\Assignments\Project1_starter_files\Makefile --dry-run --always-make --keep-going --print-directory
+make: Entering directory 'c:/Users/eddie/Documents/GitHub/robomaster'
+make: Leaving directory 'c:/Users/eddie/Documents/GitHub/robomaster'
+ 
+make: *** No rule to make target 'Project1.cpp', needed by 'proj1'.
+make: *** No rule to make target 'main.cpp', needed by 'proj1'.
+ 

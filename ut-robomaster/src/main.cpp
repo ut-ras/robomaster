@@ -43,6 +43,8 @@
 /* control includes ---------------------------------------------------------*/
 #include "tap/architecture/clock.hpp"
 
+#include "led_test/led.hpp"
+
 /* define timers here -------------------------------------------------------*/
 tap::arch::PeriodicMilliTimer sendMotorTimeout(2);
 
@@ -67,8 +69,9 @@ int main()
      *      IO states and run the scheduler.
      */
     src::Drivers *drivers = src::DoNotUse_getDrivers();
-
     Board::initialize();
+    led_test::init();
+    led_test::ledOn();
     initializeIo(drivers);
 
 #ifdef PLATFORM_HOSTED

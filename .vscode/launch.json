@@ -6,7 +6,7 @@
             "type": "cppdbg",
             "request": "launch",
             "preLaunchTask": "Build Tests - Debug",
-            "program": "${workspaceFolder}/template-project/build/tests/scons-debug/template-project-tests.elf",
+            "program": "${workspaceFolder}/ut-robomaster/build/tests/scons-debug/ut-robomaster-tests.elf",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
@@ -26,7 +26,7 @@
             "type": "cppdbg",
             "request": "launch",
             "preLaunchTask": "Build Sim - Debug",
-            "program": "${workspaceFolder}/template-project/build/sim/scons-debug/template-project.elf",
+            "program": "${workspaceFolder}/ut-robomaster/build/sim/scons-debug/ut-robomaster.elf",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
@@ -48,10 +48,10 @@
             "servertype": "openocd",
             "cwd": "${workspaceRoot}",
             "preLaunchTask": "Program - Debug",
-            "executable": "./template-project/build/hardware/scons-debug/template-project.elf",
+            "executable": "./ut-robomaster/build/hardware/scons-debug/ut-robomaster.elf",
             "device": "STM32F427II",
             "configFiles": [
-                "./template-project/openocd.cfg"
+                "./ut-robomaster/openocd.cfg"
             ]
         }
     ]

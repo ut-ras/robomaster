@@ -1,0 +1,328 @@
+make.exe all -f C:\Users\eddie\Code\312H\Assignments\Project1_starter_files\Makefile --print-data-base --no-builtin-variables --no-builtin-rules --question
+make: *** No rule to make target 'all'.  Stop.
+ 
+# GNU Make 4.3
+# Built for Windows32
+# Copyright (C) 1988-2020 Free Software Foundation, Inc.
+# License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+# This is free software: you are free to change and redistribute it.
+# There is NO WARRANTY, to the extent permitted by law.
+
+# Make data base, printed on Tue Mar 08 20:39:43 2022
+
+# Variables
+
+# environment
+FPS_BROWSER_APP_PROFILE_STRING = Internet Explorer
+# environment
+SYSTEMDRIVE = C:
+# environment
+LC_ALL = C
+# environment
+USERPROFILE = C:\Users\eddie
+# environment
+LOCALAPPDATA = C:\Users\eddie\AppData\Local
+# environment
+VSCODE_IPC_HOOK_EXTHOST = \\.\pipe\vscode-ipc-184cdf7c-df89-4ed4-93cb-e7d5ecfdfb8c-sock
+# environment
+VSCODE_CWD = C:\Users\eddie\AppData\Local\Programs\Microsoft VS Code
+# environment
+CHOCOLATEYINSTALL = C:\ProgramData\chocolatey
+# environment
+SYSTEMROOT = C:\windows
+# environment
+PROCESSOR_LEVEL = 23
+# environment
+PSMODULEPATH = C:\Program Files\WindowsPowerShell\Modules;C:\windows\system32\WindowsPowerShell\v1.0\Modules;C:\Program Files (x86)\Microsoft SQL Server\120\Tools\PowerShell\Modules\
+# default
+MAKE_COMMAND := C:/ProgramData/chocolatey/lib/make/tools/install/bin/make.exe
+# automatic
+@D = $(patsubst %/,%,$(patsubst %\,%,$(dir $@)))
+# environment
+CHROME_CRASHPAD_PIPE_NAME = \\.\pipe\crashpad_16500_KVQRHEBXLBYASRJG
+# environment
+ONEDRIVECOMMERCIAL = C:\Users\eddie\OneDrive - The University of Texas at Austin
+# environment
+FPS_BROWSER_USER_PROFILE_STRING = Default
+# environment
+VSCODE_HANDLES_UNCAUGHT_ERRORS = true
+# default
+.VARIABLES := 
+# automatic
+%D = $(patsubst %/,%,$(patsubst %\,%,$(dir $%)))
+# environment
+SW_SIM_HYDRA = C:\Program Files\Common Files\SolidWorks Shared\Simulation Worker Agent\
+# automatic
+^D = $(patsubst %/,%,$(patsubst %\,%,$(dir $^)))
+# environment
+VSCODE_LOG_STACK = false
+# automatic
+%F = $(notdir $%)
+# environment
+VSCODE_CODE_CACHE_PATH = C:\Users\eddie\AppData\Roaming\Code\CachedData\b5205cc8eb4fbaa726835538cd82372cc0222d43
+# environment
+LANG = C
+# default
+.LOADED := 
+# environment
+TMP = C:\Users\eddie\AppData\Local\Temp
+# default
+.INCLUDE_DIRS = .
+# environment
+PROCESSOR_ARCHITEW6432 = AMD64
+# makefile
+MAKEFLAGS = pqrR
+# environment
+INTEL_DEV_REDIST = C:\Program Files (x86)\Common Files\Intel\Shared Libraries\
+# environment
+ONEDRIVE = C:\Users\eddie\OneDrive - The University of Texas at Austin
+# makefile
+CURDIR := c:/Users/eddie/Documents/GitHub/robomaster
+# environment
+VSCODE_PIPE_LOGGING = true
+# environment
+APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = 1
+# automatic
+*D = $(patsubst %/,%,$(patsubst %\,%,$(dir $*)))
+# environment
+PROGRAMFILES = C:\Program Files (x86)
+# environment
+MFLAGS = -pqrR
+# default
+.SHELLFLAGS := -c
+# environment
+COMMONPROGRAMW6432 = C:\Program Files\Common Files
+# automatic
++D = $(patsubst %/,%,$(patsubst %\,%,$(dir $+)))
+# makefile (from 'C:\Users\eddie\Code\312H\Assignments\Project1_starter_files\Makefile', line 1)
+MAKEFILE_LIST := C:\Users\eddie\Code\312H\Assignments\Project1_starter_files\Makefile
+# automatic
+@F = $(notdir $@)
+# environment
+VSCODE_VERBOSE_LOGGING = true
+# environment
+VSCODE_PID = 16500
+# automatic
+?D = $(patsubst %/,%,$(patsubst %\,%,$(dir $?)))
+# environment
+ONLINESERVICES = Online Services
+# automatic
+*F = $(notdir $*)
+# environment
+SW_SIM_TEMP = C:\ProgramData\SOLIDWORKS\SW_net_sim_temp\
+# automatic
+<D = $(patsubst %/,%,$(patsubst %\,%,$(dir $<)))
+# environment
+VSCODE_NLS_CONFIG = {"locale":"en-us","availableLanguages":{},"_languagePackSupport":true}
+# environment
+ONEDRIVECONSUMER = C:\Users\eddie\OneDrive
+# default
+MAKE_HOST := Windows32
+# environment
+PROGRAMDATA = C:\ProgramData
+# default
+SHELL := C:/Program Files/Git/usr/bin/sh.exe
+# environment
+HOMEPATH = \Users\eddie
+# default
+MAKECMDGOALS := all
+# environment
+DRIVERDATA = C:\Windows\System32\Drivers\DriverData
+# environment
+COMSPEC = C:\windows\system32\cmd.exe
+# environment
+WINDIR = C:\windows
+# environment
+MAKELEVEL := 0
+# default
+MAKE = $(MAKE_COMMAND)
+# environment
+PATH = C:\Program Files (x86)\Common Files\Intel\Shared Libraries\redist\intel64\compiler;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\ProgramData\Oracle\Java\javapath;C:\windows\system32;C:\windows;C:\windows\System32\Wbem;C:\windows\System32\WindowsPowerShell\v1.0\;C:\windows\System32\OpenSSH\;C:\Program Files (x86)\PharosSystems\Core;C:\Program Files\Git\cmd;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\110\Tools\Binn\;C:\Program Files (x86)\Microsoft SQL Server\120\Tools\Binn\;C:\Program Files\Microsoft SQL Server\120\Tools\Binn\;C:\Program Files\Microsoft SQL Server\120\DTS\Binn\;C:\Program Files (x86)\Windows Kits\8.1\Windows Performance Toolkit\;C:\msys64\mingw64\bin;C:\ProgramData\chocolatey\bin;;C:\Program Files\Docker\Docker\resources\bin;C:\ProgramData\DockerDesktop\version-bin;C:\Program Files\CMake\bin;C:\Users\eddie\AppData\Local\Programs\Python\Python39\Scripts\;C:\Users\eddie\AppData\Local\Programs\Python\Python39\;C:\Users\eddie\AppData\Local\Microsoft\WindowsApps;C:\Users\eddie\Documents\Robotics\gcc-arm-none-eabi-10.3-2021.07\bin;C:\Users\eddie\Documents\Robotics\openocd-20210729\OpenOCD-20210729-0.11.0\bin;C:\Users\eddie\AppData\Local\GitHubDesktop\bin;C:\msys64\mingw64\bin;C:\Users\eddie\AppData\Local\Programs\Microsoft VS Code\bin;C:\Program Files\Git\usr\bin;
+# environment
+COMPUTERNAME = DESKTOP-DPMO7T5
+# default
+MAKEFILES := 
+# automatic
+^F = $(notdir $^)
+# environment
+SW_SIM_MPIT = INTELMPI
+# environment
+PROMPT = $P$G
+# environment
+CHOCOLATEYLASTPATHUPDATE = 132884012164608826
+# environment
+LOGONSERVER = \\DESKTOP-DPMO7T5
+# environment
+VSCODE_LOG_NATIVE = false
+# environment
+USERNAME = eddie
+# environment
+COMMONPROGRAMFILES = C:\Program Files (x86)\Common Files
+# automatic
+?F = $(notdir $?)
+# environment
+PROGRAMW6432 = C:\Program Files
+# environment
+PATHEXT = .COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC
+# automatic
++F = $(notdir $+)
+# environment
+ORIGINAL_XDG_CURRENT_DESKTOP = undefined
+# environment
+USERDOMAIN = DESKTOP-DPMO7T5
+# 'override' directive
+GNUMAKEFLAGS := 
+# environment
+OS = Windows_NT
+# makefile
+.DEFAULT_GOAL := proj1
+# environment
+OPENCV_DIR = C:\Users\eddie\Documents\opencv\build\x64\vc15
+# environment
+LIBRARY_PATH = C:\Users\eddie\Documents\Robotics\googletest-g++-win-1.10.0\lib;
+# default
+MAKE_VERSION := 4.3
+# environment
+PLATFORMCODE = M8
+# environment
+PROGRAMFILES(X86) = C:\Program Files (x86)
+# environment
+USERDOMAIN_ROAMINGPROFILE = DESKTOP-DPMO7T5
+# environment
+NUMBER_OF_PROCESSORS = 16
+# environment
+PUBLIC = C:\Users\Public
+# environment
+ASL.LOG = Destination=file
+# environment
+APPDATA = C:\Users\eddie\AppData\Roaming
+# environment
+HOMEDRIVE = C:
+# environment
+PROCESSOR_ARCHITECTURE = x86
+# environment
+CPLUS_INCLUDE_PATH = C:\Users\eddie\Documents\Robotics\googletest-g++-win-1.10.0\include;
+# environment
+VSCODE_AMD_ENTRYPOINT = vs/workbench/api/node/extensionHostProcess
+# environment
+COMMONPROGRAMFILES(X86) = C:\Program Files (x86)\Common Files
+# environment
+ELECTRON_RUN_AS_NODE = 1
+# environment
+TEMP = C:\Users\eddie\AppData\Local\Temp
+# environment
+VSCODE_IPC_HOOK = \\.\pipe\c42baf6f62799c35075f3ddabedcf363-1.65.0-main-sock
+# default
+.RECIPEPREFIX := 
+# automatic
+<F = $(notdir $<)
+# default
+SUFFIXES := 
+# environment
+ALLUSERSPROFILE = C:\ProgramData
+# environment
+SESSIONNAME = Console
+# default
+.FEATURES := target-specific order-only second-expansion else-if shortest-stem undefine oneshell nocomment grouped-target extra-prereqs archives jobserver output-sync load
+# environment
+MIC_LD_LIBRARY_PATH = C:\Program Files (x86)\Common Files\Intel\Shared Libraries\compiler\lib\mic
+# environment
+PROCESSOR_REVISION = 6801
+# environment
+REGIONCODE = NA
+# environment
+PROCESSOR_IDENTIFIER = AMD64 Family 23 Model 104 Stepping 1, AuthenticAMD
+# variable set hash-table stats:
+# Load=110/1024=11%, Rehash=0, Collisions=14/136=10%
+
+# Pattern-specific Variable Values
+
+# No pattern-specific variable values.
+
+# Directories
+
+
+# No files, no impossibilities in 0 directories.
+
+# Implicit Rules
+
+# No implicit rules.
+
+# Files
+
+debug: Project1.cpp main.cpp
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'C:\Users\eddie\Code\312H\Assignments\Project1_starter_files\Makefile', line 10):
+	gcc Project1.cpp main.cpp -g -o proj1
+
+clean:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+#  recipe to execute (from 'C:\Users\eddie\Code\312H\Assignments\Project1_starter_files\Makefile', line 7):
+	-rm proj1
+
+# Not a target:
+.DEFAULT:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+all:
+#  Command line target.
+#  Implicit rule search has been done.
+#  File does not exist.
+#  File has not been updated.
+
+# Not a target:
+main.cpp:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+C:\Users\eddie\Code\312H\Assignments\Project1_starter_files\Makefile:
+#  Implicit rule search has been done.
+#  Last modified 2022-02-06 16:17:22
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+Project1.cpp:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+.PHONY: clean
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+proj1: Project1.cpp main.cpp
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'C:\Users\eddie\Code\312H\Assignments\Project1_starter_files\Makefile', line 2):
+	gcc Project1.cpp main.cpp -o proj1
+
+# files hash-table stats:
+# Load=10/1024=1%, Rehash=0, Collisions=0/26=0%
+# VPATH Search Paths
+
+# No 'vpath' search paths.
+
+# No general ('VPATH' variable) search path.
+
+# strcache buffers: 1 (0) / strings = 11 / storage = 141 B / avg = 12 B
+# current buf: size = 8174 B / used = 141 B / count = 11 / avg = 12 B
+
+# strcache performance: lookups = 20 / hit rate = 45%
+# hash-table stats:
+# Load=11/8192=0%, Rehash=0, Collisions=0/20=0%
+# Finished Make data base on Tue Mar 08 20:39:43 2022
+
+ 
