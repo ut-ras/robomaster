@@ -14,7 +14,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with ut-robomaster.  If not, see <https://www.gnu.org/licenses/>.
+ * along with template-project.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #ifndef MY_FIRST_FILE_HPP_

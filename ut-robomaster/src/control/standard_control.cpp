@@ -1,0 +1,100 @@
+#ifndef ENV_UNIT_TESTS
+
+#ifdef TARGET_STANDARD
+
+#include "drivers.hpp"
+#include "drivers_singleton.hpp"
+
+#include "tap/control/command_mapper.hpp"
+#include "tap/control/hold_repeat_command_mapping.hpp"
+#include "tap/drivers.hpp"
+
+
+#include "agitator/agitator_rotate_command.hpp"
+#include "agitator/agitator_reverse_command.hpp"
+#include "agitator/agitator_subsystem.hpp"
+
+#include "flywheel/flywheel_subsystem.hpp"
+#include "flywheel/flywheel_on_command.hpp"
+
+using tap::Remote;
+using tap::control::CommandMapper;
+using namespace tap::control;
+
+/*
+ * NOTE: We are using the DoNotUse_getDrivers() function here
+ *      because this file defines all subsystems and command
+ *      and thus we must pass in the single statically allocated
+ *      Drivers class to all of these objects.
+ */
+src::driversFunc drivers = src::DoNotUse_getDrivers;
+
+namespace standard_control
+{
+/* define subsystems --------------------------------------------------------*/
+control::agitator::AgitatorSubsystem theAgitator(drivers());
+control::flywheel::FlywheelSubsystem theFlywheel(drivers());
+
+/* define commands ----------------------------------------------------------*/
+control::agitator::AgitatorRotateCommand rotateCommand(&theAgitator);
+control::agitator::AgitatorReverseCommand reverseCommand(&theAgitator);
+control::flywheel::FlywheelOnCommand flywheelCommand(&theFlywheel);
+
+/* define command mappings --------------------------------------------------*/
+tap::control::HoldRepeatCommandMapping rightSwitchUp(
+    drivers(),
+    {&rotateCommand},
+    RemoteMapState(Remote::Switch::RIGHT_SWITCH, Remote::SwitchState::UP));
+
+tap::control::HoldRepeatCommandMapping rightSwitchDown(
+    drivers(),
+    {&reverseCommand},
+    RemoteMapState(Remote::Switch::RIGHT_SWITCH, Remote::SwitchState::DOWN));
+
+tap::control::HoldRepeatCommandMapping leftSwitchUp(
+    drivers(),
+    {&flywheelCommand},
+    RemoteMapState(Remote::Switch::LEFT_SWITCH, Remote::SwitchState::UP));
+
+
+
+/* register subsystems here -------------------------------------------------*/
+void registerStandardSubsystems(tap::Drivers *drivers)
+{
+    drivers->commandScheduler.registerSubsystem(&theAgitator);
+    drivers->commandScheduler.registerSubsystem(&theFlywheel);
+}
+
+/* initialize subsystems ----------------------------------------------------*/
+void initializeSubsystems() { 
+    theAgitator.initialize();
+    theFlywheel.initialize();
+}
+
+/* set any default commands to subsystems here ------------------------------*/
+void setDefaultStandardCommands(tap::Drivers *) { }
+
+/* add any starting commands to the scheduler here --------------------------*/
+void startStandardCommands(tap::Drivers *) {}
+
+/* register io mappings here ------------------------------------------------*/
+void registerStandardIoMappings(tap::Drivers *drivers)
+{
+    drivers->commandMapper.addMap(&rightSwitchUp);
+    drivers->commandMapper.addMap(&rightSwitchDown);
+    drivers->commandMapper.addMap(&leftSwitchUp);
+}
+
+void initSubsystemCommands(tap::Drivers *drivers)
+{
+    initializeSubsystems();
+    registerStandardSubsystems(drivers);
+    setDefaultStandardCommands(drivers);
+    startStandardCommands(drivers);
+    registerStandardIoMappings(drivers);
+}
+
+}  // namespace control
+
+#endif
+#endif
