@@ -43,6 +43,10 @@
 /* control includes ---------------------------------------------------------*/
 #include "tap/architecture/clock.hpp"
 
+#include "control/robot_control.hpp"
+
+#include "led_test/led.hpp"
+
 /* define timers here -------------------------------------------------------*/
 tap::arch::PeriodicMilliTimer sendMotorTimeout(2);
 
@@ -54,6 +58,8 @@ static void initializeIo(src::Drivers *drivers);
 // very frequently. Use PeriodicMilliTimers if you don't want something to be
 // called as frequently.
 static void updateIo(src::Drivers *drivers);
+
+using namespace tap::gpio;
 
 int main()
 {
@@ -67,8 +73,11 @@ int main()
      *      IO states and run the scheduler.
      */
     src::Drivers *drivers = src::DoNotUse_getDrivers();
+
     Board::initialize();
     initializeIo(drivers);
+    control::initSubsystemCommands(drivers);
+    // led_test::init();
 
 #ifdef PLATFORM_HOSTED
     tap::motorsim::SimHandler::resetMotorSims();
@@ -87,7 +96,8 @@ int main()
             PROFILE(drivers->profiler, drivers->commandScheduler.run, ());
             PROFILE(drivers->profiler, drivers->djiMotorTxHandler.processCanSendData, ());
             PROFILE(drivers->profiler, drivers->terminalSerial.update, ());
-        }
+        } 
+        // led_test::ledOn();
         modm::delay_us(10);
     }
     return 0;

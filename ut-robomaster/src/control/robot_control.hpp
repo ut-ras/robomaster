@@ -3,8 +3,6 @@
 
 #include "tap/drivers.hpp"
 
-class tap::Drivers;
-
 namespace control
 {
 void initSubsystemCommands(tap::Drivers *drivers);

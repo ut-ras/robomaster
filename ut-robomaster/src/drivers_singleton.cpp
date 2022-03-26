@@ -24,7 +24,7 @@
 namespace src
 {
 /**
- * Class that allows one to construct a Drivers instance because of frienship
+ * Class that allows one to construct a Drivers instance because of friendship
  * with the Drivers class.
  */
 class DriversSingleton

@@ -5,6 +5,8 @@
 #include "tap/motor/dji_motor.hpp"
 #include "tap/util_macros.hpp"
 
+#include "tap/communication/gpio/leds.hpp"
+
 namespace control
 {
 namespace agitator
@@ -23,6 +25,7 @@ public:
               CAN_BUS_MOTORS,
               false,
               "agitator motor"),
+              drivers(drivers),
           agitatorMotorOutput(0.0f)
     {
     }    
@@ -35,6 +38,8 @@ public:
 
     void refresh() override;
 
+    void setLed();
+
     const tap::motor::DjiMotor &getAgitatorMotor() const {return agitatorMotor;} 
 
 private:
@@ -42,6 +47,8 @@ private:
     static constexpr tap::can::CanBus CAN_BUS_MOTORS = tap::can::CanBus::CAN_BUS1;
 
     tap::motor::DjiMotor agitatorMotor;
+    // Drivers 
+    tap::Drivers* drivers;
 
     uint16_t agitatorMotorOutput;
 };

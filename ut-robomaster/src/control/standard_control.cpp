@@ -17,6 +17,8 @@
 #include "flywheel/flywheel_subsystem.hpp"
 #include "flywheel/flywheel_on_command.hpp"
 
+#include "tap/communication/gpio/leds.hpp"
+
 using tap::Remote;
 using tap::control::CommandMapper;
 using namespace tap::control;
@@ -28,6 +30,7 @@ using namespace tap::control;
  *      Drivers class to all of these objects.
  */
 src::driversFunc drivers = src::DoNotUse_getDrivers;
+tap::gpio::Leds led;
 
 namespace standard_control
 {
@@ -87,6 +90,11 @@ void registerStandardIoMappings(tap::Drivers *drivers)
 
 void initSubsystemCommands(tap::Drivers *drivers)
 {
+    while (1)
+    {
+        led.set(tap::gpio::Leds::Green, true);
+    }
+
     initializeSubsystems();
     registerStandardSubsystems(drivers);
     setDefaultStandardCommands(drivers);

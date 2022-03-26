@@ -7,7 +7,7 @@ namespace control
 {
 namespace agitator
 {
-void AgitatorRotateCommand::initialize() { agitator->initialize(); }
+void AgitatorRotateCommand::initialize() { agitator->initialize(); agitator->setLed(); }
 
 void AgitatorRotateCommand::execute() { agitator->setDesiredOutput(1000.0f); }
 

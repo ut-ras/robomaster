@@ -160,7 +160,6 @@ void CommandScheduler::run()
 #ifndef PLATFORM_HOSTED
     uint32_t runStart = arch::clock::getTimeMicroseconds();
 #endif
-
     if (runningHardwareTests)
     {
         // Call runHardwareTests on all subsystems in the registeredSubsystemBitmap
@@ -179,7 +178,7 @@ void CommandScheduler::run()
 
     // Execute commands in the addedCommandBitmap, remove any that are finished
     for (auto it = cmdMapBegin(); it != cmdMapEnd(); it++)
-    {
+    {        
         (*it)->execute();
         if ((*it)->isFinished())
         {
