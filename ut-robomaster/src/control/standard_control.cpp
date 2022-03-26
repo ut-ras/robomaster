@@ -32,7 +32,7 @@ using namespace tap::control;
 src::driversFunc drivers = src::DoNotUse_getDrivers;
 tap::gpio::Leds led;
 
-namespace standard_control
+namespace control
 {
 /* define subsystems --------------------------------------------------------*/
 control::agitator::AgitatorSubsystem theAgitator(drivers());
@@ -90,11 +90,6 @@ void registerStandardIoMappings(tap::Drivers *drivers)
 
 void initSubsystemCommands(tap::Drivers *drivers)
 {
-    while (1)
-    {
-        led.set(tap::gpio::Leds::Green, true);
-    }
-
     initializeSubsystems();
     registerStandardSubsystems(drivers);
     setDefaultStandardCommands(drivers);

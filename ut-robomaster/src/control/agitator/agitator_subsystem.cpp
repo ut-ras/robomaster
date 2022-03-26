@@ -11,8 +11,9 @@ namespace control
 namespace agitator
 {
 void AgitatorSubsystem::initialize() { 
-    drivers->leds.set(tap::gpio::Leds::Green, true);
+    
     agitatorMotor.initialize();
+    // drivers->leds.set(tap::gpio::Leds::Red, true);
 }
 
 void AgitatorSubsystem::refresh() {}
@@ -22,12 +23,5 @@ void AgitatorSubsystem::setDesiredOutput(float output)
     agitatorMotor.setDesiredOutput(output);
 }
 
-void AgitatorSubsystem::setLed()
-{
-    while (1)
-    {
-        drivers->leds.set(tap::gpio::Leds::Green, true);
-    }
-}
 }
 }

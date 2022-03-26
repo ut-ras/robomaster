@@ -3,6 +3,8 @@
 #include "tap/control/command.hpp"
 
 #include "agitator_subsystem.hpp"
+
+#include "tap/communication/gpio/leds.hpp"
 namespace control
 {
 namespace agitator

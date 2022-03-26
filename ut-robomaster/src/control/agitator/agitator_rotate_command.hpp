@@ -3,17 +3,19 @@
 
 #include "tap/control/command.hpp"
 
+#include "agitator_subsystem.hpp"
+
 namespace control
 {
 namespace agitator
 {
-class AgitatorSubsystem;
 class AgitatorRotateCommand : public tap::control::Command
 {
 public:
     AgitatorRotateCommand(AgitatorSubsystem *sub)
         : agitator(sub)
     {
+        addSubsystemRequirement(sub);
     }
 
     void initialize() override;

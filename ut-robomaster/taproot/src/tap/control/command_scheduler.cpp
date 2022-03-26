@@ -28,6 +28,8 @@
 #include "command.hpp"
 #include "subsystem.hpp"
 
+#include "tap/communication/gpio/leds.hpp"
+
 using namespace tap::errors;
 
 namespace tap
@@ -39,6 +41,7 @@ Subsystem *CommandScheduler::globalSubsystemRegistrar[CommandScheduler::MAX_SUBS
 Command *CommandScheduler::globalCommandRegistrar[CommandScheduler::MAX_COMMAND_COUNT];
 int CommandScheduler::maxSubsystemIndex = 0;
 int CommandScheduler::maxCommandIndex = 0;
+tap::gpio::Leds led;
 
 int CommandScheduler::constructCommand(Command *command)
 {
@@ -262,6 +265,7 @@ void CommandScheduler::addCommand(Command *commandToAdd)
     // Add the subsystem requirements to the subsystems associated with command bitmap
     subsystemsAssociatedWithCommandBitmap |= requirementsBitwise;
     commandToAdd->initialize();
+    led.set(tap::gpio::Leds::Blue, true);
     // Add the command to the command bitmap
     addedCommandBitmap |= (1UL << commandToAdd->getGlobalIdentifier());
 }

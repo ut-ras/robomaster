@@ -3,17 +3,19 @@
 
 #include "tap/control/command.hpp"
 
+#include "flywheel_subsystem.hpp"
+
 namespace control
 {
 namespace flywheel
 {
-class FlywheelSubsystem;
 class FlywheelOnCommand : public tap::control::Command
 {
 public:
     FlywheelOnCommand(FlywheelSubsystem *sub)
         : flywheel(sub)
     {
+        addSubsystemRequirement(sub);
     }
 
     void initialize() override;

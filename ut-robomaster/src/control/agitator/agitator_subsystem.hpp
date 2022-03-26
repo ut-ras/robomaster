@@ -38,7 +38,7 @@ public:
 
     void refresh() override;
 
-    void setLed();
+    void checkRegistered();
 
     const tap::motor::DjiMotor &getAgitatorMotor() const {return agitatorMotor;} 
 
