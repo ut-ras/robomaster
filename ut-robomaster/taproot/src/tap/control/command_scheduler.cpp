@@ -28,8 +28,6 @@
 #include "command.hpp"
 #include "subsystem.hpp"
 
-#include "tap/communication/gpio/leds.hpp"
-
 using namespace tap::errors;
 
 namespace tap
@@ -41,7 +39,6 @@ Subsystem *CommandScheduler::globalSubsystemRegistrar[CommandScheduler::MAX_SUBS
 Command *CommandScheduler::globalCommandRegistrar[CommandScheduler::MAX_COMMAND_COUNT];
 int CommandScheduler::maxSubsystemIndex = 0;
 int CommandScheduler::maxCommandIndex = 0;
-tap::gpio::Leds led;
 
 int CommandScheduler::constructCommand(Command *command)
 {
@@ -163,6 +160,7 @@ void CommandScheduler::run()
 #ifndef PLATFORM_HOSTED
     uint32_t runStart = arch::clock::getTimeMicroseconds();
 #endif
+
     if (runningHardwareTests)
     {
         // Call runHardwareTests on all subsystems in the registeredSubsystemBitmap
@@ -181,7 +179,7 @@ void CommandScheduler::run()
 
     // Execute commands in the addedCommandBitmap, remove any that are finished
     for (auto it = cmdMapBegin(); it != cmdMapEnd(); it++)
-    {        
+    {
         (*it)->execute();
         if ((*it)->isFinished())
         {
@@ -265,7 +263,6 @@ void CommandScheduler::addCommand(Command *commandToAdd)
     // Add the subsystem requirements to the subsystems associated with command bitmap
     subsystemsAssociatedWithCommandBitmap |= requirementsBitwise;
     commandToAdd->initialize();
-    led.set(tap::gpio::Leds::Blue, true);
     // Add the command to the command bitmap
     addedCommandBitmap |= (1UL << commandToAdd->getGlobalIdentifier());
 }

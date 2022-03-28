@@ -8,7 +8,7 @@ make: *** No rule to make target 'all'.  Stop.
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Fri Mar 25 18:38:34 2022
+# Make data base, printed on Mon Mar 28 16:16:12 2022
 
 # Variables
 
@@ -23,7 +23,7 @@ USERPROFILE = C:\Users\eddie
 # environment
 LOCALAPPDATA = C:\Users\eddie\AppData\Local
 # environment
-VSCODE_IPC_HOOK_EXTHOST = \\.\pipe\vscode-ipc-5fb76072-b139-4caa-b28e-e7ce04ae23df-sock
+VSCODE_IPC_HOOK_EXTHOST = \\.\pipe\vscode-ipc-c83b1f0d-d72b-40f9-8a65-4025735d802b-sock
 # environment
 VSCODE_CWD = C:\Users\eddie\AppData\Local\Programs\Microsoft VS Code
 # environment
@@ -39,7 +39,7 @@ MAKE_COMMAND := C:/ProgramData/chocolatey/lib/make/tools/install/bin/make.exe
 # automatic
 @D = $(patsubst %/,%,$(patsubst %\,%,$(dir $@)))
 # environment
-CHROME_CRASHPAD_PIPE_NAME = \\.\pipe\crashpad_4936_MBANXUVKWUWZXQUP
+CHROME_CRASHPAD_PIPE_NAME = \\.\pipe\crashpad_14804_TRGHQMJWVMWNZVCX
 # environment
 ONEDRIVECOMMERCIAL = C:\Users\eddie\OneDrive - The University of Texas at Austin
 # environment
@@ -101,7 +101,7 @@ MAKEFILE_LIST := C:\Users\eddie\Code\312H\Assignments\Project1_starter_files\Mak
 # environment
 VSCODE_VERBOSE_LOGGING = true
 # environment
-VSCODE_PID = 4936
+VSCODE_PID = 14804
 # automatic
 ?D = $(patsubst %/,%,$(patsubst %\,%,$(dir $?)))
 # environment
@@ -244,8 +244,7 @@ PROCESSOR_IDENTIFIER = AMD64 Family 23 Model 104 Stepping 1, AuthenticAMD
 
 # No files, no impossibilities in 0 directories.
 
-#  
-Implicit Rules
+# Implicit Rules
 
 # No implicit rules.
 
@@ -324,6 +323,6 @@ proj1: Project1.cpp main.cpp
 # strcache performance: lookups = 20 / hit rate = 45%
 # hash-table stats:
 # Load=11/8192=0%, Rehash=0, Collisions=0/20=0%
-# Finished Make data base on Fri Mar 25 18:38:34 2022
+# Finished Make data base on Mon Mar 28 16:16:12 2022
 
  

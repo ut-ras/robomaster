@@ -20,8 +20,7 @@ public:
               FLYWHEEL_MOTOR_PIN,
               MAX_SNAIL_OUTPUT,
               MIN_SNAIL_OUTPUT,
-              0.5f),
-          flywheelMotorOutput(0)
+              1.0f)
     {
     }    
 
@@ -42,8 +41,6 @@ private:
 
     static constexpr float MAX_SNAIL_OUTPUT = 1.0f;
     static constexpr float MIN_SNAIL_OUTPUT = 0.0f;
-
-    uint16_t flywheelMotorOutput;
 };
 }
 }

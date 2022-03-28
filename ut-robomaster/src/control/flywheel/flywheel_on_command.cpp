@@ -3,13 +3,16 @@
 #include "tap/control/command.hpp"
 
 #include "flywheel_subsystem.hpp"
+
+#include "tap/communication/gpio/leds.hpp"
 namespace control
 {
 namespace flywheel
 {
-void FlywheelOnCommand::initialize() {}
+void FlywheelOnCommand::initialize() {
+}
 
-void FlywheelOnCommand::execute() { flywheel->setDesiredOutput(0.8f); }
+void FlywheelOnCommand::execute() { flywheel->setDesiredOutput(1.0f); tap::gpio::Leds led; led.set(tap::gpio::Leds::Green, true); }
 
 void FlywheelOnCommand::end(bool) { flywheel->setDesiredOutput(0.0f); }
 

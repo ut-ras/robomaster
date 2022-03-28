@@ -13,7 +13,6 @@ namespace agitator
 void AgitatorSubsystem::initialize() { 
     
     agitatorMotor.initialize();
-    // drivers->leds.set(tap::gpio::Leds::Red, true);
 }
 
 void AgitatorSubsystem::refresh() {}

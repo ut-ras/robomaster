@@ -8,13 +8,13 @@ namespace control
 {
 namespace flywheel
 {
-void FlywheelSubsystem::initialize() {}
+void FlywheelSubsystem::initialize() { flywheelMotor.setTargetPwm(1.0f); }
 
 void FlywheelSubsystem::refresh() {}
 
 void FlywheelSubsystem::setDesiredOutput(float output)
 {
-    flywheelMotor.setTargetPwm(output);
+    flywheelMotor.updateSendPwmRamp();
 }
 }
 }

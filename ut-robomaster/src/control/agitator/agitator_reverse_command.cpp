@@ -9,9 +9,9 @@ namespace control
 {
 namespace agitator
 {
-void AgitatorReverseCommand::initialize() { agitator->initialize(); }
+void AgitatorReverseCommand::initialize() {}
 
-void AgitatorReverseCommand::execute() { agitator->setDesiredOutput(-1000.0f); }
+void AgitatorReverseCommand::execute() { agitator->setDesiredOutput(-700.0f); }
 
 void AgitatorReverseCommand::end(bool) { agitator->setDesiredOutput(0.0f); }
 

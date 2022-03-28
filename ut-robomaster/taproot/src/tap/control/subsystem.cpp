@@ -21,8 +21,6 @@
 
 #include "command_scheduler.hpp"
 
-#include "tap/communication/gpio/leds.hpp"
-
 namespace tap
 {
 namespace control

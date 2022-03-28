@@ -7,6 +7,8 @@
 
 #include "tap/control/command_mapper.hpp"
 #include "tap/control/hold_repeat_command_mapping.hpp"
+#include "tap/control/hold_command_mapping.hpp"
+#include "tap/control/press_command_mapping.hpp"
 #include "tap/drivers.hpp"
 
 
