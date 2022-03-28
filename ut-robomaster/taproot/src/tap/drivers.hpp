@@ -17,8 +17,8 @@
  * along with Taproot.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#ifndef TAP_DRIVERS_HPP_
-#define TAP_DRIVERS_HPP_
+#ifndef TAPROOT_DRIVERS_HPP_
+#define TAPROOT_DRIVERS_HPP_
 
 #if defined(PLATFORM_HOSTED) && defined(ENV_UNIT_TESTS)
 #include "tap/architecture/profiler.hpp"
@@ -26,7 +26,6 @@
 #include "tap/mock/can_mock.hpp"
 #include "tap/mock/can_rx_handler_mock.hpp"
 #include "tap/mock/command_mapper_mock.hpp"
-#include "tap/mock/control_operator_interface_mock.hpp"
 #include "tap/mock/digital_mock.hpp"
 #include "tap/mock/dji_motor_terminal_serial_handler_mock.hpp"
 #include "tap/mock/dji_motor_tx_handler_mock.hpp"
@@ -52,7 +51,6 @@
 #include "tap/communication/serial/terminal_serial.hpp"
 #include "tap/communication/serial/uart.hpp"
 #include "tap/control/command_mapper.hpp"
-#include "tap/control/control_operator_interface.hpp"
 #include "tap/control/scheduler_terminal_handler.hpp"
 #include "tap/errors/error_controller.hpp"
 #include "tap/motor/dji_motor_terminal_serial_handler.hpp"
@@ -72,7 +70,7 @@ public:
 protected:
 #endif
     Drivers()
-        : profiler(),
+        : profiler(this),
           analog(),
           can(),
           canRxHandler(this),
@@ -84,7 +82,6 @@ protected:
           uart(),
           terminalSerial(this),
           commandMapper(this),
-          controlOperatorInterface(this),
           schedulerTerminalHandler(this),
           errorController(this),
           djiMotorTerminalSerialHandler(this),
@@ -109,7 +106,6 @@ protected:
     testing::NiceMock<mock::UartMock> uart;
     testing::NiceMock<mock::TerminalSerialMock> terminalSerial;
     testing::NiceMock<mock::CommandMapperMock> commandMapper;
-    testing::NiceMock<mock::ControlOperatorInterfaceMock> controlOperatorInterface;
     testing::NiceMock<mock::SchedulerTerminalHandlerMock> schedulerTerminalHandler;
     testing::StrictMock<mock::ErrorControllerMock> errorController;
     testing::NiceMock<mock::DjiMotorTerminalSerialHandlerMock> djiMotorTerminalSerialHandler;
@@ -124,12 +120,11 @@ public:
     gpio::Digital digital;
     gpio::Leds leds;
     gpio::Pwm pwm;
-    serial::RefSerial refSerial;
-    Remote remote;
-    serial::Uart uart;
+    communication::serial::RefSerial refSerial;
+    communication::serial::Remote remote;
+    communication::serial::Uart uart;
     communication::serial::TerminalSerial terminalSerial;
     control::CommandMapper commandMapper;
-    control::ControlOperatorInterface controlOperatorInterface;
     control::SchedulerTerminalHandler schedulerTerminalHandler;
     errors::ErrorController errorController;
     motor::DjiMotorTerminalSerialHandler djiMotorTerminalSerialHandler;
@@ -140,4 +135,4 @@ public:
 
 }  // namespace tap
 
-#endif  // TAP_DRIVERS_HPP_
+#endif  // TAPROOT_DRIVERS_HPP_
