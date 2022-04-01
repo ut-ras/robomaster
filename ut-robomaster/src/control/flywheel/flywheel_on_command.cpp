@@ -9,12 +9,11 @@ namespace control
 {
 namespace flywheel
 {
-void FlywheelOnCommand::initialize() {
-}
+void FlywheelOnCommand::initialize() {}
 
-void FlywheelOnCommand::execute() { flywheel->setDesiredOutput(1.0f); tap::gpio::Leds led; led.set(tap::gpio::Leds::Green, true); }
+void FlywheelOnCommand::execute() { flywheel->setDesiredOutput(0.15f); }
 
-void FlywheelOnCommand::end(bool) { flywheel->setDesiredOutput(0.0f); }
+void FlywheelOnCommand::end(bool) { flywheel->setDesiredOutput(0.1f); }
 
 bool FlywheelOnCommand::isFinished() const { return false; }
 }  // namespace flywheel

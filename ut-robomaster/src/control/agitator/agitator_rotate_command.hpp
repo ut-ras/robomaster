@@ -30,7 +30,6 @@ public:
 
 private:
     AgitatorSubsystem *agitator;
-
 };  // class AgitatorRotateCommand
 }  // namespace agitator
 }  // namespace control

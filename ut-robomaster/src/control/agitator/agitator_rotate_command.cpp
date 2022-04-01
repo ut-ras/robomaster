@@ -9,9 +9,9 @@ namespace agitator
 {
 void AgitatorRotateCommand::initialize() {}
 
-void AgitatorRotateCommand::execute() { agitator->setDesiredOutput(700.0f); }
+void AgitatorRotateCommand::execute() { agitator->setDesiredRPM(1800); }
 
-void AgitatorRotateCommand::end(bool) { agitator->setDesiredOutput(0.0f); }
+void AgitatorRotateCommand::end(bool) { agitator->setDesiredRPM(0); }
 
 bool AgitatorRotateCommand::isFinished() const { return false; }
 }  // namespace agitator

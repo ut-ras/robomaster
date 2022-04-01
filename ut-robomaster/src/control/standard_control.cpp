@@ -21,9 +21,9 @@
 
 #include "tap/communication/gpio/leds.hpp"
 
-using tap::Remote;
-using tap::control::CommandMapper;
 using namespace tap::control;
+using namespace control;
+using namespace tap::communication::serial;
 
 /*
  * NOTE: We are using the DoNotUse_getDrivers() function here
@@ -34,7 +34,7 @@ using namespace tap::control;
 src::driversFunc drivers = src::DoNotUse_getDrivers;
 tap::gpio::Leds led;
 
-namespace control
+namespace standard_control
 {
 /* define subsystems --------------------------------------------------------*/
 control::agitator::AgitatorSubsystem theAgitator(drivers());
@@ -46,20 +46,20 @@ control::agitator::AgitatorReverseCommand reverseCommand(&theAgitator);
 control::flywheel::FlywheelOnCommand flywheelCommand(&theFlywheel);
 
 /* define command mappings --------------------------------------------------*/
-tap::control::HoldRepeatCommandMapping rightSwitchUp(
+HoldRepeatCommandMapping rightSwitchUp(
     drivers(),
     {&rotateCommand},
-    RemoteMapState(Remote::Switch::RIGHT_SWITCH, Remote::SwitchState::UP));
+    RemoteMapState(Remote::Switch::RIGHT_SWITCH,Remote::SwitchState::UP), true, -1);
 
-tap::control::HoldRepeatCommandMapping rightSwitchDown(
+HoldRepeatCommandMapping rightSwitchDown(
     drivers(),
     {&reverseCommand},
-    RemoteMapState(Remote::Switch::RIGHT_SWITCH, Remote::SwitchState::DOWN));
+    RemoteMapState(Remote::Switch::RIGHT_SWITCH, Remote::SwitchState::DOWN), true, -1);
 
-tap::control::HoldRepeatCommandMapping leftSwitchUp(
+HoldRepeatCommandMapping leftSwitchUp(
     drivers(),
     {&flywheelCommand},
-    RemoteMapState(Remote::Switch::LEFT_SWITCH, Remote::SwitchState::UP));
+    RemoteMapState(Remote::Switch::LEFT_SWITCH, Remote::SwitchState::UP), true, -1);
 
 
 
@@ -89,17 +89,19 @@ void registerStandardIoMappings(tap::Drivers *drivers)
     drivers->commandMapper.addMap(&rightSwitchDown);
     drivers->commandMapper.addMap(&leftSwitchUp);
 }
+} // namespace standard_control
 
-void initSubsystemCommands(tap::Drivers *drivers)
+namespace control
 {
-    initializeSubsystems();
-    registerStandardSubsystems(drivers);
-    setDefaultStandardCommands(drivers);
-    startStandardCommands(drivers);
-    registerStandardIoMappings(drivers);
+    void initSubsystemCommands(tap::Drivers *drivers)
+    {
+        standard_control::initializeSubsystems();
+        standard_control::registerStandardSubsystems(drivers);
+        standard_control::setDefaultStandardCommands(drivers);
+        standard_control::startStandardCommands(drivers);
+        standard_control::registerStandardIoMappings(drivers);
+    }
 }
-
-}  // namespace control
 
 #endif
 #endif

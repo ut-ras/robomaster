@@ -4,6 +4,7 @@
 #include "tap/control/subsystem.hpp"
 #include "tap/motor/dji_motor.hpp"
 #include "tap/util_macros.hpp"
+#include "tap/algorithms/smooth_pid.hpp"
 
 #include "tap/communication/gpio/leds.hpp"
 
@@ -17,24 +18,13 @@ class AgitatorSubsystem : public tap::control::Subsystem
 public:
     static constexpr float MAX_CURRENT_OUTPUT = 8000.0f;
 
-    AgitatorSubsystem(tap::Drivers *drivers)
-        : tap::control::Subsystem(drivers),
-          agitatorMotor(
-              drivers,
-              AGITATOR_MOTOR_ID,
-              CAN_BUS_MOTORS,
-              false,
-              "agitator motor"),
-              drivers(drivers),
-          agitatorMotorOutput(0.0f)
-    {
-    }    
+    AgitatorSubsystem(tap::Drivers *drivers);
 
     ~AgitatorSubsystem() = default;
 
     void initialize() override;
 
-    void setDesiredOutput(float output);
+    void setDesiredRPM(int output);
 
     void refresh() override;
 
@@ -49,6 +39,8 @@ private:
     tap::motor::DjiMotor agitatorMotor;
     // Drivers 
     tap::Drivers* drivers;
+
+    tap::algorithms::SmoothPid agitatorPidController;
 
     uint16_t agitatorMotorOutput;
 };
