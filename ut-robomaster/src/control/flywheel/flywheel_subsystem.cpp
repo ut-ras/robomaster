@@ -15,7 +15,7 @@ FlywheelSubsystem::FlywheelSubsystem(tap::Drivers *drivers)
         }
         
 void FlywheelSubsystem::initialize() { 
-    drivers->pwm.write(0.1f, FLYWHEEL_MOTOR_PIN); }
+    drivers->pwm.write(0.25f, FLYWHEEL_MOTOR_PIN); }
 
 void FlywheelSubsystem::refresh() {}
 

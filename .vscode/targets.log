@@ -8,7 +8,7 @@ make: *** No rule to make target 'all'.  Stop.
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Fri Apr 01 17:55:48 2022
+# Make data base, printed on Fri Apr 01 18:25:34 2022
 
 # Variables
 
@@ -23,7 +23,7 @@ USERPROFILE = C:\Users\eddie
 # environment
 LOCALAPPDATA = C:\Users\eddie\AppData\Local
 # environment
-VSCODE_IPC_HOOK_EXTHOST = \\.\pipe\vscode-ipc-0c30db96-0bee-4f46-a776-67fee7151499-sock
+VSCODE_IPC_HOOK_EXTHOST = \\.\pipe\vscode-ipc-24896b15-53b6-4012-9239-5587daf0631c-sock
 # environment
 VSCODE_CWD = C:\Users\eddie\AppData\Local\Programs\Microsoft VS Code
 # environment
@@ -39,7 +39,7 @@ MAKE_COMMAND := C:/ProgramData/chocolatey/lib/make/tools/install/bin/make.exe
 # automatic
 @D = $(patsubst %/,%,$(patsubst %\,%,$(dir $@)))
 # environment
-CHROME_CRASHPAD_PIPE_NAME = \\.\pipe\crashpad_2292_ABYHYXAQNHXTCYYG
+CHROME_CRASHPAD_PIPE_NAME = \\.\pipe\crashpad_14500_ZDYBCYLNMIUTFOBA
 # environment
 ONEDRIVECOMMERCIAL = C:\Users\eddie\OneDrive - The University of Texas at Austin
 # environment
@@ -101,7 +101,7 @@ MAKEFILE_LIST := C:\Users\eddie\Code\312H\Assignments\Project1_starter_files\Mak
 # environment
 VSCODE_VERBOSE_LOGGING = true
 # environment
-VSCODE_PID = 2292
+VSCODE_PID = 14500
 # automatic
 ?D = $(patsubst %/,%,$(patsubst %\,%,$(dir $?)))
 # environment
@@ -323,6 +323,6 @@ proj1: Project1.cpp main.cpp
 # strcache performance: lookups = 20 / hit rate = 45%
 # hash-table stats:
 # Load=11/8192=0%, Rehash=0, Collisions=0/20=0%
-# Finished Make data base on Fri Apr 01 17:55:48 2022
+# Finished Make data base on Fri Apr 01 18:25:34 2022
 
  

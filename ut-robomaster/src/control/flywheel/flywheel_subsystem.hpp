@@ -26,8 +26,8 @@ public:
 
 private:
     static constexpr tap::gpio::Pwm::Pin FLYWHEEL_MOTOR_PIN = tap::gpio::Pwm::C1;
-    static constexpr float MAX_SNAIL_OUTPUT = 1.0f;
-    static constexpr float MIN_SNAIL_OUTPUT = 0.0f;
+    static constexpr float MAX_SNAIL_OUTPUT = 0.50f;    // max pwm input value
+    static constexpr float MIN_SNAIL_OUTPUT = 0.25f;    // min pwm input value
 
     tap::Drivers *drivers;
 };
