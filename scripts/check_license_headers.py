@@ -1,30 +1,31 @@
 #!/usr/bin/python3
 #
-# Copyright (c) 2020-2021 UT Robomaster
+# Copyright (c) 2021-2022 UT Robomaster
 #
-# This file is part of template-project.
+# This file is part of ut-robomaster.
 #
-# template-project is free software: you can redistribute it and/or modify
+# ut-robomaster is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
 #
-# template-project is distributed in the hope that it will be useful,
+# ut-robomaster is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with template-project.  If not, see <https://www.gnu.org/licenses/>.
+# along with ut-robomaster.  If not, see <https://www.gnu.org/licenses/>.
 
 import os
 import sys
 
 SCRIPT_DIR = os.path.dirname(__file__)
 # These should be relative to the directory that this script is housed in.
-PATHS_TO_CHECK = [ '../template-project/src/',
-                   '../template-project/test/' ]
-FILES_TO_IGNORE = [ '../template-project/src/drivers.hpp' ]
+PATHS_TO_CHECK = [ '../ut-robomaster/src/',
+                   '../ut-robomaster/test/' ]
+# FILES_TO_IGNORE = [ '../ut-robomaster/src/drivers.hpp' ]
+FILES_TO_IGNORE = []
 
 PATHS_TO_CHECK = [ os.path.join(SCRIPT_DIR, path) for path in PATHS_TO_CHECK ]
 FILES_TO_IGNORE = [ os.path.join(SCRIPT_DIR, path) for path in FILES_TO_IGNORE ]
@@ -34,22 +35,22 @@ options:\n\
     --update Adds licenses to files that don't have a license header (optional)"
 LICENSED_SOURCE_FILE_EXTENSIONS = ['.cpp', '.hpp', '.h']
 LICENSE_HEADER = '/*\n\
- * Copyright (c) 2020-2021 UT Robomaster\n\
+ * Copyright (c) 2021-2022 UT Robomaster\n\
  *\n\
- * This file is part of template-project.\n\
+ * This file is part of ut-robomaster.\n\
  *\n\
- * template-project is free software: you can redistribute it and/or modify\n\
+ * ut-robomaster is free software: you can redistribute it and/or modify\n\
  * it under the terms of the GNU General Public License as published by\n\
  * the Free Software Foundation, either version 3 of the License, or\n\
  * (at your option) any later version.\n\
  *\n\
- * template-project is distributed in the hope that it will be useful,\n\
+ * ut-robomaster is distributed in the hope that it will be useful,\n\
  * but WITHOUT ANY WARRANTY; without even the implied warranty of\n\
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n\
  * GNU General Public License for more details.\n\
  *\n\
  * You should have received a copy of the GNU General Public License\n\
- * along with template-project.  If not, see <https://www.gnu.org/licenses/>.\n\
+ * along with ut-robomaster.  If not, see <https://www.gnu.org/licenses/>.\n\
  */\n'
 
 if len(sys.argv) not in [ 1, 2 ]:

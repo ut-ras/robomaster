@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2021 UT Robomaster
+ * Copyright (c) 2021-2022 UT Robomaster
  *
  * This file is part of ut-robomaster.
  *
@@ -43,6 +43,8 @@
 /* control includes ---------------------------------------------------------*/
 #include "tap/architecture/clock.hpp"
 
+#include "control/robot_control.hpp"
+
 #include "led_test/led.hpp"
 
 /* define timers here -------------------------------------------------------*/
@@ -57,6 +59,8 @@ static void initializeIo(src::Drivers *drivers);
 // called as frequently.
 static void updateIo(src::Drivers *drivers);
 
+using namespace tap::gpio;
+
 int main()
 {
 #ifdef PLATFORM_HOSTED
@@ -69,10 +73,11 @@ int main()
      *      IO states and run the scheduler.
      */
     src::Drivers *drivers = src::DoNotUse_getDrivers();
+
     Board::initialize();
-    led_test::init();
-    led_test::ledOn();
     initializeIo(drivers);
+    control::initSubsystemCommands(drivers);
+    // led_test::init();
 
 #ifdef PLATFORM_HOSTED
     tap::motorsim::SimHandler::resetMotorSims();
@@ -91,7 +96,8 @@ int main()
             PROFILE(drivers->profiler, drivers->commandScheduler.run, ());
             PROFILE(drivers->profiler, drivers->djiMotorTxHandler.processCanSendData, ());
             PROFILE(drivers->profiler, drivers->terminalSerial.update, ());
-        }
+        } 
+        // led_test::ledOn();
         modm::delay_us(10);
     }
     return 0;

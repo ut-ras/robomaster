@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2021 Advanced Robotics at the University of Washington <robomstr@uw.edu>
+ * Copyright (c) 2021-2022 UT Robomaster
  *
  * This file is part of ut-robomaster.
  *
@@ -14,7 +14,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with ut-robomaster.  If not, see <https://www.gnu.org/licenses/>.
+ * along with template-project.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #ifndef MY_FIRST_FILE_HPP_

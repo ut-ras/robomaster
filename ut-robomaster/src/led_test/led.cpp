@@ -14,11 +14,7 @@ void led_test::init()
 }
 
 void led_test::ledOn(){
-    while (1)
-    {
-        test.set(Leds::LedPin::Green, true);
-    }
+    test.set(Leds::LedPin::Green, true);
 }
 
 //testing pull requests
-

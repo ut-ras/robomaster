@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2021 Advanced Robotics at the University of Washington <robomstr@uw.edu>
+ * Copyright (c) 2021-2022 UT Robomaster
  *
  * This file is part of ut-robomaster.
  *
@@ -24,7 +24,7 @@
 namespace src
 {
 /**
- * Class that allows one to construct a Drivers instance because of frienship
+ * Class that allows one to construct a Drivers instance because of friendship
  * with the Drivers class.
  */
 class DriversSingleton

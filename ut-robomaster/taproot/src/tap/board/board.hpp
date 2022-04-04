@@ -30,8 +30,8 @@
  */
 // ----------------------------------------------------------------------------
 
-#ifndef BOARD_HPP_
-#define BOARD_HPP_
+#ifndef TAPROOT_BOARD_HPP_
+#define TAPROOT_BOARD_HPP_
 
 #ifndef PLATFORM_HOSTED
 #include "modm/architecture/interface/clock.hpp"
@@ -123,10 +123,6 @@ struct SystemClock
 
 #ifndef PLATFORM_HOSTED
 
-// Initialize button
-
-using Button = GpioInputA0;
-
 // Initialize leds
 
 using LedRed = GpioOutputH12;
@@ -191,4 +187,4 @@ inline void initialize()
 
 }  // namespace Board
 
-#endif  // BOARD_HPP_
+#endif  // TAPROOT_BOARD_HPP_
