@@ -13,7 +13,7 @@ namespace agitator
 AgitatorSubsystem::AgitatorSubsystem(tap::Drivers* drivers)
     :   tap::control::Subsystem(drivers),
         agitatorMotorOutput(0.0f),
-        agitatorPidController(100, 0, 0, 0, 8000, 1, 0, 1, 0),
+        agitatorPidController(0.5, 0, 0, 0, 8000, 1, 0, 1, 0),
         agitatorMotor(
             drivers,
             AGITATOR_MOTOR_ID,
