@@ -22,7 +22,7 @@ void ChassisDriveCommand::initialize() {}
 
 void ChassisDriveCommand::execute() 
 { 
-    float x = drivers->remote.getChannel(Remote::Channel::LEFT_HORIZONTAL) * 1.1;
+    float x = drivers->remote.getChannel(Remote::Channel::LEFT_HORIZONTAL);
     float y = -(drivers->remote.getChannel(Remote::Channel::LEFT_VERTICAL));
     float r = drivers->remote.getChannel(Remote::Channel::RIGHT_HORIZONTAL);
 
