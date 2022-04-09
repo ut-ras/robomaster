@@ -1,6 +1,7 @@
 #include "chassis_drive_command.hpp"
 #include "tap/control/command.hpp"
 #include "tap/drivers.hpp"
+#include <math.h>
 
 #include "chassis_subsystem.hpp"
 
@@ -27,7 +28,7 @@ void ChassisDriveCommand::execute()
     float y = -(drivers->remote.getChannel(Remote::Channel::LEFT_VERTICAL));
     float r = drivers->remote.getChannel(Remote::Channel::RIGHT_HORIZONTAL);
 
-    if (x > POSDEADZONE || y > POSDEADZONE || r > POSDEADZONE || x < NEGDEADZONE || y < NEGDEADZONE || r < NEGDEADZONE){
+    if (fabs(x) > POSDEADZONE || fabs(y) > POSDEADZONE || fabs(r) > POSDEADZONE){
         chassis->setDesiredOutput(x, y, r);
     } else{
         chassis->setDesiredOutput(0, 0, 0);
