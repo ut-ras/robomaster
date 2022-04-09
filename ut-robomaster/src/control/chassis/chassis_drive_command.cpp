@@ -4,7 +4,8 @@
 
 #include "chassis_subsystem.hpp"
 
-
+#define POSDEADZONE 0.2
+#define NEGDEADZONE -0.2
 using namespace tap::communication::serial;
 
 namespace control
@@ -25,6 +26,12 @@ void ChassisDriveCommand::execute()
     float x = drivers->remote.getChannel(Remote::Channel::LEFT_HORIZONTAL) * 1.1;
     float y = -(drivers->remote.getChannel(Remote::Channel::LEFT_VERTICAL));
     float r = drivers->remote.getChannel(Remote::Channel::RIGHT_HORIZONTAL);
+
+    if (x > POSDEADZONE || y > POSDEADZONE || r > POSDEADZONE || x < NEGDEADZONE || y < NEGDEADZONE || r < NEGDEADZONE){
+        chassis->setDesiredOutput(x, y, r);
+    } else{
+        chassis->setDesiredOutput(0, 0, 0);
+    }
 
     chassis->setDesiredOutput(x, y, r);
 }

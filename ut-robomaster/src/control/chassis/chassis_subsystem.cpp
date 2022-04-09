@@ -64,8 +64,8 @@ void ChassisSubsystem::setDesiredOutput(float x, float y, float r)
     float max = modm::max(std::abs(sin), std::abs(cos));
 
     desiredWheelRPM[0] = power * sin/max - r;   // right front wheel
-    desiredWheelRPM[1] = power * cos/max + r;   // left front wheel
-    desiredWheelRPM[2] = power * sin/max + r;   // left back wheel
+    desiredWheelRPM[1] = -power * cos/max + r;   // left front wheel
+    desiredWheelRPM[2] = -power * sin/max + r;   // left back wheel
     desiredWheelRPM[3] = power * cos/max - r;   // right back wheel
 
     if ((power + abs(r)) > 1)
