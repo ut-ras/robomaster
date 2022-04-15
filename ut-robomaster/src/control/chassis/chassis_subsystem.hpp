@@ -59,13 +59,13 @@ public:
               drivers,
               LEFT_FRONT_MOTOR_ID,
               CAN_BUS_MOTORS,
-              false,
+              true,
               "left front drive motor"),
           leftBackMotor(
               drivers,
               LEFT_BACK_MOTOR_ID,
               CAN_BUS_MOTORS,
-              false,
+              true,
               "left back drive motor"),
           rightFrontMotor(
               drivers,
@@ -108,6 +108,8 @@ public:
     const tap::motor::DjiMotor &getRightBackMotor() const { return rightBackMotor; }
 
 private:
+    tap::Drivers *drivers;
+    
     ///< Hardware constants, not specific to any particular chassis.
     static constexpr tap::motor::MotorId RIGHT_FRONT_MOTOR_ID = tap::motor::MOTOR1;
     static constexpr tap::motor::MotorId LEFT_FRONT_MOTOR_ID = tap::motor::MOTOR2;
@@ -125,8 +127,6 @@ private:
     float maxRPM = 4000;
     modm::Vector<float, 2> vector;
     modm::Pid<float> pid;
-
-    tap::Drivers *drivers;
 };  // class ChassisSubsystem
 
 }  // namespace chassis

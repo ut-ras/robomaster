@@ -27,8 +27,8 @@ public:
     const char *getName() const override { return "chassis rotate command"; }
 
 private:
-    ChassisSubsystem *chassis;
     tap::Drivers *drivers;
+    ChassisSubsystem *chassis;
 };  // class ChassisDriveCommand
 }  // namespace chassis
 }  // namespace control

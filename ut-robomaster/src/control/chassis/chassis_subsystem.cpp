@@ -63,17 +63,17 @@ void ChassisSubsystem::setDesiredOutput(float x, float y, float r)
     float cos = cosf(theta - M_PI_4);
     float max = modm::max(std::abs(sin), std::abs(cos));
 
-    desiredWheelRPM[0] = power * sin/max + r;   // right front wheel
-    desiredWheelRPM[1] = -power * cos/max + r;   // left front wheel
-    desiredWheelRPM[2] = -power * sin/max + r;   // left back wheel
-    desiredWheelRPM[3] = power * cos/max + r;   // right back wheel
+    desiredWheelRPM[0] = power * cos/max + r;   // right front wheel
+    desiredWheelRPM[1] = power * sin/max - r;   // left front wheel
+    desiredWheelRPM[2] = power * cos/max - r;   // left back wheel
+    desiredWheelRPM[3] = power * sin/max + r;   // right back wheel
 
     if ((power + abs(r)) > 1)
     {
-        desiredWheelRPM[0] /= power - r;   // right front wheel
-        desiredWheelRPM[1] /= power + r;   // left front wheel
-        desiredWheelRPM[2] /= power + r;   // left back wheel
-        desiredWheelRPM[3] /= power - r;   // right back wheel
+        desiredWheelRPM[0] /= (power + r);   // right front wheel
+        desiredWheelRPM[1] /= (power - r);   // left front wheel
+        desiredWheelRPM[2] /= (power - r);   // left back wheel
+        desiredWheelRPM[3] /= (power + r);   // right back wheel
     }
 
     for (uint16_t i = 0; i < MODM_ARRAY_SIZE(desiredWheelRPM); i++)
