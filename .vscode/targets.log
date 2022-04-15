@@ -8,7 +8,7 @@ make: *** No rule to make target 'all'.  Stop.
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Mon Apr 04 16:19:50 2022
+# Make data base, printed on Fri Apr 15 18:02:56 2022
 
 # Variables
 
@@ -23,9 +23,9 @@ USERPROFILE = C:\Users\eddie
 # environment
 LOCALAPPDATA = C:\Users\eddie\AppData\Local
 # environment
-VSCODE_IPC_HOOK_EXTHOST = \\.\pipe\vscode-ipc-ae2aba30-0436-418a-a5ef-af6c9a03e39b-sock
+VSCODE_IPC_HOOK_EXTHOST = \\.\pipe\vscode-ipc-d1aa20b3-a3fe-41ad-a50c-daef5ddd485a-sock
 # environment
-VSCODE_CWD = C:\windows\system32
+VSCODE_CWD = C:\Users\eddie\AppData\Local\Programs\Microsoft VS Code
 # environment
 CHOCOLATEYINSTALL = C:\ProgramData\chocolatey
 # environment
@@ -33,13 +33,13 @@ SYSTEMROOT = C:\windows
 # environment
 PROCESSOR_LEVEL = 23
 # environment
-PSMODULEPATH = %ProgramFiles%\WindowsPowerShell\Modules;C:\windows\system32\WindowsPowerShell\v1.0\Modules;C:\Program Files (x86)\Microsoft SQL Server\120\Tools\PowerShell\Modules\
+PSMODULEPATH = C:\Program Files\WindowsPowerShell\Modules;C:\windows\system32\WindowsPowerShell\v1.0\Modules;C:\Program Files (x86)\Microsoft SQL Server\120\Tools\PowerShell\Modules\
 # default
 MAKE_COMMAND := C:/ProgramData/chocolatey/lib/make/tools/install/bin/make.exe
 # automatic
 @D = $(patsubst %/,%,$(patsubst %\,%,$(dir $@)))
 # environment
-CHROME_CRASHPAD_PIPE_NAME = \\.\pipe\crashpad_7276_UNXBUNLTFBSDWYHL
+CHROME_CRASHPAD_PIPE_NAME = \\.\pipe\crashpad_2932_QGLBNITRMEBBYBDA
 # environment
 ONEDRIVECOMMERCIAL = C:\Users\eddie\OneDrive - The University of Texas at Austin
 # environment
@@ -59,7 +59,7 @@ VSCODE_LOG_STACK = false
 # automatic
 %F = $(notdir $%)
 # environment
-VSCODE_CODE_CACHE_PATH = C:\Users\eddie\AppData\Roaming\Code\CachedData\e18005f0f1b33c29e81d732535d8c0e47cafb0b5
+VSCODE_CODE_CACHE_PATH = C:\Users\eddie\AppData\Roaming\Code\CachedData\dfd34e8260c270da74b5c2d86d61aee4b6d56977
 # environment
 LANG = C
 # default
@@ -101,7 +101,7 @@ MAKEFILE_LIST := C:\Users\eddie\Code\312H\Assignments\Project1_starter_files\Mak
 # environment
 VSCODE_VERBOSE_LOGGING = true
 # environment
-VSCODE_PID = 7276
+VSCODE_PID = 2932
 # automatic
 ?D = $(patsubst %/,%,$(patsubst %\,%,$(dir $?)))
 # environment
@@ -137,7 +137,7 @@ MAKELEVEL := 0
 # default
 MAKE = $(MAKE_COMMAND)
 # environment
-PATH = C:\Program Files (x86)\Common Files\Intel\Shared Libraries\redist\intel64\compiler;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\ProgramData\Oracle\Java\javapath;C:\windows\system32;C:\windows;C:\windows\System32\Wbem;C:\windows\System32\WindowsPowerShell\v1.0\;C:\windows\System32\OpenSSH\;C:\Program Files (x86)\PharosSystems\Core;C:\Program Files\Git\cmd;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\110\Tools\Binn\;C:\Program Files (x86)\Microsoft SQL Server\120\Tools\Binn\;C:\Program Files\Microsoft SQL Server\120\Tools\Binn\;C:\Program Files\Microsoft SQL Server\120\DTS\Binn\;C:\Program Files (x86)\Windows Kits\8.1\Windows Performance Toolkit\;C:\msys64\mingw64\bin;C:\ProgramData\chocolatey\bin;C:\Program Files\Docker\Docker\resources\bin;C:\ProgramData\DockerDesktop\version-bin;C:\Program Files\CMake\bin;C:\Users\eddie\AppData\Local\Programs\Python\Python39\Scripts\;C:\Users\eddie\AppData\Local\Programs\Python\Python39\;C:\Users\eddie\AppData\Local\Microsoft\WindowsApps;C:\Users\eddie\Documents\Robotics\gcc-arm-none-eabi-10.3-2021.07\bin;C:\Users\eddie\Documents\Robotics\openocd-20210729\OpenOCD-20210729-0.11.0\bin;C:\Users\eddie\AppData\Local\GitHubDesktop\bin;C:\Users\eddie\AppData\Local\Programs\Microsoft VS Code\bin;C:\Program Files\Git\usr\bin
+PATH = C:\Program Files (x86)\Common Files\Intel\Shared Libraries\redist\intel64\compiler;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\ProgramData\Oracle\Java\javapath;C:\windows\system32;C:\windows;C:\windows\System32\Wbem;C:\windows\System32\WindowsPowerShell\v1.0\;C:\windows\System32\OpenSSH\;C:\Program Files (x86)\PharosSystems\Core;C:\Program Files\Git\cmd;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\110\Tools\Binn\;C:\Program Files (x86)\Microsoft SQL Server\120\Tools\Binn\;C:\Program Files\Microsoft SQL Server\120\Tools\Binn\;C:\Program Files\Microsoft SQL Server\120\DTS\Binn\;C:\Program Files (x86)\Windows Kits\8.1\Windows Performance Toolkit\;C:\msys64\mingw64\bin;C:\ProgramData\chocolatey\bin;C:\Program Files\Docker\Docker\resources\bin;C:\ProgramData\DockerDesktop\version-bin;C:\Program Files\CMake\bin;C:\Users\eddie\AppData\Local\Programs\Python\Python39\Scripts\;C:\Users\eddie\AppData\Local\Programs\Python\Python39\;C:\Users\eddie\AppData\Local\Microsoft\WindowsApps;C:\Users\eddie\Documents\Robotics\gcc-arm-none-eabi-10.3-2021.07\bin;C:\Users\eddie\Documents\Robotics\openocd-20210729\OpenOCD-20210729-0.11.0\bin;C:\Users\eddie\AppData\Local\GitHubDesktop\bin;C:\msys64\mingw64\bin;C:\Users\eddie\AppData\Local\Programs\Microsoft VS Code\bin;C:\Program Files\Git\usr\bin;
 # environment
 COMPUTERNAME = DESKTOP-DPMO7T5
 # default
@@ -211,7 +211,7 @@ ELECTRON_RUN_AS_NODE = 1
 # environment
 TEMP = C:\Users\eddie\AppData\Local\Temp
 # environment
-VSCODE_IPC_HOOK = \\.\pipe\c42baf6f62799c35075f3ddabedcf363-1.66.0-main-sock
+VSCODE_IPC_HOOK = \\.\pipe\c42baf6f62799c35075f3ddabedcf363-1.66.2-main-sock
 # default
 .RECIPEPREFIX := 
 # automatic
@@ -220,6 +220,8 @@ VSCODE_IPC_HOOK = \\.\pipe\c42baf6f62799c35075f3ddabedcf363-1.66.0-main-sock
 SUFFIXES := 
 # environment
 ALLUSERSPROFILE = C:\ProgramData
+# environment
+SESSIONNAME = Console
 # default
 .FEATURES := target-specific order-only second-expansion else-if shortest-stem undefine oneshell nocomment grouped-target extra-prereqs archives jobserver output-sync load
 # environment
@@ -231,7 +233,7 @@ REGIONCODE = NA
 # environment
 PROCESSOR_IDENTIFIER = AMD64 Family 23 Model 104 Stepping 1, AuthenticAMD
 # variable set hash-table stats:
-# Load=109/1024=11%, Rehash=0, Collisions=14/135=10%
+# Load=110/1024=11%, Rehash=0, Collisions=14/136=10%
 
 # Pattern-specific Variable Values
 
@@ -321,6 +323,6 @@ proj1: Project1.cpp main.cpp
 # strcache performance: lookups = 20 / hit rate = 45%
 # hash-table stats:
 # Load=11/8192=0%, Rehash=0, Collisions=0/20=0%
-# Finished Make data base on Mon Apr 04 16:19:50 2022
+# Finished Make data base on Fri Apr 15 18:02:56 2022
 
  
