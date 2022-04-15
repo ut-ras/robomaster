@@ -8,7 +8,11 @@ make: *** No rule to make target 'all'.  Stop.
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
+<<<<<<< HEAD
 # Make data base, printed on Fri Apr 15 18:02:56 2022
+=======
+# Make data base, printed on Mon Apr 04 00:46:26 2022
+>>>>>>> be2fe659f9a1a1e2c75619c65706c89ba4c09201
 
 # Variables
 
@@ -23,7 +27,11 @@ USERPROFILE = C:\Users\eddie
 # environment
 LOCALAPPDATA = C:\Users\eddie\AppData\Local
 # environment
+<<<<<<< HEAD
 VSCODE_IPC_HOOK_EXTHOST = \\.\pipe\vscode-ipc-d1aa20b3-a3fe-41ad-a50c-daef5ddd485a-sock
+=======
+VSCODE_IPC_HOOK_EXTHOST = \\.\pipe\vscode-ipc-82e9bc26-7386-462d-8719-3b6b542fccee-sock
+>>>>>>> be2fe659f9a1a1e2c75619c65706c89ba4c09201
 # environment
 VSCODE_CWD = C:\Users\eddie\AppData\Local\Programs\Microsoft VS Code
 # environment
@@ -39,7 +47,11 @@ MAKE_COMMAND := C:/ProgramData/chocolatey/lib/make/tools/install/bin/make.exe
 # automatic
 @D = $(patsubst %/,%,$(patsubst %\,%,$(dir $@)))
 # environment
+<<<<<<< HEAD
 CHROME_CRASHPAD_PIPE_NAME = \\.\pipe\crashpad_2932_QGLBNITRMEBBYBDA
+=======
+CHROME_CRASHPAD_PIPE_NAME = \\.\pipe\crashpad_19032_RHYGBYUEXCBYVHCP
+>>>>>>> be2fe659f9a1a1e2c75619c65706c89ba4c09201
 # environment
 ONEDRIVECOMMERCIAL = C:\Users\eddie\OneDrive - The University of Texas at Austin
 # environment
@@ -101,7 +113,11 @@ MAKEFILE_LIST := C:\Users\eddie\Code\312H\Assignments\Project1_starter_files\Mak
 # environment
 VSCODE_VERBOSE_LOGGING = true
 # environment
+<<<<<<< HEAD
 VSCODE_PID = 2932
+=======
+VSCODE_PID = 19032
+>>>>>>> be2fe659f9a1a1e2c75619c65706c89ba4c09201
 # automatic
 ?D = $(patsubst %/,%,$(patsubst %\,%,$(dir $?)))
 # environment
@@ -323,6 +339,10 @@ proj1: Project1.cpp main.cpp
 # strcache performance: lookups = 20 / hit rate = 45%
 # hash-table stats:
 # Load=11/8192=0%, Rehash=0, Collisions=0/20=0%
+<<<<<<< HEAD
 # Finished Make data base on Fri Apr 15 18:02:56 2022
+=======
+# Finished Make data base on Mon Apr 04 00:46:26 2022
+>>>>>>> be2fe659f9a1a1e2c75619c65706c89ba4c09201
 
  
