@@ -20,6 +20,7 @@
 
 #include "tap/algorithms/math_user_utils.hpp"
 #include "tap/communication/serial/remote.hpp"
+#include "modm/math/geometry/vector.hpp"
 
 using namespace tap;
 using namespace tap::algorithms;
@@ -36,18 +37,49 @@ void ChassisSubsystem::initialize()
     rightBackMotor.initialize();
 }
 
-void ChassisSubsystem::refresh() {}
-
-void ChassisSubsystem::setDesiredOutput(int16_t leftSideOutput, int16_t rightSideOutput)
+void ChassisSubsystem::refresh() 
 {
-    leftSideOutput =
-        tap::algorithms::limitVal<float>(leftSideOutput, -MAX_CURRENT_OUTPUT, MAX_CURRENT_OUTPUT);
-    rightSideOutput =
-        tap::algorithms::limitVal<float>(rightSideOutput, -MAX_CURRENT_OUTPUT, MAX_CURRENT_OUTPUT);
-    leftFrontMotor.setDesiredOutput(leftSideOutput);
-    leftBackMotor.setDesiredOutput(leftSideOutput);
-    rightFrontMotor.setDesiredOutput(-rightSideOutput);
-    rightBackMotor.setDesiredOutput(-rightSideOutput);
+    updateMotorRpmPID(&pid, &rightFrontMotor, desiredWheelRPM[0]);
+    updateMotorRpmPID(&pid, &leftFrontMotor, desiredWheelRPM[1]);
+    updateMotorRpmPID(&pid, &leftBackMotor, desiredWheelRPM[2]);
+    updateMotorRpmPID(&pid, &rightBackMotor, desiredWheelRPM[3]);
+}
+
+void ChassisSubsystem::updateMotorRpmPID(modm::Pid<float>* pid, tap::motor::DjiMotor* const motor, float desiredRpm)
+{
+    pid->update(desiredRpm - motor->getShaftRPM());
+    motor->setDesiredOutput(pid->getValue());
+}
+
+void ChassisSubsystem::setDesiredOutput(float x, float y, float r)
+{
+    vector.setX(x);
+    vector.setY(y);
+
+    float theta = vector.getAngle();
+    float power = vector.getLength();
+
+    float sin = sinf(theta - M_PI_4);
+    float cos = cosf(theta - M_PI_4);
+    float max = modm::max(std::abs(sin), std::abs(cos));
+
+    desiredWheelRPM[0] = power * cos/max + r;   // right front wheel
+    desiredWheelRPM[1] = power * sin/max - r;   // left front wheel
+    desiredWheelRPM[2] = power * cos/max - r;   // left back wheel
+    desiredWheelRPM[3] = power * sin/max + r;   // right back wheel
+
+    if ((power + abs(r)) > 1)
+    {
+        desiredWheelRPM[0] /= (power + r);   // right front wheel
+        desiredWheelRPM[1] /= (power - r);   // left front wheel
+        desiredWheelRPM[2] /= (power - r);   // left back wheel
+        desiredWheelRPM[3] /= (power + r);   // right back wheel
+    }
+
+    for (uint16_t i = 0; i < MODM_ARRAY_SIZE(desiredWheelRPM); i++)
+    {
+        desiredWheelRPM[i] *= maxRPM;
+    }
 }
 }  // namespace chassis
 }  // namespace control

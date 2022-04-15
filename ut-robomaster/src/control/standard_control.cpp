@@ -19,6 +19,9 @@
 #include "flywheel/flywheel_subsystem.hpp"
 #include "flywheel/flywheel_on_command.hpp"
 
+#include "chassis/chassis_subsystem.hpp"
+#include "chassis/chassis_drive_command.hpp"
+
 #include "tap/communication/gpio/leds.hpp"
 
 using namespace tap::control;
@@ -39,11 +42,13 @@ namespace standard_control
 /* define subsystems --------------------------------------------------------*/
 control::agitator::AgitatorSubsystem theAgitator(drivers());
 control::flywheel::FlywheelSubsystem theFlywheel(drivers());
+control::chassis::ChassisSubsystem theChassis(drivers());
 
 /* define commands ----------------------------------------------------------*/
 control::agitator::AgitatorRotateCommand rotateCommand(&theAgitator);
 control::agitator::AgitatorReverseCommand reverseCommand(&theAgitator);
 control::flywheel::FlywheelOnCommand flywheelCommand(&theFlywheel);
+control::chassis::ChassisDriveCommand chassisDriveCommand(drivers(), &theChassis);
 
 /* define command mappings --------------------------------------------------*/
 HoldRepeatCommandMapping rightSwitchUp(
@@ -68,16 +73,21 @@ void registerStandardSubsystems(tap::Drivers *drivers)
 {
     drivers->commandScheduler.registerSubsystem(&theAgitator);
     drivers->commandScheduler.registerSubsystem(&theFlywheel);
+    drivers->commandScheduler.registerSubsystem(&theChassis);
 }
 
 /* initialize subsystems ----------------------------------------------------*/
 void initializeSubsystems() { 
     theAgitator.initialize();
     theFlywheel.initialize();
+    theChassis.initialize();
 }
 
 /* set any default commands to subsystems here ------------------------------*/
-void setDefaultStandardCommands(tap::Drivers *) { }
+void setDefaultStandardCommands(tap::Drivers *) 
+{
+    theChassis.setDefaultCommand(&chassisDriveCommand);
+}
 
 /* add any starting commands to the scheduler here --------------------------*/
 void startStandardCommands(tap::Drivers *) {}

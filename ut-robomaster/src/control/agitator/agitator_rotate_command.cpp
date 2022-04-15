@@ -9,7 +9,7 @@ namespace agitator
 {
 void AgitatorRotateCommand::initialize() {}
 
-void AgitatorRotateCommand::execute() { agitator->setDesiredRPM(1500); }
+void AgitatorRotateCommand::execute() { agitator->setDesiredRPM(2000); }
 
 void AgitatorRotateCommand::end(bool) { agitator->setDesiredRPM(0); }
 

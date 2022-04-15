@@ -11,7 +11,7 @@ namespace agitator
 {
 void AgitatorReverseCommand::initialize() {}
 
-void AgitatorReverseCommand::execute() { agitator->setDesiredRPM(-1500); }
+void AgitatorReverseCommand::execute() { agitator->setDesiredRPM(-2000); }
 
 void AgitatorReverseCommand::end(bool) { agitator->setDesiredRPM(0); }
 
