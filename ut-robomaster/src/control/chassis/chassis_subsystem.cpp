@@ -22,6 +22,8 @@
 #include "tap/communication/serial/remote.hpp"
 #include "modm/math/geometry/vector.hpp"
 
+#include "tap/drivers.hpp"
+
 using namespace tap;
 using namespace tap::algorithms;
 
@@ -56,6 +58,9 @@ void ChassisSubsystem::setDesiredOutput(float x, float y, float r)
     vector.setX(x);
     vector.setY(y);
 
+    float offset = drivers->bmi088.getYaw();
+    vector.rotate(-offset);
+    
     float theta = vector.getAngle();
     float power = vector.getLength();
 
