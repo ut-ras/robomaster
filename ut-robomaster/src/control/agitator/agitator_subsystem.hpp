@@ -4,7 +4,7 @@
 #include "tap/control/subsystem.hpp"
 #include "tap/motor/dji_motor.hpp"
 #include "tap/util_macros.hpp"
-#include "tap/algorithms/smooth_pid.hpp"
+#include "modm/math/filter/pid.hpp"
 
 #include "tap/communication/gpio/leds.hpp"
 
@@ -40,7 +40,7 @@ private:
     // Drivers 
     tap::Drivers* drivers;
 
-    tap::algorithms::SmoothPid agitatorPidController;
+    modm::Pid<float> agitatorPidController;
 
     uint16_t agitatorMotorOutput;
 };

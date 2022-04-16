@@ -13,7 +13,7 @@ namespace agitator
 AgitatorSubsystem::AgitatorSubsystem(tap::Drivers* drivers)
     :   tap::control::Subsystem(drivers),
         agitatorMotorOutput(0.0f),
-        agitatorPidController(0.5, 0, 0, 0, 8000, 1, 0, 1, 0),
+        agitatorPidController(0.5f, 0.0f, 0.0f, 5000.0f, 8000.0f),
         agitatorMotor(
             drivers,
             AGITATOR_MOTOR_ID,
@@ -40,8 +40,8 @@ void AgitatorSubsystem::setDesiredRPM(int desiredRPM)
 
     else
     {
-        agitatorPidController.runControllerDerivateError((desiredRPM - agitatorMotor.getShaftRPM()), 1);
-        agitatorMotor.setDesiredOutput(static_cast<int32_t> (agitatorPidController.getOutput()));
+        agitatorPidController.update(desiredRPM - agitatorMotor.getShaftRPM());
+        agitatorMotor.setDesiredOutput(static_cast<int32_t> (agitatorPidController.getValue()));
     }
 }
 
