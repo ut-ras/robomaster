@@ -1,3 +1,6 @@
 [submodule "taproot"]
 	path = taproot
 	url = https://gitlab.com/aruw/controls/taproot.git
+[submodule "ut-robomaster/taproot-scripts"]
+	path = ut-robomaster/taproot-scripts
+	url = https://gitlab.com/aruw/controls/taproot-scripts.git
