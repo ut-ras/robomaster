@@ -37,6 +37,8 @@ void ChassisSubsystem::initialize()
     leftBackMotor.initialize();
     rightFrontMotor.initialize();
     rightBackMotor.initialize();
+    drivers->bmi088.requestRecalibration();
+    startYaw = drivers->bmi088.getYaw();
 }
 
 void ChassisSubsystem::refresh() 
@@ -58,8 +60,11 @@ void ChassisSubsystem::setDesiredOutput(float x, float y, float r)
     vector.setX(x);
     vector.setY(y);
 
-    float offset = drivers->bmi088.getYaw();
-    vector.rotate(-offset);
+    if (drivers->bmi088.getImuState() == tap::communication::sensors::imu::ImuInterface::ImuState::IMU_CALIBRATED)
+    {
+        float offset = modm::toRadian(drivers->bmi088.getYaw() - startYaw);
+        vector.rotate(offset);
+    }
     
     float theta = vector.getAngle();
     float power = vector.getLength();

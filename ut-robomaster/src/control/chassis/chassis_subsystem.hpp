@@ -127,6 +127,8 @@ private:
     float maxRPM = 4000;
     modm::Vector<float, 2> vector;
     modm::Pid<float> pid;
+
+    float startYaw;
     
 
 };  // class ChassisSubsystem
