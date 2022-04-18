@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2021 Advanced Robotics at the University of Washington <robomstr@uw.edu>
+ * Copyright (c) 2022 Advanced Robotics at the University of Washington <robomstr@uw.edu>
  *
  * This file is part of Taproot.
  *
@@ -17,14 +17,13 @@
  * along with Taproot.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#ifndef TAPROOT_REF_SERIAL_CONSTANTS_HPP_
-#define TAPROOT_REF_SERIAL_CONSTANTS_HPP_
+#include "ref_serial_transmitter_mock.hpp"
 
-#include "uart.hpp"
-
-namespace tap::communication::serial::bound_ports
+namespace tap::mock
 {
-    static constexpr Uart::UartPort REF_SERIAL_UART_PORT = Uart::UartPort::Uart6;
-}  // namespace tap::communication::serial::bound_ports
-
-#endif  // TAPROOT_REF_SERIAL_CONSTANTS_HPP_
+RefSerialTransmitterMock::RefSerialTransmitterMock(Drivers *drivers)
+    : tap::communication::serial::RefSerialTransmitter(drivers)
+{
+}
+RefSerialTransmitterMock::~RefSerialTransmitterMock() {}
+}  // namespace tap::mock
