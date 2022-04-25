@@ -39,6 +39,7 @@ void ChassisSubsystem::initialize()
     rightBackMotor.initialize();
     drivers->bmi088.requestRecalibration();
     startYaw = drivers->bmi088.getYaw();
+    imuDrive = false;
 }
 
 void ChassisSubsystem::refresh() 
@@ -60,7 +61,19 @@ void ChassisSubsystem::setDesiredOutput(float x, float y, float r)
     vector.setX(x);
     vector.setY(y);
 
-    if (drivers->bmi088.getImuState() == tap::communication::sensors::imu::ImuInterface::ImuState::IMU_CALIBRATED)
+    if (!imuDrive && drivers->remote.getSwitch(tap::communication::serial::Remote::Switch::LEFT_SWITCH) == tap::communication::serial::Remote::SwitchState::DOWN)
+    {
+        imuDrive = true;
+        drivers->bmi088.requestRecalibration();
+        startYaw = drivers->bmi088.getYaw();
+    }
+
+    else if (drivers->remote.getSwitch(tap::communication::serial::Remote::Switch::LEFT_SWITCH) == tap::communication::serial::Remote::SwitchState::MID)
+    {
+        imuDrive = false;
+    }
+
+    if (imuDrive && drivers->bmi088.getImuState() == tap::communication::sensors::imu::ImuInterface::ImuState::IMU_CALIBRATED)
     {
         float offset = modm::toRadian(drivers->bmi088.getYaw() - startYaw);
         vector.rotate(offset);
@@ -80,10 +93,10 @@ void ChassisSubsystem::setDesiredOutput(float x, float y, float r)
 
     if ((power + abs(r)) > 1)
     {
-        desiredWheelRPM[0] /= (power + r);   // right front wheel
-        desiredWheelRPM[1] /= (power - r);   // left front wheel
-        desiredWheelRPM[2] /= (power - r);   // left back wheel
-        desiredWheelRPM[3] /= (power + r);   // right back wheel
+        desiredWheelRPM[0] /= power + abs(r);   // right front wheel
+        desiredWheelRPM[1] /= power + abs(r);   // left front wheel
+        desiredWheelRPM[2] /= power + abs(r);   // left back wheel
+        desiredWheelRPM[3] /= power + abs(r);   // right back wheel
     }
 
     for (uint16_t i = 0; i < MODM_ARRAY_SIZE(desiredWheelRPM); i++)
