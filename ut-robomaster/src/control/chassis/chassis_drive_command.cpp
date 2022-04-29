@@ -26,7 +26,7 @@ void ChassisDriveCommand::execute()
 { 
     float x = drivers->remote.getChannel(Remote::Channel::LEFT_HORIZONTAL);
     float y = -(drivers->remote.getChannel(Remote::Channel::LEFT_VERTICAL));
-    float r = drivers->remote.getChannel(Remote::Channel::RIGHT_HORIZONTAL);
+    float r = -(drivers->remote.getWheel() / 660.0f);
 
     if (fabs(x) > POSDEADZONE || fabs(y) > POSDEADZONE || fabs(r) > POSDEADZONE){
         chassis->setDesiredOutput(x, y, r);
