@@ -58,6 +58,15 @@ void ChassisSubsystem::updateMotorRpmPID(modm::Pid<float>* pid, tap::motor::DjiM
 
 void ChassisSubsystem::setDesiredOutput(float x, float y, float r)
 {
+    if (drivers->bmi088.getImuState() == tap::communication::sensors::imu::ImuInterface::ImuState::IMU_CALIBRATING)
+    {
+        for (uint16_t i = 0; i < MODM_ARRAY_SIZE(desiredWheelRPM); i++)
+        {
+            desiredWheelRPM[i] = 0;
+        }
+        return;
+    }
+    
     vector.setX(x);
     vector.setY(y);
 
