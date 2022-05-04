@@ -36,13 +36,12 @@ private:
     static constexpr tap::motor::MotorId AGITATOR_MOTOR_ID = tap::motor::MOTOR5;
     static constexpr tap::can::CanBus CAN_BUS_MOTORS = tap::can::CanBus::CAN_BUS1;
 
+    uint16_t agitatorMotorOutput;
+    modm::Pid<float> agitatorPidController;
     tap::motor::DjiMotor agitatorMotor;
+
     // Drivers 
     tap::Drivers* drivers;
-
-    modm::Pid<float> agitatorPidController;
-
-    uint16_t agitatorMotorOutput;
 };
 
 }

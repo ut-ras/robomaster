@@ -124,9 +124,12 @@ private:
     tap::motor::DjiMotor rightBackMotor;
 
     float desiredWheelRPM[4];
-    float maxRPM = 4000;
+    float maxRPM = 8000;    // assume 8000 to be max rpm
     modm::Vector<float, 2> vector;
     modm::Pid<float> pid;
+    float startYaw;
+    bool imuDrive;
+
 };  // class ChassisSubsystem
 
 }  // namespace chassis

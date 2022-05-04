@@ -40,6 +40,7 @@ IGNORED_FILES_WHILE_TESTING = ["src/main.cpp"]
 # Parse and validate arguments
 args = parse_args.parse_args()
 
+
 def _get_hosted_target_name_for_current_platform():
     os_type = platform.system()
     try:
@@ -70,7 +71,6 @@ env.AppendUnique(CPPPATH=[
 
 
 sources = []
-
 # Building all libraries (read from sconscript files located in provided dirs)
 # Ensure that modm is first, since taproot depends on modm
 # Append include path to environment so both src/test environments have access to them
@@ -117,7 +117,7 @@ if args["TARGET_ENV"] == "hardware":
     env.Default("all")  # For the hardware target env, "all" runs if you don't
                         # specify anything (i.e. just type "scons")
 elif args["TARGET_ENV"] == "tests":
-     # Add scons-tools directory to toolpath so we can use the various tools inside it,
+    # Add scons-tools directory to toolpath so we can use the various tools inside it,
     # then add various tools
     env.Append(toolpath=[TAPROOT_SCRIPTS_TOOLPATH])
     

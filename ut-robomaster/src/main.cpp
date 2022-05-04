@@ -59,6 +59,9 @@ static void initializeIo(src::Drivers *drivers);
 // called as frequently.
 static void updateIo(src::Drivers *drivers);
 
+static constexpr float SAMPLE_FREQUENCY = 500.0f;
+static constexpr float MAHONY_KP = 0.1f;
+
 using namespace tap::gpio;
 
 int main()
@@ -93,6 +96,7 @@ int main()
         if (sendMotorTimeout.execute())
         {
             // PROFILE(drivers->profiler, drivers->mpu6500.periodicIMUUpdate, ());
+            PROFILE(drivers->profiler, drivers->bmi088.periodicIMUUpdate, ());
             PROFILE(drivers->profiler, drivers->commandScheduler.run, ());
             PROFILE(drivers->profiler, drivers->djiMotorTxHandler.encodeAndSendCanData, ());
             PROFILE(drivers->profiler, drivers->terminalSerial.update, ());
@@ -117,6 +121,8 @@ static void initializeIo(src::Drivers *drivers)
     drivers->terminalSerial.initialize();
     drivers->schedulerTerminalHandler.init();
     drivers->djiMotorTerminalSerialHandler.init();
+    drivers->bmi088.initialize(SAMPLE_FREQUENCY, MAHONY_KP, 0.0f);
+    drivers->bmi088.requestRecalibration();
 }
 
 static void updateIo(src::Drivers *drivers)
