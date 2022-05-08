@@ -2,7 +2,7 @@
 #define AGITATOR_ROTATE_COMMAND_HPP_
 
 #include "tap/control/command.hpp"
-
+#include "tap/architecture/periodic_timer.hpp"
 #include "agitator_subsystem.hpp"
 
 namespace control
@@ -30,6 +30,9 @@ public:
 
 private:
     AgitatorSubsystem *agitator;
+    int16_t jamTorque = 200;
+    float rotateRPM = 2000.0f;
+    tap::arch::PeriodicMilliTimer isUnjamming;
 };  // class AgitatorRotateCommand
 }  // namespace agitator
 }  // namespace control
