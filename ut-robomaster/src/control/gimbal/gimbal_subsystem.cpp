@@ -41,8 +41,7 @@ void GimbalSubsystem::initialize()
 
 void GimbalSubsystem::refresh() 
 {
-    // updateMotorRpmPID(&pid, &yawMotor, desiredRPM[0]);
-    yawMotor.setDesiredOutput(10000.0f);
+    updateMotorRpmPID(&pid, &yawMotor, desiredRPM[0]);
     updateMotorRpmPID(&pid, &pitchMotor, desiredRPM[1]);
 }
 
@@ -54,7 +53,7 @@ void GimbalSubsystem::updateMotorRpmPID(modm::Pid<float>* pid, tap::motor::DjiMo
 
 void GimbalSubsystem::setDesiredOutput(float x, float y)
 {
-    desiredRPM[0] = x * 320.0f;   // yaw motor
+    desiredRPM[0] = -x * maxRPM;   // yaw motor
     desiredRPM[1] = y * maxRPM;   // pitch motor
 }
 }  // namespace gimbal

@@ -88,7 +88,7 @@ private:
     tap::motor::DjiMotor pitchMotor;
 
     float desiredRPM[2];
-    float maxRPM = 500.0f;    // assume 8000 to be max rpm
+    float maxRPM = 500.0f;    // physical max approximately 8000.0f
     modm::Pid<float> pid;
     float startYaw;
     float startPitch;
