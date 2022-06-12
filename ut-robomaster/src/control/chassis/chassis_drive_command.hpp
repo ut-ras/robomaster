@@ -24,7 +24,7 @@ public:
 
     bool isFinished() const override;
 
-    const char *getName() const override { return "chassis rotate command"; }
+    const char *getName() const override { return "chassis drive command"; }
 
 private:
     tap::Drivers *drivers;

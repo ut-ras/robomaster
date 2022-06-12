@@ -7,9 +7,27 @@ namespace control
 {
 namespace agitator
 {
-void AgitatorRotateCommand::initialize() {}
+void AgitatorRotateCommand::initialize() { isUnjamming.stop(); }
 
-void AgitatorRotateCommand::execute() { agitator->setDesiredRPM(2000); }
+void AgitatorRotateCommand::execute() { 
+    if (isUnjamming.isStopped())
+    {
+        if (agitator->getAgitatorMotor().getTorque() > jamTorque)
+        {
+            isUnjamming.restart(1000);
+        }
+
+        else
+        {
+            agitator->setDesiredRPM(rotateRPM); 
+        }
+    }
+
+    else
+    {
+        agitator->setDesiredRPM(-rotateRPM);
+    }
+    }
 
 void AgitatorRotateCommand::end(bool) { agitator->setDesiredRPM(0); }
 

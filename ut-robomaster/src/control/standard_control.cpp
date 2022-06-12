@@ -22,6 +22,9 @@
 #include "chassis/chassis_subsystem.hpp"
 #include "chassis/chassis_drive_command.hpp"
 
+#include "gimbal/gimbal_subsystem.hpp"
+#include "gimbal/gimbal_move_command.hpp"
+
 #include "tap/communication/gpio/leds.hpp"
 
 using namespace tap::control;
@@ -43,12 +46,14 @@ namespace standard_control
 control::agitator::AgitatorSubsystem theAgitator(drivers());
 control::flywheel::FlywheelSubsystem theFlywheel(drivers());
 control::chassis::ChassisSubsystem theChassis(drivers());
+control::gimbal::GimbalSubsystem theGimbal(drivers());
 
 /* define commands ----------------------------------------------------------*/
 control::agitator::AgitatorRotateCommand rotateCommand(&theAgitator);
 control::agitator::AgitatorReverseCommand reverseCommand(&theAgitator);
 control::flywheel::FlywheelOnCommand flywheelCommand(&theFlywheel);
 control::chassis::ChassisDriveCommand chassisDriveCommand(drivers(), &theChassis);
+control::gimbal::GimbalMoveCommand gimbalMoveCommand(drivers(), &theGimbal);
 
 /* define command mappings --------------------------------------------------*/
 HoldRepeatCommandMapping rightSwitchUp(
@@ -74,6 +79,7 @@ void registerStandardSubsystems(tap::Drivers *drivers)
     drivers->commandScheduler.registerSubsystem(&theAgitator);
     drivers->commandScheduler.registerSubsystem(&theFlywheel);
     drivers->commandScheduler.registerSubsystem(&theChassis);
+    drivers->commandScheduler.registerSubsystem(&theGimbal);
 }
 
 /* initialize subsystems ----------------------------------------------------*/
@@ -81,12 +87,14 @@ void initializeSubsystems() {
     theAgitator.initialize();
     theFlywheel.initialize();
     theChassis.initialize();
+    theGimbal.initialize();
 }
 
 /* set any default commands to subsystems here ------------------------------*/
 void setDefaultStandardCommands(tap::Drivers *) 
 {
     theChassis.setDefaultCommand(&chassisDriveCommand);
+    theGimbal.setDefaultCommand(&gimbalMoveCommand);
 }
 
 /* add any starting commands to the scheduler here --------------------------*/

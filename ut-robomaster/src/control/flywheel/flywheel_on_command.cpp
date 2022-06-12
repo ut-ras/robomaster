@@ -11,7 +11,7 @@ namespace flywheel
 {
 void FlywheelOnCommand::initialize() {}
 
-void FlywheelOnCommand::execute() { flywheel->setDesiredOutput(0.5f); }
+void FlywheelOnCommand::execute() { flywheel->setDesiredOutput(0.45f); }
 
 void FlywheelOnCommand::end(bool) { flywheel->setDesiredOutput(0.25f); }
 
