@@ -21,6 +21,7 @@
 
 #include "chassis/chassis_subsystem.hpp"
 #include "chassis/chassis_drive_command.hpp"
+#include "chassis/chassis_drive_keyboard_command.hpp"
 
 #include "gimbal/gimbal_subsystem.hpp"
 #include "gimbal/gimbal_move_command.hpp"
@@ -56,7 +57,8 @@ control::turret::TurretSubsystem theTurret(drivers());
 control::agitator::AgitatorRotateCommand rotateCommand(&theAgitator);
 control::agitator::AgitatorReverseCommand reverseCommand(&theAgitator);
 control::flywheel::FlywheelOnCommand flywheelCommand(&theFlywheel);
-control::chassis::ChassisDriveCommand chassisDriveCommand(drivers(), &theChassis);
+control::chassis::ChassisDriveKeyboardCommand chassisDriveKeyboardCommand(drivers(), &theChassis);
+// control::chassis::ChassisDriveCommand chassisDriveCommand(drivers(), &theChassis);
 control::turret::TurretMoveCommand turretMoveCommand(drivers(), &theTurret);
 // control::gimbal::GimbalMoveCommand gimbalMoveCommand(drivers(), &theGimbal);
 
@@ -100,7 +102,8 @@ void initializeSubsystems() {
 /* set any default commands to subsystems here ------------------------------*/
 void setDefaultStandardCommands(tap::Drivers *) 
 {
-    theChassis.setDefaultCommand(&chassisDriveCommand);
+    theChassis.setDefaultCommand(&chassisDriveKeyboardCommand);
+    // theChassis.setDefaultCommand(&chassisDriveCommand);
     theTurret.setDefaultCommand(&turretMoveCommand);
     // theGimbal.setDefaultCommand(&gimbalMoveCommand);
 }
