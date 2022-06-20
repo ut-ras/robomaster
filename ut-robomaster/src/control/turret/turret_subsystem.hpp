@@ -50,7 +50,9 @@ public:
               CAN_BUS_MOTORS,
               false,
               "pitch motor"),
-          pid(10.0f, 0.2f, 0.0f, 5000.0f, 16000.0f) // from aruw solider_chassis_constants.hpp
+          pid(10.0f, 0.2f, 0.0f, 5000.0f, 16000.0f), // from aruw solider_chassis_constants.hpp
+          pitchEncoderToRPM(10.0f, 0.2f, 0.0f, 5000.0f, 16000.0f),
+          yawEncoderToRPM(10.0f, 0.2f, 0.0f, 5000.0f, 16000.0f)
     {
         for (uint16_t i = 0; i < MODM_ARRAY_SIZE(desiredRPM); i++)
         {
@@ -91,6 +93,8 @@ private:
     float desiredRPM[2];
     float maxRPM = 500.0f;    // physical max approximately 8000.0f
     modm::Pid<float> pid;
+    modm::Pid<float> pitchEncoderToRPM;
+    modm::Pid<float> yawEncoderToRPM;
 
     float startYaw;
     float startPitch;

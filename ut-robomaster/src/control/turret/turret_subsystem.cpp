@@ -71,8 +71,8 @@ void TurretSubsystem::setDesiredOutput(float x, float y)
             yawIsSet = true;
         }
 
-        pid.update(yawSetValue - yawMotor.getEncoderUnwrapped());
-        desiredRPM[0] = pid.getValue();
+        yawEncoderToRPM.update(yawSetValue - yawMotor.getEncoderUnwrapped());
+        desiredRPM[0] = yawEncoderToRPM.getValue();
     }
 
     if (y != 0.0f) {
@@ -81,7 +81,18 @@ void TurretSubsystem::setDesiredOutput(float x, float y)
         }
         else {
             desiredRPM[1] = y * 16;   // pitch motor
+            pitchIsSet = false;
         }
+    }
+
+    else {
+        if (!pitchIsSet) {
+            pitchSetValue = pitchMotor.getEncoderUnwrapped();
+            pitchIsSet = true;
+        }
+
+        pitchEncoderToRPM.update(pitchSetValue - pitchMotor.getEncoderUnwrapped());
+        desiredRPM[1] = pitchEncoderToRPM.getValue();
     }
 }
 }  // namespace turret
