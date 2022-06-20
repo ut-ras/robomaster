@@ -91,9 +91,14 @@ private:
     float desiredRPM[2];
     float maxRPM = 500.0f;    // physical max approximately 8000.0f
     modm::Pid<float> pid;
+
     float startYaw;
     float startPitch;
 
+    bool yawIsSet;
+    bool pitchIsSet;
+    float yawSetValue;
+    float pitchSetValue;
 };  // class TurretSubsystem
 
 }  // namespace turret

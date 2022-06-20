@@ -35,8 +35,14 @@ void TurretSubsystem::initialize()
 {
     yawMotor.initialize();
     pitchMotor.initialize();
-    startYaw = yawMotor.getEncoderWrapped();
+
+    startYaw = yawMotor.getEncoderUnwrapped();
+    yawSetValue = startYaw;
+    yawIsSet = true;
+
     startPitch = pitchMotor.getEncoderUnwrapped();
+    pitchSetValue = startPitch;
+    pitchIsSet = true;
 }
 
 void TurretSubsystem::refresh() 
@@ -54,13 +60,28 @@ void TurretSubsystem::updateMotorRpmPID(modm::Pid<float>* pid, tap::motor::DjiMo
 
 void TurretSubsystem::setDesiredOutput(float x, float y)
 {
-    // desiredRPM[0] = (x / INT16_MAX) * maxRPM;   // yaw motor
-    desiredRPM[0] = x * 4;   // yaw motor
-    if ((y > 0 && pitchMotor.getEncoderUnwrapped() >= startPitch) || (y < 0 && pitchMotor.getEncoderUnwrapped() <= startPitch - PITCH_RANGE)) {
-        desiredRPM[1] = 0.0f;   // pitch motor
+    if (x != 0.0f) {
+        desiredRPM[0] = x * 4;   // yaw motor
+        yawIsSet = false;
     }
+
     else {
-        desiredRPM[1] = y * 16;   // pitch motor
+        if (!yawIsSet) {
+            yawSetValue = yawMotor.getEncoderUnwrapped();
+            yawIsSet = true;
+        }
+
+        pid.update(yawSetValue - yawMotor.getEncoderUnwrapped());
+        desiredRPM[0] = pid.getValue();
+    }
+
+    if (y != 0.0f) {
+        if ((y > 0 && pitchMotor.getEncoderUnwrapped() >= startPitch) || (y < 0 && pitchMotor.getEncoderUnwrapped() <= startPitch - PITCH_RANGE)) {
+            desiredRPM[1] = 0.0f;   // pitch motor
+        }
+        else {
+            desiredRPM[1] = y * 16;   // pitch motor
+        }
     }
 }
 }  // namespace turret
