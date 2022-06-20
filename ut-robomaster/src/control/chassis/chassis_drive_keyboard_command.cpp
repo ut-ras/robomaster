@@ -21,56 +21,107 @@ namespace chassis
     }
 
 void ChassisDriveKeyboardCommand::initialize() {
-    xRamp->setTarget(1.0f);
-    xRamp->setValue(0.0f);
+    xRamp.setTarget(1.0f);
+    xRamp.setValue(0.0f);
     xToggle = false;
-    yRamp->setTarget(1.0f);
-    yRamp->setValue(0.0f);
+    xPositive = true;
+    xDeacceleration = false;
+    yRamp.setTarget(1.0f);
+    yRamp.setValue(0.0f);
     yToggle = false;
-    rRamp->setTarget(1.0f);
-    rRamp->setValue(0.0f);
+    yPositive = true;
+    yDeacceleration = false;
+    rRamp.setTarget(1.0f);
+    rRamp.setValue(0.0f);
     rToggle = false;
+    rPositive = true;
+    rDeacceleration = false;
 }
 
 void ChassisDriveKeyboardCommand::execute() 
 { 
-    float x = drivers->remote.keyPressed(Remote::Key::W) - drivers->remote.keyPressed(Remote::Key::S);
-    float y = drivers->remote.keyPressed(Remote::Key::D) - drivers->remote.keyPressed(Remote::Key::A);
-    float r = drivers->remote.keyPressed(Remote::Key::E) - drivers->remote.keyPressed(Remote::Key::Q);
+    float x = drivers->remote.keyPressed(Remote::Key::D) - drivers->remote.keyPressed(Remote::Key::A);
+    float y = -(drivers->remote.keyPressed(Remote::Key::W) - drivers->remote.keyPressed(Remote::Key::S));
+    float r = -(drivers->remote.keyPressed(Remote::Key::E) - drivers->remote.keyPressed(Remote::Key::Q));
 
-    if (x != 0.0f) {
-        xRamp->update(0.002f);
+    if (x != 0.0f && !xDeacceleration) {
+        if (xRamp.getTarget() != 1.0f) {
+            xRamp.setTarget(1.0f);
+        }
+
+        xRamp.update(0.002f);
         xToggle = true;
+
+        if (x > 0.0f) { xPositive = true; }
+        else { xPositive = false; }
     }
 
     else if (xToggle) {
-        xRamp->setValue(0.0f);
-        xToggle = false;
+        xDeacceleration = true;
+        if (xRamp.getTarget() != 0.0f) {
+            xRamp.setTarget(0.0f);
+        }
+
+        xRamp.update(0.004f);
+        if (xRamp.getValue() == 0.0f) {
+            xToggle = false;
+            xDeacceleration = false;
+        }
     }
 
-    if (y != 0.0f) {
-        yRamp->update(0.002f);
+    if (y != 0.0f && !yDeacceleration) {
+        if (yRamp.getTarget() != 1.0f) {
+            yRamp.setTarget(1.0f);
+        }
+
+        yRamp.update(0.002f);
         yToggle = true;
+
+        if (y > 0.0f) { yPositive = true; }
+        else { yPositive = false; }
     }
 
     else if (yToggle) {
-        yRamp->setValue(0.0f);
-        yToggle = false;
+        yDeacceleration = true;
+        if (yRamp.getTarget() != 0.0f) {
+            yRamp.setTarget(0.0f);
+        }
+
+        yRamp.update(0.004f);
+        if (yRamp.getValue() == 0.0f) {
+            yToggle = false;
+            yDeacceleration = false;
+        }
     }
 
-    if (r != 0.0f) {
-        rRamp->update(0.002f);
+    if (r != 0.0f && !rDeacceleration) {
+        if (rRamp.getTarget() != 1.0f) {
+            rRamp.setTarget(1.0f);
+        }
+
+        rRamp.update(0.002f);
         rToggle = true;
+
+        if (r > 0.0f) { rPositive = true; }
+        else { rPositive = false; }
     }
 
     else if (rToggle) {
-        rRamp->setValue(0.0f);
-        rToggle = false;
+        rDeacceleration = true;
+        if (rRamp.getTarget() != 0.0f) {
+            rRamp.setTarget(0.0f);
+        }
+
+        rRamp.update(0.004f);
+        if (rRamp.getValue() == 0.0f) {
+            rToggle = false;
+            rDeacceleration = false;
+        }
     }
 
-    chassis->setDesiredOutput(x > 0.0f ? xRamp->getValue() : -(xRamp->getValue()), 
-                              y > 0.0f ? yRamp->getValue() : -(yRamp->getValue()), 
-                              r > 0.0f ? rRamp->getValue() : -(rRamp->getValue()));
+    chassis->setDesiredOutput(xPositive ? xRamp.getValue() : -(xRamp.getValue()), 
+                              yPositive ? yRamp.getValue() : -(yRamp.getValue()), 
+                              rPositive ? rRamp.getValue() : -(rRamp.getValue()));
 }
 
 void ChassisDriveKeyboardCommand::end(bool) { chassis->setDesiredOutput(0.0f, 0.0f, 0.0f); }

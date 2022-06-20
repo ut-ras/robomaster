@@ -18,7 +18,7 @@ AgitatorSubsystem::AgitatorSubsystem(tap::Drivers* drivers)
             drivers,
             AGITATOR_MOTOR_ID,
             CAN_BUS_MOTORS,
-            true,
+            false,
             "agitator motor"),
         drivers(drivers)
     {

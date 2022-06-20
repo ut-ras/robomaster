@@ -41,6 +41,7 @@ void TurretSubsystem::initialize()
 
 void TurretSubsystem::refresh() 
 {
+    // NOTE: Motors are switched with each other, needs investigating
     updateMotorRpmPID(&pid, &yawMotor, desiredRPM[0]);
     updateMotorRpmPID(&pid, &pitchMotor, desiredRPM[1]);
 }
@@ -53,12 +54,13 @@ void TurretSubsystem::updateMotorRpmPID(modm::Pid<float>* pid, tap::motor::DjiMo
 
 void TurretSubsystem::setDesiredOutput(float x, float y)
 {
-    desiredRPM[0] = (x / (MOUSE_SCALAR * INT16_MAX)) * maxRPM;   // yaw motor
-    if ((y < 0 && pitchMotor.getEncoderUnwrapped() <= startPitch) || (y > 0 && pitchMotor.getEncoderUnwrapped() >= startPitch + PITCH_RANGE)) {
-        desiredRPM[1] = 0.0f;
+    // desiredRPM[0] = (x / INT16_MAX) * maxRPM;   // yaw motor
+    desiredRPM[0] = x * 4;   // yaw motor
+    if ((y > 0 && pitchMotor.getEncoderUnwrapped() >= startPitch) || (y < 0 && pitchMotor.getEncoderUnwrapped() <= startPitch - PITCH_RANGE)) {
+        desiredRPM[1] = 0.0f;   // pitch motor
     }
     else {
-        desiredRPM[1] = (y / (MOUSE_SCALAR * INT16_MAX)) * maxRPM;   // pitch motor
+        desiredRPM[1] = y * 16;   // pitch motor
     }
 }
 }  // namespace turret

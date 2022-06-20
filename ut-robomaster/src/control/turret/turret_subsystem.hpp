@@ -25,8 +25,8 @@
 #include "modm/math/filter/pid.hpp"
 #include "modm/math/geometry/vector.hpp"
 
-#define MOUSE_SCALAR 0.02f
-#define PITCH_RANGE 10000.0f
+#define MOUSE_SCALAR 1.0f
+#define PITCH_RANGE 125000.0f
 
 namespace control
 {

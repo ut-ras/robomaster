@@ -30,13 +30,19 @@ public:
 private:
     tap::Drivers *drivers;
     ChassisSubsystem *chassis;
-    tap::algorithms::Ramp *xRamp;
-    tap::algorithms::Ramp *yRamp;
-    tap::algorithms::Ramp *rRamp;
+    tap::algorithms::Ramp xRamp;
+    tap::algorithms::Ramp yRamp;
+    tap::algorithms::Ramp rRamp;
 
     bool xToggle;
     bool yToggle;
     bool rToggle;
+    bool xPositive;
+    bool yPositive;
+    bool rPositive;
+    bool xDeacceleration;
+    bool yDeacceleration;
+    bool rDeacceleration;
 
 };  // class ChassisDriveKeyboardCommand
 }  // namespace chassis

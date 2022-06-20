@@ -25,8 +25,8 @@ void TurretMoveCommand::initialize() {}
 
 void TurretMoveCommand::execute() 
 { 
-    float x = MOUSE_SCALAR * drivers->remote.getMouseX();
-    float y = MOUSE_SCALAR * drivers->remote.getMouseY();
+    float x = drivers->remote.getMouseX();
+    float y = drivers->remote.getMouseY();
 
     if (fabs(x) > POSDEADZONE || fabs(y) > POSDEADZONE) {
         turret->setDesiredOutput(x, y);
