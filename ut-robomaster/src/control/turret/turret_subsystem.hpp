@@ -51,8 +51,8 @@ public:
               false,
               "pitch motor"),
           pid(10.0f, 0.2f, 0.0f, 5000.0f, 16000.0f), // from aruw solider_chassis_constants.hpp
-          pitchEncoderToRPM(10.0f, 0.2f, 0.0f, 5000.0f, 16000.0f),
-          yawEncoderToRPM(10.0f, 0.2f, 0.0f, 5000.0f, 16000.0f)
+          pitchEncoderToRPM(1.0f, 0.0f, 0.0f, 5000.0f, 16000.0f),
+          yawEncoderToRPM(5.0f, 0.0f, 50.0f, 5000.0f, 16000.0f)
     {
         for (uint16_t i = 0; i < MODM_ARRAY_SIZE(desiredRPM); i++)
         {

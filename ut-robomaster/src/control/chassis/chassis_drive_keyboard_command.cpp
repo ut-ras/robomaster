@@ -42,7 +42,7 @@ void ChassisDriveKeyboardCommand::execute()
 { 
     float x = drivers->remote.keyPressed(Remote::Key::D) - drivers->remote.keyPressed(Remote::Key::A);
     float y = -(drivers->remote.keyPressed(Remote::Key::W) - drivers->remote.keyPressed(Remote::Key::S));
-    float r = -(drivers->remote.keyPressed(Remote::Key::E) - drivers->remote.keyPressed(Remote::Key::Q));
+    float r = -(drivers->remote.keyPressed(Remote::Key::Q) - drivers->remote.keyPressed(Remote::Key::E));
 
     if (x != 0.0f && !xDeacceleration) {
         if (xRamp.getTarget() != 1.0f) {
