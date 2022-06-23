@@ -103,6 +103,8 @@ private:
     bool pitchIsSet;
     float yawSetValue;
     float pitchSetValue;
+
+    float prevPosition;
 };  // class TurretSubsystem
 
 }  // namespace turret

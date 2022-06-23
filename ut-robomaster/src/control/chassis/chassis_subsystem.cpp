@@ -39,7 +39,7 @@ void ChassisSubsystem::initialize()
     rightBackMotor.initialize();
     drivers->bmi088.requestRecalibration();
     startYaw = drivers->bmi088.getYaw();
-    imuDrive = false;
+    imuDrive = true;
 }
 
 void ChassisSubsystem::refresh() 
@@ -55,7 +55,9 @@ void ChassisSubsystem::updateMotorRpmPID(modm::Pid<float>* pid, tap::motor::DjiM
     pid->update(desiredRpm - motor->getShaftRPM());
     motor->setDesiredOutput(pid->getValue());
 }
+///@brief 
 
+///
 void ChassisSubsystem::setDesiredOutput(float x, float y, float r)
 {
     if (drivers->bmi088.getImuState() == tap::communication::sensors::imu::ImuInterface::ImuState::IMU_CALIBRATING)
@@ -77,10 +79,10 @@ void ChassisSubsystem::setDesiredOutput(float x, float y, float r)
         startYaw = drivers->bmi088.getYaw();
     }
 
-    else if (drivers->remote.getSwitch(tap::communication::serial::Remote::Switch::LEFT_SWITCH) == tap::communication::serial::Remote::SwitchState::MID)
-    {
-        imuDrive = false;
-    }
+    // else if (drivers->remote.getSwitch(tap::communication::serial::Remote::Switch::LEFT_SWITCH) == tap::communication::serial::Remote::SwitchState::MID)
+    // {
+    //     imuDrive = false;
+    // }
 
     if (imuDrive && drivers->bmi088.getImuState() == tap::communication::sensors::imu::ImuInterface::ImuState::IMU_CALIBRATED)
     {
