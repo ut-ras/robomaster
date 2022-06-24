@@ -25,8 +25,8 @@ AgitatorSubsystem::AgitatorSubsystem(tap::Drivers* drivers)
     }
 
 void AgitatorSubsystem::initialize() { 
-    
     agitatorMotor.initialize();
+    drivers->pwm.write(1.0f, UV_LIGHT_PIN);
 }
 
 void AgitatorSubsystem::refresh() {}
