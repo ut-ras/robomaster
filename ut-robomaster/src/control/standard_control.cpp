@@ -50,17 +50,17 @@ namespace standard_control
 control::agitator::AgitatorSubsystem theAgitator(drivers());
 control::flywheel::FlywheelSubsystem theFlywheel(drivers());
 control::chassis::ChassisSubsystem theChassis(drivers());
-control::turret::TurretSubsystem theTurret(drivers());
-// control::gimbal::GimbalSubsystem theGimbal(drivers());
+// control::turret::TurretSubsystem theTurret(drivers());
+control::gimbal::GimbalSubsystem theGimbal(drivers());
 
 /* define commands ----------------------------------------------------------*/
 control::agitator::AgitatorRotateCommand rotateCommand(&theAgitator);
 control::agitator::AgitatorReverseCommand reverseCommand(&theAgitator);
 control::flywheel::FlywheelOnCommand flywheelCommand(&theFlywheel);
-control::chassis::ChassisDriveKeyboardCommand chassisDriveKeyboardCommand(drivers(), &theChassis);
-// control::chassis::ChassisDriveCommand chassisDriveCommand(drivers(), &theChassis);
-control::turret::TurretMoveCommand turretMoveCommand(drivers(), &theTurret);
-// control::gimbal::GimbalMoveCommand gimbalMoveCommand(drivers(), &theGimbal);
+// control::chassis::ChassisDriveKeyboardCommand chassisDriveKeyboardCommand(drivers(), &theChassis);
+control::chassis::ChassisDriveCommand chassisDriveCommand(drivers(), &theChassis);
+// control::turret::TurretMoveCommand turretMoveCommand(drivers(), &theTurret);
+control::gimbal::GimbalMoveCommand gimbalMoveCommand(drivers(), &theGimbal);
 
 /* define command mappings --------------------------------------------------*/
 HoldRepeatCommandMapping rightSwitchUp(
@@ -86,8 +86,8 @@ void registerStandardSubsystems(tap::Drivers *drivers)
     drivers->commandScheduler.registerSubsystem(&theAgitator);
     drivers->commandScheduler.registerSubsystem(&theFlywheel);
     drivers->commandScheduler.registerSubsystem(&theChassis);
-    drivers->commandScheduler.registerSubsystem(&theTurret);
-    // drivers->commandScheduler.registerSubsystem(&theGimbal);
+    // drivers->commandScheduler.registerSubsystem(&theTurret);
+    drivers->commandScheduler.registerSubsystem(&theGimbal);
 }
 
 /* initialize subsystems ----------------------------------------------------*/
@@ -95,17 +95,17 @@ void initializeSubsystems() {
     theAgitator.initialize();
     theFlywheel.initialize();
     theChassis.initialize();
-    theTurret.initialize();
-    // theGimbal.initialize();
+    // theTurret.initialize();
+    theGimbal.initialize();
 }
 
 /* set any default commands to subsystems here ------------------------------*/
 void setDefaultStandardCommands(tap::Drivers *) 
 {
-    theChassis.setDefaultCommand(&chassisDriveKeyboardCommand);
-    // theChassis.setDefaultCommand(&chassisDriveCommand);
-    theTurret.setDefaultCommand(&turretMoveCommand);
-    // theGimbal.setDefaultCommand(&gimbalMoveCommand);
+    // theChassis.setDefaultCommand(&chassisDriveKeyboardCommand);
+    theChassis.setDefaultCommand(&chassisDriveCommand);
+    // theTurret.setDefaultCommand(&turretMoveCommand);
+    theGimbal.setDefaultCommand(&gimbalMoveCommand);
 }
 
 /* add any starting commands to the scheduler here --------------------------*/
