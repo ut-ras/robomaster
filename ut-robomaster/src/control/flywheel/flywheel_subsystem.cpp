@@ -22,7 +22,6 @@ void FlywheelSubsystem::refresh() {}
 void FlywheelSubsystem::setDesiredOutput(float output)
 {
     drivers->pwm.write(output, FLYWHEEL_MOTOR_PIN);
-    drivers->leds.set(tap::gpio::Leds::Green, true);
 }
 }
 }

@@ -24,6 +24,7 @@
 #include "tap/util_macros.hpp"
 #include "modm/math/filter/pid.hpp"
 #include "modm/math/geometry/vector.hpp"
+#include "tap/architecture/periodic_timer.hpp"
 
 #define MOUSE_SCALAR 1.0f
 #define PITCH_RANGE 125000.0f
@@ -105,8 +106,13 @@ private:
     float pitchSetValue;
 
     float prevPosition;
+
+    float offset;
+    bool ledTest;
+    tap::arch::PeriodicMilliTimer timer;
 };  // class TurretSubsystem
 
+ 
 }  // namespace turret
 
 }  // namespace control

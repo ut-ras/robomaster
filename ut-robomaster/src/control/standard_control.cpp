@@ -50,33 +50,43 @@ namespace standard_control
 control::agitator::AgitatorSubsystem theAgitator(drivers());
 control::flywheel::FlywheelSubsystem theFlywheel(drivers());
 control::chassis::ChassisSubsystem theChassis(drivers());
-// control::turret::TurretSubsystem theTurret(drivers());
-control::gimbal::GimbalSubsystem theGimbal(drivers());
+control::turret::TurretSubsystem theTurret(drivers());  // mouse  
+//control::gimbal::GimbalSubsystem theGimbal(drivers());   // joystick
 
 /* define commands ----------------------------------------------------------*/
 control::agitator::AgitatorRotateCommand rotateCommand(&theAgitator);
 control::agitator::AgitatorReverseCommand reverseCommand(&theAgitator);
 control::flywheel::FlywheelOnCommand flywheelCommand(&theFlywheel);
-// control::chassis::ChassisDriveKeyboardCommand chassisDriveKeyboardCommand(drivers(), &theChassis);
-control::chassis::ChassisDriveCommand chassisDriveCommand(drivers(), &theChassis);
-// control::turret::TurretMoveCommand turretMoveCommand(drivers(), &theTurret);
-control::gimbal::GimbalMoveCommand gimbalMoveCommand(drivers(), &theGimbal);
+control::chassis::ChassisDriveKeyboardCommand chassisDriveKeyboardCommand(drivers(), &theChassis);  // keyboard
+//control::chassis::ChassisDriveCommand chassisDriveCommand(drivers(), &theChassis);   // joystick
+control::turret::TurretMoveCommand turretMoveCommand(drivers(), &theTurret);    //mouse 
+//control::gimbal::GimbalMoveCommand gimbalMoveCommand(drivers(), &theGimbal);     //joystick
 
 /* define command mappings --------------------------------------------------*/
-HoldRepeatCommandMapping rightSwitchUp(
-    drivers(),
-    {&rotateCommand},
-    RemoteMapState(Remote::Switch::RIGHT_SWITCH,Remote::SwitchState::UP), true, -1);
+// HoldRepeatCommandMapping rightSwitchUp(
+//     drivers(),
+//     {&rotateCommand},
+//     RemoteMapState(Remote::Switch::RIGHT_SWITCH,Remote::SwitchState::UP), true, -1);
 
 HoldRepeatCommandMapping rightSwitchDown(
     drivers(),
     {&reverseCommand},
     RemoteMapState(Remote::Switch::RIGHT_SWITCH, Remote::SwitchState::DOWN), true, -1);
 
-HoldRepeatCommandMapping leftSwitchUp(
+// HoldRepeatCommandMapping leftSwitchUp(
+//     drivers(),
+//     {&flywheelCommand},
+//     RemoteMapState(Remote::Switch::LEFT_SWITCH, Remote::SwitchState::UP), true, -1);
+
+HoldRepeatCommandMapping rightMouseDown(
     drivers(),
     {&flywheelCommand},
-    RemoteMapState(Remote::Switch::LEFT_SWITCH, Remote::SwitchState::UP), true, -1);
+    RemoteMapState(RemoteMapState::MouseButton::RIGHT), true, -1);
+
+HoldRepeatCommandMapping leftMouseDown(
+    drivers(),
+    {&rotateCommand},
+    RemoteMapState(RemoteMapState::MouseButton::LEFT), true, -1);
 
 
 
@@ -86,8 +96,8 @@ void registerStandardSubsystems(tap::Drivers *drivers)
     drivers->commandScheduler.registerSubsystem(&theAgitator);
     drivers->commandScheduler.registerSubsystem(&theFlywheel);
     drivers->commandScheduler.registerSubsystem(&theChassis);
-    // drivers->commandScheduler.registerSubsystem(&theTurret);
-    drivers->commandScheduler.registerSubsystem(&theGimbal);
+    drivers->commandScheduler.registerSubsystem(&theTurret);    // mouse
+    //drivers->commandScheduler.registerSubsystem(&theGimbal);     // joystick
 }
 
 /* initialize subsystems ----------------------------------------------------*/
@@ -95,17 +105,17 @@ void initializeSubsystems() {
     theAgitator.initialize();
     theFlywheel.initialize();
     theChassis.initialize();
-    // theTurret.initialize();
-    theGimbal.initialize();
+    theTurret.initialize();     // mouse
+    //theGimbal.initialize();  // joystick
 }
 
 /* set any default commands to subsystems here ------------------------------*/
 void setDefaultStandardCommands(tap::Drivers *) 
 {
-    // theChassis.setDefaultCommand(&chassisDriveKeyboardCommand);
-    theChassis.setDefaultCommand(&chassisDriveCommand);
-    // theTurret.setDefaultCommand(&turretMoveCommand);
-    theGimbal.setDefaultCommand(&gimbalMoveCommand);
+    theChassis.setDefaultCommand(&chassisDriveKeyboardCommand); // keyboard
+    //theChassis.setDefaultCommand(&chassisDriveCommand);  //joystick
+    theTurret.setDefaultCommand(&turretMoveCommand);    //mouse
+    //theGimbal.setDefaultCommand(&gimbalMoveCommand);     //joystick
 }
 
 /* add any starting commands to the scheduler here --------------------------*/
@@ -114,9 +124,11 @@ void startStandardCommands(tap::Drivers *) {}
 /* register io mappings here ------------------------------------------------*/
 void registerStandardIoMappings(tap::Drivers *drivers)
 {
-    drivers->commandMapper.addMap(&rightSwitchUp);
+    // drivers->commandMapper.addMap(&rightSwitchUp);
     drivers->commandMapper.addMap(&rightSwitchDown);
-    drivers->commandMapper.addMap(&leftSwitchUp);
+    // drivers->commandMapper.addMap(&leftSwitchUp);
+    drivers->commandMapper.addMap(&leftMouseDown);
+    drivers->commandMapper.addMap(&rightMouseDown);
 }
 } // namespace standard_control
 

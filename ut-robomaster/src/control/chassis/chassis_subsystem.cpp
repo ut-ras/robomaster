@@ -53,7 +53,7 @@ void ChassisSubsystem::refresh()
 void ChassisSubsystem::updateMotorRpmPID(modm::Pid<float>* pid, tap::motor::DjiMotor* const motor, float desiredRpm)
 {
     pid->update(desiredRpm - motor->getShaftRPM());
-    motor->setDesiredOutput(pid->getValue());
+    motor->setDesiredOutput(pid->getValue() / 2);
 }
 ///@brief 
 

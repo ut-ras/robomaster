@@ -36,8 +36,9 @@ void TurretSubsystem::initialize()
     yawMotor.initialize();
     pitchMotor.initialize();
 
+    // investigate initial value
     startYaw = yawMotor.getEncoderUnwrapped();
-    yawSetValue = startYaw;
+    yawSetValue = startYaw + 2048;
     yawIsSet = true;
 
     startPitch = pitchMotor.getEncoderUnwrapped();
@@ -45,6 +46,8 @@ void TurretSubsystem::initialize()
     pitchIsSet = true;
 
     prevPosition = drivers->bmi088.getYaw();
+    timer.restart(100);
+    ledTest = false;
 }
 
 void TurretSubsystem::refresh() 
@@ -66,9 +69,10 @@ void TurretSubsystem::updateMotorRpmPID(modm::Pid<float>* pid, tap::motor::DjiMo
 void TurretSubsystem::setDesiredOutput(float x, float y)
 {
     if (x != 0.0f) {
-        float offset = drivers->bmi088.getYaw() - prevPosition;
+        offset = drivers->bmi088.getYaw() - prevPosition;
         offset = offset/360 * 8192;
         yawEncoderToRPM.update(offset);
+        prevPosition = drivers->bmi088.getYaw();
 
         desiredRPM[0] = (x * 4) + yawEncoderToRPM.getValue();   // yaw motor
         yawIsSet = false;
@@ -79,15 +83,23 @@ void TurretSubsystem::setDesiredOutput(float x, float y)
             yawSetValue = yawMotor.getEncoderUnwrapped();
             yawIsSet = true;
         }
+        //Timer may or may need to be removed if bugs occur
+        if (timer.execute()) {
+            offset = drivers->bmi088.getYaw() - prevPosition;
+            offset = offset/360.0f * 8192.0f;
+            prevPosition = drivers->bmi088.getYaw();
+            timer.restart(100);
+            if (!ledTest) { drivers->leds.set(tap::gpio::Leds::Red, true); ledTest = true; }
+            else { drivers->leds.set(tap::gpio::Leds::Red, false); ledTest = false; }
+            yawSetValue += offset;
+        }
 
-        float offset = drivers->bmi088.getYaw() - prevPosition;
-        offset = offset/360 * 8192;
+        // if (offset >= 20.0f) {drivers->leds.set(tap::gpio::Leds::Red, true);}
+        // else{drivers->leds.set(tap::gpio::Leds::Red, false);}
 
-        yawEncoderToRPM.update((yawSetValue + offset) - yawMotor.getEncoderUnwrapped());
+        yawEncoderToRPM.update(yawSetValue - (float)yawMotor.getEncoderUnwrapped());
         desiredRPM[0] = yawEncoderToRPM.getValue();
     }
-
-    prevPosition = drivers->bmi088.getYaw();
 
     if (y != 0.0f) {
         if ((y > 0 && pitchMotor.getEncoderUnwrapped() >= startPitch) || (y < 0 && pitchMotor.getEncoderUnwrapped() <= startPitch - PITCH_RANGE)) {
