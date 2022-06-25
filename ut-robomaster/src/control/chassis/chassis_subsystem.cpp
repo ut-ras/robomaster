@@ -39,7 +39,7 @@ void ChassisSubsystem::initialize()
     rightBackMotor.initialize();
     drivers->bmi088.requestRecalibration();
     startYaw = drivers->bmi088.getYaw();
-    imuDrive = true;
+    imuDrive = false;
 }
 
 void ChassisSubsystem::refresh() 
@@ -52,15 +52,15 @@ void ChassisSubsystem::refresh()
 
 void ChassisSubsystem::updateMotorRpmPID(modm::Pid<float>* pid, tap::motor::DjiMotor* const motor, float desiredRpm)
 {
-    pid->update(desiredRpm - motor->getShaftRPM());
-    motor->setDesiredOutput(pid->getValue() / 2);
+    pid->update((desiredRpm/2) - motor->getShaftRPM());
+    motor->setDesiredOutput(pid->getValue());
 }
 ///@brief 
 
 ///
 void ChassisSubsystem::setDesiredOutput(float x, float y, float r)
 {
-    if (drivers->bmi088.getImuState() == tap::communication::sensors::imu::ImuInterface::ImuState::IMU_CALIBRATING)
+    if (drivers->bmi088.getImuState() == tap::communication::sensors::imu::ImuInterface::ImuState::IMU_CALIBRATING) //if the 6020 is set to the calibrated value, set all RPMs to 0
     {
         for (uint16_t i = 0; i < MODM_ARRAY_SIZE(desiredWheelRPM); i++)
         {
@@ -73,8 +73,8 @@ void ChassisSubsystem::setDesiredOutput(float x, float y, float r)
     vector.setY(y);
 
     if (!imuDrive && drivers->remote.getSwitch(tap::communication::serial::Remote::Switch::LEFT_SWITCH) == tap::communication::serial::Remote::SwitchState::DOWN)
-    {
-        imuDrive = true;
+    {       //TODO: Fix the IMU and the if statement to not use remote commands
+        imuDrive = false;       //would normally be true but set to false for competition
         drivers->bmi088.requestRecalibration();
         startYaw = drivers->bmi088.getYaw();
     }

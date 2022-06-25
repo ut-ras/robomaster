@@ -5,8 +5,8 @@
 
 #include "turret_subsystem.hpp"
 
-#define POSDEADZONE 20
-#define NEGDEADZONE -20
+#define POSDEADZONE 10
+#define NEGDEADZONE -10
 
 using namespace tap::communication::serial;
 
