@@ -170,6 +170,7 @@ float ChassisSubsystem::powerLimiter()
     energyBuffer = drivers->refSerial.getRobotData().chassis.powerBuffer;
     if (energyBuffer < ENERGY_BUFFER_LIMIT_THRESHOLD)
     {
+        drivers->leds.set(tap::gpio::Leds::Green, false);
         return limitVal(
             static_cast<float>(energyBuffer - ENERGY_BUFFER_CRIT_THRESHOLD) /
                 ENERGY_BUFFER_LIMIT_THRESHOLD,
