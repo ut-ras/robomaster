@@ -55,7 +55,7 @@ void ChassisSubsystem::refresh()
     updateMotorRpmPID(&pid[3], &rightBackMotor, desiredWheelRPM[3]);
 
     // from aruw-mcb chassis_subsystem.cpp
-    float powerScalar = 0.5f;
+    float powerScalar = powerLimiter();
     if (compareFloatClose(1.0f, powerScalar, 1E-3))
     {
         return;
