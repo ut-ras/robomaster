@@ -55,6 +55,38 @@ void ChassisSubsystem::refresh()
     updateMotorRpmPID(&pid[3], &rightBackMotor, desiredWheelRPM[3]);
 
     // from aruw-mcb chassis_subsystem.cpp
+    // float powerScalar = powerLimiter();
+    // if (compareFloatClose(1.0f, powerScalar, 1E-3))
+    // {
+    //     return;
+    // }
+
+    // float totalError = 0.0f;
+    // for (size_t i = 0; i < 4; i++)
+    // {
+    //     totalError += abs(pid[i].getLastError());
+    // }
+
+    // bool totalErrorZero = compareFloatClose(0.0f, totalError, 1E-3);
+    // for (size_t i = 0; i < 4; i++)
+    // {
+    //     float velocityErrorScalar = totalErrorZero ? (1.0f / 4) : (abs(pid[i].getLastError()) / totalError);
+    //     float modifiedPowerScalar =
+    //         limitVal(4 * powerScalar * velocityErrorScalar, 0.0f, 1.0f);
+    //     motors[i]->setDesiredOutput(pid[i].getValue() * modifiedPowerScalar);
+    // }
+}
+
+void ChassisSubsystem::updateMotorRpmPID(modm::Pid<float>* pid, tap::motor::DjiMotor* const motor, float desiredRpm)
+{
+    if (drivers->remote.keyPressed(tap::communication::serial::Remote::Key::SHIFT)){
+        slowFactor = 0.5f;
+    }
+    else { 
+        slowFactor = 1.0f; 
+    }
+
+    // from aruw-mcb chassis_subsystem.cpp
     float powerScalar = powerLimiter();
     if (compareFloatClose(1.0f, powerScalar, 1E-3))
     {
@@ -68,25 +100,10 @@ void ChassisSubsystem::refresh()
     }
 
     bool totalErrorZero = compareFloatClose(0.0f, totalError, 1E-3);
-    for (size_t i = 0; i < 4; i++)
-    {
-        float velocityErrorScalar = totalErrorZero ? (1.0f / 4) : (abs(pid[i].getLastError()) / totalError);
-        float modifiedPowerScalar =
-            limitVal(4 * powerScalar * velocityErrorScalar, 0.0f, 1.0f);
-        motors[i]->setDesiredOutput(pid[i].getValue() * modifiedPowerScalar);
-    }
-}
+    float velocityErrorScalar = totalErrorZero ? (1.0f / 4) : (abs(pid->getLastError()) / totalError);
+    float modifiedPowerScalar = limitVal(4 * powerScalar * velocityErrorScalar, 0.0f, 1.0f);
 
-void ChassisSubsystem::updateMotorRpmPID(modm::Pid<float>* pid, tap::motor::DjiMotor* const motor, float desiredRpm)
-{
-    if (drivers->remote.keyPressed(tap::communication::serial::Remote::Key::SHIFT)){
-        slowFactor = 0.5f;
-    }
-    else { 
-        slowFactor = 1.0f; 
-    }
-
-    pid->update((desiredRpm * slowFactor) - motor->getShaftRPM());
+    pid->update((desiredRpm * slowFactor * modifiedPowerScalar ) - motor->getShaftRPM());
     motor->setDesiredOutput(pid->getValue());
 }
 ///@brief 
