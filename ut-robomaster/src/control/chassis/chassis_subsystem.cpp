@@ -103,8 +103,8 @@ void ChassisSubsystem::updateMotorRpmPID(modm::Pid<float>* pid, tap::motor::DjiM
     float velocityErrorScalar = totalErrorZero ? (1.0f / 4) : (abs(pid->getLastError()) / totalError);
     float modifiedPowerScalar = limitVal(4 * powerScalar * velocityErrorScalar, 0.0f, 1.0f);
 
-    pid->update((desiredRpm * slowFactor * modifiedPowerScalar) - motor->getShaftRPM());
-    motor->setDesiredOutput(pid->getValue());
+    pid->update((desiredRpm * slowFactor) - motor->getShaftRPM());
+    motor->setDesiredOutput(pid->getValue() * modifiedPowerScalar );
 }
 ///@brief 
 
