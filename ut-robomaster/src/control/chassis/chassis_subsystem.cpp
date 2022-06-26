@@ -171,11 +171,15 @@ float ChassisSubsystem::powerLimiter()
     if (energyBuffer < ENERGY_BUFFER_LIMIT_THRESHOLD)
     {
         drivers->leds.set(tap::gpio::Leds::Green, false);
-        return limitVal(
-            static_cast<float>(energyBuffer - ENERGY_BUFFER_CRIT_THRESHOLD) /
-                ENERGY_BUFFER_LIMIT_THRESHOLD,
-            0.0f,
-            1.0f);
+        float returnVal = (energyBuffer - ENERGY_BUFFER_CRIT_THRESHOLD) / ENERGY_BUFFER_LIMIT_THRESHOLD;
+        if (returnVal < 0.0f) { return 0.0f; }
+        else if (returnVal > 1.0f) { return 1.0f; }
+        else {return returnVal; }
+        // return limitVal(
+        //     static_cast<float>(energyBuffer - ENERGY_BUFFER_CRIT_THRESHOLD) /
+        //         ENERGY_BUFFER_LIMIT_THRESHOLD,
+        //     0.0f,
+        //     1.0f);
     }
     else
     {
