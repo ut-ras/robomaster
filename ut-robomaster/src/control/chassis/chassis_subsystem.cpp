@@ -163,7 +163,8 @@ float ChassisSubsystem::powerLimiter()
 {
     if (!drivers->refSerial.getRefSerialReceivingData())
     {
-        return 0.0f;
+        drivers->leds.set(tap::gpio::Leds::Green, true);
+        return 1.0f;
     }
 
     energyBuffer = drivers->refSerial.getRobotData().chassis.powerBuffer;

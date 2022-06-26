@@ -71,23 +71,14 @@ float TurretSubsystem::imuWrap(float offset)
     float negative = offset - 360;
 
     if (fabs(positive) < fabs(negative) && fabs(positive) < fabs(offset)) {
-        drivers->leds.set(tap::gpio::Leds::Red, true);
-        drivers->leds.set(tap::gpio::Leds::Green, false);
-        drivers->leds.set(tap::gpio::Leds::Blue, false);
         return positive;
     }
 
     else if (fabs(negative) < fabs(positive) && fabs(negative) < fabs(offset)) {
-        drivers->leds.set(tap::gpio::Leds::Blue, true);
-        drivers->leds.set(tap::gpio::Leds::Green, false);
-        drivers->leds.set(tap::gpio::Leds::Red, false);
         return negative;
     }
 
     else {
-        drivers->leds.set(tap::gpio::Leds::Blue, false);
-        drivers->leds.set(tap::gpio::Leds::Green, true);
-        drivers->leds.set(tap::gpio::Leds::Red, false);
         return offset;
     }
 }
