@@ -83,6 +83,9 @@ float TurretSubsystem::imuWrap(float offset)
     }
 
     else {
+        drivers->leds.set(tap::gpio::Leds::Blue, false);
+        drivers->leds.set(tap::gpio::Leds::Green, true);
+        drivers->leds.set(tap::gpio::Leds::Red, false);
         return offset;
     }
 }
