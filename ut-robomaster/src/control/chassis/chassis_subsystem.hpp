@@ -80,13 +80,21 @@ public:
               CAN_BUS_MOTORS,
               false,
               "right back drive motor"),
-          pid(22.0f, 0.2f, 0.0f, 5000.0f, 16000.0f) // from aruw solider_chassis_constants.hpp
+          pid{
+            modm::Pid<float>(22.0f, 0.2f, 0.0f, 5000.0f, 16000.0f), 
+            modm::Pid<float>(22.0f, 0.2f, 0.0f, 5000.0f, 16000.0f),
+            modm::Pid<float>(22.0f, 0.2f, 0.0f, 5000.0f, 16000.0f),
+            modm::Pid<float>(22.0f, 0.2f, 0.0f, 5000.0f, 16000.0f)} // from aruw solider_chassis_constants.hpp
     {
         for (uint16_t i = 0; i < MODM_ARRAY_SIZE(desiredWheelRPM); i++)
         {
             desiredWheelRPM[i] = 0.0f;
         }
 
+        motors[0] = &rightFrontMotor;
+        motors[1] = &leftFrontMotor;
+        motors[2] = &leftBackMotor;
+        motors[3] = &rightBackMotor;
     }
 
     ChassisSubsystem(const ChassisSubsystem &other) = delete;
@@ -102,6 +110,8 @@ public:
     void refresh() override;
 
     void updateMotorRpmPID(modm::Pid<float>* pid, tap::motor::DjiMotor* const motor, float desiredRpm);
+
+    float powerLimiter();
 
     const tap::motor::DjiMotor &getLeftFrontMotor() const { return leftFrontMotor; }
     const tap::motor::DjiMotor &getLeftBackMotor() const { return leftBackMotor; }
@@ -125,10 +135,12 @@ private:
     tap::motor::DjiMotor rightFrontMotor;
     tap::motor::DjiMotor rightBackMotor;
 
+    tap::motor::DjiMotor *motors[4];
+
     float desiredWheelRPM[4];
     float maxRPM = 8000;    // assume 8000 to be max rpm
     modm::Vector<float, 2> vector;
-    modm::Pid<float> pid;
+    modm::Pid<float> pid[4];
     float startYaw;
     bool imuDrive;
 
@@ -137,6 +149,10 @@ private:
 
     bool slowMode;
     float slowFactor;
+
+    float energyBuffer;
+    static constexpr float ENERGY_BUFFER_LIMIT_THRESHOLD = 60.0f;
+    static constexpr float ENERGY_BUFFER_CRIT_THRESHOLD = 10.0f;
 };  // class ChassisSubsystem
 
 }  // namespace chassis

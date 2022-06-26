@@ -49,10 +49,32 @@ void ChassisSubsystem::initialize()
 
 void ChassisSubsystem::refresh() 
 {
-    updateMotorRpmPID(&pid, &rightFrontMotor, desiredWheelRPM[0]);
-    updateMotorRpmPID(&pid, &leftFrontMotor, desiredWheelRPM[1]);
-    updateMotorRpmPID(&pid, &leftBackMotor, desiredWheelRPM[2]);
-    updateMotorRpmPID(&pid, &rightBackMotor, desiredWheelRPM[3]);
+    updateMotorRpmPID(&pid[0], &rightFrontMotor, desiredWheelRPM[0]);
+    updateMotorRpmPID(&pid[1], &leftFrontMotor, desiredWheelRPM[1]);
+    updateMotorRpmPID(&pid[2], &leftBackMotor, desiredWheelRPM[2]);
+    updateMotorRpmPID(&pid[3], &rightBackMotor, desiredWheelRPM[3]);
+
+    // from aruw-mcb chassis_subsystem.cpp
+    float powerScalar = powerLimiter();
+    if (compareFloatClose(1.0f, powerScalar, 1E-3))
+    {
+        return;
+    }
+
+    float totalError = 0.0f;
+    for (size_t i = 0; i < 4; i++)
+    {
+        totalError += abs(pid[i].getLastError());
+    }
+
+    bool totalErrorZero = compareFloatClose(0.0f, totalError, 1E-3);
+     for (size_t i = 0; i < 4; i++)
+    {
+        float velocityErrorScalar = totalErrorZero ? (1.0f / 4) : (abs(pid[i].getLastError()) / totalError);
+        float modifiedPowerScalar =
+            limitVal(4 * powerScalar * velocityErrorScalar, 0.0f, 1.0f);
+        motors[i]->setDesiredOutput(motors[i]->getOutputDesired() * modifiedPowerScalar);
+    }
 }
 
 void ChassisSubsystem::updateMotorRpmPID(modm::Pid<float>* pid, tap::motor::DjiMotor* const motor, float desiredRpm)
@@ -63,7 +85,8 @@ void ChassisSubsystem::updateMotorRpmPID(modm::Pid<float>* pid, tap::motor::DjiM
     else { 
         slowFactor = 1.0f; 
     }
-    pid->update((desiredRpm * slowFactor / 2) - motor->getShaftRPM());
+
+    pid->update((desiredRpm * slowFactor) - motor->getShaftRPM());
     motor->setDesiredOutput(pid->getValue());
 }
 ///@brief 
@@ -133,6 +156,28 @@ void ChassisSubsystem::setDesiredOutput(float x, float y, float r)
     for (uint16_t i = 0; i < MODM_ARRAY_SIZE(desiredWheelRPM); i++)
     {
         desiredWheelRPM[i] *= maxRPM;
+    }
+}
+
+float ChassisSubsystem::powerLimiter()
+{
+    if (!drivers->refSerial.getRefSerialReceivingData())
+    {
+        return 1.0f;
+    }
+
+    energyBuffer = drivers->refSerial.getRobotData().chassis.powerBuffer;
+    if (energyBuffer < ENERGY_BUFFER_LIMIT_THRESHOLD)
+    {
+        return limitVal(
+            static_cast<float>(energyBuffer - ENERGY_BUFFER_CRIT_THRESHOLD) /
+                ENERGY_BUFFER_LIMIT_THRESHOLD,
+            0.0f,
+            1.0f);
+    }
+    else
+    {
+        return 1.0f;
     }
 }
 }  // namespace chassis
