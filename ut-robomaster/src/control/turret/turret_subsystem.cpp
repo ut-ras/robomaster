@@ -46,8 +46,8 @@ void TurretSubsystem::initialize()
     pitchIsSet = true;
 
     prevPosition = drivers->bmi088.getYaw();
-    timer.restart(100);
-    ledTest = false;
+    // timer.restart(100);
+    // ledTest = false;
 }
 
 void TurretSubsystem::refresh() 
@@ -84,15 +84,15 @@ void TurretSubsystem::setDesiredOutput(float x, float y)
             yawIsSet = true;
         }
         //Timer may or may need to be removed if bugs occur
-        if (timer.execute()) {
+        // if (timer.execute()) {
             offset = drivers->bmi088.getYaw() - prevPosition;
             offset = offset/360.0f * 8192.0f;
             prevPosition = drivers->bmi088.getYaw();
-            timer.restart(100);
-            if (!ledTest) { drivers->leds.set(tap::gpio::Leds::Red, true); ledTest = true; }
-            else { drivers->leds.set(tap::gpio::Leds::Red, false); ledTest = false; }
+            // timer.restart(100);
+            // if (!ledTest) { drivers->leds.set(tap::gpio::Leds::Red, true); ledTest = true; }
+            // else { drivers->leds.set(tap::gpio::Leds::Red, false); ledTest = false; }
             yawSetValue += offset;
-        }
+        // }
 
         // if (offset >= 20.0f) {drivers->leds.set(tap::gpio::Leds::Red, true);}
         // else{drivers->leds.set(tap::gpio::Leds::Red, false);}
