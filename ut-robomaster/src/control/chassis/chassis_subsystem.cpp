@@ -61,19 +61,19 @@ void ChassisSubsystem::refresh()
         return;
     }
 
-    float totalError = 0.0f;
+    // float totalError = 0.0f;
+    // for (size_t i = 0; i < 4; i++)
+    // {
+    //     totalError += abs(pid[i].getLastError());
+    // }
+
+    // bool totalErrorZero = compareFloatClose(0.0f, totalError, 1E-3);
     for (size_t i = 0; i < 4; i++)
     {
-        totalError += abs(pid[i].getLastError());
-    }
-
-    bool totalErrorZero = compareFloatClose(0.0f, totalError, 1E-3);
-     for (size_t i = 0; i < 4; i++)
-    {
-        float velocityErrorScalar = totalErrorZero ? (1.0f / 4) : (abs(pid[i].getLastError()) / totalError);
-        float modifiedPowerScalar =
-            limitVal(4 * powerScalar * velocityErrorScalar, 0.0f, 1.0f);
-        motors[i]->setDesiredOutput(motors[i]->getOutputDesired() * modifiedPowerScalar);
+        // float velocityErrorScalar = totalErrorZero ? (1.0f / 4) : (abs(pid[i].getLastError()) / totalError);
+        // float modifiedPowerScalar =
+        //     limitVal(4 * powerScalar * velocityErrorScalar, 0.0f, 1.0f);
+        motors[i]->setDesiredOutput(motors[i]->getOutputDesired() * powerScalar);
     }
 }
 
