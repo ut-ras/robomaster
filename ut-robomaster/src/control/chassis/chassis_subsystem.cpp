@@ -55,26 +55,26 @@ void ChassisSubsystem::refresh()
     updateMotorRpmPID(&pid[3], &rightBackMotor, desiredWheelRPM[3]);
 
     // from aruw-mcb chassis_subsystem.cpp
-    // float powerScalar = powerLimiter();
-    // if (compareFloatClose(1.0f, powerScalar, 1E-3))
-    // {
-    //     return;
-    // }
+    float powerScalar = 0.5f;
+    if (compareFloatClose(1.0f, powerScalar, 1E-3))
+    {
+        return;
+    }
 
-    // // float totalError = 0.0f;
-    // // for (size_t i = 0; i < 4; i++)
-    // // {
-    // //     totalError += abs(pid[i].getLastError());
-    // // }
-
-    // // bool totalErrorZero = compareFloatClose(0.0f, totalError, 1E-3);
+    // float totalError = 0.0f;
     // for (size_t i = 0; i < 4; i++)
     // {
-    //     // float velocityErrorScalar = totalErrorZero ? (1.0f / 4) : (abs(pid[i].getLastError()) / totalError);
-    //     // float modifiedPowerScalar =
-    //     //     limitVal(4 * powerScalar * velocityErrorScalar, 0.0f, 1.0f);
-    //     motors[i]->setDesiredOutput(motors[i]->getOutputDesired() * powerScalar);
+    //     totalError += abs(pid[i].getLastError());
     // }
+
+    // bool totalErrorZero = compareFloatClose(0.0f, totalError, 1E-3);
+    for (size_t i = 0; i < 4; i++)
+    {
+        // float velocityErrorScalar = totalErrorZero ? (1.0f / 4) : (abs(pid[i].getLastError()) / totalError);
+        // float modifiedPowerScalar =
+        //     limitVal(4 * powerScalar * velocityErrorScalar, 0.0f, 1.0f);
+        motors[i]->setDesiredOutput(desiredWheelRPM[i] * powerScalar);
+    }
 }
 
 void ChassisSubsystem::updateMotorRpmPID(modm::Pid<float>* pid, tap::motor::DjiMotor* const motor, float desiredRpm)
