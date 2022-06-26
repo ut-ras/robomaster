@@ -72,7 +72,7 @@ float TurretSubsystem::imuWrap(float offset)
         return positive;
     }
 
-    else if (fabs(negative) < fabs(positive) && fabs(positive) < fabs(offset)) {
+    else if (fabs(negative) < fabs(positive) && fabs(negative) < fabs(offset)) {
         return negative;
     }
 
