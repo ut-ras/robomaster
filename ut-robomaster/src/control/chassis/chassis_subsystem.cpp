@@ -39,7 +39,10 @@ void ChassisSubsystem::initialize()
     rightBackMotor.initialize();
     drivers->bmi088.requestRecalibration();
     startYaw = drivers->bmi088.getYaw();
-    imuDrive = false;
+    imuDrive = true;
+
+    setStartTurret = false;
+    startTurretLoc = 0.0f;
 }
 
 void ChassisSubsystem::refresh() 
@@ -72,22 +75,32 @@ void ChassisSubsystem::setDesiredOutput(float x, float y, float r)
     vector.setX(x);
     vector.setY(y);
 
-    if (!imuDrive && drivers->remote.getSwitch(tap::communication::serial::Remote::Switch::LEFT_SWITCH) == tap::communication::serial::Remote::SwitchState::DOWN)
-    {       //TODO: Fix the IMU and the if statement to not use remote commands
-        imuDrive = false;       //would normally be true but set to false for competition
-        drivers->bmi088.requestRecalibration();
-        startYaw = drivers->bmi088.getYaw();
-    }
+    // if (!imuDrive && drivers->remote.getSwitch(tap::communication::serial::Remote::Switch::LEFT_SWITCH) == tap::communication::serial::Remote::SwitchState::DOWN)
+    // {       //TODO: Fix the IMU and the if statement to not use remote commands
+    //     imuDrive = true;  
+    //     drivers->bmi088.requestRecalibration();
+    //     startYaw = drivers->bmi088.getYaw();
+    // }
 
     // else if (drivers->remote.getSwitch(tap::communication::serial::Remote::Switch::LEFT_SWITCH) == tap::communication::serial::Remote::SwitchState::MID)
     // {
     //     imuDrive = false;
     // }
 
+    // if (imuDrive && drivers->bmi088.getImuState() == tap::communication::sensors::imu::ImuInterface::ImuState::IMU_CALIBRATED)
+    // {
+    //     float offset = modm::toRadian(drivers->bmi088.getYaw() - startYaw);
+    //     vector.rotate(offset);
+    // }
     if (imuDrive && drivers->bmi088.getImuState() == tap::communication::sensors::imu::ImuInterface::ImuState::IMU_CALIBRATED)
     {
+        if (!setStartTurret && yawMotor->isMotorOnline()){
+            startTurretLoc = yawMotor->getEncoderUnwrapped();
+            setStartTurret = true;
+        }
         float offset = modm::toRadian(drivers->bmi088.getYaw() - startYaw);
-        vector.rotate(offset);
+        float turretOffset = modm::toRadian((startTurretLoc - yawMotor->getEncoderUnwrapped()) * 360 / 8192);
+        vector.rotate(offset + turretOffset);
     }
     
     float theta = vector.getAngle();

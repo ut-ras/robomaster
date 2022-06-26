@@ -52,9 +52,10 @@ public:
      * Constructs a new ChassisSubsystem with default parameters specified in
      * the private section of this class.
      */
-    ChassisSubsystem(tap::Drivers *drivers)
+    ChassisSubsystem(tap::Drivers *drivers, const tap::motor::DjiMotor *yawMotor)
         : tap::control::Subsystem(drivers),
           drivers(drivers),
+          yawMotor(yawMotor),
           leftFrontMotor(
               drivers,
               LEFT_FRONT_MOTOR_ID,
@@ -109,6 +110,7 @@ public:
 
 private:
     tap::Drivers *drivers;
+    const tap::motor::DjiMotor *yawMotor;
     
     ///< Hardware constants, not specific to any particular chassis.
     static constexpr tap::motor::MotorId RIGHT_FRONT_MOTOR_ID = tap::motor::MOTOR1;
@@ -129,6 +131,9 @@ private:
     modm::Pid<float> pid;
     float startYaw;
     bool imuDrive;
+
+    bool setStartTurret;
+    float startTurretLoc;
 
 };  // class ChassisSubsystem
 

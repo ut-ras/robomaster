@@ -49,9 +49,9 @@ namespace standard_control
 /* define subsystems --------------------------------------------------------*/
 control::agitator::AgitatorSubsystem theAgitator(drivers());
 control::flywheel::FlywheelSubsystem theFlywheel(drivers());
-control::chassis::ChassisSubsystem theChassis(drivers());
 control::turret::TurretSubsystem theTurret(drivers());  // mouse  
 //control::gimbal::GimbalSubsystem theGimbal(drivers());   // joystick
+control::chassis::ChassisSubsystem theChassis(drivers(), &theTurret.getYawMotor());
 
 /* define commands ----------------------------------------------------------*/
 control::agitator::AgitatorRotateCommand rotateCommand(&theAgitator);
