@@ -46,6 +46,17 @@ void ChassisDriveKeyboardCommand::execute()
     float y = -(drivers->remote.keyPressed(Remote::Key::W) - drivers->remote.keyPressed(Remote::Key::S));
     float r = -(drivers->remote.keyPressed(Remote::Key::Q) - drivers->remote.keyPressed(Remote::Key::E));
 
+    if (drivers->remote.keyPressed(Remote::Key::R)) {
+        if (!isBeyblade) {
+            r = 1.0f;
+            isBeyblade = true;
+        }
+        else {
+            r = 0.0f;
+            isBeyblade = false;
+        }
+    }
+
     if (x != 0.0f && !xDeacceleration) {
         if (xRamp.getTarget() != 1.0f) {
             xRamp.setTarget(1.0f);
@@ -118,17 +129,6 @@ void ChassisDriveKeyboardCommand::execute()
         if (rRamp.getValue() == 0.0f) {
             rToggle = false;
             rDeacceleration = false;
-        }
-    }
-
-    if (drivers->remote.keyPressed(Remote::Key::R)) {
-        if (!isBeyblade) {
-            r = 1.0f;
-            isBeyblade = true;
-        }
-        else {
-            r = 0.0f;
-            isBeyblade = false;
         }
     }
 
