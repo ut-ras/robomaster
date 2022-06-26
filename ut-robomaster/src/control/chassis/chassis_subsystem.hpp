@@ -135,6 +135,8 @@ private:
     bool setStartTurret;
     float startTurretLoc;
 
+    bool slowMode;
+    float slowFactor;
 };  // class ChassisSubsystem
 
 }  // namespace chassis

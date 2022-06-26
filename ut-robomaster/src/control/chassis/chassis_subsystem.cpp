@@ -43,6 +43,8 @@ void ChassisSubsystem::initialize()
 
     setStartTurret = false;
     startTurretLoc = 0.0f;
+
+    slowFactor = 1.0f;
 }
 
 void ChassisSubsystem::refresh() 
@@ -55,7 +57,13 @@ void ChassisSubsystem::refresh()
 
 void ChassisSubsystem::updateMotorRpmPID(modm::Pid<float>* pid, tap::motor::DjiMotor* const motor, float desiredRpm)
 {
-    pid->update((desiredRpm/2) - motor->getShaftRPM());
+    if (drivers->remote.keyPressed(tap::communication::serial::Remote::Key::SHIFT)){
+        slowFactor = 0.5f;
+    }
+    else { 
+        slowFactor = 1.0f; 
+    }
+    pid->update((desiredRpm * slowFactor / 2) - motor->getShaftRPM());
     motor->setDesiredOutput(pid->getValue());
 }
 ///@brief 
