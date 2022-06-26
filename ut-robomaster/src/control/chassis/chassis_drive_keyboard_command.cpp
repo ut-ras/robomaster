@@ -57,6 +57,8 @@ void ChassisDriveKeyboardCommand::execute()
         }
     }
 
+    if (isBeyblade) { r = 1.0f; }
+
     if (x != 0.0f && !xDeacceleration) {
         if (xRamp.getTarget() != 1.0f) {
             xRamp.setTarget(1.0f);
