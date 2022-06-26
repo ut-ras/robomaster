@@ -36,8 +36,8 @@ void ChassisDriveKeyboardCommand::initialize() {
     rToggle = false;
     rPositive = true;
     rDeacceleration = false;
-
     isBeyblade = false;
+    prevTime = tap::arch::clock::getTimeMilliseconds();
 }
 
 void ChassisDriveKeyboardCommand::execute() 
@@ -46,15 +46,15 @@ void ChassisDriveKeyboardCommand::execute()
     float y = -(drivers->remote.keyPressed(Remote::Key::W) - drivers->remote.keyPressed(Remote::Key::S));
     float r = -(drivers->remote.keyPressed(Remote::Key::Q) - drivers->remote.keyPressed(Remote::Key::E));
 
-    if (drivers->remote.keyPressed(Remote::Key::R)) {
-        if (!isBeyblade) {
+    float dt = tap::arch::clock::getTimeMilliseconds() - prevTime;
+    if (drivers->remote.keyPressed(Remote::Key::R) && !isBeyblade && dt > 100) {
             r = 1.0f;
             isBeyblade = true;
-        }
-        else {
+            prevTime = tap::arch::clock::getTimeMilliseconds();
+    } else if (drivers->remote.keyPressed(Remote::Key::R) && isBeyblade && dt > 100){
             r = 0.0f;
             isBeyblade = false;
-        }
+            prevTime = tap::arch::clock::getTimeMilliseconds();
     }
 
     if (isBeyblade) { r = 1.0f; }

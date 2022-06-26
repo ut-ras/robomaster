@@ -45,6 +45,8 @@ private:
     bool rDeacceleration;
 
     bool isBeyblade;
+    float prevTime;
+
 
 };  // class ChassisDriveKeyboardCommand
 }  // namespace chassis
