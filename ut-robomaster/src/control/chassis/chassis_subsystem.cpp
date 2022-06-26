@@ -90,7 +90,7 @@ void ChassisSubsystem::updateMotorRpmPID(modm::Pid<float>* pid, tap::motor::DjiM
     float powerScalar = powerLimiter();
     if (compareFloatClose(1.0f, powerScalar, 1E-3))
     {
-        return;
+        powerScalar = 1.0f;
     }
 
     float totalError = 0.0f;
@@ -103,7 +103,7 @@ void ChassisSubsystem::updateMotorRpmPID(modm::Pid<float>* pid, tap::motor::DjiM
     float velocityErrorScalar = totalErrorZero ? (1.0f / 4) : (abs(pid->getLastError()) / totalError);
     float modifiedPowerScalar = limitVal(4 * powerScalar * velocityErrorScalar, 0.0f, 1.0f);
 
-    pid->update((desiredRpm * slowFactor * modifiedPowerScalar ) - motor->getShaftRPM());
+    pid->update((desiredRpm * slowFactor * modifiedPowerScalar) - motor->getShaftRPM());
     motor->setDesiredOutput(pid->getValue());
 }
 ///@brief 
