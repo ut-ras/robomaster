@@ -27,6 +27,8 @@
 using namespace tap;
 using namespace tap::algorithms;
 
+extern bool isBeyblade;
+
 namespace control
 {
 namespace turret
@@ -103,7 +105,18 @@ void TurretSubsystem::setDesiredOutput(float x, float y)
         yawEncoderToRPM.update(offset);
         prevPosition = drivers->bmi088.getYaw();
 
-        desiredRPM[0] = (x * 4) + yawEncoderToRPM.getValue();   // yaw motor
+        if (isBeyblade && x > 0.0f) {
+            desiredRPM[0] = x + yawEncoderToRPM.getValue();     // yaw motor
+        }
+
+        else if (isBeyblade && x < 0.0f)
+        {
+            desiredRPM[0] = (x * 8) + yawEncoderToRPM.getValue();   // yaw motor
+        }
+
+        else {
+            desiredRPM[0] = (x * 4) + yawEncoderToRPM.getValue();   // yaw motor
+        }
         yawIsSet = false;
     }
 

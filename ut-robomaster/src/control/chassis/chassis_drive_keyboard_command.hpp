@@ -44,7 +44,6 @@ private:
     bool yDeacceleration;
     bool rDeacceleration;
 
-    bool isBeyblade;
     float prevTime;
 
 

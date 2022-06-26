@@ -9,6 +9,8 @@
 #define NEGDEADZONE -0.2
 using namespace tap::communication::serial;
 
+bool isBeyblade = false;
+
 namespace control
 {
 namespace chassis
@@ -47,11 +49,11 @@ void ChassisDriveKeyboardCommand::execute()
     float r = -(drivers->remote.keyPressed(Remote::Key::Q) - drivers->remote.keyPressed(Remote::Key::E));
 
     float dt = tap::arch::clock::getTimeMilliseconds() - prevTime;
-    if (drivers->remote.keyPressed(Remote::Key::R) && !isBeyblade && dt > 100) {
+    if (drivers->remote.keyPressed(Remote::Key::R) && !isBeyblade && dt > 500) {
             r = 1.0f;
             isBeyblade = true;
             prevTime = tap::arch::clock::getTimeMilliseconds();
-    } else if (drivers->remote.keyPressed(Remote::Key::R) && isBeyblade && dt > 100){
+    } else if (drivers->remote.keyPressed(Remote::Key::R) && isBeyblade && dt > 500){
             r = 0.0f;
             isBeyblade = false;
             prevTime = tap::arch::clock::getTimeMilliseconds();
