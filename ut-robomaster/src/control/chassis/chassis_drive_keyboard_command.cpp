@@ -36,6 +36,8 @@ void ChassisDriveKeyboardCommand::initialize() {
     rToggle = false;
     rPositive = true;
     rDeacceleration = false;
+
+    isBeyblade = false;
 }
 
 void ChassisDriveKeyboardCommand::execute() 
@@ -116,6 +118,17 @@ void ChassisDriveKeyboardCommand::execute()
         if (rRamp.getValue() == 0.0f) {
             rToggle = false;
             rDeacceleration = false;
+        }
+    }
+
+    if (drivers->remote.keyPressed(Remote::Key::R)) {
+        if (!isBeyblade) {
+            r = 1.0f;
+            isBeyblade = true;
+        }
+        else {
+            r = 0.0f;
+            isBeyblade = false;
         }
     }
 
