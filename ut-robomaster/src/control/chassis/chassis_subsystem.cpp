@@ -98,9 +98,9 @@ void ChassisSubsystem::setDesiredOutput(float x, float y, float r)
             startTurretLoc = yawMotor->getEncoderUnwrapped();
             setStartTurret = true;
         }
-        float offset = modm::toRadian(drivers->bmi088.getYaw() - startYaw);
+        //float offset = modm::toRadian(drivers->bmi088.getYaw() - startYaw);
         float turretOffset = modm::toRadian((yawMotor->getEncoderUnwrapped() - startTurretLoc) * 360 / 8192);
-        vector.rotate(offset);
+        vector.rotate(turretOffset);
     }
     
     float theta = vector.getAngle();
