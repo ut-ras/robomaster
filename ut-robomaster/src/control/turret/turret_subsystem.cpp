@@ -62,6 +62,25 @@ void TurretSubsystem::updateMotorRpmPID(modm::Pid<float>* pid, tap::motor::DjiMo
     pid->update(desiredRpm - motor->getShaftRPM());
     motor->setDesiredOutput(pid->getValue());
 }
+
+float TurretSubsystem::imuWrap(float offset)
+{
+    float positive = offset + 360;
+    float negative = offset - 360;
+
+    if (fabs(positive) < fabs(negative) && fabs(positive) < fabs(offset)) {
+        return positive;
+    }
+
+    else if (fabs(negative) < fabs(positive) && fabs(positive) < fabs(offset)) {
+        return negative;
+    }
+
+    else {
+        return offset;
+    }
+}
+
 /**
 ///@brief sets the turret RPMs
 ///@param x, y are input X and y values from input device
@@ -70,6 +89,7 @@ void TurretSubsystem::setDesiredOutput(float x, float y)
 {
     if (x != 0.0f) {
         offset = drivers->bmi088.getYaw() - prevPosition;
+        offset = imuWrap(offset);
         offset = offset/360 * 8192;
         yawEncoderToRPM.update(offset);
         prevPosition = drivers->bmi088.getYaw();
