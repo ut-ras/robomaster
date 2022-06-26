@@ -115,6 +115,7 @@ void TurretSubsystem::setDesiredOutput(float x, float y)
         //Timer may or may need to be removed if bugs occur
         // if (timer.execute()) {
             offset = drivers->bmi088.getYaw() - prevPosition;
+            offset = imuWrap(offset);
             offset = offset/360.0f * 8192.0f;
             prevPosition = drivers->bmi088.getYaw();
             // timer.restart(100);
