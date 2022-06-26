@@ -73,7 +73,7 @@ void ChassisSubsystem::refresh()
         float velocityErrorScalar = totalErrorZero ? (1.0f / 4) : (abs(pid[i].getLastError()) / totalError);
         float modifiedPowerScalar =
             limitVal(4 * powerScalar * velocityErrorScalar, 0.0f, 1.0f);
-        motors[i]->setDesiredOutput(pid[i].getValue() * powerScalar);
+        motors[i]->setDesiredOutput(pid[i].getValue() * modifiedPowerScalar);
     }
 }
 
