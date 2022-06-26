@@ -161,10 +161,10 @@ void ChassisSubsystem::setDesiredOutput(float x, float y, float r)
 
 float ChassisSubsystem::powerLimiter()
 {
-    if (!drivers->refSerial.getRefSerialReceivingData())
-    {
-        return 1.0f;
-    }
+    // if (!drivers->refSerial.getRefSerialReceivingData())
+    // {
+    //     return 1.0f;
+    // }
 
     energyBuffer = drivers->refSerial.getRobotData().chassis.powerBuffer;
     if (energyBuffer < ENERGY_BUFFER_LIMIT_THRESHOLD)
@@ -177,7 +177,7 @@ float ChassisSubsystem::powerLimiter()
     }
     else
     {
-        return 1.0f;
+        return 0.0f;
     }
 }
 }  // namespace chassis
