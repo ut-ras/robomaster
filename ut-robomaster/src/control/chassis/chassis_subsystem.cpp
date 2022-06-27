@@ -88,6 +88,7 @@ void ChassisSubsystem::updateMotorRpmPID(modm::Pid<float>* pid, tap::motor::DjiM
 
     // from aruw-mcb chassis_subsystem.cpp
     float powerScalar = powerLimiter();
+    if (compareFloatClose(1.0f, powerScalar, 1E-3)) { powerScalar = 1.0f; }
 
     float totalError = 0.0f;
     for (size_t i = 0; i < 4; i++)
@@ -101,7 +102,6 @@ void ChassisSubsystem::updateMotorRpmPID(modm::Pid<float>* pid, tap::motor::DjiM
 
     pid->update((desiredRpm * slowFactor) - motor->getShaftRPM());
 
-    if (compareFloatClose(1.0f, powerScalar, 1E-3)) { modifiedPowerScalar = 1.0f; }
     motor->setDesiredOutput(pid->getValue() * modifiedPowerScalar);
 }
 ///@brief 

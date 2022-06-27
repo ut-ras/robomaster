@@ -97,16 +97,16 @@ void TurretSubsystem::setDesiredOutput(float x, float y)
         prevPosition = drivers->bmi088.getYaw();
 
         if (isBeyblade && x > 0.0f) {
-            desiredRPM[0] = x + yawEncoderToRPM.getValue();     // yaw motor
+            desiredRPM[0] = x + yawEncoderToRPM.getValue();     // yaw motor right
         }
 
         else if (isBeyblade && x < 0.0f)
         {
-            desiredRPM[0] = (x * 8) + yawEncoderToRPM.getValue();   // yaw motor
+            desiredRPM[0] = (x * 8) + yawEncoderToRPM.getValue();   // yaw motor left
         }
 
         else {
-            desiredRPM[0] = (x * 4) + yawEncoderToRPM.getValue();   // yaw motor
+            desiredRPM[0] = (x * 4) + yawEncoderToRPM.getValue();   // yaw motor non-beyblade
         }
         yawIsSet = false;
     }

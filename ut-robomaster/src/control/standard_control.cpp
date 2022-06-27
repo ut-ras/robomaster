@@ -63,15 +63,15 @@ control::turret::TurretMoveCommand turretMoveCommand(drivers(), &theTurret);    
 //control::gimbal::GimbalMoveCommand gimbalMoveCommand(drivers(), &theGimbal);     //joystick
 
 /* define command mappings --------------------------------------------------*/
-// HoldRepeatCommandMapping rightSwitchUp(
-//     drivers(),
-//     {&rotateCommand},
-//     RemoteMapState(Remote::Switch::RIGHT_SWITCH,Remote::SwitchState::UP), true, -1);
-
-HoldRepeatCommandMapping rightSwitchDown(
+HoldRepeatCommandMapping reverseAgitator(
     drivers(),
     {&reverseCommand},
-    RemoteMapState(Remote::Switch::RIGHT_SWITCH, Remote::SwitchState::DOWN), true, -1);
+    RemoteMapState({Remote::Key::F}), true, -1);
+
+// HoldRepeatCommandMapping rightSwitchDown(
+//     drivers(),
+//     {&reverseCommand},
+//     RemoteMapState(Remote::Switch::RIGHT_SWITCH, Remote::SwitchState::DOWN), true, -1);
 
 // HoldRepeatCommandMapping leftSwitchUp(
 //     drivers(),
@@ -125,7 +125,8 @@ void startStandardCommands(tap::Drivers *) {}
 void registerStandardIoMappings(tap::Drivers *drivers)
 {
     // drivers->commandMapper.addMap(&rightSwitchUp);
-    drivers->commandMapper.addMap(&rightSwitchDown);
+    drivers->commandMapper.addMap(&reverseAgitator);
+    // drivers->commandMapper.addMap(&rightSwitchDown);
     // drivers->commandMapper.addMap(&leftSwitchUp);
     drivers->commandMapper.addMap(&leftMouseDown);
     drivers->commandMapper.addMap(&rightMouseDown);
