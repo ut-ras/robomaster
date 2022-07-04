@@ -39,26 +39,77 @@ void ChassisSubsystem::initialize()
     rightBackMotor.initialize();
     drivers->bmi088.requestRecalibration();
     startYaw = drivers->bmi088.getYaw();
-    imuDrive = false;
+    imuDrive = true;
+
+    setStartTurret = false;
+    startTurretLoc = 0.0f;
+
+    slowFactor = 1.0f;
 }
 
 void ChassisSubsystem::refresh() 
 {
-    updateMotorRpmPID(&pid, &rightFrontMotor, desiredWheelRPM[0]);
-    updateMotorRpmPID(&pid, &leftFrontMotor, desiredWheelRPM[1]);
-    updateMotorRpmPID(&pid, &leftBackMotor, desiredWheelRPM[2]);
-    updateMotorRpmPID(&pid, &rightBackMotor, desiredWheelRPM[3]);
+    updateMotorRpmPID(&pid[0], &rightFrontMotor, desiredWheelRPM[0]);
+    updateMotorRpmPID(&pid[1], &leftFrontMotor, desiredWheelRPM[1]);
+    updateMotorRpmPID(&pid[2], &leftBackMotor, desiredWheelRPM[2]);
+    updateMotorRpmPID(&pid[3], &rightBackMotor, desiredWheelRPM[3]);
+
+    // from aruw-mcb chassis_subsystem.cpp
+    // float powerScalar = powerLimiter();
+    // if (compareFloatClose(1.0f, powerScalar, 1E-3))
+    // {
+    //     return;
+    // }
+
+    // float totalError = 0.0f;
+    // for (size_t i = 0; i < 4; i++)
+    // {
+    //     totalError += abs(pid[i].getLastError());
+    // }
+
+    // bool totalErrorZero = compareFloatClose(0.0f, totalError, 1E-3);
+    // for (size_t i = 0; i < 4; i++)
+    // {
+    //     float velocityErrorScalar = totalErrorZero ? (1.0f / 4) : (abs(pid[i].getLastError()) / totalError);
+    //     float modifiedPowerScalar =
+    //         limitVal(4 * powerScalar * velocityErrorScalar, 0.0f, 1.0f);
+    //     motors[i]->setDesiredOutput(pid[i].getValue() * modifiedPowerScalar);
+    // }
 }
 
 void ChassisSubsystem::updateMotorRpmPID(modm::Pid<float>* pid, tap::motor::DjiMotor* const motor, float desiredRpm)
 {
-    pid->update(desiredRpm - motor->getShaftRPM());
-    motor->setDesiredOutput(pid->getValue());
-}
+    if (drivers->remote.keyPressed(tap::communication::serial::Remote::Key::SHIFT)){
+        slowFactor = 0.5f;
+    }
+    else { 
+        slowFactor = 1.0f; 
+    }
 
+    // from aruw-mcb chassis_subsystem.cpp
+    float powerScalar = powerLimiter();
+    if (compareFloatClose(1.0f, powerScalar, 1E-3)) { powerScalar = 1.0f; }
+
+    float totalError = 0.0f;
+    for (size_t i = 0; i < 4; i++)
+    {
+        totalError += abs(pid[i].getLastError());
+    }
+
+    bool totalErrorZero = compareFloatClose(0.0f, totalError, 1E-3);
+    float velocityErrorScalar = totalErrorZero ? (1.0f / 4) : (abs(pid->getLastError()) / totalError);
+    float modifiedPowerScalar = limitVal(4 * powerScalar * velocityErrorScalar, 0.0f, 1.0f);
+
+    pid->update((desiredRpm * slowFactor) - motor->getShaftRPM());
+
+    motor->setDesiredOutput(pid->getValue() * modifiedPowerScalar);
+}
+///@brief 
+
+///
 void ChassisSubsystem::setDesiredOutput(float x, float y, float r)
 {
-    if (drivers->bmi088.getImuState() == tap::communication::sensors::imu::ImuInterface::ImuState::IMU_CALIBRATING)
+    if (drivers->bmi088.getImuState() == tap::communication::sensors::imu::ImuInterface::ImuState::IMU_CALIBRATING) //if the 6020 is set to the calibrated value, set all RPMs to 0
     {
         for (uint16_t i = 0; i < MODM_ARRAY_SIZE(desiredWheelRPM); i++)
         {
@@ -70,22 +121,31 @@ void ChassisSubsystem::setDesiredOutput(float x, float y, float r)
     vector.setX(x);
     vector.setY(y);
 
-    if (!imuDrive && drivers->remote.getSwitch(tap::communication::serial::Remote::Switch::LEFT_SWITCH) == tap::communication::serial::Remote::SwitchState::DOWN)
-    {
-        imuDrive = true;
-        drivers->bmi088.requestRecalibration();
-        startYaw = drivers->bmi088.getYaw();
-    }
+    // if (!imuDrive && drivers->remote.getSwitch(tap::communication::serial::Remote::Switch::LEFT_SWITCH) == tap::communication::serial::Remote::SwitchState::DOWN)
+    // {       //TODO: Fix the IMU and the if statement to not use remote commands
+    //     imuDrive = true;  
+    //     drivers->bmi088.requestRecalibration();
+    //     startYaw = drivers->bmi088.getYaw();
+    // }
 
-    else if (drivers->remote.getSwitch(tap::communication::serial::Remote::Switch::LEFT_SWITCH) == tap::communication::serial::Remote::SwitchState::MID)
-    {
-        imuDrive = false;
-    }
+    // else if (drivers->remote.getSwitch(tap::communication::serial::Remote::Switch::LEFT_SWITCH) == tap::communication::serial::Remote::SwitchState::MID)
+    // {
+    //     imuDrive = false;
+    // }
 
+    // if (imuDrive && drivers->bmi088.getImuState() == tap::communication::sensors::imu::ImuInterface::ImuState::IMU_CALIBRATED)
+    // {
+    //     float offset = modm::toRadian(drivers->bmi088.getYaw() - startYaw);
+    //     vector.rotate(offset);
+    // }
     if (imuDrive && drivers->bmi088.getImuState() == tap::communication::sensors::imu::ImuInterface::ImuState::IMU_CALIBRATED)
     {
-        float offset = modm::toRadian(drivers->bmi088.getYaw() - startYaw);
-        vector.rotate(offset);
+        if (!setStartTurret && yawMotor->isMotorOnline()){
+            startTurretLoc = yawMotor->getEncoderUnwrapped();
+            setStartTurret = true;
+        }
+        float turretOffset = modm::toRadian((yawMotor->getEncoderUnwrapped() - startTurretLoc) * 360 / 8192);
+        vector.rotate(turretOffset);
     }
     
     float theta = vector.getAngle();
@@ -111,6 +171,34 @@ void ChassisSubsystem::setDesiredOutput(float x, float y, float r)
     for (uint16_t i = 0; i < MODM_ARRAY_SIZE(desiredWheelRPM); i++)
     {
         desiredWheelRPM[i] *= maxRPM;
+    }
+}
+
+float ChassisSubsystem::powerLimiter()
+{
+    if (!drivers->refSerial.getRefSerialReceivingData())
+    {
+        drivers->leds.set(tap::gpio::Leds::Green, true);
+        return 1.0f;
+    }
+
+    energyBuffer = drivers->refSerial.getRobotData().chassis.powerBuffer;
+    if (energyBuffer < ENERGY_BUFFER_LIMIT_THRESHOLD)
+    {
+        drivers->leds.set(tap::gpio::Leds::Green, false);
+        float returnVal = (energyBuffer - ENERGY_BUFFER_CRIT_THRESHOLD) / ENERGY_BUFFER_LIMIT_THRESHOLD;
+        if (returnVal < 0.0f) { return 0.0f; }
+        else if (returnVal > 1.0f) { return 1.0f; }
+        else {return returnVal; }
+        // return limitVal(
+        //     static_cast<float>(energyBuffer - ENERGY_BUFFER_CRIT_THRESHOLD) /
+        //         ENERGY_BUFFER_LIMIT_THRESHOLD,
+        //     0.0f,
+        //     1.0f);
+    }
+    else
+    {
+        return 1.0f;
     }
 }
 }  // namespace chassis

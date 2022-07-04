@@ -7,14 +7,19 @@ namespace control
 {
 namespace agitator
 {
-void AgitatorRotateCommand::initialize() { isUnjamming.stop(); }
+void AgitatorRotateCommand::initialize() {
+    isUnjamming = false;
+    prevTime = tap::arch::clock::getTimeMilliseconds();
+}
 
 void AgitatorRotateCommand::execute() { 
-    if (isUnjamming.isStopped())
+
+    if (!isUnjamming)
     {
         if (agitator->getAgitatorMotor().getTorque() > jamTorque)
         {
-            isUnjamming.restart(1000);
+            isUnjamming = true;
+            prevTime = tap::arch::clock::getTimeMilliseconds();
         }
 
         else
@@ -25,6 +30,9 @@ void AgitatorRotateCommand::execute() {
 
     else
     {
+        if (tap::arch::clock::getTimeMilliseconds() - prevTime >= 1000){
+            isUnjamming = false;
+        }
         agitator->setDesiredRPM(-rotateRPM);
     }
     }

@@ -44,6 +44,9 @@ private:
     bool yDeacceleration;
     bool rDeacceleration;
 
+    float prevTime;
+
+
 };  // class ChassisDriveKeyboardCommand
 }  // namespace chassis
 }  // namespace control

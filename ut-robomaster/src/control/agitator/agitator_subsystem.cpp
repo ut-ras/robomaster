@@ -18,15 +18,15 @@ AgitatorSubsystem::AgitatorSubsystem(tap::Drivers* drivers)
             drivers,
             AGITATOR_MOTOR_ID,
             CAN_BUS_MOTORS,
-            false,
+            true,
             "agitator motor"),
         drivers(drivers)
     {
     }
 
 void AgitatorSubsystem::initialize() { 
-    
     agitatorMotor.initialize();
+    // drivers->pwm.write(1.0f, UV_LIGHT_PIN);
 }
 
 void AgitatorSubsystem::refresh() {}

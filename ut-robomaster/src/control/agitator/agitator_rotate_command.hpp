@@ -32,7 +32,8 @@ private:
     AgitatorSubsystem *agitator;
     int16_t jamTorque = 200;
     float rotateRPM = 2000.0f;
-    tap::arch::PeriodicMilliTimer isUnjamming;
+    bool isUnjamming;
+    float prevTime;
 };  // class AgitatorRotateCommand
 }  // namespace agitator
 }  // namespace control

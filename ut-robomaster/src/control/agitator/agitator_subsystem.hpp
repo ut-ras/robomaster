@@ -7,6 +7,7 @@
 #include "modm/math/filter/pid.hpp"
 
 #include "tap/communication/gpio/leds.hpp"
+#include "tap/communication/gpio/pwm.hpp"
 
 namespace control
 {
@@ -35,6 +36,7 @@ public:
 private:
     static constexpr tap::motor::MotorId AGITATOR_MOTOR_ID = tap::motor::MOTOR5;
     static constexpr tap::can::CanBus CAN_BUS_MOTORS = tap::can::CanBus::CAN_BUS1;
+    static constexpr tap::gpio::Pwm::Pin UV_LIGHT_PIN = tap::gpio::Pwm::C2;
 
     uint16_t agitatorMotorOutput;
     modm::Pid<float> agitatorPidController;

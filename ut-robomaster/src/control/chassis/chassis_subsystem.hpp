@@ -52,9 +52,10 @@ public:
      * Constructs a new ChassisSubsystem with default parameters specified in
      * the private section of this class.
      */
-    ChassisSubsystem(tap::Drivers *drivers)
+    ChassisSubsystem(tap::Drivers *drivers, const tap::motor::DjiMotor *yawMotor)
         : tap::control::Subsystem(drivers),
           drivers(drivers),
+          yawMotor(yawMotor),
           leftFrontMotor(
               drivers,
               LEFT_FRONT_MOTOR_ID,
@@ -79,13 +80,21 @@ public:
               CAN_BUS_MOTORS,
               false,
               "right back drive motor"),
-          pid(22.0f, 0.2f, 0.0f, 5000.0f, 16000.0f) // from aruw solider_chassis_constants.hpp
+          pid{
+            modm::Pid<float>(22.0f, 0.2f, 0.0f, 5000.0f, 16000.0f), 
+            modm::Pid<float>(22.0f, 0.2f, 0.0f, 5000.0f, 16000.0f),
+            modm::Pid<float>(22.0f, 0.2f, 0.0f, 5000.0f, 16000.0f),
+            modm::Pid<float>(22.0f, 0.2f, 0.0f, 5000.0f, 16000.0f)} // from aruw solider_chassis_constants.hpp
     {
         for (uint16_t i = 0; i < MODM_ARRAY_SIZE(desiredWheelRPM); i++)
         {
             desiredWheelRPM[i] = 0.0f;
         }
 
+        motors[0] = &rightFrontMotor;
+        motors[1] = &leftFrontMotor;
+        motors[2] = &leftBackMotor;
+        motors[3] = &rightBackMotor;
     }
 
     ChassisSubsystem(const ChassisSubsystem &other) = delete;
@@ -102,6 +111,8 @@ public:
 
     void updateMotorRpmPID(modm::Pid<float>* pid, tap::motor::DjiMotor* const motor, float desiredRpm);
 
+    float powerLimiter();
+
     const tap::motor::DjiMotor &getLeftFrontMotor() const { return leftFrontMotor; }
     const tap::motor::DjiMotor &getLeftBackMotor() const { return leftBackMotor; }
     const tap::motor::DjiMotor &getRightFrontMotor() const { return rightFrontMotor; }
@@ -109,6 +120,7 @@ public:
 
 private:
     tap::Drivers *drivers;
+    const tap::motor::DjiMotor *yawMotor;
     
     ///< Hardware constants, not specific to any particular chassis.
     static constexpr tap::motor::MotorId RIGHT_FRONT_MOTOR_ID = tap::motor::MOTOR1;
@@ -123,13 +135,24 @@ private:
     tap::motor::DjiMotor rightFrontMotor;
     tap::motor::DjiMotor rightBackMotor;
 
+    tap::motor::DjiMotor *motors[4];
+
     float desiredWheelRPM[4];
     float maxRPM = 8000;    // assume 8000 to be max rpm
     modm::Vector<float, 2> vector;
-    modm::Pid<float> pid;
+    modm::Pid<float> pid[4];
     float startYaw;
     bool imuDrive;
 
+    bool setStartTurret;
+    float startTurretLoc;
+
+    bool slowMode;
+    float slowFactor;
+
+    float energyBuffer;
+    static constexpr float ENERGY_BUFFER_LIMIT_THRESHOLD = 60.0f;
+    static constexpr float ENERGY_BUFFER_CRIT_THRESHOLD = 10.0f;
 };  // class ChassisSubsystem
 
 }  // namespace chassis

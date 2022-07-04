@@ -27,6 +27,8 @@
 using namespace tap;
 using namespace tap::algorithms;
 
+extern bool isBeyblade;
+
 namespace control
 {
 namespace turret
@@ -36,13 +38,18 @@ void TurretSubsystem::initialize()
     yawMotor.initialize();
     pitchMotor.initialize();
 
+    // investigate initial value
     startYaw = yawMotor.getEncoderUnwrapped();
-    yawSetValue = startYaw;
+    yawSetValue = startYaw + 2048;
     yawIsSet = true;
 
     startPitch = pitchMotor.getEncoderUnwrapped();
     pitchSetValue = startPitch;
     pitchIsSet = true;
+
+    prevPosition = drivers->bmi088.getYaw();
+    // timer.restart(100);
+    // ledTest = false;
 }
 
 void TurretSubsystem::refresh() 
@@ -58,10 +65,49 @@ void TurretSubsystem::updateMotorRpmPID(modm::Pid<float>* pid, tap::motor::DjiMo
     motor->setDesiredOutput(pid->getValue());
 }
 
+float TurretSubsystem::imuWrap(float offset)
+{
+    float positive = offset + 360;
+    float negative = offset - 360;
+
+    if (fabs(positive) < fabs(negative) && fabs(positive) < fabs(offset)) {
+        return positive;
+    }
+
+    else if (fabs(negative) < fabs(positive) && fabs(negative) < fabs(offset)) {
+        return negative;
+    }
+
+    else {
+        return offset;
+    }
+}
+
+/**
+///@brief sets the turret RPMs
+///@param x, y are input X and y values from input device
+*/
 void TurretSubsystem::setDesiredOutput(float x, float y)
 {
     if (x != 0.0f) {
-        desiredRPM[0] = x * 4;   // yaw motor
+        offset = drivers->bmi088.getYaw() - prevPosition;
+        offset = imuWrap(offset);
+        offset = offset/360 * 8192;
+        yawEncoderToRPM.update(offset);
+        prevPosition = drivers->bmi088.getYaw();
+
+        if (isBeyblade && x > 0.0f) {
+            desiredRPM[0] = x + yawEncoderToRPM.getValue();     // yaw motor right
+        }
+
+        else if (isBeyblade && x < 0.0f)
+        {
+            desiredRPM[0] = (x * 8) + yawEncoderToRPM.getValue();   // yaw motor left
+        }
+
+        else {
+            desiredRPM[0] = (x * 4) + yawEncoderToRPM.getValue();   // yaw motor non-beyblade
+        }
         yawIsSet = false;
     }
 
@@ -70,8 +116,22 @@ void TurretSubsystem::setDesiredOutput(float x, float y)
             yawSetValue = yawMotor.getEncoderUnwrapped();
             yawIsSet = true;
         }
+        //Timer may or may need to be removed if bugs occur
+        // if (timer.execute()) {
+            offset = drivers->bmi088.getYaw() - prevPosition;
+            offset = imuWrap(offset);
+            offset = offset/360.0f * 8192.0f;
+            prevPosition = drivers->bmi088.getYaw();
+            // timer.restart(100);
+            // if (!ledTest) { drivers->leds.set(tap::gpio::Leds::Red, true); ledTest = true; }
+            // else { drivers->leds.set(tap::gpio::Leds::Red, false); ledTest = false; }
+            yawSetValue += offset;
+        // }
 
-        yawEncoderToRPM.update(yawSetValue - yawMotor.getEncoderUnwrapped());
+        // if (offset >= 20.0f) {drivers->leds.set(tap::gpio::Leds::Red, true);}
+        // else{drivers->leds.set(tap::gpio::Leds::Red, false);}
+
+        yawEncoderToRPM.update(yawSetValue - (float)yawMotor.getEncoderUnwrapped());
         desiredRPM[0] = yawEncoderToRPM.getValue();
     }
 

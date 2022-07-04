@@ -3,5 +3,6 @@
         "marus25.cortex-debug",
         "ms-vscode.cpptools",
         "ms-vscode-remote.remote-containers",
+        "ms-vsliveshare.vsliveshare"
     ]
 }
