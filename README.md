@@ -3,136 +3,6 @@ UT RoboMaster team - Main Branch
 =======
 [![pipeline status](https://gitlab.com/aruw/controls/taproot-template-project/badges/develop/pipeline.svg)](https://gitlab.com/aruw/controls/taproot-template-project/-/commits/develop)
 
-<!-- Start sections that may be removed after forking this repository -->
-<hr/>
-
-# taproot-template-project
-
-
-This is a blank project fully configured for use of [Taproot](https://gitlab.com/aruw/controls/taproot).
-It is designed to be a starting point for your own RoboMaster software projects. Be sure to check
-out Taproot for more information.
-
-This template includes the following:
-- Code generated from the `taproot` and `modm` repositories. This generated code is located in
-  `/template-project/taproot` and includes the hardware abstraction layer provided by
-  [modm](modm.io) as well as Taproot library code that sits on top of modm.
-
-  See [here](https://gitlab.com/aruw/controls/taproot/-/wikis/Code-Generation-in-User-Projects) for
-  more information on code generation.
-- A `.vscode` folder with C++ configurations for developing in a simulated, test, and hardware
-  environment. This also includes convenient VS Code tasks for building code and debug launch
-  configuration for debugging the simulated, test, or hardware environment.
-- A [Doxygen](https://www.doxygen.nl/index.html) document generation configuration that renders a
-  documentation webpage sourced from commented code.
-- Various [linting](https://en.wikipedia.org/wiki/Lint_(software)) scripts that are used for
-  maintaining high quality source code.
-- A [clang format](https://clang.llvm.org/docs/ClangFormat.html) configuration (see
-  `.clang-format`). This should be configured based on user preferences.
-- Build scripts supporting configurable target profiles, including environment (simulator, tests,
-  hardware) and robot type (Standard, Hero, etc.).
-- A basic GitLab Continuous Integration (CI) Pipeline that lints the source code, builds all
-  targets, and runs your tests (see `.gitlab-ci.yml`).
-- Instructions and a configuration file for deploying your software to hardware via the command
-  line.
-
-## Usage of the template
-
-This project is provided to reduce the configuration overhead when adopting Taproot. We recommend
-creating a new blank GitLab project and pushing the history of this repository there. This will be
-similar to a fork, but omit the "forked from..." badge, which you likely don't want.
-
-Assuming your new project is at `https://gitlab.com/my-team/my-amazing-project`, the setup process
-is as follows:
-
-```bash
-git clone --recursive https://gitlab.com/my-team/my-amazing-project.git
-cd my-amazing-project
-git remote add template https://gitlab.com/aruw/controls/taproot-template-project.git
-git pull template develop
-# replace "main" with your main branch name of choice
-git push --set-upstream origin main
-```
-
-If you visit the project's GitLab page, starter files should be present and GitLab will likely have
-kicked off a Continuous Integration (CI) Pipeline, indicated by the blue "waiting" icon or a green
-"checkmark".
-
-### Configuring your new project
-
-By using this template, your project will start out with a fully-functional Taproot instance and
-build tools. The provided `main.cpp` (`/template-project/src/main.cpp`) includes initialization of
-all core systems and drivers. This should allow you to develop control systems starting day one.
-
-_Note: [Issue #3](https://gitlab.com/aruw/controls/taproot-template-project/-/issues/3) tracks the
-desire to automate the below process. Let us know about your experiences there._
-
-To get started, we suggest using Visual Studio Code to perform a find-and-replace across all files,
-swapping your own project name in place of `template-project`. Furthermore, rename the directory
-`/template-project` accordingly. Feel free to call it the same name as your repo.
-
-You should also update the license headers in your project. The above find-and-replace should have
-updated the project name references. However, you will also want to update the copyright line of
-each header:
-
-```
-Copyright (c) 2020-2021 UT Robomaster
-```
-
-To refer to your own team, year and email. Do so in all template source files, **excluding files in
-`**/taproot`**. Also update `scripts/check_license_headers.py` accordingly.
-
-> **A note on copyright headers:**
-> The above suggestions regarding copyright headers are purely for your convenience. You are free to
-> decide how you would like to manage these, including omitting the license headers entirely if
-> preferred, so long as you abide by the original license terms of the files. You may opt to disable
-> the automated license header check; do so by removing the below line from `.gitlab-ci.yml`:
-> ```yaml
->     - python3 ./scripts/check_license_headers.py
-> ```
-
-To start developing software, place your source code in `/template-project/src` and your tests in
-`/template-project/test`. See the [workflow guide](#workflow-guide) for how to build, test, and
-deploy your code.
-
-Finally, after you are done with it, we recommend removing the portion of this README between
-`<!-- ... -->` comments. The rest of the file is intended to provide a starting point for your team.
-
-### (Optional) Using the RoboMaster Development Board Type C
-
-By default, this project targets the RoboMaster Development Board Type A. However, Taproot also
-supports the newer Type C board. If you would like to use this board instead (replace
-`template-project` with the new name if it has been renamed):
-
-1. Commit any work so you don't lose it
-1. Edit `template-project/project.xml` according to the included comment
-1. Run `rm -r template-project/taproot`
-1. Run `cd template-project` and then `lbuild build`
-1. Commit the result: `git add . && git commit -m "Target RM Dev Board Type C"`
-
-## Contacting
-
-If you have any questions please contact us at robomstr@uw.edu.
-
-## Licensing
-
-taproot-template-project is covered under the GPL-3.0-or-later with the following exceptions:
-- `/taproot/modm` and `/template-project/taproot/modm` are licensed under MPL 2.0 by the modm
-  project. We _are not_ the license holder for these files. See `/modm/LICENSE` for license
-  information.
-- `/template-project/taproot/src/taproot/algorithms/MahonyAHRS.h` and
-  `/template-project/taproot/src/taproot/algorithms/MahonyAHRS.cpp` are licensed under the GPL by
-  SOH Madgwick. The repo containing this code can be found
-  [here](https://github.com/uw-advanced-robotics/MahonyAHRS).
-
-Other RoboMaster teams are invited, and encouraged, to utilize this library. We have licensed this
-template project and Taproot under the GPL to encourage collaboration and open publishing of
-RoboMaster controls codebases. **We politely request that other teams choosing to utilize this
-library, or parts of it (including its design), open-source their own code in turn.**
-
-<hr/>
-<!-- End sections that may be removed after forking this repository -->
-
 ## Resources
 
 - **The [Taproot wiki](https://gitlab.com/aruw/controls/taproot/-/wikis/home). It has lots of content and we strongly recommend you browse through it to get a sense of
@@ -188,8 +58,10 @@ Now, `cd` into the project directory, activate the virtualenv, and run some buil
 ```
 cd my-amazing-project/template-project
 pipenv shell
+
 # Build for hardware
 scons build
+
 # Run automated tests
 scons run-tests
 ```
