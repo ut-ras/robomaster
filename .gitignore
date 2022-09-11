@@ -1,9 +1,10 @@
 *.pyc
 
-template-project/build
-template-project/Pipfile.lock
+ut-robomaster/build
+ut-robomaster/Pipfile.lock
 project.xml.log
 
+.vscode/
 .vscode/.cortex-debug.peripherals.state.json
 .vscode/.cortex-debug.registers.state.json
 .sconsign.dblite
@@ -14,5 +15,3 @@ gcov-result
 docs/_build
 docs/api
 docs/doxyoutput
-
-ut-robomaster/build
