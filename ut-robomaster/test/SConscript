@@ -29,10 +29,7 @@ if args["TARGET_ENV"] == "tests":
     # Append on the global robot target build flag
     env_cpy.AppendUnique(CCFLAGS=["-D " + args["ROBOT_TYPE"]])
 
-    if args["COMPILE_SRC"]:
-        rawSrcs = env_cpy.FindSourceFiles(".")
-    else:
-        rawSrcs = []
+    rawSrcs = env_cpy.FindSourceFiles(".")
 
     for source in rawSrcs:
         sources.append(env_cpy.Object(source))
