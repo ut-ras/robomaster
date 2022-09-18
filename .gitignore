@@ -1,6 +1,6 @@
 *.pyc
 
-ut-robomaster/build
+ut-robomaster/build/
 ut-robomaster/Pipfile.lock
 project.xml.log
 
