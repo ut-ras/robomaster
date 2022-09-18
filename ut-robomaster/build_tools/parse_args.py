@@ -54,7 +54,10 @@ def parse_args():
     # and determine modm build path as well as add any extra files to ignore
     if len(COMMAND_LINE_TARGETS) != 0:
         build_target = COMMAND_LINE_TARGETS[0]
-        if build_target in TEST_BUILD_TARGET_ACCEPTED_ARGS:
+        if build_target == "help":
+            print(USAGE)
+            exit(0)
+        elif build_target in TEST_BUILD_TARGET_ACCEPTED_ARGS:
             args["TARGET_ENV"] = "tests"
         elif build_target in SIM_BUILD_TARGET_ACCEPTED_ARGS:
             args["TARGET_ENV"] = "sim"
@@ -63,7 +66,7 @@ def parse_args():
         else:
             raise Exception("You did not select a valid target.\n" + USAGE)
     else:
-        args["TARGET_ENV"] = "hardware"
+        raise Exception("You must select a valid robot target.\n" + USAGE)
 
     # Extract and validate the build profile (either debug or release)
     args["BUILD_PROFILE"] = ARGUMENTS.get("profile", "release")

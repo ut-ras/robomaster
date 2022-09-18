@@ -26,7 +26,9 @@ from build_tools import parse_args
 PROJECT_NAME         = "ut-robomaster"
 BUILD_PATH           = "build"
 TAPROOT_PATH         = "taproot"
-SRC_TEST_PATH        = "test"
+SRC_PATH             = "src"
+TEST_PATH            = "test"
+
 
 TAPROOT_SCRIPTS_TOOLPATH = abspath("../taproot-scripts/scons-tools")
 
@@ -72,9 +74,9 @@ env.AppendUnique(CPPPATH=[
 
 sources = []
 # Building all libraries (read from sconscript files located in provided dirs)
-# Ensure that modm is first, since taproot depends on modm
+# Ensure that modm is first, since Taproot depends on modm
 # Append include path to environment so both src/test environments have access to them
-env.SConscript(dirs=[TAPROOT_PATH], exports=["env", "args", "sources"])
+env.SConscript(dirs=[TAPROOT_PATH, SRC_PATH, TEST_PATH], exports=["env", "args", "sources"])
 
 
 # Tests must be included as sources (rather than built as a separate library) in order for
@@ -86,19 +88,6 @@ if args["TARGET_ENV"] == "tests":
 
 print("Configured {0} parallel build jobs (-j{0}), {1}"
     .format(GetOption("num_jobs"), args["ROBOT_TYPE"]))
-
-
-# Append on the global robot target build flag
-env.AppendUnique(CCFLAGS=["-D " + args["ROBOT_TYPE"]])
-
-
-
-# Find source files to compile
-if args["TARGET_ENV"] != "tests":
-    ignored_dirs.append(SRC_TEST_PATH)
-else:
-    ignored_files += IGNORED_FILES_WHILE_TESTING
-sources = env.FindSourceFiles(".", ignorePaths=ignored_dirs, ignoreFiles=ignored_files)
 
 
 if args["TARGET_ENV"] == "hardware":
