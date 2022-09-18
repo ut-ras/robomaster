@@ -4,7 +4,6 @@ ut-robomaster/build
 ut-robomaster/Pipfile.lock
 project.xml.log
 
-.vscode/
 .vscode/.cortex-debug.peripherals.state.json
 .vscode/.cortex-debug.registers.state.json
 .sconsign.dblite
