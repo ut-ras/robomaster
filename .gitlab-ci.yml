@@ -139,6 +139,7 @@ clang-format:
     - cd .. && gcovr -g --xml > cobertura.xml
     - 'sed -i "s=<source>.</source>=<source>./template-project</source>=g" cobertura.xml'
     - 'sed -i "s;filename=\";filename=\"template-project/;g" cobertura.xml'
+  coverage: '/\s+Total:\|(\d+.\d+\%).+\|.+\|.+/'
   artifacts:
     name: "$CI_JOB_NAME-$CI_COMMIT_REF_NAME-standard-tests"
     reports:
