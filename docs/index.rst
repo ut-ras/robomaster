@@ -3,7 +3,7 @@
     You can adapt this file completely to your liking, but it should at least
     contain the root `toctree` directive.
 
-Welcome to template-project documentation!
+Welcome to taproot-template-project documentation!
 ==================================================
 
 Here you will find documentation for MCB embedded/control code. Navigate to a specific subject by searching. Browse through code by looking through "Library API" below.

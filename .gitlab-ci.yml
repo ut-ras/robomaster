@@ -1,19 +1,19 @@
 # Copyright (c) 2020-2021 UT Robomaster
 #
-# This file is part of template-project.
+# This file is part of ut-robomaster.
 #
-# template-project is free software: you can redistribute it and/or modify
+# ut-robomaster is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
 #
-# template-project is distributed in the hope that it will be useful,
+# ut-robomaster is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with template-project.  If not, see <https://www.gnu.org/licenses/>.
+# along with ut-robomaster.  If not, see <https://www.gnu.org/licenses/>.
 
 default:
   image: aruw/mcb-2020-gitlab-ci:2021-06-02.1
@@ -58,7 +58,7 @@ clang-format:
             drivers_singleton.hpp
             main.cpp
     - python3 ./taproot-scripts/check_license_headers.py
-        -p template-project
+        -p taproot-template-project
         -i './**/__init__.py' 'taproot/**/*' 'taproot-scripts/**/*' 'template-project/taproot/**/*' 'docs/**/*' 'template-project/robot-type/robot_type.hpp'
         -o 'Advanced Robotics at the University of Washington'
     - python3 ./taproot-scripts/check_header_guard.py template-project/src template-project/test/
