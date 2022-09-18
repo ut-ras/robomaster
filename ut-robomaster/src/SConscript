@@ -37,11 +37,7 @@ env_cpy = env.Clone()
 # Append on the global robot target build flag
 env_cpy.AppendUnique(CCFLAGS=["-D " + args["ROBOT_TYPE"]])
 
-if args["COMPILE_SRC"]:
-    ignored_files.append("main_src_not_compiled.cpp")
-    rawSrcs = env_cpy.FindSourceFiles(".", ignorePaths=ignored_dirs, ignoreFiles=ignored_files)
-else:
-    rawSrcs = []
+rawSrcs = env_cpy.FindSourceFiles(".")
 
 for source in rawSrcs:
     sources.append(env_cpy.Object(source))
