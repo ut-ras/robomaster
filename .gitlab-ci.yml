@@ -142,7 +142,9 @@ clang-format:
   artifacts:
     name: "$CI_JOB_NAME-$CI_COMMIT_REF_NAME-standard-tests"
     reports:
-      cobertura: cobertura.xml
+      coverage_report:
+        coverage_format: cobertura
+        path: cobertura.xml
     expire_in: 2 weeks
 
 # Drone
