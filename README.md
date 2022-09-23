@@ -32,7 +32,7 @@ Finally, install `pipenv` and set up the build tools:
 
 ```
 pip3 install pipenv
-cd template-project/
+cd ut-robomaster/
 pipenv install
 ```
 
@@ -43,7 +43,7 @@ _Make sure you have followed the above setup instructions._
 Run the following to clone this repository:
 
 ```
-git clone --recursive https://gitlab.com/my-team/my-amazing-project.git
+git clone --recursive https://github.com/ut-ras/robomaster.git
 ```
 
 If you use the Docker container, or have already cloned the repository yourself, you should instead
@@ -56,7 +56,7 @@ git submodule update --init --recursive
 Now, `cd` into the project directory, activate the virtualenv, and run some builds:
 
 ```
-cd my-amazing-project/template-project
+cd robomaster/ut-robomaster
 pipenv shell
 
 # Build for hardware
