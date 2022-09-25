@@ -1,7 +1,6 @@
 # Robomaster
 UT RoboMaster team - Main Branch
 =======
-[![pipeline status](https://gitlab.com/aruw/controls/taproot-template-project/badges/develop/pipeline.svg)](https://gitlab.com/aruw/controls/taproot-template-project/-/commits/develop)
 
 ## Resources
 
