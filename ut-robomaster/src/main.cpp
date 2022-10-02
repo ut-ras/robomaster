@@ -45,8 +45,6 @@
 
 #include "control/robot_control.hpp"
 
-#include "led_test/led.hpp"
-
 /* define timers here -------------------------------------------------------*/
 tap::arch::PeriodicMilliTimer sendMotorTimeout(2);
 
@@ -79,8 +77,7 @@ int main()
 
     Board::initialize();
     initializeIo(drivers);
-    control::initSubsystemCommands(drivers);
-    // led_test::init();
+    initSubsystemCommands(drivers);
 
 #ifdef PLATFORM_HOSTED
     tap::motorsim::SimHandler::resetMotorSims();
