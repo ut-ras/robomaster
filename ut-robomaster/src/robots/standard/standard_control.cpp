@@ -19,7 +19,7 @@
 // #include "flywheel/flywheel_subsystem.hpp"
 // #include "flywheel/flywheel_on_command.hpp"
 
-#include "chassis/chassis_subsystem.hpp"
+#include "subsystems/chassis/chassis_subsystem.hpp"
 // #include "chassis/chassis_drive_command.hpp"
 // #include "chassis/chassis_drive_keyboard_command.hpp"
 
