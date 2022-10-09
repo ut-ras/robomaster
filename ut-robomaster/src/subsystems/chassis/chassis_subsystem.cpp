@@ -8,7 +8,7 @@ using tap::algorithms::limitVal;
 
 namespace control::chassis
 {
-// STEP 1 (Tank Drive): create constructor
+// STEP 1 (Mecanum Drive): create constructor
 ChassisSubsystem::ChassisSubsystem(Drivers &drivers, const ChassisConfig &config)
     : tap::control::Subsystem(&drivers),
       desiredOutput{},
@@ -26,7 +26,7 @@ ChassisSubsystem::ChassisSubsystem(Drivers &drivers, const ChassisConfig &config
     }
 }
 
-// STEP 2 (Tank Drive): initialize function
+// STEP 2 (Mecanum Drive): initialize function
 void ChassisSubsystem::initialize()
 {
     for (auto &motor : motors)
@@ -35,8 +35,8 @@ void ChassisSubsystem::initialize()
     }
 }
 
-// STEP 4 (Tank Drive): setVelocityTankDrive function
-void ChassisSubsystem::setVelocityTankDrive(float left, float right)
+// STEP 4 (Mecanum Drive): setVelocityMecanumDrive function
+void ChassisSubsystem::setVelocityMecanumDrive(float left, float right)
 {
     left = mpsToRpm(left);
     right = mpsToRpm(right);
@@ -50,7 +50,7 @@ void ChassisSubsystem::setVelocityTankDrive(float left, float right)
     desiredOutput[static_cast<uint8_t>(MotorId::RF)] = right;
 }
 
-// STEP 5 (Tank Drive): refresh function
+// STEP 5 (Mecanum Drive): refresh function
 void ChassisSubsystem::refresh()
 {
     auto runPid = [](Pid &pid, Motor &motor, float desiredOutput) {
