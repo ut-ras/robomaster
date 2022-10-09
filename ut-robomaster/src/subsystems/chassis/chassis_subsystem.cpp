@@ -1,66 +1,63 @@
-#include "chassis_subsystem.hpp"
+/*
+ * Copyright (c) 2020-2021 Advanced Robotics at the University of Washington <robomstr@uw.edu>
+ *
+ * This file is part of taproot-examples.
+ *
+ * taproot-examples is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * taproot-examples is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with taproot-examples.  If not, see <https://www.gnu.org/licenses/>.
+ */
 
-#include "tap/algorithms/math_user_utils.hpp"
+#include "example_subsystem.hpp"
 
 #include "drivers.hpp"
 
-using tap::algorithms::limitVal;
-
-namespace control::chassis
+ExampleSubsystem::ExampleSubsystem(
+    Drivers* drivers,
+    tap::motor::MotorId leftMotorId,
+    tap::motor::MotorId rightMotorId)
+    : tap::control::Subsystem(drivers),
+      velocityPidLeftWheel(PID_P, PID_I, PID_D, PID_MAX_ERROR_SUM, PID_MAX_OUTPUT),
+      velocityPidRightWheel(PID_P, PID_I, PID_D, PID_MAX_ERROR_SUM, PID_MAX_OUTPUT),
+      desiredRpm(0),
+      leftWheel(drivers, leftMotorId, CAN_BUS_MOTORS, true, "left example motor"),
+      rightWheel(drivers, rightMotorId, CAN_BUS_MOTORS, false, "right example motor")
 {
-// STEP 1 (Mecanum Drive): create constructor
-ChassisSubsystem::ChassisSubsystem(Drivers &drivers, const ChassisConfig &config)
-    : tap::control::Subsystem(&drivers),
-      desiredOutput{},
-      pidControllers{},
-      motors{
-          Motor(&drivers, config.leftFrontId, config.canBus, false, "LF"),
-          Motor(&drivers, config.leftBackId, config.canBus, false, "LB"),
-          Motor(&drivers, config.rightBackId, config.canBus, true, "RB"),
-          Motor(&drivers, config.rightFrontId, config.canBus, true, "RF"),
-      }
-{
-    for (auto &controller : pidControllers)
-    {
-        controller.setParameter(config.wheelVelocityPidConfig);
-    }
 }
 
-// STEP 2 (Mecanum Drive): initialize function
-void ChassisSubsystem::initialize()
+void ExampleSubsystem::initialize()
 {
-    for (auto &motor : motors)
-    {
-        motor.initialize();
-    }
+    leftWheel.initialize();
+    rightWheel.initialize();
 }
 
-// STEP 4 (Mecanum Drive): setVelocityMecanumDrive function
-void ChassisSubsystem::setVelocityMecanumDrive(float left, float right)
+void ExampleSubsystem::setDesiredRpm(float desRpm) { desiredRpm = desRpm; }
+
+void ExampleSubsystem::refresh()
 {
-    left = mpsToRpm(left);
-    right = mpsToRpm(right);
-
-    left = limitVal(left, -MAX_WHEELSPEED_RPM, MAX_WHEELSPEED_RPM);
-    right = limitVal(right, -MAX_WHEELSPEED_RPM, MAX_WHEELSPEED_RPM);
-
-    desiredOutput[static_cast<uint8_t>(MotorId::LF)] = left;
-    desiredOutput[static_cast<uint8_t>(MotorId::LB)] = left;
-    desiredOutput[static_cast<uint8_t>(MotorId::RB)] = right;
-    desiredOutput[static_cast<uint8_t>(MotorId::RF)] = right;
+    updateMotorRpmPid(&velocityPidLeftWheel, &leftWheel, desiredRpm);
+    updateMotorRpmPid(&velocityPidRightWheel, &rightWheel, desiredRpm);
 }
 
-// STEP 5 (Mecanum Drive): refresh function
-void ChassisSubsystem::refresh()
+void ExampleSubsystem::updateMotorRpmPid(
+    modm::Pid<float>* pid,
+    tap::motor::DjiMotor* motor,
+    float desiredRpm)
 {
-    auto runPid = [](Pid &pid, Motor &motor, float desiredOutput) {
-        pid.update(desiredOutput - motor.getShaftRPM());
-        motor.setDesiredOutput(pid.getValue());
-    };
-
-    for (size_t ii = 0; ii < motors.size(); ii++)
-    {
-        runPid(pidControllers[ii], motors[ii], desiredOutput[ii]);
-    }
+    pid->update(desiredRpm - motor->getShaftRPM());
+    motor->setDesiredOutput(static_cast<int32_t>(pid->getValue()));
 }
-}  // namespace control::chassis
+
+void ExampleSubsystem::runHardwareTests()
+{
+    // TODO
+}
