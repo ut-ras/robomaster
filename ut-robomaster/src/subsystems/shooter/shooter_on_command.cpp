@@ -12,11 +12,14 @@ namespace shooter
 void ShooterOnCommand::initialize() {}
 
 void ShooterOnCommand::execute() { 
-    shooter->setDesiredRPM(1200); 
-    
+    shooter->setFlywheelOutput(0.5); 
+    shooter->setAgitatorOutput(1000);
 }
 
-void ShooterOnCommand::end(bool) { shooter->setDesiredRPM(0); }
+void ShooterOnCommand::end(bool) { 
+    shooter->setFlywheelOutput(0); 
+    shooter->setAgitatorOutput(0);
+}
 
 bool ShooterOnCommand::isFinished() const { return false; }
 }  // namespace shooter

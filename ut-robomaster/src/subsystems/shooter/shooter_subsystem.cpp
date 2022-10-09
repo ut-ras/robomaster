@@ -11,16 +11,23 @@ namespace shooter
     
 ShooterSubsystem::ShooterSubsystem(tap::Drivers *drivers)
     :   tap::control::Subsystem(drivers),
-        flywheelMotorOutput(0.0f),
-        flywheelPidController(0.5f, 0.0f, 0.0f, 5000.0f, 8000.0f),
-        flywheelMotor(
+        agitatorPidController(0.5f, 0.0f, 0.0f, 5000.0f, 8000.0f),
+        // flywheelMotor(
+        //     drivers,
+        //     FLYWHEEL_MOTOR_ID,
+        //     CAN_BUS_MOTORS,
+        //     true,
+        //     "flywheel motor"),
+        agitatorMotor(
             drivers,
-            FLYWHEEL_MOTOR_ID,
+            AGITATOR_MOTOR_ID,
             CAN_BUS_MOTORS,
             true,
-            "flywheel motor"),
+            "agitator motor"),
         drivers(drivers)
         {
+            setAgitatorOutput(0);
+            setFlywheelOutput(0);
         }
         
 void ShooterSubsystem::initialize() { 
@@ -41,12 +48,18 @@ void ShooterSubsystem::setAgitatorOutput(int desiredRPM)
     {
         agitatorMotor.setDesiredOutput(0.0f);
     }
-
     else
     {
         agitatorPidController.update(desiredRPM - agitatorMotor.getShaftRPM());
         agitatorMotor.setDesiredOutput(static_cast<int32_t> (agitatorPidController.getValue()));
     }
+}
+
+void ShooterSubsystem::setFlywheelOutput(double normalizedOutput) // between 0 and 1
+{
+    double toAdd = normalizedOutput / 4; // 0 to 0.25     
+    drivers->pwm.write(MIN_SNAIL_OUTPUT + toAdd, FLYWHEEL_MOTOR_PIN);
+    
 }
 
 }

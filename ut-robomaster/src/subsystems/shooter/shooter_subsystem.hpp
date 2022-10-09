@@ -22,7 +22,7 @@ public:
 
     void initialize() override;
 
-    void setFlywheelOutput(int desiredRPM);
+    void setFlywheelOutput(double normalizedOutput);
     void setAgitatorOutput(int desiredRPM);
 
     void refresh() override;
