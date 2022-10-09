@@ -42,10 +42,10 @@
 
 class Drivers;
 
-class ExampleSubsystem : public tap::control::Subsystem
+class ChassisSubsystem : public tap::control::Subsystem
 {
 public:
-    ExampleSubsystem(
+    ChassisSubsystem(
         Drivers* drivers,
         tap::motor::MotorId leftMotorId = tap::motor::MOTOR1,
         tap::motor::MotorId rightMotorId = tap::motor::MOTOR2);
@@ -58,7 +58,7 @@ public:
 
     void runHardwareTests() override;
 
-    const char* getName() override { return "Example subsystem"; }
+    const char* getName() override { return "Chassis subsystem"; }
 
 private:
     static constexpr tap::can::CanBus CAN_BUS_MOTORS = tap::can::CanBus::CAN_BUS1;

@@ -17,11 +17,11 @@
  * along with taproot-examples.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "example_subsystem.hpp"
+#include "chassis_subsystem.hpp"
 
 #include "drivers.hpp"
 
-ExampleSubsystem::ExampleSubsystem(
+ChassisSubsystem::ChassisSubsystem(
     Drivers* drivers,
     tap::motor::MotorId leftMotorId,
     tap::motor::MotorId rightMotorId)
@@ -34,21 +34,21 @@ ExampleSubsystem::ExampleSubsystem(
 {
 }
 
-void ExampleSubsystem::initialize()
+void ChassisSubsystem::initialize()
 {
     leftWheel.initialize();
     rightWheel.initialize();
 }
 
-void ExampleSubsystem::setDesiredRpm(float desRpm) { desiredRpm = desRpm; }
+void ChassisSubsystem::setDesiredRpm(float desRpm) { desiredRpm = desRpm; }
 
-void ExampleSubsystem::refresh()
+void ChassisSubsystem::refresh()
 {
     updateMotorRpmPid(&velocityPidLeftWheel, &leftWheel, desiredRpm);
     updateMotorRpmPid(&velocityPidRightWheel, &rightWheel, desiredRpm);
 }
 
-void ExampleSubsystem::updateMotorRpmPid(
+void ChassisSubsystem::updateMotorRpmPid(
     modm::Pid<float>* pid,
     tap::motor::DjiMotor* motor,
     float desiredRpm)
@@ -57,7 +57,7 @@ void ExampleSubsystem::updateMotorRpmPid(
     motor->setDesiredOutput(static_cast<int32_t>(pid->getValue()));
 }
 
-void ExampleSubsystem::runHardwareTests()
+void ChassisSubsystem::runHardwareTests()
 {
     // TODO
 }
