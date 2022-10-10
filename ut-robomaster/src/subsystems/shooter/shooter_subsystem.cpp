@@ -11,56 +11,43 @@ namespace shooter
     
 ShooterSubsystem::ShooterSubsystem(tap::Drivers *drivers)
     :   tap::control::Subsystem(drivers),
-        agitatorPidController(0.5f, 0.0f, 0.0f, 5000.0f, 8000.0f),
-        // flywheelMotor(
-        //     drivers,
-        //     FLYWHEEL_MOTOR_ID,
-        //     CAN_BUS_MOTORS,
-        //     true,
-        //     "flywheel motor"),
-        agitatorMotor(
-            drivers,
-            AGITATOR_MOTOR_ID,
-            CAN_BUS_MOTORS,
-            true,
-            "agitator motor"),
-        drivers(drivers)
-        {
-            setAgitatorOutput(0);
-            setFlywheelOutput(0);
-        }
+#ifdef FLYWHEELS_USE_SNAIL_MOTORS
+        flywheel(drivers, FLYWHEEL_MOTOR_PIN),
+#else
+        flywheel(drivers, FLYWHEEL_MOTOR_ID, CAN_BUS_MOTORS),
+#endif
+        agitator(drivers, AGITATOR_MOTOR_ID, CAN_BUS_MOTORS)
+{}
+
+void ShooterSubsystem::registerSubsystems()
+{
+    drivers->commandScheduler.registerSubsystem(&flywheel);
+    drivers->commandScheduler.registerSubsystem(&agitator);
+}
         
 void ShooterSubsystem::initialize() { 
-    // flywheelMotor.initialize();
-    
-    // drivers->pwm.write(1.0f, UV_LIGHT_PIN);
-
-    agitatorMotor.initialize();
-    drivers->pwm.write(MIN_SNAIL_OUTPUT, FLYWHEEL_MOTOR_PIN); // NOT SPINNING
-    
+    flywheel.initialize();
+    agitator.initialize();
 }
 
-void ShooterSubsystem::refresh() {}
+#ifdef FLYWHEELS_USE_SNAIL_MOTORS
+void ShooterSubsystem::setFlywheelOutput(double normalizedOutput) // between 0 and 1
+{
+    flywheel.setMotorOutput(normalizedOutput);
+}
+#else
+void ShooterSubsystem::setFlywheelOutput(int desiredRPM)
+{
+    flywheel.setMotorOutput(desiredRPM);
+}
+#endif
 
 void ShooterSubsystem::setAgitatorOutput(int desiredRPM)
 {
-    if (desiredRPM == 0)
-    {
-        agitatorMotor.setDesiredOutput(0.0f);
-    }
-    else
-    {
-        agitatorPidController.update(desiredRPM - agitatorMotor.getShaftRPM());
-        agitatorMotor.setDesiredOutput(static_cast<int32_t> (agitatorPidController.getValue()));
-    }
+    agitator.setMotorOutput(desiredRPM);
 }
 
-void ShooterSubsystem::setFlywheelOutput(double normalizedOutput) // between 0 and 1
-{
-    double toAdd = normalizedOutput / 4; // 0 to 0.25     
-    drivers->pwm.write(MIN_SNAIL_OUTPUT + toAdd, FLYWHEEL_MOTOR_PIN);
-    
-}
+void ShooterSubsystem::refresh() {}
 
 }
 }

@@ -95,6 +95,7 @@ void registerStandardSubsystems(tap::Drivers *drivers)
 {
     // drivers->commandScheduler.registerSubsystem(&theAgitator);
     drivers->commandScheduler.registerSubsystem(&theShooter);
+    theShooter.registerSubsystems();
     // drivers->commandScheduler.registerSubsystem(&theChassis);
     // drivers->commandScheduler.registerSubsystem(&theTurret);    // mouse
     //drivers->commandScheduler.registerSubsystem(&theGimbal);     // joystick
