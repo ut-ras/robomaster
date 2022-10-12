@@ -20,6 +20,7 @@ public:
     void initialize() override;
 
     void setMotorOutput(int desiredRPM);
+    void rotateToTarget(int64_t targetPosition);
 
     // Default refresh for Subsystem is no-op
     // void refresh() override;
@@ -29,6 +30,7 @@ private:
     const tap::can::CanBus canBusMotors;
     uint16_t motorOutput; // Unused?
     modm::Pid<float> pidController; // Should the PID controller use int instead? Check kp
+    modm::Pid<float> targetAnglePidController;
     tap::motor::DjiMotor motor;
     static constexpr float MAX_CURRENT_OUTPUT = 8000.0f;
 };

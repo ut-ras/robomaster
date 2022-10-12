@@ -18,6 +18,7 @@
 // #include "agitator/agitator_subsystem.hpp"
 
 #include "subsystems/shooter/shooter_on_command.hpp"
+#include "subsystems/shooter/shooter_single_fire_command.hpp"
 #include "subsystems/shooter/shooter_subsystem.hpp"
 
 // #include "chassis/chassis_subsystem.hpp"
@@ -57,6 +58,7 @@ subsystems::shooter::ShooterSubsystem theShooter(drivers());
 // control::agitator::AgitatorRotateCommand rotateCommand(&theAgitator);
 // control::agitator::AgitatorReverseCommand reverseCommand(&theAgitator);
 subsystems::shooter::ShooterOnCommand shooterCommand(&theShooter);
+subsystems::shooter::ShooterSingleFireCommand singleFireCommand(&theShooter);
 // control::chassis::ChassisDriveKeyboardCommand chassisDriveKeyboardCommand(drivers(), &theChassis);  // keyboard
 //control::chassis::ChassisDriveCommand chassisDriveCommand(drivers(), &theChassis);   // joystick
 // control::turret::TurretMoveCommand turretMoveCommand(drivers(), &theTurret);    //mouse 
@@ -82,6 +84,11 @@ HoldRepeatCommandMapping rightMouseDown(
     drivers(),
     {&shooterCommand},
     RemoteMapState(RemoteMapState::MouseButton::RIGHT), true, -1);
+
+PressCommandMapping singleFire(
+    drivers(),
+    {&singleFireCommand},
+    RemoteMapState(Remote::Switch::RIGHT_SWITCH, Remote::SwitchState::UP));
 
 // HoldRepeatCommandMapping leftMouseDown(
 //     drivers(),
@@ -129,6 +136,7 @@ void registerStandardIoMappings(tap::Drivers *drivers)
     // drivers->commandMapper.addMap(&reverseAgitator);
     // drivers->commandMapper.addMap(&rightSwitchDown);
     drivers->commandMapper.addMap(&leftSwitchUp);
+    drivers->commandMapper.addMap(&singleFire);
     // drivers->commandMapper.addMap(&leftMouseDown);
     drivers->commandMapper.addMap(&rightMouseDown);
 }

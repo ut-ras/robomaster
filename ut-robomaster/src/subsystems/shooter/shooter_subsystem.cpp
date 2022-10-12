@@ -1,8 +1,11 @@
 #include "shooter_subsystem.hpp"
-
+#include "tap/communication/gpio/leds.hpp"
 #include "tap/communication/serial/remote.hpp"
 
 using namespace tap;
+using namespace tap::gpio;
+
+tap::gpio::Leds test;
 
 namespace subsystems
 {
@@ -16,7 +19,8 @@ ShooterSubsystem::ShooterSubsystem(tap::Drivers *drivers)
 #else
         flywheel(drivers, FLYWHEEL_MOTOR_ID, CAN_BUS_MOTORS),
 #endif
-        agitator(drivers, AGITATOR_MOTOR_ID, CAN_BUS_MOTORS)
+        agitator(drivers, AGITATOR_MOTOR_ID, CAN_BUS_MOTORS),
+        targetAngle(0)
 {}
 
 void ShooterSubsystem::registerSubsystems()
@@ -28,6 +32,7 @@ void ShooterSubsystem::registerSubsystems()
 void ShooterSubsystem::initialize() { 
     flywheel.initialize();
     agitator.initialize();
+    test.init();
 }
 
 #ifdef FLYWHEELS_USE_SNAIL_MOTORS
@@ -46,6 +51,23 @@ void ShooterSubsystem::setAgitatorOutput(int desiredRPM)
 {
     agitator.setMotorOutput(desiredRPM);
 }
+
+void ShooterSubsystem::rotateAgitatorToTarget()
+{
+    int x = targetAngle;
+    test.set(Leds::LedPin::Green, (x % 3) == 0);
+    test.set(Leds::LedPin::Red, (x % 3) == 1);
+    test.set(Leds::LedPin::Blue, (x % 3) == 2);
+    agitator.rotateToTarget(targetAngle);
+}
+
+void ShooterSubsystem::incrementAgitatorTargetAngle(uint64_t increment)
+{
+    targetAngle = targetAngle + 2800;
+    //rotateAgitatorToTarget();
+    
+}
+
 
 void ShooterSubsystem::refresh() {}
 

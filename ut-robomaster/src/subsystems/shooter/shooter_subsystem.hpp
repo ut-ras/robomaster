@@ -36,7 +36,8 @@ public:
     void setFlywheelOutput(int desiredRPM);
 #endif
     void setAgitatorOutput(int desiredRPM);
-
+    void rotateAgitatorToTarget();
+    void incrementAgitatorTargetAngle(u_int64_t increment);
     // Subsystem is no-op, unnecessary override?
     void refresh() override;
 
@@ -52,10 +53,11 @@ private:
     static constexpr tap::motor::MotorId FLYWHEEL_MOTOR_ID = tap::motor::MOTOR1;
 #endif
 
-    static constexpr tap::motor::MotorId AGITATOR_MOTOR_ID = tap::motor::MOTOR1;
+    static constexpr tap::motor::MotorId AGITATOR_MOTOR_ID = tap::motor::MOTOR5;
 
     FlywheelSubsystem flywheel;
     AgitatorSubsystem agitator;
+    uint64_t targetAngle;
 };
 
 }
