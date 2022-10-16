@@ -52,12 +52,8 @@ public:
 
     void initialize() override;
 
-<<<<<<< HEAD
     void setDesiredRpm(float desRpmYaw, float desRpmPitch);
-=======
     void setDesiredRpm(float desRpm);
->>>>>>> f9e46c55cfbd9ee98608d7d4f4082de1eb13ddc7
-
     void refresh() override;
 
     void runHardwareTests() override;
@@ -77,12 +73,8 @@ private:
 
     modm::Pid<float> velocityPidPitchMotor;
 
-<<<<<<< HEAD
     float desiredRpmYaw, desiredRpmPitch;
-=======
     float desiredRpm;
->>>>>>> f9e46c55cfbd9ee98608d7d4f4082de1eb13ddc7
-
     void updateMotorRpmPid(
         modm::Pid<float>* pid,
         tap::motor::DjiMotor* const motor,
