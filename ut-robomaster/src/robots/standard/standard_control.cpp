@@ -15,7 +15,6 @@
 #include "subsystems/turret/turret_command.hpp"
 
 #include "tap/communication/gpio/leds.hpp"
-
 using namespace tap::control;
 using namespace tap::communication::serial;
 
@@ -36,7 +35,7 @@ TurretSubsystem theTurret(drivers());  // mouse
 
 /* define commands ----------------------------------------------------------*/
 
-TurretCommand turretCommand(&theTurret, 10);    //mouse 
+TurretCommand turretCommand(drivers(), &theTurret);    //mouse 
 
 
 /* define command mappings --------------------------------------------------*/

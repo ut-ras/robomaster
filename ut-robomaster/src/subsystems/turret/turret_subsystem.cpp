@@ -28,7 +28,7 @@ TurretSubsystem::TurretSubsystem(
     : tap::control::Subsystem(drivers),
       velocityPidYawMotor(PID_P, PID_I, PID_D, PID_MAX_ERROR_SUM, PID_MAX_OUTPUT),
       velocityPidPitchMotor(PID_P, PID_I, PID_D, PID_MAX_ERROR_SUM, PID_MAX_OUTPUT),
-      desiredRpm(0),
+    //   desiredRpm(0),
       yawMotor(drivers, yawMotorID, CAN_BUS_MOTORS, false, "yaw motor"),
       pitchMotor(drivers, pitchMotorID, CAN_BUS_MOTORS, false, "pitch motor")
 {
@@ -40,12 +40,15 @@ void TurretSubsystem::initialize()
     pitchMotor.initialize();
 }
 
-void TurretSubsystem::setDesiredRpm(float desRpm) { desiredRpm = desRpm; }
+void TurretSubsystem::setDesiredRpm(float desRpmYaw, float desRpmPitch) {
+    desiredRpmPitch = desRpmYaw;
+    desiredRpmYaw = desRpmPitch;
+}
 
 void TurretSubsystem::refresh()
 {
-    updateMotorRpmPid(&velocityPidYawMotor, &yawMotor, desiredRpm);
-    updateMotorRpmPid(&velocityPidPitchMotor, &pitchMotor, desiredRpm);
+    updateMotorRpmPid(&velocityPidYawMotor, &yawMotor, desiredRpmYaw);
+    updateMotorRpmPid(&velocityPidPitchMotor, &pitchMotor, desiredRpmPitch);
 }
 
 void TurretSubsystem::updateMotorRpmPid(

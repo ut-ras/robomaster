@@ -18,25 +18,37 @@
  */
 
 #include "turret_command.hpp"
-
 #include "turret_subsystem.hpp"
+
+#define POSDEADZONE 0.2
 
 using tap::control::Subsystem;
 
-TurretCommand::TurretCommand(TurretSubsystem* subsystem, int speed)
-    : subsystem(subsystem),
-      speed(speed)
+TurretCommand::TurretCommand(tap::Drivers* drivers, TurretSubsystem* subsystem)
+    : drivers(drivers), 
+    subsystem(subsystem)
 {
     addSubsystemRequirement(subsystem);
 }
 
-void TurretCommand::initialize() {subsystem->setDesiredRpm(0);}
+void TurretCommand::initialize() {subsystem->setDesiredRpm(0, 0);}
 
-void TurretCommand::execute() { subsystem->setDesiredRpm(speed); }
+void TurretCommand::execute() { 
+    float x = drivers->remote.getChannel(tap::communication::serial::Remote::Channel::RIGHT_HORIZONTAL);
+    float y = -(drivers->remote.getChannel(tap::communication::serial::Remote::Channel::RIGHT_VERTICAL));
+
+    if (fabs(x) > POSDEADZONE || fabs(y) > POSDEADZONE){
+        subsystem->setDesiredRpm(x, y);
+    } else{
+        subsystem->setDesiredRpm(0, 0);
+    }
+
+    subsystem->setDesiredRpm(x, y);
+}
 
 void TurretCommand::end(bool interrupted)
 {
-    subsystem->setDesiredRpm(0);
+    subsystem->setDesiredRpm(0, 0);
 }
 
 bool TurretCommand::isFinished(void) const { return false; }

@@ -28,6 +28,7 @@
 
 #include "tap/control/command.hpp"
 #include "drivers.hpp"
+#include "tap/communication/serial/remote.hpp"
 
 class TurretSubsystem;
 
@@ -36,7 +37,7 @@ class TurretCommand : public tap::control::Command
 public:
     static constexpr int16_t DEFAULT_WHEEL_RPM = 6000;
 
-    TurretCommand(TurretSubsystem* subsystem, int speed);
+    TurretCommand(tap::Drivers* drivers, TurretSubsystem* subsystem);
 
     /**
      * The initial subroutine of a command.  Called once when the command is
@@ -71,7 +72,7 @@ public:
 private:
     TurretSubsystem* subsystem;
 
-    int speed;
+    tap::Drivers* drivers;
 };
 
 #endif  // EXAMPLE_COMMAND_HPP_
