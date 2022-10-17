@@ -63,7 +63,7 @@ void ShooterSubsystem::rotateAgitatorToTarget()
 
 void ShooterSubsystem::incrementAgitatorTargetAngle(uint64_t increment)
 {
-    targetAngle = targetAngle + 2800;
+    targetAngle = targetAngle + 2820;
     //rotateAgitatorToTarget();
     
 }

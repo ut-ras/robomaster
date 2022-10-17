@@ -10,7 +10,7 @@ AgitatorSubsystem::AgitatorSubsystem(tap::Drivers *drivers, tap::motor::MotorId 
         canBusMotors(canBusMotors),
         motorOutput(0),
         pidController(22.0f, 0.5f, 0.0f, 5000.0f, MAX_CURRENT_OUTPUT),
-        targetAnglePidController(0.375f, 0.025f, 1.0f, 5000.0f, MAX_CURRENT_OUTPUT / 4.0f), // TODO: Tune PID
+        targetAnglePidController(0.75f, 0.00f, 75.0f, 100000.0f, MAX_CURRENT_OUTPUT / 4), // TODO: Tune PID
         motor(
             drivers,
             motorId,
@@ -60,7 +60,7 @@ void AgitatorSubsystem::rotateToTarget(int64_t targetPosition)
     
     // error += 256.0 * -1 * signOfDifference;
     
-    targetAnglePidController.update(error);
+    targetAnglePidController.update(targetPosition - currentPosition);
     motor.setDesiredOutput(static_cast<int32_t>(targetAnglePidController.getValue()));
 }
 
