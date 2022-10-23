@@ -18,43 +18,51 @@
  */
 
 #include "chassis_subsystem.hpp"
+
 #include "tap/control/chassis/chassis_subsystem_interface.hpp"
+
+#include "modm/math/geometry.hpp"
+
 #include "drivers.hpp"
 
 ChassisSubsystem::ChassisSubsystem(
     tap::Drivers* drivers,
+    tap::motor::DjiMotor* yawMotor,
     tap::motor::MotorId leftFrontMotorId,
     tap::motor::MotorId rightBackMotorId,
     tap::motor::MotorId rightFrontMotorId,
     tap::motor::MotorId leftBackMotorId)
     : tap::control::Subsystem(drivers),
-      velocityPidLeftFrontWheel(PID_P, PID_I, PID_D, PID_MAX_ERROR_SUM, PID_MAX_OUTPUT),
-      velocityPidRightFrontWheel(PID_P, PID_I, PID_D, PID_MAX_ERROR_SUM, PID_MAX_OUTPUT),
-      velocityPidLeftBackWheel(PID_P, PID_I, PID_D, PID_MAX_ERROR_SUM, PID_MAX_OUTPUT),
-      velocityPidRightBackWheel(PID_P, PID_I, PID_D, PID_MAX_ERROR_SUM, PID_MAX_OUTPUT),
-      desiredRpm({0.0f, 0.0f, 0.0f, 0.0f}),
+      desiredWheelRPM({0.0f, 0.0f, 0.0f, 0.0f}),
       leftFrontWheel(drivers, leftFrontMotorId, CAN_BUS_MOTORS, true, "left front motor"),
       leftBackWheel(drivers, leftBackMotorId, CAN_BUS_MOTORS, true, "left back motor"),
       rightFrontWheel(drivers, rightFrontMotorId, CAN_BUS_MOTORS, true, "right front motor"),
       rightBackWheel(drivers, rightBackMotorId, CAN_BUS_MOTORS, true, "right back motor"),
-{}
+      yawMotor(yawMotor),
+      pid{modm::Pid<float>(PID_P, PID_I, PID_D, PID_MAX_ERROR_SUM, PID_MAX_OUTPUT),
+          modm::Pid<float>(PID_P, PID_I, PID_D, PID_MAX_ERROR_SUM, PID_MAX_OUTPUT),
+          modm::Pid<float>(PID_P, PID_I, PID_D, PID_MAX_ERROR_SUM, PID_MAX_OUTPUT),
+          modm::Pid<float>(PID_P, PID_I, PID_D, PID_MAX_ERROR_SUM, PID_MAX_OUTPUT)},
+      imuDrive(true),
+      setStartTurret(false),
+      startTurretLoc(0.0f),
+      slowFactor(1.0f)
+{
+}
 
 void ChassisSubsystem::initialize()
 {
-
     leftFrontWheel.initialize();
     leftBackWheel.initialize();
     rightFrontWheel.initialize();
     rightBackWheel.initialize();
-    imuDrive = true;
-    setStartTurret = false;
-    startTurretLoc = 0.0f;
-    slowFactor = 1.0f;
 }
 
 void ChassisSubsystem::setDesiredOutput(float x, float y, float r)
 {
-    if (drivers->bmi088.getImuState() == tap::communication::sensors::imu::ImuInterface::ImuState::IMU_CALIBRATING) //if the 6020 is set to the calibrated value, set all RPMs to 0
+    if (drivers->bmi088.getImuState() ==
+        tap::communication::sensors::imu::ImuInterface::ImuState::
+            IMU_CALIBRATING)  // if the 6020 is set to the calibrated value, set all RPMs to 0
     {
         for (uint16_t i = 0; i < MODM_ARRAY_SIZE(desiredWheelRPM); i++)
         {
@@ -62,37 +70,43 @@ void ChassisSubsystem::setDesiredOutput(float x, float y, float r)
         }
         return;
     }
-    
-    vector.setX(x);
-    vector.setY(y);
 
-    // if (!imuDrive && drivers->remote.getSwitch(tap::communication::serial::Remote::Switch::LEFT_SWITCH) == tap::communication::serial::Remote::SwitchState::DOWN)
-    // {       //TODO: Fix the IMU and the if statement to not use remote commands
-    //     imuDrive = true;  
+    modm::Vector2f vector(x, y);
+
+    // if (!imuDrive &&
+    // drivers->remote.getSwitch(tap::communication::serial::Remote::Switch::LEFT_SWITCH) ==
+    // tap::communication::serial::Remote::SwitchState::DOWN) {       //TODO: Fix the IMU and the if
+    // statement to not use remote commands
+    //     imuDrive = true;
     //     drivers->bmi088.requestRecalibration();
     //     startYaw = drivers->bmi088.getYaw();
     // }
 
-    // else if (drivers->remote.getSwitch(tap::communication::serial::Remote::Switch::LEFT_SWITCH) == tap::communication::serial::Remote::SwitchState::MID)
+    // else if (drivers->remote.getSwitch(tap::communication::serial::Remote::Switch::LEFT_SWITCH)
+    // == tap::communication::serial::Remote::SwitchState::MID)
     // {
     //     imuDrive = false;
     // }
 
-    // if (imuDrive && drivers->bmi088.getImuState() == tap::communication::sensors::imu::ImuInterface::ImuState::IMU_CALIBRATED)
+    // if (imuDrive && drivers->bmi088.getImuState() ==
+    // tap::communication::sensors::imu::ImuInterface::ImuState::IMU_CALIBRATED)
     // {
     //     float offset = modm::toRadian(drivers->bmi088.getYaw() - startYaw);
     //     vector.rotate(offset);
     // }
-    if (imuDrive && drivers->bmi088.getImuState() == tap::communication::sensors::imu::ImuInterface::ImuState::IMU_CALIBRATED)
+    if (imuDrive && drivers->bmi088.getImuState() ==
+                        tap::communication::sensors::imu::ImuInterface::ImuState::IMU_CALIBRATED)
     {
-        if (!setStartTurret && yawMotor->isMotorOnline()){
+        if (!setStartTurret && yawMotor->isMotorOnline())
+        {
             startTurretLoc = yawMotor->getEncoderUnwrapped();
             setStartTurret = true;
         }
-        float turretOffset = modm::toRadian((yawMotor->getEncoderUnwrapped() - startTurretLoc) * 360 / 8192);
+        float turretOffset =
+            modm::toRadian((yawMotor->getEncoderUnwrapped() - startTurretLoc) * 360 / 8192);
         vector.rotate(turretOffset);
     }
-    
+
     float theta = vector.getAngle();
     float power = vector.getLength();
 
@@ -100,17 +114,17 @@ void ChassisSubsystem::setDesiredOutput(float x, float y, float r)
     float cos = cosf(theta - M_PI_4);
     float max = modm::max(std::abs(sin), std::abs(cos));
 
-    desiredWheelRPM[0] = power * cos/max + r;   // right front wheel
-    desiredWheelRPM[1] = power * sin/max - r;   // left front wheel
-    desiredWheelRPM[2] = power * cos/max - r;   // left back wheel
-    desiredWheelRPM[3] = power * sin/max + r;   // right back wheel
+    desiredWheelRPM[0] = power * cos / max + r;  // right front wheel
+    desiredWheelRPM[1] = power * sin / max - r;  // left front wheel
+    desiredWheelRPM[2] = power * cos / max - r;  // left back wheel
+    desiredWheelRPM[3] = power * sin / max + r;  // right back wheel
 
     if ((power + abs(r)) > 1)
     {
-        desiredWheelRPM[0] /= power + abs(r);   // right front wheel
-        desiredWheelRPM[1] /= power + abs(r);   // left front wheel
-        desiredWheelRPM[2] /= power + abs(r);   // left back wheel
-        desiredWheelRPM[3] /= power + abs(r);   // right back wheel
+        desiredWheelRPM[0] /= power + abs(r);  // right front wheel
+        desiredWheelRPM[1] /= power + abs(r);  // left front wheel
+        desiredWheelRPM[2] /= power + abs(r);  // left back wheel
+        desiredWheelRPM[3] /= power + abs(r);  // right back wheel
     }
 
     for (uint16_t i = 0; i < MODM_ARRAY_SIZE(desiredWheelRPM); i++)
@@ -120,10 +134,10 @@ void ChassisSubsystem::setDesiredOutput(float x, float y, float r)
 }
 void ChassisSubsystem::refresh()
 {
-    updateMotorRpmPid(&velocityPidLeftFrontWheel, &leftFrontWheel, desiredRpm[1]);
-    updateMotorRpmPid(&velocityPidLeftBackWheel, &leftBackWheel, desiredRpm[2]);
-    updateMotorRpmPid(&velocityPidRightFrontWheel, &rightFrontWheel, desiredRpm[0]);
-    updateMotorRpmPid(&velocityPidRightBackWheel, &rightBackWheel, desiredRpm[3]);
+    updateMotorRpmPid(&velocityPidLeftFrontWheel, &leftFrontWheel, desiredWheelRPM[1]);
+    updateMotorRpmPid(&velocityPidLeftBackWheel, &leftBackWheel, desiredWheelRPM[2]);
+    updateMotorRpmPid(&velocityPidRightFrontWheel, &rightFrontWheel, desiredWheelRPM[0]);
+    updateMotorRpmPid(&velocityPidRightBackWheel, &rightBackWheel, desiredWheelRPM[3]);
 }
 
 void ChassisSubsystem::updateMotorRpmPid(

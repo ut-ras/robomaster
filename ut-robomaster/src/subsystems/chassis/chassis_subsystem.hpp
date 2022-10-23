@@ -35,7 +35,6 @@
 
 #include "tap/control/command_scheduler.hpp"
 #include "tap/control/subsystem.hpp"
-
 #include "tap/motor/dji_motor.hpp"
 
 #include "modm/math/filter/pid.hpp"
@@ -47,6 +46,7 @@ class ChassisSubsystem : public tap::control::Subsystem
 public:
     ChassisSubsystem(
         tap::Drivers* drivers,
+        tap::motor::DjiMotor* yawMotor,
         tap::motor::MotorId leftFrontMotorId = tap::motor::MOTOR1,
         tap::motor::MotorId rightFrontMotorId = tap::motor::MOTOR2,
         tap::motor::MotorId leftBackMotorId = tap::motor::MOTOR3,
@@ -76,11 +76,31 @@ private:
     modm::Pid<float> velocityPidRightFrontWheel;
     modm::Pid<float> velocityPidRightBackWheel;
 
-    float desiredRpm[4];
+    float desiredWheelRPM[4];
+    float maxRPM = 8000;  // assume 8000 to be max rpm
+    modm::Pid<float> pid[4];
+    float startYaw;
+    bool imuDrive;
 
+    const tap::motor::DjiMotor* yawMotor;
+
+    bool setStartTurret;
+    float startTurretLoc;
+
+    bool slowMode;
+    float slowFactor;
+
+    float energyBuffer;
+
+    void ChassisSubsystem::setDesiredOutput(float x, float y, float r);
     void updateMotorRpmPid(
         modm::Pid<float>* pid,
         tap::motor::DjiMotor* const motor,
+        float desiredRpm);
+    void ChassisSubsystem::refresh();
+    void ChassisSubsystem::updateMotorRpmPid(
+        modm::Pid<float>* pid,
+        tap::motor::DjiMotor* motor,
         float desiredRpm);
 
 #if defined(PLATFORM_HOSTED) && defined(ENV_UNIT_TESTS)
