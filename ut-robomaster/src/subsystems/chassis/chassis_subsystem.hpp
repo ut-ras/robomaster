@@ -46,9 +46,11 @@ class ChassisSubsystem : public tap::control::Subsystem
 {
 public:
     ChassisSubsystem(
-        Drivers* drivers,
-        tap::motor::MotorId leftMotorId = tap::motor::MOTOR1,
-        tap::motor::MotorId rightMotorId = tap::motor::MOTOR2);
+        tap::Drivers* drivers,
+        tap::motor::MotorId leftFrontMotorId = tap::motor::MOTOR1,
+        tap::motor::MotorId rightFrontMotorId = tap::motor::MOTOR2,
+        tap::motor::MotorId leftBackMotorId = tap::motor::MOTOR3,
+        tap::motor::MotorId rightBackMotorId = tap::motor::MOTOR4);
 
     void initialize() override;
 
@@ -69,11 +71,12 @@ private:
     static constexpr float PID_MAX_ERROR_SUM = 0.0f;
     static constexpr float PID_MAX_OUTPUT = 16000;
 
-    modm::Pid<float> velocityPidLeftWheel;
+    modm::Pid<float> velocityPidLeftFrontWheel;
+    modm::Pid<float> velocityPidLeftBackWheel;
+    modm::Pid<float> velocityPidRightFrontWheel;
+    modm::Pid<float> velocityPidRightBackWheel;
 
-    modm::Pid<float> velocityPidRightWheel;
-
-    float desiredRpm;
+    float desiredRpm[4];
 
     void updateMotorRpmPid(
         modm::Pid<float>* pid,
@@ -87,8 +90,10 @@ public:
 
 private:
 #else
-    tap::motor::DjiMotor leftWheel;
-    tap::motor::DjiMotor rightWheel;
+    tap::motor::DjiMotor leftFrontWheel;
+    tap::motor::DjiMotor leftBackWheel;
+    tap::motor::DjiMotor rightFrontWheel;
+    tap::motor::DjiMotor rightBackWheel;
 #endif
 };
 
