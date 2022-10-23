@@ -17,84 +17,125 @@
  * along with taproot-examples.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-/**
- * This is part of aruw's library.
- *
- * This is example code for running friction wheels. As you can
- * see, there is a generic update pid loop that is independent of
- * what command is given to the subsystem. Additionally, the
- * subsystem contains variables specific to the subsystem
- * (pid controllers, motors, etc). If a control loop is specific
- * to a command, it should NOT be in a subsystem. For example,
- * control code to pulse the friction wheels should be located
- * outside of this class because pulsing is a specific command.
- */
+#include "chassis_subsystem.hpp"
+#include "tap/control/chassis/chassis_subsystem_interface.hpp"
+#include "drivers.hpp"
 
-#ifndef EXAMPLE_SUBSYSTEM_HPP_
-#define EXAMPLE_SUBSYSTEM_HPP_
+ChassisSubsystem::ChassisSubsystem(
+    tap::Drivers* drivers,
+    tap::motor::MotorId leftFrontMotorId,
+    tap::motor::MotorId rightBackMotorId,
+    tap::motor::MotorId rightFrontMotorId,
+    tap::motor::MotorId leftBackMotorId)
+    : tap::control::Subsystem(drivers),
+      velocityPidLeftFrontWheel(PID_P, PID_I, PID_D, PID_MAX_ERROR_SUM, PID_MAX_OUTPUT),
+      velocityPidRightFrontWheel(PID_P, PID_I, PID_D, PID_MAX_ERROR_SUM, PID_MAX_OUTPUT),
+      velocityPidLeftBackWheel(PID_P, PID_I, PID_D, PID_MAX_ERROR_SUM, PID_MAX_OUTPUT),
+      velocityPidRightBackWheel(PID_P, PID_I, PID_D, PID_MAX_ERROR_SUM, PID_MAX_OUTPUT),
+      desiredRpm({0.0f, 0.0f, 0.0f, 0.0f}),
+      leftFrontWheel(drivers, leftFrontMotorId, CAN_BUS_MOTORS, true, "left front motor"),
+      leftBackWheel(drivers, leftBackMotorId, CAN_BUS_MOTORS, true, "left back motor"),
+      rightFrontWheel(drivers, rightFrontMotorId, CAN_BUS_MOTORS, true, "right front motor"),
+      rightBackWheel(drivers, rightBackMotorId, CAN_BUS_MOTORS, true, "right back motor"),
+{}
 
-#include "tap/control/command_scheduler.hpp"
-#include "tap/control/subsystem.hpp"
-
-#include "tap/motor/dji_motor.hpp"
-
-#include "modm/math/filter/pid.hpp"
-
-class Drivers;
-
-class ChassisSubsystem : public tap::control::Subsystem
+void ChassisSubsystem::initialize()
 {
-public:
-    ChassisSubsystem(
-        tap::Drivers* drivers,
-        tap::motor::MotorId leftFrontMotorId = tap::motor::MOTOR1,
-        tap::motor::MotorId rightFrontMotorId = tap::motor::MOTOR2,
-        tap::motor::MotorId leftBackMotorId = tap::motor::MOTOR3,
-        tap::motor::MotorId rightBackMotorId = tap::motor::MOTOR4);
 
-    void initialize() override;
+    leftFrontWheel.initialize();
+    leftBackWheel.initialize();
+    rightFrontWheel.initialize();
+    rightBackWheel.initialize();
+    imuDrive = true;
+    setStartTurret = false;
+    startTurretLoc = 0.0f;
+    slowFactor = 1.0f;
+}
 
-    void setDesiredRpm(float desRpm);
+void ChassisSubsystem::setDesiredOutput(float x, float y, float r)
+{
+    if (drivers->bmi088.getImuState() == tap::communication::sensors::imu::ImuInterface::ImuState::IMU_CALIBRATING) //if the 6020 is set to the calibrated value, set all RPMs to 0
+    {
+        for (uint16_t i = 0; i < MODM_ARRAY_SIZE(desiredWheelRPM); i++)
+        {
+            desiredWheelRPM[i] = 0;
+        }
+        return;
+    }
+    
+    vector.setX(x);
+    vector.setY(y);
 
-    void refresh() override;
+    // if (!imuDrive && drivers->remote.getSwitch(tap::communication::serial::Remote::Switch::LEFT_SWITCH) == tap::communication::serial::Remote::SwitchState::DOWN)
+    // {       //TODO: Fix the IMU and the if statement to not use remote commands
+    //     imuDrive = true;  
+    //     drivers->bmi088.requestRecalibration();
+    //     startYaw = drivers->bmi088.getYaw();
+    // }
 
-    void runHardwareTests() override;
+    // else if (drivers->remote.getSwitch(tap::communication::serial::Remote::Switch::LEFT_SWITCH) == tap::communication::serial::Remote::SwitchState::MID)
+    // {
+    //     imuDrive = false;
+    // }
 
-    const char* getName() override { return "Chassis subsystem"; }
+    // if (imuDrive && drivers->bmi088.getImuState() == tap::communication::sensors::imu::ImuInterface::ImuState::IMU_CALIBRATED)
+    // {
+    //     float offset = modm::toRadian(drivers->bmi088.getYaw() - startYaw);
+    //     vector.rotate(offset);
+    // }
+    if (imuDrive && drivers->bmi088.getImuState() == tap::communication::sensors::imu::ImuInterface::ImuState::IMU_CALIBRATED)
+    {
+        if (!setStartTurret && yawMotor->isMotorOnline()){
+            startTurretLoc = yawMotor->getEncoderUnwrapped();
+            setStartTurret = true;
+        }
+        float turretOffset = modm::toRadian((yawMotor->getEncoderUnwrapped() - startTurretLoc) * 360 / 8192);
+        vector.rotate(turretOffset);
+    }
+    
+    float theta = vector.getAngle();
+    float power = vector.getLength();
 
-private:
-    static constexpr tap::can::CanBus CAN_BUS_MOTORS = tap::can::CanBus::CAN_BUS1;
+    float sin = sinf(theta - M_PI_4);
+    float cos = cosf(theta - M_PI_4);
+    float max = modm::max(std::abs(sin), std::abs(cos));
 
-    static constexpr float PID_P = 5.0f;
-    static constexpr float PID_I = 0.0f;
-    static constexpr float PID_D = 1.0f;
-    static constexpr float PID_MAX_ERROR_SUM = 0.0f;
-    static constexpr float PID_MAX_OUTPUT = 16000;
+    desiredWheelRPM[0] = power * cos/max + r;   // right front wheel
+    desiredWheelRPM[1] = power * sin/max - r;   // left front wheel
+    desiredWheelRPM[2] = power * cos/max - r;   // left back wheel
+    desiredWheelRPM[3] = power * sin/max + r;   // right back wheel
 
-    modm::Pid<float> velocityPidLeftFrontWheel;
-    modm::Pid<float> velocityPidLeftBackWheel;
-    modm::Pid<float> velocityPidRightFrontWheel;
-    modm::Pid<float> velocityPidRightBackWheel;
+    if ((power + abs(r)) > 1)
+    {
+        desiredWheelRPM[0] /= power + abs(r);   // right front wheel
+        desiredWheelRPM[1] /= power + abs(r);   // left front wheel
+        desiredWheelRPM[2] /= power + abs(r);   // left back wheel
+        desiredWheelRPM[3] /= power + abs(r);   // right back wheel
+    }
 
-    float desiredRpm[4];
+    for (uint16_t i = 0; i < MODM_ARRAY_SIZE(desiredWheelRPM); i++)
+    {
+        desiredWheelRPM[i] *= maxRPM;
+    }
+}
+void ChassisSubsystem::refresh()
+{
+    updateMotorRpmPid(&velocityPidLeftFrontWheel, &leftFrontWheel, desiredRpm[1]);
+    updateMotorRpmPid(&velocityPidLeftBackWheel, &leftBackWheel, desiredRpm[2]);
+    updateMotorRpmPid(&velocityPidRightFrontWheel, &rightFrontWheel, desiredRpm[0]);
+    updateMotorRpmPid(&velocityPidRightBackWheel, &rightBackWheel, desiredRpm[3]);
+}
 
-    void updateMotorRpmPid(
-        modm::Pid<float>* pid,
-        tap::motor::DjiMotor* const motor,
-        float desiredRpm);
+void ChassisSubsystem::updateMotorRpmPid(
+    modm::Pid<float>* pid,
+    tap::motor::DjiMotor* motor,
+    float desiredRpm)
+{
+    pid->update(desiredRpm - motor->getShaftRPM());
+    motor->setDesiredOutput(static_cast<int32_t>(pid->getValue()));
+}
 
-#if defined(PLATFORM_HOSTED) && defined(ENV_UNIT_TESTS)
-public:
-    tap::mock::DjiMotorMock leftWheel;
-    tap::mock::DjiMotorMock rightWheel;
-
-private:
-#else
-    tap::motor::DjiMotor leftFrontWheel;
-    tap::motor::DjiMotor leftBackWheel;
-    tap::motor::DjiMotor rightFrontWheel;
-    tap::motor::DjiMotor rightBackWheel;
-#endif
-};
-
-#endif  // EXAMPLE_SUBSYSTEM_HPP_
+void ChassisSubsystem::runHardwareTests()
+{
+    // TODO
+}
