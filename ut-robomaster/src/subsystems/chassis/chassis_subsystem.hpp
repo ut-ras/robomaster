@@ -1,5 +1,3 @@
-#include "tap/control/chassis/chassis_subsystem_interface.hpp"
-#include "tap/control/command_scheduler.hpp"
 #include "tap/control/subsystem.hpp"
 #include "tap/motor/dji_motor.hpp"
 
@@ -35,13 +33,13 @@ public:
 
 private:
     static constexpr tap::can::CanBus CAN_BUS_MOTORS = tap::can::CanBus::CAN_BUS1;
-    static const int WHEELS = 4;
-    static const float MAX_SPEED = 8000;
-    static const float PID_KP = 5.0f;
-    static const float PID_KI = 0.0f;
-    static const float PID_KD = 1.0f;
-    static const float PID_MAX_ERROR_SUM = 0.0f;
-    static const float PID_MAX_OUTPUT = 16000;
+    static constexpr int WHEELS = 4;
+    static constexpr float MAX_SPEED = 8000;
+    static constexpr float PID_KP = 5.0f;
+    static constexpr float PID_KI = 0.0f;
+    static constexpr float PID_KD = 1.0f;
+    static constexpr float PID_MAX_ERROR_SUM = 0.0f;
+    static constexpr float PID_MAX_OUTPUT = 16000;
 
     DjiMotor wheelMotors[4];
     float targetWheelVels[4];

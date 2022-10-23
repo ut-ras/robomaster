@@ -25,7 +25,7 @@ ChassisSubsystem::ChassisSubsystem(
           modm::Pid<float>(PID_KP, PID_KI, PID_KD, PID_MAX_ERROR_SUM, PID_MAX_OUTPUT),
           modm::Pid<float>(PID_KP, PID_KI, PID_KD, PID_MAX_ERROR_SUM, PID_MAX_OUTPUT),
           modm::Pid<float>(PID_KP, PID_KI, PID_KD, PID_MAX_ERROR_SUM, PID_MAX_OUTPUT)},
-      imuDrive(true),
+      imuDrive(false),
       setStartTurret(false),
       startTurretLoc(0.0f)
 {

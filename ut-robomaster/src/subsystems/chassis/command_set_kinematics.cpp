@@ -1,9 +1,5 @@
 #include "command_set_kinematics.hpp"
 
-#include "tap/control/command.hpp"
-
-#include "chassis_subsystem.hpp"
-
 namespace subsystems
 {
 namespace chassis
