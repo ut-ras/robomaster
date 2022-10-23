@@ -54,18 +54,22 @@ void ShooterSubsystem::setAgitatorOutput(int desiredRPM)
 
 void ShooterSubsystem::rotateAgitatorToTarget()
 {
-    int x = targetAngle;
-    test.set(Leds::LedPin::Green, (x % 3) == 0);
-    test.set(Leds::LedPin::Red, (x % 3) == 1);
-    test.set(Leds::LedPin::Blue, (x % 3) == 2);
+    if (agitator.isNearTarget(targetAngle) && ballsToShoot > 0)
+    {
+        targetAngle += AGITATOR_INCREMENT_AMOUNT;
+        ballsToShoot--;
+    }
     agitator.rotateToTarget(targetAngle);
+
+    // for fun    
+    test.set(Leds::LedPin::Green, (targetAngle % 3) == 0);
+    test.set(Leds::LedPin::Red, (targetAngle % 3) == 1);
+    test.set(Leds::LedPin::Blue, (targetAngle % 3) == 2);
 }
 
-void ShooterSubsystem::incrementAgitatorTargetAngle(uint64_t increment)
+void ShooterSubsystem::shootBalls(int numBalls)
 {
-    targetAngle = targetAngle + 2820;
-    //rotateAgitatorToTarget();
-    
+    ballsToShoot += numBalls;
 }
 
 

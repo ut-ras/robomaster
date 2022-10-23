@@ -21,7 +21,7 @@ public:
 
     void setMotorOutput(int desiredRPM);
     void rotateToTarget(int64_t targetPosition);
-
+    bool isNearTarget(int64_t targetPosition);
     // Default refresh for Subsystem is no-op
     // void refresh() override;
 
@@ -33,6 +33,7 @@ private:
     modm::Pid<float> targetAnglePidController;
     tap::motor::DjiMotor motor;
     static constexpr float MAX_CURRENT_OUTPUT = 8000.0f;
+    static constexpr int NEAR_TARGET_THRESHOLD = 282; // 1/10 of one ball's worth of encoder ticks
 };
 
 }

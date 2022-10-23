@@ -37,7 +37,7 @@ public:
 #endif
     void setAgitatorOutput(int desiredRPM);
     void rotateAgitatorToTarget();
-    void incrementAgitatorTargetAngle(u_int64_t increment);
+    void shootBalls(int numBalls);
     // Subsystem is no-op, unnecessary override?
     void refresh() override;
 
@@ -54,10 +54,11 @@ private:
 #endif
 
     static constexpr tap::motor::MotorId AGITATOR_MOTOR_ID = tap::motor::MOTOR5;
-
+    static constexpr u_int64_t AGITATOR_INCREMENT_AMOUNT = 2820; // TODO: FIGURE OUT WHY THIS IS 2820
     FlywheelSubsystem flywheel;
     AgitatorSubsystem agitator;
-    uint64_t targetAngle;
+    uint64_t targetAngle; // angle that the agitator should rotate to
+    int ballsToShoot; // "queue" of balls to shoot
 };
 
 }

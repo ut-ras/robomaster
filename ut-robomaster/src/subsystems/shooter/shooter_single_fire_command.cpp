@@ -12,8 +12,7 @@ namespace shooter
 void ShooterSingleFireCommand::initialize() {}
 
 void ShooterSingleFireCommand::execute() { 
-    uint64_t incrementAmount = 2048;
-    shooter->incrementAgitatorTargetAngle(incrementAmount);
+    shooter->shootBalls(3);
 }
 
 void ShooterSingleFireCommand::end(bool) { 

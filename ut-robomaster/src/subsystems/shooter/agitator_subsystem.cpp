@@ -45,24 +45,20 @@ void AgitatorSubsystem::setMotorOutput(int desiredRPM)
 void AgitatorSubsystem::rotateToTarget(int64_t targetPosition)
 {
     int64_t currentPosition = motor.getEncoderUnwrapped();
-
     
     float normalizedDifferenceAbsolute = std::min(std::abs(static_cast<int32_t>(targetPosition - currentPosition) / 2048.0f), 1.0f);
     int32_t signOfDifference = (targetPosition - currentPosition) / std::abs(targetPosition - currentPosition);
 
-    // normalizedDifferenceAbsolute -= 0.2f; 
-
-    // // theoretically, this will be a value between 0 and MAX_CURRENT_OUTPUT / 4.0f
-    // int32_t error = static_cast<int32_t>(  std::pow(normalizedDifferenceAbsolute, 2) * MAX_CURRENT_OUTPUT / 6.0f );
-
-     
     int32_t error = signOfDifference * normalizedDifferenceAbsolute * MAX_CURRENT_OUTPUT / 4.0f;
-    
-    // error += 256.0 * -1 * signOfDifference;
     
     targetAnglePidController.update(targetPosition - currentPosition);
     motor.setDesiredOutput(static_cast<int32_t>(targetAnglePidController.getValue()));
 }
 
+bool AgitatorSubsystem::isNearTarget(int64_t targetPosition)
+{
+    int64_t currentPosition = motor.getEncoderUnwrapped();
+    return std::abs(targetPosition - currentPosition) < NEAR_TARGET_THRESHOLD;
+}
 
 }
