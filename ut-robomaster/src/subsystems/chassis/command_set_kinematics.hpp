@@ -9,7 +9,12 @@ namespace chassis
 class SetKinematicsCommand : public tap::control::Command
 {
 public:
-    SetKinematicsCommand(ChassisSubsystem *sub) : subsystem(sub) { addSubsystemRequirement(sub); }
+    SetKinematicsCommand(ChassisSubsystem *sub) : 
+        drivers(drivers),
+        subsystem(sub) 
+        { 
+            addSubsystemRequirement(sub); 
+        }
 
     void initialize() override;
 
@@ -22,6 +27,7 @@ public:
     const char *getName() const override { return "set kinematics command"; }
 
 private:
+    tap::Drivers *drivers;
     ChassisSubsystem *subsystem;
 };
 }  // namespace chassis

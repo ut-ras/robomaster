@@ -11,7 +11,8 @@ ChassisSubsystem::ChassisSubsystem(
     MotorId rightBackMotorId,
     MotorId rightFrontMotorId,
     MotorId leftBackMotorId)
-    : tap::control::Subsystem(drivers),
+    : drivers(drivers),
+      tap::control::Subsystem(drivers),
       targetWheelVels({0.0f, 0.0f, 0.0f, 0.0f}),
       wheelMotors{
           DjiMotor(drivers, leftFrontMotorId, CAN_BUS_MOTORS, true, "left front motor"),

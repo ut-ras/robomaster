@@ -32,6 +32,7 @@ public:
     const char* getName() override { return "Chassis subsystem"; }
 
 private:
+    tap::Drivers *drivers;
     static constexpr tap::can::CanBus CAN_BUS_MOTORS = tap::can::CanBus::CAN_BUS1;
     static constexpr int WHEELS = 4;
     static constexpr float MAX_SPEED = 8000;
