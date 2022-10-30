@@ -12,7 +12,7 @@ namespace shooter
 void ShooterSingleFireCommand::initialize() {}
 
 void ShooterSingleFireCommand::execute() { 
-    shooter->shootBalls(3);
+    shooter->shootBalls(2);
 }
 
 void ShooterSingleFireCommand::end(bool) { 

@@ -12,7 +12,7 @@ namespace shooter
 void ShooterOnCommand::initialize() {}
 
 void ShooterOnCommand::execute() { 
-    shooter->setFlywheelOutput(0.5);
+    shooter->setFlywheelOutput(0.10);
     // shooter->setAgitatorOutput(1000);
     shooter->rotateAgitatorToTarget();
 }

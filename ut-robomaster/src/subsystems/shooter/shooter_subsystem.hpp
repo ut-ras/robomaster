@@ -53,7 +53,7 @@ private:
     static constexpr tap::motor::MotorId FLYWHEEL_MOTOR_ID = tap::motor::MOTOR1;
 #endif
 
-    static constexpr tap::motor::MotorId AGITATOR_MOTOR_ID = tap::motor::MOTOR1;
+    static constexpr tap::motor::MotorId AGITATOR_MOTOR_ID = tap::motor::MOTOR5;
     static constexpr u_int64_t AGITATOR_INCREMENT_AMOUNT = 2820; // TODO: FIGURE OUT WHY THIS IS 2820
     FlywheelSubsystem flywheel;
     AgitatorSubsystem agitator;

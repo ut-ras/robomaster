@@ -33,7 +33,7 @@ private:
     modm::Pid<float> targetAnglePidController;
     tap::motor::DjiMotor motor;
     static constexpr float MAX_CURRENT_OUTPUT = 8000.0f;
-    static constexpr int NEAR_TARGET_THRESHOLD = 282; // 1/10 of one ball's worth of encoder ticks
+    static constexpr int NEAR_TARGET_THRESHOLD = 900; // 1/10 of one ball's worth of encoder ticks
 };
 
 }
