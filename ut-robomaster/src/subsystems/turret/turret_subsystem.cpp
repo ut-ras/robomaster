@@ -41,8 +41,8 @@ void TurretSubsystem::initialize()
 }
 
 void TurretSubsystem::setDesiredRpm(float desRpmYaw, float desRpmPitch) {
-    desiredRpmPitch = desRpmYaw;
-    desiredRpmYaw = desRpmPitch;
+    desiredRpmPitch = desRpmPitch;
+    desiredRpmYaw = desRpmYaw;
 }
 
 void TurretSubsystem::refresh()

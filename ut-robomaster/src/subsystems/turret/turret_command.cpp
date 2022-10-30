@@ -38,12 +38,12 @@ void TurretCommand::execute() {
     float y = -(drivers->remote.getChannel(tap::communication::serial::Remote::Channel::RIGHT_VERTICAL));
 
     if (fabs(x) > POSDEADZONE || fabs(y) > POSDEADZONE){
-        subsystem->setDesiredRpm(x, y);
+        subsystem->setDesiredRpm(x * DEFAULT_WHEEL_RPM, y * DEFAULT_WHEEL_RPM);
     } else{
-        subsystem->setDesiredRpm(0, 0);
+        subsystem->setDesiredRpm(0.0f, 0.0f);
     }
 
-    subsystem->setDesiredRpm(x, y);
+    subsystem->setDesiredRpm(x * DEFAULT_WHEEL_RPM, y * DEFAULT_WHEEL_RPM);
 }
 
 void TurretCommand::end(bool interrupted)

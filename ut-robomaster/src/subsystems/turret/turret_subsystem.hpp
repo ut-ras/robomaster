@@ -47,8 +47,8 @@ class TurretSubsystem : public tap::control::Subsystem
 public:
     TurretSubsystem(
         tap::Drivers* drivers,
-        tap::motor::MotorId yawMotorID = tap::motor::MOTOR1,
-        tap::motor::MotorId pitchMotorID = tap::motor::MOTOR2);
+        tap::motor::MotorId yawMotorID = tap::motor::MOTOR6,
+        tap::motor::MotorId pitchMotorID = tap::motor::MOTOR7);
 
     void initialize() override;
 
