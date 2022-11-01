@@ -18,7 +18,7 @@ class ChassisSubsystem : public tap::control::Subsystem
 public:
     ChassisSubsystem(
         tap::Drivers* drivers,
-        DjiMotor* yawMotor,
+        const DjiMotor* yawMotor,
         MotorId leftFrontMotorId = MOTOR1,
         MotorId rightFrontMotorId = MOTOR2,
         MotorId leftBackMotorId = MOTOR3,
@@ -41,18 +41,22 @@ private:
     static constexpr float PID_KD = 1.0f;
     static constexpr float PID_MAX_ERROR_SUM = 0.0f;
     static constexpr float PID_MAX_OUTPUT = 16000;
-
-    DjiMotor wheelMotors[4];
+    tap::motor::DjiMotor leftFrontMotor;
+    tap::motor::DjiMotor leftBackMotor;
+    tap::motor::DjiMotor rightFrontMotor;
+    tap::motor::DjiMotor rightBackMotor;
+    tap::motor::DjiMotor *wheelMotors[4];
     float targetWheelVels[4];
     modm::Pid<float> pids[4];
 
+    
     bool imuDrive;
-
+    
     const DjiMotor* yawMotor;
 
+    
     bool setStartTurret;
     float startTurretLoc;
-
     void updateMotor(modm::Pid<float>* pid, DjiMotor* motor, float target);
 };
 }  // namespace chassis

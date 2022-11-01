@@ -6,20 +6,44 @@ namespace chassis
 {
 ChassisSubsystem::ChassisSubsystem(
     tap::Drivers* drivers,
-    DjiMotor* yawMotor,
+    const DjiMotor* yawMotor,
     MotorId leftFrontMotorId,
     MotorId rightBackMotorId,
     MotorId rightFrontMotorId,
     MotorId leftBackMotorId)
     : drivers(drivers),
       tap::control::Subsystem(drivers),
-      targetWheelVels({0.0f, 0.0f, 0.0f, 0.0f}),
-      wheelMotors{
-          DjiMotor(drivers, leftFrontMotorId, CAN_BUS_MOTORS, true, "left front motor"),
-          DjiMotor(drivers, leftBackMotorId, CAN_BUS_MOTORS, true, "left back motor"),
-          DjiMotor(drivers, rightFrontMotorId, CAN_BUS_MOTORS, true, "right front motor"),
-          DjiMotor(drivers, rightBackMotorId, CAN_BUS_MOTORS, true, "right back motor"),
-      },
+      targetWheelVels{0.0f, 0.0f, 0.0f, 0.0f},
+      leftFrontMotor(
+              drivers,
+              leftFrontMotorId,
+              CAN_BUS_MOTORS,
+              true,
+              "left front motor"),
+      leftBackMotor(
+              drivers,
+              leftBackMotorId,
+              CAN_BUS_MOTORS,
+              true,
+              "left back motor"),
+          rightFrontMotor(
+              drivers,
+              rightFrontMotorId,
+              CAN_BUS_MOTORS,
+              false,
+              "right front motor"),
+          rightBackMotor(
+              drivers,
+              rightBackMotorId,
+              CAN_BUS_MOTORS,
+              false,
+              "right back motor"),
+    //   wheelMotors{
+    //       DjiMotor(drivers, leftFrontMotorId, CAN_BUS_MOTORS, true, "left front motor"),
+    //       DjiMotor(drivers, leftBackMotorId, CAN_BUS_MOTORS, true, "left back motor"),
+    //       DjiMotor(drivers, rightFrontMotorId, CAN_BUS_MOTORS, true, "right front motor"),
+    //       DjiMotor(drivers, rightBackMotorId, CAN_BUS_MOTORS, true, "right back motor"),
+    //   },
       yawMotor(yawMotor),
       pids{
           modm::Pid<float>(PID_KP, PID_KI, PID_KD, PID_MAX_ERROR_SUM, PID_MAX_OUTPUT),
@@ -36,8 +60,13 @@ void ChassisSubsystem::initialize()
 {
     for (int8_t i = 0; i < WHEELS; i++)
     {
-        wheelMotors[i].initialize();
+        (*wheelMotors)[i].initialize();
     }
+    
+    wheelMotors[0] = &rightFrontMotor;
+    wheelMotors[1] = &leftFrontMotor;
+    wheelMotors[2] = &leftBackMotor;
+    wheelMotors[3] = &rightBackMotor;
 }
 
 void ChassisSubsystem::setVelocities(float vX, float vY, float wZ)
@@ -99,7 +128,7 @@ void ChassisSubsystem::refresh()
 {
     for (int8_t i = 0; i < WHEELS; i++)
     {
-        updateMotor(&pids[i], &wheelMotors[i], targetWheelVels[i]);
+        updateMotor(&pids[i], wheelMotors[i], targetWheelVels[i]);
     }
 }
 
