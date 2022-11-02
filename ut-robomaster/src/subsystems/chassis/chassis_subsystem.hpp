@@ -19,8 +19,8 @@ public:
     ChassisSubsystem(
         tap::Drivers* drivers,
         const DjiMotor* yawMotor,
-        MotorId leftFrontMotorId = MOTOR1,
-        MotorId rightFrontMotorId = MOTOR2,
+        MotorId rightFrontMotorId = MOTOR1,
+        MotorId leftFrontMotorId = MOTOR2,
         MotorId leftBackMotorId = MOTOR3,
         MotorId rightBackMotorId = MOTOR4);
 
@@ -32,29 +32,23 @@ public:
     const char* getName() override { return "Chassis subsystem"; }
 
 private:
-    tap::Drivers *drivers;
+    tap::Drivers* drivers;
     static constexpr tap::can::CanBus CAN_BUS_MOTORS = tap::can::CanBus::CAN_BUS1;
     static constexpr int WHEELS = 4;
     static constexpr float MAX_SPEED = 8000;
-    static constexpr float PID_KP = 5.0f;
-    static constexpr float PID_KI = 0.0f;
-    static constexpr float PID_KD = 1.0f;
-    static constexpr float PID_MAX_ERROR_SUM = 0.0f;
+    static constexpr float PID_KP = 22.0f;
+    static constexpr float PID_KI = 0.2f;
+    static constexpr float PID_KD = 0.0f;
+    static constexpr float PID_MAX_ERROR_SUM = 5000.0f;
     static constexpr float PID_MAX_OUTPUT = 16000;
-    tap::motor::DjiMotor leftFrontMotor;
-    tap::motor::DjiMotor leftBackMotor;
-    tap::motor::DjiMotor rightFrontMotor;
-    tap::motor::DjiMotor rightBackMotor;
-    tap::motor::DjiMotor *wheelMotors[4];
+    tap::motor::DjiMotor wheelMotors[4];
     float targetWheelVels[4];
     modm::Pid<float> pids[4];
 
-    
     bool imuDrive;
-    
+
     const DjiMotor* yawMotor;
 
-    
     bool setStartTurret;
     float startTurretLoc;
     void updateMotor(modm::Pid<float>* pid, DjiMotor* motor, float target);

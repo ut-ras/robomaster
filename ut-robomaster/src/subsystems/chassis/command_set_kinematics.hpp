@@ -1,6 +1,7 @@
 #include "tap/control/command.hpp"
 
 #include "chassis_subsystem.hpp"
+#include "drivers.hpp"
 
 namespace subsystems
 {
@@ -9,12 +10,12 @@ namespace chassis
 class SetKinematicsCommand : public tap::control::Command
 {
 public:
-    SetKinematicsCommand(ChassisSubsystem *sub) : 
-        drivers(drivers),
-        subsystem(sub) 
-        { 
-            addSubsystemRequirement(sub); 
-        }
+    SetKinematicsCommand(ChassisSubsystem *sub, tap::Drivers *drivers)
+        : drivers(drivers),
+          subsystem(sub)
+    {
+        addSubsystemRequirement(sub);
+    }
 
     void initialize() override;
 

@@ -28,13 +28,13 @@ tap::motor::DjiMotor yawMotor(drivers(), MotorId::MOTOR1, tap::can::CanBus::CAN_
 chassis::ChassisSubsystem theChassis(drivers(), &yawMotor);
 
 /* define commands ----------------------------------------------------------*/
-chassis::SetKinematicsCommand setKinematicsCommand(&theChassis);
+chassis::SetKinematicsCommand setKinematicsCommand(&theChassis, drivers());
 
 /* define command mappings --------------------------------------------------*/
-HoldCommandMapping testMoveChassis(
-    drivers(),
-    {&setKinematicsCommand},
-    RemoteMapState({Remote::Key::F}));
+// HoldCommandMapping testMoveChassis(
+//     drivers(),
+//     {&setKinematicsCommand},
+//     RemoteMapState({Remote::Key::F}));
 
 /* register subsystems here -------------------------------------------------*/
 void registerStandardSubsystems(tap::Drivers *drivers)
@@ -57,7 +57,7 @@ void startStandardCommands(tap::Drivers *) {}
 /* register io mappings here ------------------------------------------------*/
 void registerStandardIoMappings(tap::Drivers *drivers)
 {
-    drivers->commandMapper.addMap(&testMoveChassis);
+    // drivers->commandMapper.addMap(&testMoveChassis);
 }
 }  // namespace standard_control
 
