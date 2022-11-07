@@ -110,7 +110,7 @@ void ChassisSubsystem::updateMotor(modm::Pid<float>* pid, DjiMotor* motor, float
 
     float val = pid->getValue();
 
-    if (val < PID_MIN_OUTPUT)
+    if (abs(val) < PID_MIN_OUTPUT)
     {
         val = 0.0f;
     }
