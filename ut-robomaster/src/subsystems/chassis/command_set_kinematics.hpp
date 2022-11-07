@@ -12,7 +12,8 @@ class SetKinematicsCommand : public tap::control::Command
 public:
     SetKinematicsCommand(ChassisSubsystem *sub, tap::Drivers *drivers)
         : drivers(drivers),
-          subsystem(sub)
+          subsystem(sub),
+          isRKeyPressed(false)
     {
         addSubsystemRequirement(sub);
     }
@@ -30,6 +31,7 @@ public:
 private:
     tap::Drivers *drivers;
     ChassisSubsystem *subsystem;
+    bool isRKeyPressed;
 };
 }  // namespace chassis
 }  // namespace subsystems

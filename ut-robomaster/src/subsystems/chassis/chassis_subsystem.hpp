@@ -30,12 +30,14 @@ public:
     void runHardwareTests() override;
 
     const char* getName() override { return "Chassis subsystem"; }
+    bool isBeyblading;
+    static constexpr float TRANSLATION_TO_ROTATION_RATIO = 0.5f;
 
 private:
     tap::Drivers* drivers;
     static constexpr tap::can::CanBus CAN_BUS_MOTORS = tap::can::CanBus::CAN_BUS1;
     static constexpr int WHEELS = 4;
-    static constexpr float MAX_SPEED = 8000;
+    static constexpr float MAX_SPEED = 500;
     static constexpr float PID_KP = 22.0f;
     static constexpr float PID_KI = 0.2f;
     static constexpr float PID_KD = 0.0f;
