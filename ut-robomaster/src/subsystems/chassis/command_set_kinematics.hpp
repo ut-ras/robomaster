@@ -32,6 +32,7 @@ private:
     tap::Drivers *drivers;
     ChassisSubsystem *subsystem;
     bool isRKeyPressed;
+    float analogDeadZone = 0.2f;
 };
 }  // namespace chassis
 }  // namespace subsystems

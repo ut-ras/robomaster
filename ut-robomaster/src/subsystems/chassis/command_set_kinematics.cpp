@@ -12,13 +12,20 @@ void SetKinematicsCommand::initialize() {}
 
 void SetKinematicsCommand::execute()
 {
-    // float x = drivers->remote.getChannel(Remote::Channel::LEFT_HORIZONTAL);
-    // float y = -(drivers->remote.getChannel(Remote::Channel::LEFT_VERTICAL));
-    // float z = -(drivers->remote.getChannel(Remote::Channel::RIGHT_HORIZONTAL));
+    float vX = drivers->remote.getChannel(Remote::Channel::LEFT_HORIZONTAL);
+    float vY = -(drivers->remote.getChannel(Remote::Channel::LEFT_VERTICAL));
+    float wZ = -(drivers->remote.getChannel(Remote::Channel::RIGHT_HORIZONTAL));
 
-    float vX = 0.0f;
-    float vY = 0.0f;
-    float wZ = 0.0f;
+    if (vX * vX + vY * vY < analogDeadZone * analogDeadZone)
+    {
+        vX = 0.0f;
+        vY = 0.0f;
+    }
+
+    if (abs(wZ) < analogDeadZone)
+    {
+        wZ = 0.0f;
+    }
 
     Remote* remote = &drivers->remote;
 
