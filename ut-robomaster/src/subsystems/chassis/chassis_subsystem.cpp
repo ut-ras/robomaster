@@ -107,7 +107,15 @@ void ChassisSubsystem::refresh()
 void ChassisSubsystem::updateMotor(modm::Pid<float>* pid, DjiMotor* motor, float targetVelocity)
 {
     pid->update(targetVelocity - motor->getShaftRPM());
-    motor->setDesiredOutput(static_cast<int32_t>(pid->getValue()));
+
+    float val = pid->getValue();
+
+    if (val < PID_MIN_OUTPUT)
+    {
+        val = 0.0f;
+    }
+
+    motor->setDesiredOutput(static_cast<int32_t>(val));
 }
 
 void ChassisSubsystem::runHardwareTests()

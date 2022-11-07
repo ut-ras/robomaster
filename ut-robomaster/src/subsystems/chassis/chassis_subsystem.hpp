@@ -42,7 +42,8 @@ private:
     static constexpr float PID_KI = 0.2f;
     static constexpr float PID_KD = 0.0f;
     static constexpr float PID_MAX_ERROR_SUM = 5000.0f;
-    static constexpr float PID_MAX_OUTPUT = 16000;
+    static constexpr float PID_MAX_OUTPUT = 16000.0f;
+    static constexpr float PID_MIN_OUTPUT = 10.0f;
     tap::motor::DjiMotor wheelMotors[4];
     float targetWheelVels[4];
     modm::Pid<float> pids[4];
