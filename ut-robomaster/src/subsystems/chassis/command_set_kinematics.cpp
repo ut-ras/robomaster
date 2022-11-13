@@ -1,7 +1,5 @@
 #include "command_set_kinematics.hpp"
 
-float sq(float x) { return x * x; }
-
 namespace subsystems
 {
 namespace chassis
@@ -20,8 +18,16 @@ void SetKinematicsCommand::execute()
             -remote->getChannel(Remote::Channel::LEFT_VERTICAL));
         float spinInput = -remote->getChannel(Remote::Channel::RIGHT_HORIZONTAL);
 
-        velocity = moveInput.getLengthSquared() > sq(analogDeadZone) ? moveInput : Vector2f(0.0f);
-        wZ = (abs(wZ) > analogDeadZone) ? spinInput : 0.0f;
+        if (moveInput.getLengthSquared() > ANALOG_DEAD_ZONE * ANALOG_DEAD_ZONE)
+        {
+            velocity = moveInput;
+        }
+        else
+        {
+            velocity = Vector2f(0.0f);
+        }
+
+        wZ = (abs(wZ) > ANALOG_DEAD_ZONE) ? spinInput : 0.0f;
     }
     else  // keyboard input mode
     {
@@ -53,7 +59,7 @@ void SetKinematicsCommand::execute()
             input.y -= 1.0f;
         }
 
-        velocity += input * moveAccel * DELTA_TIME;
+        velocity += input * KEYBOARD_ACCEL * DELTA_TIME;
 
         // clamp velocities
         velocity /= modm::max(1.0f, velocity.getLengthSquared());
@@ -62,7 +68,7 @@ void SetKinematicsCommand::execute()
         float velLen = velocity.getLength();
         if (velLen > 0.0f)
         {
-            velocity *= max(1.0f - moveDecel * DELTA_TIME / velLen, 0.0f);
+            velocity *= max(1.0f - KEYBOARD_DECEL * DELTA_TIME / velLen, 0.0f);
         }
     }
 

@@ -33,15 +33,15 @@ public:
 
 private:
     static constexpr float DELTA_TIME = 0.002f;
+    static constexpr float ANALOG_DEAD_ZONE = 0.2f;
+    static constexpr float KEYBOARD_ACCEL = 1.0f;
+    static constexpr float KEYBOARD_DECEL = 1.0f;
 
     tap::Drivers *drivers;
     ChassisSubsystem *subsystem;
     bool isRKeyPressed;
-    float analogDeadZone = 0.2f;
     Vector2f velocity = Vector2f(0.0f);
     float wZ = 0.0f;
-    float moveAccel = 1.0f;
-    float moveDecel = 1.0f;
 };
 }  // namespace chassis
 }  // namespace subsystems
