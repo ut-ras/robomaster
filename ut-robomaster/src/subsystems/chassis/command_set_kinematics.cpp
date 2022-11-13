@@ -1,8 +1,6 @@
 #include "command_set_kinematics.hpp"
 
-#include "tap/drivers.hpp"
-
-using namespace tap::communication::serial;
+float sq(float x) { return x * x; }
 
 namespace subsystems
 {
@@ -12,58 +10,69 @@ void SetKinematicsCommand::initialize() {}
 
 void SetKinematicsCommand::execute()
 {
-    float vX = drivers->remote.getChannel(Remote::Channel::LEFT_HORIZONTAL);
-    float vY = -(drivers->remote.getChannel(Remote::Channel::LEFT_VERTICAL));
-    float wZ = -(drivers->remote.getChannel(Remote::Channel::RIGHT_HORIZONTAL));
-
-    if (vX * vX + vY * vY < analogDeadZone * analogDeadZone)
-    {
-        vX = 0.0f;
-        vY = 0.0f;
-    }
-
-    if (abs(wZ) < analogDeadZone)
-    {
-        wZ = 0.0f;
-    }
-
     Remote* remote = &drivers->remote;
+    Remote::SwitchState rightSwitchState = remote->getSwitch(Remote::Switch::RIGHT_SWITCH);
 
-    if (remote->keyPressed(Remote::Key::A))
+    if (rightSwitchState == Remote::SwitchState::UP)  // controller input mode
     {
-        vX -= 1.0f;
+        Vector2f moveInput = Vector2f(
+            remote->getChannel(Remote::Channel::LEFT_HORIZONTAL),
+            -remote->getChannel(Remote::Channel::LEFT_VERTICAL));
+        float spinInput = -remote->getChannel(Remote::Channel::RIGHT_HORIZONTAL);
+
+        velocity = moveInput.getLengthSquared() > sq(analogDeadZone) ? moveInput : Vector2f(0.0f);
+        wZ = (abs(wZ) > analogDeadZone) ? spinInput : 0.0f;
     }
-
-    if (remote->keyPressed(Remote::Key::D))
+    else  // keyboard input mode
     {
-        vX += 1.0f;
-    }
+        if (remote->keyPressed(Remote::Key::R) != isRKeyPressed)
+        {
+            isRKeyPressed = remote->keyPressed(Remote::Key::R);
+            if (isRKeyPressed) subsystem->isBeyblading = !subsystem->isBeyblading;
+        }
 
-    if (remote->keyPressed(Remote::Key::W))
-    {
-        vY += 1.0f;
-    }
+        Vector2f input = Vector2f(0.0f);
 
-    if (remote->keyPressed(Remote::Key::S))
-    {
-        vY -= 1.0f;
-    }
+        if (remote->keyPressed(Remote::Key::A))
+        {
+            input.x -= 1.0f;
+        }
 
-    if (remote->keyPressed(Remote::Key::R) != isRKeyPressed)
-    {
-        isRKeyPressed = remote->keyPressed(Remote::Key::R);
-        if (isRKeyPressed) subsystem->isBeyblading = !subsystem->isBeyblading;
+        if (remote->keyPressed(Remote::Key::D))
+        {
+            input.x += 1.0f;
+        }
+
+        if (remote->keyPressed(Remote::Key::W))
+        {
+            input.y += 1.0f;
+        }
+
+        if (remote->keyPressed(Remote::Key::S))
+        {
+            input.y -= 1.0f;
+        }
+
+        velocity += input * moveAccel * DELTA_TIME;
+
+        // clamp velocities
+        velocity /= modm::max(1.0f, velocity.getLengthSquared());
+
+        // decelerate
+        float velLen = velocity.getLength();
+        if (velLen > 0.0f)
+        {
+            velocity *= max(1.0f - moveDecel * DELTA_TIME / velLen, 0.0f);
+        }
     }
 
     if (subsystem->isBeyblading)
     {
-        vX *= subsystem->TRANSLATION_TO_ROTATION_RATIO;
-        vY *= subsystem->TRANSLATION_TO_ROTATION_RATIO;
-
-        wZ = (1 - subsystem->TRANSLATION_TO_ROTATION_RATIO);
+        velocity *= subsystem->TRANSLATION_TO_ROTATION_RATIO;
+        wZ = 1 - subsystem->TRANSLATION_TO_ROTATION_RATIO;
     }
 
-    subsystem->setVelocities(vX, vY, wZ);
+    subsystem->setVelocities(velocity.x, velocity.y, wZ);
 }
 
 void SetKinematicsCommand::end(bool) { subsystem->setVelocities(0.0f, 0.0f, 0.0f); }
