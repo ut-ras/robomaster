@@ -14,9 +14,9 @@ void SetKinematicsCommand::execute()
     if (rightSwitchState == Remote::SwitchState::UP)  // controller input mode
     {
         Vector2f moveInput = Vector2f(
-            remote->getChannel(Remote::Channel::LEFT_HORIZONTAL),
-            -remote->getChannel(Remote::Channel::LEFT_VERTICAL));
-        float spinInput = -remote->getChannel(Remote::Channel::RIGHT_HORIZONTAL);
+            remote->getChannel(Remote::Channel::RIGHT_HORIZONTAL),
+            -remote->getChannel(Remote::Channel::RIGHT_VERTICAL));
+        float spinInput = remote->getChannel(Remote::Channel::LEFT_HORIZONTAL);
 
         if (moveInput.getLengthSquared() > ANALOG_DEAD_ZONE * ANALOG_DEAD_ZONE)
         {
@@ -27,7 +27,7 @@ void SetKinematicsCommand::execute()
             velocity = Vector2f(0.0f);
         }
 
-        wZ = (abs(wZ) > ANALOG_DEAD_ZONE) ? spinInput : 0.0f;
+        wZ = (abs(spinInput) > ANALOG_DEAD_ZONE) ? spinInput : 0.0f;
     }
     else  // keyboard input mode
     {
@@ -62,13 +62,16 @@ void SetKinematicsCommand::execute()
         velocity += input * KEYBOARD_ACCEL * DELTA_TIME;
 
         // clamp velocities
-        velocity /= modm::max(1.0f, velocity.getLengthSquared());
+        velocity /= modm::max(1.0f, velocity.getLength());
 
-        // decelerate
-        float velLen = velocity.getLength();
-        if (velLen > 0.0f)
+        // decelerate when input stops
+        if (input.getLengthSquared() < 0.1f)
         {
-            velocity *= max(1.0f - KEYBOARD_DECEL * DELTA_TIME / velLen, 0.0f);
+            float velLen = velocity.getLength();
+            if (velLen > 0.0f)
+            {
+                velocity *= max(1.0f - KEYBOARD_DECEL * DELTA_TIME / velLen, 0.0f);
+            }
         }
     }
 

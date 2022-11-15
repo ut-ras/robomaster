@@ -34,8 +34,8 @@ public:
 private:
     static constexpr float DELTA_TIME = 0.002f;
     static constexpr float ANALOG_DEAD_ZONE = 0.2f;
-    static constexpr float KEYBOARD_ACCEL = 1.0f;
-    static constexpr float KEYBOARD_DECEL = 1.0f;
+    static constexpr float KEYBOARD_ACCEL = 6.0f;
+    static constexpr float KEYBOARD_DECEL = 4.0f;
 
     tap::Drivers *drivers;
     ChassisSubsystem *subsystem;
