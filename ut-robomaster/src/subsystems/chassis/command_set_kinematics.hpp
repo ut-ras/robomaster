@@ -1,7 +1,10 @@
 #include "tap/control/command.hpp"
+#include "tap/drivers.hpp"
 
 #include "chassis_subsystem.hpp"
-#include "drivers.hpp"
+
+using namespace tap::communication::serial;
+using namespace modm;
 
 namespace subsystems
 {
@@ -29,10 +32,16 @@ public:
     const char *getName() const override { return "set kinematics command"; }
 
 private:
+    static constexpr float DELTA_TIME = 0.002f;
+    static constexpr float ANALOG_DEAD_ZONE = 0.2f;
+    static constexpr float KEYBOARD_ACCEL = 6.0f;
+    static constexpr float KEYBOARD_DECEL = 4.0f;
+
     tap::Drivers *drivers;
     ChassisSubsystem *subsystem;
     bool isRKeyPressed;
-    float analogDeadZone = 0.2f;
+    Vector2f velocity = Vector2f(0.0f);
+    float wZ = 0.0f;
 };
 }  // namespace chassis
 }  // namespace subsystems
