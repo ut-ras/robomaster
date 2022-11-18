@@ -16,7 +16,7 @@ public:
     SetKinematicsCommand(ChassisSubsystem *sub, tap::Drivers *drivers)
         : drivers(drivers),
           subsystem(sub),
-          isRKeyPressed(false)
+          wasRKeyPressed(false)
     {
         addSubsystemRequirement(sub);
     }
@@ -32,6 +32,10 @@ public:
     const char *getName() const override { return "set kinematics command"; }
 
 private:
+    void doControllerInput();
+    void doKeyboardInput();
+
+    static constexpr float SPIN_FACTOR = 0.1;  // % power dedicated to spinning in moments of triage
     static constexpr float DELTA_TIME = 0.002f;
     static constexpr float ANALOG_DEAD_ZONE = 0.2f;
     static constexpr float KEYBOARD_ACCEL = 6.0f;
@@ -39,9 +43,9 @@ private:
 
     tap::Drivers *drivers;
     ChassisSubsystem *subsystem;
-    bool isRKeyPressed;
-    Vector2f velocity = Vector2f(0.0f);
-    float wZ = 0.0f;
+    Vector2f inputMove = Vector2f(0.0f);
+    float inputSpin = 0.0f;
+    bool wasRKeyPressed;
 };
 }  // namespace chassis
 }  // namespace subsystems

@@ -7,16 +7,16 @@ namespace chassis
 ChassisSubsystem::ChassisSubsystem(
     tap::Drivers* drivers,
     const DjiMotor* yawMotor,
-    MotorId rightFrontMotorId,
     MotorId leftFrontMotorId,
+    MotorId rightFrontMotorId,
     MotorId leftBackMotorId,
     MotorId rightBackMotorId)
     : drivers(drivers),
       tap::control::Subsystem(drivers),
       targetWheelVels{0.0f, 0.0f, 0.0f, 0.0f},
       wheelMotors{
-          DjiMotor(drivers, rightFrontMotorId, CAN_BUS_MOTORS, false, "right front motor"),
           DjiMotor(drivers, leftFrontMotorId, CAN_BUS_MOTORS, true, "left front motor"),
+          DjiMotor(drivers, rightFrontMotorId, CAN_BUS_MOTORS, false, "right front motor"),
           DjiMotor(drivers, leftBackMotorId, CAN_BUS_MOTORS, true, "left back motor"),
           DjiMotor(drivers, rightBackMotorId, CAN_BUS_MOTORS, false, "right back motor"),
       },
@@ -41,59 +41,41 @@ void ChassisSubsystem::initialize()
     }
 }
 
-void ChassisSubsystem::setVelocities(float vX, float vY, float wZ)
+// math from https://research.ijcaonline.org/volume113/number3/pxc3901586.pdf
+void ChassisSubsystem::setVelocities(Vector2f iv, float iwZ)
 {
-    ImuInterface::ImuState imuState = drivers->bmi088.getImuState();
+    // ImuInterface::ImuState imuState = drivers->bmi088.getImuState();
 
-    if (imuState == ImuInterface::ImuState::IMU_CALIBRATING)  // if the 6020 is set to the
-                                                              // calibrated value, set all RPMs to 0
-    {
-        for (uint16_t i = 0; i < WHEELS; i++)
-        {
-            targetWheelVels[i] = 0;
-        }
+    // if (imuDrive && imuState == ImuInterface::ImuState::IMU_CALIBRATED)
+    // {
+    //     if (!setStartTurret && yawMotor->isMotorOnline())
+    //     {
+    //         startTurretLoc = yawMotor->getEncoderUnwrapped();
+    //         setStartTurret = true;
+    //     }
+    //     float turretOffset =
+    //         modm::toRadian((yawMotor->getEncoderUnwrapped() - startTurretLoc) * 360 / 8192);
+    //     vector.rotate(turretOffset);
+    // }
 
-        return;
-    }
+    // assemble constants
+    float lxy = (WHEEL_DISTANCE_X + WHEEL_DISTANCE_Y) / 2.0f;
 
-    modm::Vector2f vector(vX, vY);
+    // scale with max speeds ()
+    Vector2f sv = v * LINEAR_VELOCITY_SCALE;
+    float swZ = wZ * ANGULAR_VELOCITY_SCALE;
 
-    if (imuDrive && imuState == ImuInterface::ImuState::IMU_CALIBRATED)
-    {
-        if (!setStartTurret && yawMotor->isMotorOnline())
-        {
-            startTurretLoc = yawMotor->getEncoderUnwrapped();
-            setStartTurret = true;
-        }
-        float turretOffset =
-            modm::toRadian((yawMotor->getEncoderUnwrapped() - startTurretLoc) * 360 / 8192);
-        vector.rotate(turretOffset);
-    }
+    // x and y are flipped so that y is forward/back and x is left/right
+    float w1 = (sv.y - sv.x - lxy * swZ) / WHEEL_RADIUS;  // rad/s
+    float w2 = (sv.y + sv.x + lxy * swZ) / WHEEL_RADIUS;  // rad/s
+    float w3 = (sv.y + sv.x - lxy * swZ) / WHEEL_RADIUS;  // rad/s
+    float w4 = (sv.y - sv.x + lxy * swZ) / WHEEL_RADIUS;  // rad/s
 
-    float theta = vector.getAngle();
-    float power = vector.getLength();
-
-    float sin = sinf(theta - M_PI_4);
-    float cos = cosf(theta - M_PI_4);
-    float max = modm::max(std::abs(sin), std::abs(cos));
-
-    targetWheelVels[0] = power * cos / max + wZ;  // right front wheel
-    targetWheelVels[1] = power * sin / max - wZ;  // left front wheel
-    targetWheelVels[2] = power * cos / max - wZ;  // left back wheel
-    targetWheelVels[3] = power * sin / max + wZ;  // right back wheel
-
-    if ((power + abs(wZ)) > 1)
-    {
-        for (int8_t i = 0; i < WHEELS; i++)
-        {
-            targetWheelVels[i] /= power + abs(wZ);
-        }
-    }
-
-    for (uint16_t i = 0; i < WHEELS; i++)
-    {
-        targetWheelVels[i] *= MAX_SPEED;
-    }
+    static constexpr float RPS_TO_RPM = 30.0f / M_PI;
+    targetWheelVels[0] = w1 * RPS_TO_RPM;
+    targetWheelVels[1] = w2 * RPS_TO_RPM;
+    targetWheelVels[2] = w3 * RPS_TO_RPM;
+    targetWheelVels[3] = w4 * RPS_TO_RPM;
 }
 
 void ChassisSubsystem::refresh()
