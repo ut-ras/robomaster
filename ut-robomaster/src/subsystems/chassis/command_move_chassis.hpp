@@ -10,10 +10,10 @@ namespace subsystems
 {
 namespace chassis
 {
-class SetKinematicsCommand : public tap::control::Command
+class MoveChassisCommand : public tap::control::Command
 {
 public:
-    SetKinematicsCommand(ChassisSubsystem *sub, tap::Drivers *drivers)
+    MoveChassisCommand(ChassisSubsystem *sub, tap::Drivers *drivers)
         : drivers(drivers),
           subsystem(sub),
           wasRKeyPressed(false)

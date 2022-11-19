@@ -1,12 +1,12 @@
-#include "command_set_kinematics.hpp"
+#include "command_move_chassis.hpp"
 
 namespace subsystems
 {
 namespace chassis
 {
-void SetKinematicsCommand::initialize() {}
+void MoveChassisCommand::initialize() {}
 
-void SetKinematicsCommand::execute()
+void MoveChassisCommand::execute()
 {
     if (drivers->bmi088.getImuState() == ImuInterface::ImuState::IMU_CALIBRATING && false)
     {
@@ -45,10 +45,10 @@ void SetKinematicsCommand::execute()
     }
 }
 
-void SetKinematicsCommand::end(bool) { subsystem->setVelocities(Vector2f(0.0f), 0.0f); }
-bool SetKinematicsCommand::isFinished() const { return false; }
+void MoveChassisCommand::end(bool) { subsystem->setVelocities(Vector2f(0.0f), 0.0f); }
+bool MoveChassisCommand::isFinished() const { return false; }
 
-void SetKinematicsCommand::doControllerInput()
+void MoveChassisCommand::doControllerInput()
 {
     Remote* remote = &drivers->remote;
     inputMove = Vector2f(
@@ -72,7 +72,7 @@ void SetKinematicsCommand::doControllerInput()
     }
 }
 
-void SetKinematicsCommand::doKeyboardInput()
+void MoveChassisCommand::doKeyboardInput()
 {
     Remote* remote = &drivers->remote;
     bool isRKeyPressed = remote->keyPressed(Remote::Key::R);
