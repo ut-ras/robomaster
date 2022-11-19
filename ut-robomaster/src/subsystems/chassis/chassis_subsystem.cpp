@@ -11,21 +11,21 @@ ChassisSubsystem::ChassisSubsystem(
     MotorId rightFrontMotorId,
     MotorId leftBackMotorId,
     MotorId rightBackMotorId)
-    : drivers(drivers),
-      tap::control::Subsystem(drivers),
-      targetWheelVels{0.0f, 0.0f, 0.0f, 0.0f},
+    : tap::control::Subsystem(drivers),
+      drivers(drivers),
       wheelMotors{
           DjiMotor(drivers, leftFrontMotorId, CAN_BUS_MOTORS, true, "left front motor"),
           DjiMotor(drivers, rightFrontMotorId, CAN_BUS_MOTORS, false, "right front motor"),
           DjiMotor(drivers, leftBackMotorId, CAN_BUS_MOTORS, true, "left back motor"),
           DjiMotor(drivers, rightBackMotorId, CAN_BUS_MOTORS, false, "right back motor"),
       },
-      yawMotor(yawMotor),
+      targetWheelVels{0.0f, 0.0f, 0.0f, 0.0f},
       pids{
           modm::Pid<float>(PID_KP, PID_KI, PID_KD, PID_MAX_ERROR_SUM, PID_MAX_OUTPUT),
           modm::Pid<float>(PID_KP, PID_KI, PID_KD, PID_MAX_ERROR_SUM, PID_MAX_OUTPUT),
           modm::Pid<float>(PID_KP, PID_KI, PID_KD, PID_MAX_ERROR_SUM, PID_MAX_OUTPUT),
           modm::Pid<float>(PID_KP, PID_KI, PID_KD, PID_MAX_ERROR_SUM, PID_MAX_OUTPUT)},
+      yawMotor(yawMotor),
       imuDrive(false),
       setStartTurret(false),
       startTurretLoc(0.0f)

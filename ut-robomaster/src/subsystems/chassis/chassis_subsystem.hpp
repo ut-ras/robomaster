@@ -49,10 +49,9 @@ private:
     float targetWheelVels[4];
     modm::Pid<float> pids[4];
 
-    bool imuDrive;
-
     const DjiMotor* yawMotor;
 
+    bool imuDrive;
     bool setStartTurret;
     float startTurretLoc;
     void updateMotor(modm::Pid<float>* pid, DjiMotor* motor, float target);
