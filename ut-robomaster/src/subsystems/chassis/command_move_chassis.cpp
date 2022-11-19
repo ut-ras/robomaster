@@ -33,8 +33,8 @@ void MoveChassisCommand::execute()
 
         if (e > 0.0f)
         {
-            effMoveInput *= 1 - e * SPIN_FACTOR / magMove;
-            effSpinInput *= 1 - e * (1.0f - SPIN_FACTOR) / magSpin;
+            effMoveInput *= 1.0f - e * SPIN_FACTOR / magMove;
+            effSpinInput *= 1.0f - e * (1.0f - SPIN_FACTOR) / magSpin;
         }
 
         // convert inputs to velocities

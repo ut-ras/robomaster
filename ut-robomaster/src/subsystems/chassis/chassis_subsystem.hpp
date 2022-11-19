@@ -34,17 +34,26 @@ public:
 
 private:
     tap::Drivers* drivers;
-    static constexpr tap::can::CanBus CAN_BUS_MOTORS = tap::can::CanBus::CAN_BUS1;
-    static constexpr int WHEELS = 4;
+    static constexpr tap::can::CanBus CAN_BUS_WHEELS = tap::can::CanBus::CAN_BUS1;
+
     static constexpr float PID_KP = 22.0f;
     static constexpr float PID_KI = 0.2f;
     static constexpr float PID_KD = 0.0f;
     static constexpr float PID_MAX_ERROR_SUM = 5000.0f;
     static constexpr float PID_MAX_OUTPUT = 16000.0f;
     static constexpr float PID_MIN_OUTPUT = 1000.0f;
+
+    static constexpr int WHEELS = 4;
     static constexpr float WHEEL_DISTANCE_X = 0.4064f;  // meters
     static constexpr float WHEEL_DISTANCE_Y = 0.508f;   // meters
     static constexpr float WHEEL_RADIUS = 0.1524f;      // meters
+    static constexpr float WHEEL_LXY = (WHEEL_DISTANCE_X + WHEEL_DISTANCE_Y) / 2.0f;
+    static constexpr float WHEEL_MAX_VEL = 1000.0f;                                    // rad/s
+    static constexpr float MAX_TURN_SPEED = WHEEL_MAX_VEL * WHEEL_RADIUS / WHEEL_LXY;  // rad/s
+    static constexpr float MAX_MOVE_SPEED = WHEEL_MAX_VEL * WHEEL_RADIUS / M_SQRT2;    // m/s
+
+    static constexpr float RPS_TO_RPM = 30.0f / M_PI;  // rad/s to rev/min conversion
+
     tap::motor::DjiMotor wheelMotors[4];
     float targetWheelVels[4];
     modm::Pid<float> pids[4];

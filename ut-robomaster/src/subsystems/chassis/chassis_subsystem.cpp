@@ -14,10 +14,10 @@ ChassisSubsystem::ChassisSubsystem(
     : tap::control::Subsystem(drivers),
       drivers(drivers),
       wheelMotors{
-          DjiMotor(drivers, leftFrontMotorId, CAN_BUS_MOTORS, true, "left front motor"),
-          DjiMotor(drivers, rightFrontMotorId, CAN_BUS_MOTORS, false, "right front motor"),
-          DjiMotor(drivers, leftBackMotorId, CAN_BUS_MOTORS, true, "left back motor"),
-          DjiMotor(drivers, rightBackMotorId, CAN_BUS_MOTORS, false, "right back motor"),
+          DjiMotor(drivers, leftFrontMotorId, CAN_BUS_WHEELS, true, "left front motor"),
+          DjiMotor(drivers, rightFrontMotorId, CAN_BUS_WHEELS, false, "right front motor"),
+          DjiMotor(drivers, leftBackMotorId, CAN_BUS_WHEELS, true, "left back motor"),
+          DjiMotor(drivers, rightBackMotorId, CAN_BUS_WHEELS, false, "right back motor"),
       },
       targetWheelVels{0.0f, 0.0f, 0.0f, 0.0f},
       pids{
@@ -57,15 +57,12 @@ void ChassisSubsystem::setVelocities(Vector2f v, float wZ)
     //     vector.rotate(turretOffset);
     // }
 
-    float lxy = (WHEEL_DISTANCE_X + WHEEL_DISTANCE_Y) / 2.0f;
-
     // x and y are flipped so that y is forward/back and x is left/right
-    float w1 = (v.y - v.x - lxy * wZ) / WHEEL_RADIUS;  // rad/s
-    float w2 = (v.y + v.x + lxy * wZ) / WHEEL_RADIUS;  // rad/s
-    float w3 = (v.y + v.x - lxy * wZ) / WHEEL_RADIUS;  // rad/s
-    float w4 = (v.y - v.x + lxy * wZ) / WHEEL_RADIUS;  // rad/s
+    float w1 = (v.y - v.x - WHEEL_LXY * wZ) / WHEEL_RADIUS;  // rad/s
+    float w2 = (v.y + v.x + WHEEL_LXY * wZ) / WHEEL_RADIUS;  // rad/s
+    float w3 = (v.y + v.x - WHEEL_LXY * wZ) / WHEEL_RADIUS;  // rad/s
+    float w4 = (v.y - v.x + WHEEL_LXY * wZ) / WHEEL_RADIUS;  // rad/s
 
-    static constexpr float RPS_TO_RPM = 30.0f / M_PI;
     targetWheelVels[0] = w1 * RPS_TO_RPM;
     targetWheelVels[1] = w2 * RPS_TO_RPM;
     targetWheelVels[2] = w3 * RPS_TO_RPM;
