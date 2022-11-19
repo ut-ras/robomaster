@@ -31,7 +31,6 @@ public:
     void runHardwareTests() override;
 
     const char* getName() override { return "Chassis subsystem"; }
-    bool isBeyblading;
 
 private:
     tap::Drivers* drivers;

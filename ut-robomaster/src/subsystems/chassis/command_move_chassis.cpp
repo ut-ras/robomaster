@@ -81,11 +81,11 @@ void MoveChassisCommand::doKeyboardInput()
         wasRKeyPressed = isRKeyPressed;
         if (isRKeyPressed)
         {
-            subsystem->isBeyblading = !subsystem->isBeyblading;
+            isBeyblading = !isBeyblading;
         }
     }
 
-    if (subsystem->isBeyblading)
+    if (isBeyblading)
     {
         inputSpin = 1.0f;
     }

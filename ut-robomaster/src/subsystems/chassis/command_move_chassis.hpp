@@ -15,8 +15,7 @@ class MoveChassisCommand : public tap::control::Command
 public:
     MoveChassisCommand(ChassisSubsystem *sub, tap::Drivers *drivers)
         : drivers(drivers),
-          subsystem(sub),
-          wasRKeyPressed(false)
+          subsystem(sub)
     {
         addSubsystemRequirement(sub);
     }
@@ -47,7 +46,8 @@ private:
     ChassisSubsystem *subsystem;
     Vector2f inputMove = Vector2f(0.0f);
     float inputSpin = 0.0f;
-    bool wasRKeyPressed;
+    bool wasRKeyPressed = false;
+    bool isBeyblading = false;
 };
 }  // namespace chassis
 }  // namespace subsystems
