@@ -37,8 +37,6 @@ private:
     tap::Drivers* drivers;
     static constexpr tap::can::CanBus CAN_BUS_MOTORS = tap::can::CanBus::CAN_BUS1;
     static constexpr int WHEELS = 4;
-    static constexpr float LINEAR_VELOCITY_SCALE = 200.0f;
-    static constexpr float ANGULAR_VELOCITY_SCALE = 800.0f;
     static constexpr float PID_KP = 22.0f;
     static constexpr float PID_KI = 0.2f;
     static constexpr float PID_KD = 0.0f;

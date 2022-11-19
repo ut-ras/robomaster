@@ -22,12 +22,26 @@ void SetKinematicsCommand::execute()
         else
             doKeyboardInput();
 
-        // compute input clamping per the spin factor
-        float e = max(0.0f, inputMove.getLength() + abs(inputSpin) - 1.0f);
-        Vector2f clampedMove = inputMove - inputMove.normalized() * e * SPIN_FACTOR;
-        float clampedSpin = inputSpin - e * (1.0f - SPIN_FACTOR);
+        // effective inputs after correction
+        Vector2f effMoveInput = inputMove;
+        float effSpinInput = inputSpin;
 
-                subsystem->setVelocities(cv, cwZ);
+        // overinput error
+        float magMove = inputMove.getLength();
+        float magSpin = abs(inputSpin);
+        float e = max(0.0f, magMove + magSpin - 1.0f);
+
+        if (e > 0.0f)
+        {
+            effMoveInput *= 1 - e * SPIN_FACTOR / magMove;
+            effSpinInput *= 1 - e * (1.0f - SPIN_FACTOR) / magSpin;
+        }
+
+        // convert inputs to velocities
+        Vector2f moveVel = effMoveInput * LINEAR_VELOCITY_MAX;
+        float spinVel = effSpinInput * ANGULAR_VELOCITY_MAX;
+
+        subsystem->setVelocities(moveVel, spinVel);
     }
 }
 

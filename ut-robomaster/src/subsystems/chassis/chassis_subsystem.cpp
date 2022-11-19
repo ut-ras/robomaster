@@ -42,7 +42,7 @@ void ChassisSubsystem::initialize()
 }
 
 // math from https://research.ijcaonline.org/volume113/number3/pxc3901586.pdf
-void ChassisSubsystem::setVelocities(Vector2f iv, float iwZ)
+void ChassisSubsystem::setVelocities(Vector2f v, float wZ)
 {
     // ImuInterface::ImuState imuState = drivers->bmi088.getImuState();
 
@@ -58,18 +58,13 @@ void ChassisSubsystem::setVelocities(Vector2f iv, float iwZ)
     //     vector.rotate(turretOffset);
     // }
 
-    // assemble constants
     float lxy = (WHEEL_DISTANCE_X + WHEEL_DISTANCE_Y) / 2.0f;
 
-    // scale with max speeds ()
-    Vector2f sv = v * LINEAR_VELOCITY_SCALE;
-    float swZ = wZ * ANGULAR_VELOCITY_SCALE;
-
     // x and y are flipped so that y is forward/back and x is left/right
-    float w1 = (sv.y - sv.x - lxy * swZ) / WHEEL_RADIUS;  // rad/s
-    float w2 = (sv.y + sv.x + lxy * swZ) / WHEEL_RADIUS;  // rad/s
-    float w3 = (sv.y + sv.x - lxy * swZ) / WHEEL_RADIUS;  // rad/s
-    float w4 = (sv.y - sv.x + lxy * swZ) / WHEEL_RADIUS;  // rad/s
+    float w1 = (v.y - v.x - lxy * wZ) / WHEEL_RADIUS;  // rad/s
+    float w2 = (v.y + v.x + lxy * wZ) / WHEEL_RADIUS;  // rad/s
+    float w3 = (v.y + v.x - lxy * wZ) / WHEEL_RADIUS;  // rad/s
+    float w4 = (v.y - v.x + lxy * wZ) / WHEEL_RADIUS;  // rad/s
 
     static constexpr float RPS_TO_RPM = 30.0f / M_PI;
     targetWheelVels[0] = w1 * RPS_TO_RPM;

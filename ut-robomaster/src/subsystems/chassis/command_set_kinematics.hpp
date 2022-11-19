@@ -40,6 +40,8 @@ private:
     static constexpr float ANALOG_DEAD_ZONE = 0.2f;
     static constexpr float KEYBOARD_ACCEL = 6.0f;
     static constexpr float KEYBOARD_DECEL = 4.0f;
+    static constexpr float LINEAR_VELOCITY_MAX = 200.0f;
+    static constexpr float ANGULAR_VELOCITY_MAX = 800.0f;
 
     tap::Drivers *drivers;
     ChassisSubsystem *subsystem;
