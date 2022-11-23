@@ -26,9 +26,14 @@ public:
         MotorId rightBackMotorId = MOTOR4);
 
     void initialize() override;
-    void setVelocities(Vector2f v, float wZ);
     void refresh() override;
     void runHardwareTests() override;
+
+    /// @brief Update robot motion based on simple input controls. Inputs are scaled and corrected
+    /// to avoid over-driving motors. This logic can be adjusted to create various input schemes.
+    /// @param move Linear movement (magnitude should be within [0,1])
+    /// @param spin Angular rotation (value should be within [-1,1])
+    void input(Vector2f move, float spin);
 
     const char* getName() override { return "Chassis subsystem"; }
 
@@ -52,7 +57,8 @@ private:
     static constexpr float MAX_TURN_SPEED = WHEEL_MAX_VEL * WHEEL_RADIUS / WHEEL_LXY;  // rad/s
     static constexpr float MAX_MOVE_SPEED = WHEEL_MAX_VEL * WHEEL_RADIUS / M_SQRT2;    // m/s
 
-    static constexpr float RPS_TO_RPM = 30.0f / M_PI;  // rad/s to rev/min conversion
+    static constexpr float INPUT_MAX_LINEAR_VELOCITY = 200.0f;   // m/s
+    static constexpr float INPUT_MAX_ANGULAR_VELOCITY = 800.0f;  // rad/s
 
     tap::motor::DjiMotor wheelMotors[4];
     float targetWheelVels[4];
@@ -63,6 +69,13 @@ private:
     bool imuDrive;
     bool setStartTurret;
     float startTurretLoc;
+
+    /// @brief Calculate and set wheel velocities for desired robot motion (based on
+    /// https://research.ijcaonline.org/volume113/number3/pxc3901586.pdf).
+    /// @param v Linear velocity (m/s)
+    /// @param wZ Angular velocity (rad/s)
+    void setMecanumWheelVelocities(Vector2f v, float wZ);
+
     void updateMotor(modm::Pid<float>* pid, DjiMotor* motor, float target);
 };
 }  // namespace chassis

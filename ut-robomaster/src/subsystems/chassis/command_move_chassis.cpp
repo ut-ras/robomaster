@@ -8,9 +8,9 @@ void MoveChassisCommand::initialize() {}
 
 void MoveChassisCommand::execute()
 {
-    if (drivers->bmi088.getImuState() == ImuInterface::ImuState::IMU_CALIBRATING && false)
+    if (drivers->bmi088.getImuState() == ImuInterface::ImuState::IMU_CALIBRATING)
     {
-        subsystem->setVelocities(Vector2f(0.0f), 0.0f);
+        subsystem->input(Vector2f(0.0f), 0.0f);
     }
     else
     {
@@ -22,30 +22,11 @@ void MoveChassisCommand::execute()
         else
             doKeyboardInput();
 
-        // effective inputs after correction
-        Vector2f effMoveInput = inputMove;
-        float effSpinInput = inputSpin;
-
-        // overinput error
-        float magMove = inputMove.getLength();
-        float magSpin = abs(inputSpin);
-        float e = max(0.0f, magMove + magSpin - 1.0f);
-
-        if (e > 0.0f)
-        {
-            effMoveInput *= 1.0f - e * SPIN_FACTOR / magMove;
-            effSpinInput *= 1.0f - e * (1.0f - SPIN_FACTOR) / magSpin;
-        }
-
-        // convert inputs to velocities
-        Vector2f moveVel = effMoveInput * LINEAR_VELOCITY_MAX;
-        float spinVel = effSpinInput * ANGULAR_VELOCITY_MAX;
-
-        subsystem->setVelocities(moveVel, spinVel);
+        subsystem->input(inputMove, inputSpin);
     }
 }
 
-void MoveChassisCommand::end(bool) { subsystem->setVelocities(Vector2f(0.0f), 0.0f); }
+void MoveChassisCommand::end(bool) { subsystem->input(Vector2f(0.0f), 0.0f); }
 bool MoveChassisCommand::isFinished() const { return false; }
 
 void MoveChassisCommand::doControllerInput()
