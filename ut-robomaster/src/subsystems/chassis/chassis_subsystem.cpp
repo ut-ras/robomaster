@@ -61,7 +61,7 @@ void ChassisSubsystem::input(Vector2f move, float spin)
     float angularTerm = abs(wZ) * WHEEL_LXY / WHEEL_RADIUS;
 
     // overdrive error
-    float overdrive = linearTerm + angularTerm - WHEEL_MAX_VEL;
+    float overdrive = max(linearTerm + angularTerm - WHEEL_MAX_VEL, 0.0f);
 
     // linear velocity correction
     if (linearTerm > 0.0f)
