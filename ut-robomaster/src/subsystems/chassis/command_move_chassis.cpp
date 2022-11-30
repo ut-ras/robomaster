@@ -51,6 +51,10 @@ void MoveChassisCommand::doControllerInput()
     {
         inputSpin = 0.0f;
     }
+
+    // apply quadratic input ramping
+    inputMove *= inputMove.getLength();
+    inputSpin *= abs(inputSpin);
 }
 
 void MoveChassisCommand::doKeyboardInput()
