@@ -55,8 +55,8 @@ void ChassisSubsystem::runHardwareTests()
 
 void ChassisSubsystem::input(Vector2f move, float spin)
 {
-    Vector2f v = move * INPUT_MAX_LINEAR_VELOCITY;
-    float wZ = spin * INPUT_MAX_ANGULAR_VELOCITY;
+    Vector2f v = move * MAX_LINEAR_VEL;
+    float wZ = spin * MAX_ANGULAR_VEL;
     float linearTerm = (abs(v.x) + abs(v.y)) / WHEEL_RADIUS;
     float angularTerm = abs(wZ) * WHEEL_LXY / WHEEL_RADIUS;
 

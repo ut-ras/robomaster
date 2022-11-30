@@ -53,12 +53,9 @@ private:
     static constexpr float WHEEL_DISTANCE_Y = 0.508f;   // meters
     static constexpr float WHEEL_RADIUS = 0.1524f;      // meters
     static constexpr float WHEEL_LXY = (WHEEL_DISTANCE_X + WHEEL_DISTANCE_Y) / 2.0f;
-    static constexpr float WHEEL_MAX_VEL = 1000.0f;                                    // rad/s
-    static constexpr float MAX_TURN_SPEED = WHEEL_MAX_VEL * WHEEL_RADIUS / WHEEL_LXY;  // rad/s
-    static constexpr float MAX_MOVE_SPEED = WHEEL_MAX_VEL * WHEEL_RADIUS / M_SQRT2;    // m/s
-
-    static constexpr float INPUT_MAX_LINEAR_VELOCITY = 200.0f;   // m/s
-    static constexpr float INPUT_MAX_ANGULAR_VELOCITY = 800.0f;  // rad/s
+    static constexpr float WHEEL_MAX_VEL = 300.0f;                                      // rad/s
+    static constexpr float MAX_LINEAR_VEL = WHEEL_MAX_VEL * WHEEL_RADIUS;               // m/s
+    static constexpr float MAX_ANGULAR_VEL = WHEEL_MAX_VEL * WHEEL_RADIUS / WHEEL_LXY;  // rad/s
 
     tap::motor::DjiMotor wheelMotors[4];
     float targetWheelVels[4];
