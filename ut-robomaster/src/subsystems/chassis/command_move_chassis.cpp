@@ -34,7 +34,7 @@ void MoveChassisCommand::doControllerInput()
     Remote* remote = &drivers->remote;
     inputMove = Vector2f(
         remote->getChannel(Remote::Channel::RIGHT_HORIZONTAL),
-        -remote->getChannel(Remote::Channel::RIGHT_VERTICAL));
+        remote->getChannel(Remote::Channel::RIGHT_VERTICAL));
     inputSpin = -static_cast<float>(remote->getWheel()) / 660.0f;  // 660 is the max
 
     float inputMoveLen = inputMove.getLength();

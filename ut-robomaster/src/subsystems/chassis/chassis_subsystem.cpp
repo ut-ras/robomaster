@@ -99,10 +99,10 @@ void ChassisSubsystem::setMecanumWheelVelocities(Vector2f v, float wZ)
     // }
 
     // x and y are flipped so that y is forward/back and x is left/right
-    targetWheelVels[0] = (v.y - v.x - wZ * WHEEL_LXY) / WHEEL_RADIUS;  // rad/s
-    targetWheelVels[1] = (v.y + v.x + wZ * WHEEL_LXY) / WHEEL_RADIUS;  // rad/s
-    targetWheelVels[2] = (v.y + v.x - wZ * WHEEL_LXY) / WHEEL_RADIUS;  // rad/s
-    targetWheelVels[3] = (v.y - v.x + wZ * WHEEL_LXY) / WHEEL_RADIUS;  // rad/s
+    targetWheelVels[0] = (-v.y - v.x - wZ * WHEEL_LXY) / WHEEL_RADIUS;  // rad/s
+    targetWheelVels[1] = (-v.y + v.x + wZ * WHEEL_LXY) / WHEEL_RADIUS;  // rad/s
+    targetWheelVels[2] = (-v.y + v.x - wZ * WHEEL_LXY) / WHEEL_RADIUS;  // rad/s
+    targetWheelVels[3] = (-v.y - v.x + wZ * WHEEL_LXY) / WHEEL_RADIUS;  // rad/s
 }
 
 void ChassisSubsystem::updateMotor(Pid<float>* pid, DjiMotor* motor, float targetVelocity)
