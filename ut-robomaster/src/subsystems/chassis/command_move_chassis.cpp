@@ -70,10 +70,7 @@ void MoveChassisCommand::doKeyboardInput()
         }
     }
 
-    if (isBeyblading)
-    {
-        inputSpin = 1.0f;
-    }
+    inputSpin = isBeyblading ? 1.0f : 0.0f;
 
     Vector2f rawMoveInput = Vector2f(
         remote->keyPressed(Remote::Key::D) - remote->keyPressed(Remote::Key::A),
