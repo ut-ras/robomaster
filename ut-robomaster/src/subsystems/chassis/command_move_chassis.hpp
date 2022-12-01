@@ -10,13 +10,12 @@ namespace subsystems
 {
 namespace chassis
 {
-class SetKinematicsCommand : public tap::control::Command
+class MoveChassisCommand : public tap::control::Command
 {
 public:
-    SetKinematicsCommand(ChassisSubsystem *sub, tap::Drivers *drivers)
+    MoveChassisCommand(ChassisSubsystem *sub, tap::Drivers *drivers)
         : drivers(drivers),
-          subsystem(sub),
-          isRKeyPressed(false)
+          subsystem(sub)
     {
         addSubsystemRequirement(sub);
     }
@@ -32,16 +31,20 @@ public:
     const char *getName() const override { return "set kinematics command"; }
 
 private:
+    void doControllerInput();
+    void doKeyboardInput();
+
     static constexpr float DELTA_TIME = 0.002f;
-    static constexpr float ANALOG_DEAD_ZONE = 0.2f;
-    static constexpr float KEYBOARD_ACCEL = 6.0f;
-    static constexpr float KEYBOARD_DECEL = 4.0f;
+    static constexpr float ANALOG_DEAD_ZONE = 0.1f;
+    static constexpr float KEYBOARD_ACCEL = 4.0f;
+    static constexpr float KEYBOARD_DECEL = 3.0f;
 
     tap::Drivers *drivers;
     ChassisSubsystem *subsystem;
-    bool isRKeyPressed;
-    Vector2f velocity = Vector2f(0.0f);
-    float wZ = 0.0f;
+    Vector2f inputMove = Vector2f(0.0f);
+    float inputSpin = 0.0f;
+    bool wasRKeyPressed = false;
+    bool isBeyblading = false;
 };
 }  // namespace chassis
 }  // namespace subsystems

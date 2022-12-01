@@ -4,7 +4,7 @@
 #include "tap/control/press_command_mapping.hpp"
 #include "tap/drivers.hpp"
 
-#include "subsystems/chassis/command_set_kinematics.hpp"
+#include "subsystems/chassis/command_move_chassis.hpp"
 
 #include "drivers.hpp"
 #include "drivers_singleton.hpp"
@@ -28,7 +28,7 @@ tap::motor::DjiMotor yawMotor(drivers(), MotorId::MOTOR1, tap::can::CanBus::CAN_
 chassis::ChassisSubsystem theChassis(drivers(), &yawMotor);
 
 /* define commands ----------------------------------------------------------*/
-chassis::SetKinematicsCommand setKinematicsCommand(&theChassis, drivers());
+chassis::MoveChassisCommand moveChassisCommand(&theChassis, drivers());
 
 /* define command mappings --------------------------------------------------*/
 // HoldCommandMapping testMoveChassis(
@@ -48,7 +48,7 @@ void initializeSubsystems() { theChassis.initialize(); }
 /* set any default commands to subsystems here ------------------------------*/
 void setDefaultStandardCommands(tap::Drivers *)
 {
-    theChassis.setDefaultCommand(&setKinematicsCommand);  // keyboard
+    theChassis.setDefaultCommand(&moveChassisCommand);  // keyboard
 }
 
 /* add any starting commands to the scheduler here --------------------------*/
