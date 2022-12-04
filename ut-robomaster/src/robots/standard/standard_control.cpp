@@ -1,39 +1,17 @@
-#ifndef ENV_UNIT_TESTS
+#include "tap/control/command_mapper.hpp"
+#include "tap/control/hold_command_mapping.hpp"
+#include "tap/control/hold_repeat_command_mapping.hpp"
+#include "tap/control/press_command_mapping.hpp"
+#include "tap/drivers.hpp"
 
-#ifdef TARGET_STANDARD
+#include "subsystems/chassis/command_move_chassis.hpp"
 
 #include "drivers.hpp"
 #include "drivers_singleton.hpp"
 
-#include "tap/control/command_mapper.hpp"
-#include "tap/control/hold_repeat_command_mapping.hpp"
-#include "tap/control/hold_command_mapping.hpp"
-#include "tap/control/press_command_mapping.hpp"
-#include "tap/drivers.hpp"
-
-
-#include "agitator/agitator_rotate_command.hpp"
-#include "agitator/agitator_reverse_command.hpp"
-#include "agitator/agitator_subsystem.hpp"
-
-#include "flywheel/flywheel_subsystem.hpp"
-#include "flywheel/flywheel_on_command.hpp"
-
-#include "chassis/chassis_subsystem.hpp"
-#include "chassis/chassis_drive_command.hpp"
-#include "chassis/chassis_drive_keyboard_command.hpp"
-
-#include "gimbal/gimbal_subsystem.hpp"
-#include "gimbal/gimbal_move_command.hpp"
-
-#include "turret/turret_subsystem.hpp"
-#include "turret/turret_move_command.hpp"
-
-#include "tap/communication/gpio/leds.hpp"
-
 using namespace tap::control;
-using namespace control;
 using namespace tap::communication::serial;
+using namespace subsystems;
 
 /*
  * NOTE: We are using the DoNotUse_getDrivers() function here
@@ -42,80 +20,35 @@ using namespace tap::communication::serial;
  *      Drivers class to all of these objects.
  */
 src::driversFunc drivers = src::DoNotUse_getDrivers;
-tap::gpio::Leds led;
 
 namespace standard_control
 {
 /* define subsystems --------------------------------------------------------*/
-control::agitator::AgitatorSubsystem theAgitator(drivers());
-control::flywheel::FlywheelSubsystem theFlywheel(drivers());
-control::turret::TurretSubsystem theTurret(drivers());  // mouse  
-//control::gimbal::GimbalSubsystem theGimbal(drivers());   // joystick
-control::chassis::ChassisSubsystem theChassis(drivers(), &theTurret.getYawMotor());
+tap::motor::DjiMotor yawMotor(drivers(), MotorId::MOTOR1, tap::can::CanBus::CAN_BUS1, false, "yaw");
+chassis::ChassisSubsystem theChassis(drivers(), &yawMotor);
 
 /* define commands ----------------------------------------------------------*/
-control::agitator::AgitatorRotateCommand rotateCommand(&theAgitator);
-control::agitator::AgitatorReverseCommand reverseCommand(&theAgitator);
-control::flywheel::FlywheelOnCommand flywheelCommand(&theFlywheel);
-control::chassis::ChassisDriveKeyboardCommand chassisDriveKeyboardCommand(drivers(), &theChassis);  // keyboard
-//control::chassis::ChassisDriveCommand chassisDriveCommand(drivers(), &theChassis);   // joystick
-control::turret::TurretMoveCommand turretMoveCommand(drivers(), &theTurret);    //mouse 
-//control::gimbal::GimbalMoveCommand gimbalMoveCommand(drivers(), &theGimbal);     //joystick
+chassis::MoveChassisCommand moveChassisCommand(&theChassis, drivers());
 
 /* define command mappings --------------------------------------------------*/
-HoldRepeatCommandMapping reverseAgitator(
-    drivers(),
-    {&reverseCommand},
-    RemoteMapState({Remote::Key::F}), true, -1);
-
-// HoldRepeatCommandMapping rightSwitchDown(
+// HoldCommandMapping testMoveChassis(
 //     drivers(),
-//     {&reverseCommand},
-//     RemoteMapState(Remote::Switch::RIGHT_SWITCH, Remote::SwitchState::DOWN), true, -1);
-
-// HoldRepeatCommandMapping leftSwitchUp(
-//     drivers(),
-//     {&flywheelCommand},
-//     RemoteMapState(Remote::Switch::LEFT_SWITCH, Remote::SwitchState::UP), true, -1);
-
-HoldRepeatCommandMapping rightMouseDown(
-    drivers(),
-    {&flywheelCommand},
-    RemoteMapState(RemoteMapState::MouseButton::RIGHT), true, -1);
-
-HoldRepeatCommandMapping leftMouseDown(
-    drivers(),
-    {&rotateCommand},
-    RemoteMapState(RemoteMapState::MouseButton::LEFT), true, -1);
-
-
+//     {&setKinematicsCommand},
+//     RemoteMapState({Remote::Key::F}));
 
 /* register subsystems here -------------------------------------------------*/
 void registerStandardSubsystems(tap::Drivers *drivers)
 {
-    drivers->commandScheduler.registerSubsystem(&theAgitator);
-    drivers->commandScheduler.registerSubsystem(&theFlywheel);
     drivers->commandScheduler.registerSubsystem(&theChassis);
-    drivers->commandScheduler.registerSubsystem(&theTurret);    // mouse
-    //drivers->commandScheduler.registerSubsystem(&theGimbal);     // joystick
 }
 
 /* initialize subsystems ----------------------------------------------------*/
-void initializeSubsystems() { 
-    theAgitator.initialize();
-    theFlywheel.initialize();
-    theChassis.initialize();
-    theTurret.initialize();     // mouse
-    //theGimbal.initialize();  // joystick
-}
+void initializeSubsystems() { theChassis.initialize(); }
 
 /* set any default commands to subsystems here ------------------------------*/
-void setDefaultStandardCommands(tap::Drivers *) 
+void setDefaultStandardCommands(tap::Drivers *)
 {
-    theChassis.setDefaultCommand(&chassisDriveKeyboardCommand); // keyboard
-    //theChassis.setDefaultCommand(&chassisDriveCommand);  //joystick
-    theTurret.setDefaultCommand(&turretMoveCommand);    //mouse
-    //theGimbal.setDefaultCommand(&gimbalMoveCommand);     //joystick
+    theChassis.setDefaultCommand(&moveChassisCommand);  // keyboard
 }
 
 /* add any starting commands to the scheduler here --------------------------*/
@@ -124,26 +57,18 @@ void startStandardCommands(tap::Drivers *) {}
 /* register io mappings here ------------------------------------------------*/
 void registerStandardIoMappings(tap::Drivers *drivers)
 {
-    // drivers->commandMapper.addMap(&rightSwitchUp);
-    drivers->commandMapper.addMap(&reverseAgitator);
-    // drivers->commandMapper.addMap(&rightSwitchDown);
-    // drivers->commandMapper.addMap(&leftSwitchUp);
-    drivers->commandMapper.addMap(&leftMouseDown);
-    drivers->commandMapper.addMap(&rightMouseDown);
+    // drivers->commandMapper.addMap(&testMoveChassis);
 }
-} // namespace standard_control
+}  // namespace standard_control
 
 namespace control
 {
-    void initSubsystemCommands(tap::Drivers *drivers)
-    {
-        standard_control::initializeSubsystems();
-        standard_control::registerStandardSubsystems(drivers);
-        standard_control::setDefaultStandardCommands(drivers);
-        standard_control::startStandardCommands(drivers);
-        standard_control::registerStandardIoMappings(drivers);
-    }
+void initSubsystemCommands(tap::Drivers *drivers)
+{
+    standard_control::initializeSubsystems();
+    standard_control::registerStandardSubsystems(drivers);
+    standard_control::setDefaultStandardCommands(drivers);
+    standard_control::startStandardCommands(drivers);
+    standard_control::registerStandardIoMappings(drivers);
 }
-
-#endif
-#endif
+}  // namespace control
