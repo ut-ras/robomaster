@@ -97,7 +97,7 @@ int main()
             PROFILE(drivers->profiler, drivers->commandScheduler.run, ());
             PROFILE(drivers->profiler, drivers->djiMotorTxHandler.encodeAndSendCanData, ());
             PROFILE(drivers->profiler, drivers->terminalSerial.update, ());
-        } 
+        }
         // led_test::ledOn();
         modm::delay_us(10);
     }
