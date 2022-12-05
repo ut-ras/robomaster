@@ -32,6 +32,7 @@ private:
     modm::Pid<float> pidController; // Should the PID controller use int instead? Check kp
     modm::Pid<float> targetAnglePidController;
     tap::motor::DjiMotor motor;
+    tap::Drivers *localDriversRef;
     static constexpr float MAX_CURRENT_OUTPUT = 8000.0f;
     static constexpr int NEAR_TARGET_THRESHOLD = 900; // 1/10 of one ball's worth of encoder ticks
 };

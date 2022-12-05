@@ -1,11 +1,14 @@
 #include "agitator_subsystem.hpp"
 #include <algorithm>
+#include "tap/drivers.hpp"
+#include "robots/standard/robot_comms.hpp"
 
 namespace subsystems::shooter
 {
 
 AgitatorSubsystem::AgitatorSubsystem(tap::Drivers *drivers, tap::motor::MotorId motorId, tap::can::CanBus canBusMotors)
     :   Subsystem(drivers),
+        localDriversRef(drivers),
         motorId(motorId),
         canBusMotors(canBusMotors),
         motorOutput(0),
@@ -53,6 +56,11 @@ void AgitatorSubsystem::rotateToTarget(int64_t targetPosition)
     
     targetAnglePidController.update(targetPosition - currentPosition);
     motor.setDesiredOutput(static_cast<int32_t>(targetAnglePidController.getValue()));
+
+    // char* toSend = "Agitator: " + std::to_string(currentPosition) + " " + std::to_string(targetPosition) + " " + std::to_string(error);
+    sprintf(comms::RobotCommsSingleton::getInstance().robotStream, "Agitator: %lld %lld %ld", currentPosition, targetPosition, error);
+
+    // strcpy(comms::RobotCommsSingleton::getInstance().robotStream, toSend);
 }
 
 bool AgitatorSubsystem::isNearTarget(int64_t targetPosition)

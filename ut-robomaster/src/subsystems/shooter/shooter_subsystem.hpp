@@ -57,6 +57,7 @@ private:
     static constexpr u_int64_t AGITATOR_INCREMENT_AMOUNT = 2820; // TODO: FIGURE OUT WHY THIS IS 2820
     FlywheelSubsystem flywheel;
     AgitatorSubsystem agitator;
+    
     uint64_t targetAngle; // angle that the agitator should rotate to
     int ballsToShoot; // "queue" of balls to shoot
 };

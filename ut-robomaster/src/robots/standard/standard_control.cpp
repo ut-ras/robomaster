@@ -10,7 +10,7 @@
 #include "tap/control/hold_command_mapping.hpp"
 #include "tap/control/press_command_mapping.hpp"
 #include "tap/drivers.hpp"
-
+#include "robot_comms.hpp"
 
 
 // #include "agitator/agitator_rotate_command.hpp"
@@ -49,6 +49,7 @@ namespace standard_control
 {
 /* define subsystems --------------------------------------------------------*/
 // control::agitator::AgitatorSubsystem theAgitator(drivers());
+comms::RobotComms theRobotComms(drivers());
 subsystems::shooter::ShooterSubsystem theShooter(drivers());
 // control::turret::TurretSubsystem theTurret(drivers());  // mouse  
 // control::gimbal::GimbalSubsystem theGimbal(drivers());   // joystick
@@ -146,11 +147,16 @@ namespace control
 {
     void initSubsystemCommands(tap::Drivers *drivers)
     {
+        comms::RobotCommsSingleton::init(drivers);
+
         standard_control::initializeSubsystems();
         standard_control::registerStandardSubsystems(drivers);
         standard_control::setDefaultStandardCommands(drivers);
         standard_control::startStandardCommands(drivers);
         standard_control::registerStandardIoMappings(drivers);
+
+
+        
     }
 }
 

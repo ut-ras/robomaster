@@ -1,7 +1,7 @@
 #include "shooter_subsystem.hpp"
 #include "tap/communication/gpio/leds.hpp"
 #include "tap/communication/serial/remote.hpp"
-
+#include "robots/standard/robot_comms.hpp"
 using namespace tap;
 using namespace tap::gpio;
 
@@ -66,6 +66,8 @@ void ShooterSubsystem::rotateAgitatorToTarget()
     test.set(Leds::LedPin::Green, (valueToDisplay % 3) == 0);
     test.set(Leds::LedPin::Red, (valueToDisplay % 3) == 1);
     test.set(Leds::LedPin::Blue, (valueToDisplay % 3) == 2);
+
+    sprintf(comms::RobotCommsSingleton::getInstance().robotStream, "Balls to shoot: %d", valueToDisplay);
 }
 
 void ShooterSubsystem::shootBalls(int numBalls)
