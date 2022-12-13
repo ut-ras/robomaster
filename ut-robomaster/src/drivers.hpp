@@ -21,6 +21,7 @@
 #define DRIVERS_HPP_
 
 #include "tap/drivers.hpp"
+#include "communication/beaglebone_communicator.hpp"
 
 namespace src
 {
@@ -31,9 +32,14 @@ class Drivers : public tap::Drivers
 #ifdef ENV_UNIT_TESTS
 public:
 #endif
-    Drivers() : tap::Drivers() {}
+    Drivers() 
+        : tap::Drivers(),
+          beagleboneCommunicator(this)
+        {
+        }
 
 public:
+    communication::BeagleBoneCommunicator beagleboneCommunicator;
 };  // class Drivers
 
 }  // namespace src

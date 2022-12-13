@@ -41,10 +41,6 @@
             "name": "Hardware",
             "includePath": [
                 "${default}",
-                "template-project/taproot/modm/src",
-                "template-project/taproot/modm/ext/cmsis/core",
-                "template-project/taproot/modm/ext/cmsis/device",
-                "template-project/taproot/modm/ext/cmsis/dsp",
                 "${workspaceFolder}/ut-robomaster/taproot/src",
                 "${workspaceFolder}/taproot/modm/src",
                 "${workspaceFolder}/ut-robomaster/taproot/modm/src",
@@ -53,11 +49,13 @@
                 "${workspaceFolder}/ut-robomaster/taproot/modm/src/modm/processing",
                 "${workspaceFolder}/ut-robomaster/src"
             ],
-            "compilerPath": "arm-none-eabi-g++",
+            "compilerPath": "C:\\msys64\\mingw64\\bin\\arm-none-eabi-g++.exe",
             "intelliSenseMode": "gcc-arm",
             "browse": {
                 "limitSymbolsToIncludedHeaders": true
-            }
+            },
+            "cStandard": "c17",
+            "cppStandard": "c++17"
         }
     ],
     "version": 4

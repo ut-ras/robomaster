@@ -70,7 +70,8 @@
         "variant": "cpp",
         "SConstruct": "python",
         "SConscript": "python",
-        "stop_token": "cpp"
+        "stop_token": "cpp",
+        "cassert": "cpp"
     },
     "C_Cpp.errorSquiggles": "Enabled",
     "C_Cpp.default.includePath": [
