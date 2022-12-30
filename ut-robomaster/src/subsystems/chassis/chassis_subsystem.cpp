@@ -6,7 +6,6 @@ namespace chassis
 {
 ChassisSubsystem::ChassisSubsystem(
     tap::Drivers* drivers,
-    const DjiMotor* yawMotor,
     MotorId leftFrontMotorId,
     MotorId rightFrontMotorId,
     MotorId leftBackMotorId,
@@ -25,7 +24,6 @@ ChassisSubsystem::ChassisSubsystem(
           Pid<float>(PID_KP, PID_KI, PID_KD, PID_MAX_ERROR_SUM, PID_MAX_OUTPUT),
           Pid<float>(PID_KP, PID_KI, PID_KD, PID_MAX_ERROR_SUM, PID_MAX_OUTPUT),
           Pid<float>(PID_KP, PID_KI, PID_KD, PID_MAX_ERROR_SUM, PID_MAX_OUTPUT)},
-      yawMotor(yawMotor),
       imuDrive(false),
       setStartTurret(false),
       startTurretLoc(0.0f)

@@ -18,37 +18,27 @@
  */
 
 #include "turret_command.hpp"
-#include "turret_subsystem.hpp"
 
 #define POSDEADZONE 0.2
 
-using tap::control::Subsystem;
-
-TurretCommand::TurretCommand(tap::Drivers* drivers, TurretSubsystem* subsystem)
-    : drivers(drivers), 
-    subsystem(subsystem)
+namespace subsystems
 {
-    addSubsystemRequirement(subsystem);
-}
-
-void TurretCommand::initialize() {subsystem->setDesiredRpm(0, 0);}
-
-void TurretCommand::execute() { 
-    float x = drivers->remote.getChannel(tap::communication::serial::Remote::Channel::RIGHT_HORIZONTAL);
-    float y = -(drivers->remote.getChannel(tap::communication::serial::Remote::Channel::RIGHT_VERTICAL));
-
-    if (fabs(x) > POSDEADZONE || fabs(y) > POSDEADZONE){
-        subsystem->setDesiredRpm(x * DEFAULT_WHEEL_RPM, y * DEFAULT_WHEEL_RPM);
-    } else{
-        subsystem->setDesiredRpm(0.0f, 0.0f);
-    }
-
-    subsystem->setDesiredRpm(x * DEFAULT_WHEEL_RPM, y * DEFAULT_WHEEL_RPM);
-}
-
-void TurretCommand::end(bool interrupted)
+namespace turret
 {
-    subsystem->setDesiredRpm(0, 0);
+void TurretCommand::initialize() { subsystem->setDesiredRpm(0, 0); }
+
+void TurretCommand::execute()
+{
+    Remote* remote = &drivers->remote;
+    // float x = static_cast<float>(remote->getMouseX()) / 1.0f;
+    // float y = static_cast<float>(remote->getMouseY()) / 1.0f;
+    float x = remote->getChannel(Remote::Channel::LEFT_HORIZONTAL);
+    float y = remote->getChannel(Remote::Channel::LEFT_VERTICAL);
+    subsystem->setDesiredRpm(x * 100.0f, y * 100.0f);
 }
+
+void TurretCommand::end(bool interrupted) { subsystem->setDesiredRpm(0, 0); }
 
 bool TurretCommand::isFinished(void) const { return false; }
+}  // namespace turret
+}  // namespace subsystems

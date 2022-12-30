@@ -19,7 +19,6 @@ class ChassisSubsystem : public tap::control::Subsystem
 public:
     ChassisSubsystem(
         tap::Drivers* drivers,
-        const DjiMotor* yawMotor,
         MotorId leftFrontMotorId = MOTOR2,
         MotorId rightFrontMotorId = MOTOR1,
         MotorId leftBackMotorId = MOTOR3,
@@ -57,11 +56,9 @@ private:
     static constexpr float MAX_LINEAR_VEL = WHEEL_MAX_VEL * WHEEL_RADIUS;               // m/s
     static constexpr float MAX_ANGULAR_VEL = WHEEL_MAX_VEL * WHEEL_RADIUS / WHEEL_LXY;  // rad/s
 
-    tap::motor::DjiMotor wheelMotors[4];
+    DjiMotor wheelMotors[4];
     float targetWheelVels[4];
     modm::Pid<float> pids[4];
-
-    const DjiMotor* yawMotor;
 
     bool imuDrive;
     bool setStartTurret;

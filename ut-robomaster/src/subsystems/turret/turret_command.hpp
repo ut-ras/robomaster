@@ -26,18 +26,29 @@
 #ifndef TURRET_COMMAND_HPP_
 #define TURRET_COMMAND_HPP_
 
-#include "tap/control/command.hpp"
-#include "drivers.hpp"
 #include "tap/communication/serial/remote.hpp"
+#include "tap/control/command.hpp"
 
-class TurretSubsystem;
+#include "drivers.hpp"
+#include "turret_subsystem.hpp"
 
+using subsystems::turret::TurretSubsystem;
+using tap::communication::serial::Remote;
+using tap::control::Subsystem;
+
+namespace subsystems
+{
+namespace turret
+{
 class TurretCommand : public tap::control::Command
 {
 public:
     static constexpr int16_t DEFAULT_WHEEL_RPM = 2000;
 
-    TurretCommand(tap::Drivers* drivers, TurretSubsystem* subsystem);
+    TurretCommand(TurretSubsystem* sub, tap::Drivers* drivers) : drivers(drivers), subsystem(sub)
+    {
+        addSubsystemRequirement(sub);
+    }
 
     /**
      * The initial subroutine of a command.  Called once when the command is
@@ -70,9 +81,10 @@ public:
     const char* getName() const override { return "example"; }
 
 private:
-    TurretSubsystem* subsystem;
-
     tap::Drivers* drivers;
+    TurretSubsystem* subsystem;
 };
+}  // namespace turret
+}  // namespace subsystems
 
 #endif  // EXAMPLE_COMMAND_HPP_
