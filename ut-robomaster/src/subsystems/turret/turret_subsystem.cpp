@@ -9,7 +9,13 @@ TurretSubsystem::TurretSubsystem(tap::Drivers* drivers, MotorId motorIdYaw, Moto
       velocityPidYawMotor(PID_KP, PID_KI, PID_KD, PID_MAX_ERROR_SUM, PID_MAX_OUTPUT),
       velocityPidPitchMotor(PID_KP, PID_KI, PID_KD, PID_MAX_ERROR_SUM, PID_MAX_OUTPUT),
       yawMotor(drivers, motorIdYaw, CAN_BUS_MOTORS, false, "yaw motor"),
-      pitchMotor(drivers, motorIdPitch, CAN_BUS_MOTORS, false, "pitch motor")
+      pitchMotor(drivers, motorIdPitch, CAN_BUS_MOTORS, false, "pitch motor"),
+      agitator(
+          DjiMotor(drivers, MOTOR5, CAN_BUS_MOTORS, false, "agitator motor"),
+          30000,
+          1.0f,
+          0.0f,
+          0.0f)
 {
 }
 
@@ -17,6 +23,7 @@ void TurretSubsystem::initialize()
 {
     yawMotor.initialize();
     pitchMotor.initialize();
+    agitator.init();
 }
 
 void TurretSubsystem::setDesiredRpm(float yaw, float pitch)
@@ -27,8 +34,10 @@ void TurretSubsystem::setDesiredRpm(float yaw, float pitch)
 
 void TurretSubsystem::refresh()
 {
-    updateMotorRpmPid(&velocityPidYawMotor, &yawMotor, desiredRpmYaw);
-    updateMotorRpmPid(&velocityPidPitchMotor, &pitchMotor, desiredRpmPitch);
+    agitator.update(desiredRpmYaw);
+
+    // updateMotorRpmPid(&velocityPidYawMotor, &yawMotor, desiredRpmYaw);
+    // updateMotorRpmPid(&velocityPidPitchMotor, &pitchMotor, desiredRpmPitch);
 }
 
 void TurretSubsystem::updateMotorRpmPid(modm::Pid<float>* pid, DjiMotor* motor, float desiredRpm)
