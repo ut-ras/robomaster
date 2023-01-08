@@ -28,7 +28,9 @@ void MotorPositionController::initialize() { motor.initialize(); }
 /// @param targetAngle Target angle in radians (unwrapped)
 void MotorPositionController::update(float targetAngle, float dt)
 {
-    float output = pid.update(targetAngle, this->getAngle(), dt);
+    float diff = targetAngle - this->getAngle();
+    float smallest_diff = diff - roundf(diff);
+    float output = pid.update(smallest_diff, dt);
     motor.setDesiredOutput(output * maxCurrent);
 }
 

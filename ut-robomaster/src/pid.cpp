@@ -4,11 +4,11 @@ namespace pid_motor_controller
 {
 Pid::Pid(const float& kp, const float& ki, const float& kd) : kp(kp), ki(ki), kd(kd) {}
 
-float Pid::update(float target, float measured, float dt)
+float Pid::update(float err, float dt)
 {
     error[2] = error[1];
     error[1] = error[0];
-    error[0] = target - measured;
+    error[0] = err;
 
     output += (kp + ki * dt + kd / dt) * error[0];
     output -= (kp + 2.0f * kd / dt) * error[1];

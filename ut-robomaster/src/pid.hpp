@@ -5,7 +5,7 @@ class Pid
 {
 public:
     Pid(const float& kp = 1.0f, const float& ki = 0.0f, const float& kd = 0.0f);
-    float update(float target, float measured, float dt);
+    float update(float err, float dt);
 
     // private:
     const float kp;
