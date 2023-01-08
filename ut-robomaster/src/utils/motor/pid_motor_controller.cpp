@@ -12,14 +12,14 @@ void MotorPositionController::update(float targetAngle, float dt)
     float diff = targetAngle - this->getAngle();
     float smallest_diff = diff - roundf(diff);
     float output = pid.update(smallest_diff, dt);
-    motor.setDesiredOutput(output * maxCurrent);
+    motor.setDesiredOutput(output * constants.maxOutput);
 }
 
 float MotorPositionController::getAngle()
 {
     int64_t encoderVal = motor.getEncoderUnwrapped();
     float units = static_cast<float>(encoderVal) / DjiMotor::ENC_RESOLUTION;
-    float turns = units / gearRatio;
+    float turns = units / constants.gearRatio;
     float rads = turns * M_TWOPI;
     return rads;
 }

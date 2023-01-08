@@ -1,5 +1,7 @@
 #include "tap/motor/dji_motor.hpp"
 
+#include "utils/motor/motor_constants.hpp"
+
 #include "pid.hpp"
 
 using namespace tap::motor;
@@ -12,18 +14,16 @@ class MotorController
 public:
     MotorController(
         tap::Drivers* drivers,
+        const MotorConstants& constants,
         const MotorId motorId,
         const tap::can::CanBus motorCanBus,
         const bool motorInverted,
         const char* motorName,
-        const uint16_t& maxCurrent,
-        const float& gearRatio,
         const float& kp = 1.0f,
         const float& ki = 0.0f,
         const float& kd = 0.0f)
-        : motor(drivers, motorId, motorCanBus, motorInverted, motorName),
-          maxCurrent(maxCurrent),
-          gearRatio(gearRatio),
+        : constants(constants),
+          motor(drivers, motorId, motorCanBus, motorInverted, motorName),
           pid(kp, ki, kd)
     {
     }
@@ -32,9 +32,8 @@ public:
     virtual void update(float target, float dt) = 0;
 
     // private:
+    const MotorConstants constants;
     DjiMotor motor;
-    const uint16_t maxCurrent;
-    const float gearRatio;
     Pid pid;
 };
 
