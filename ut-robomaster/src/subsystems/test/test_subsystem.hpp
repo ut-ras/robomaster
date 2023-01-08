@@ -4,9 +4,9 @@
 #include "tap/motor/dji_motor.hpp"
 
 #include "modm/math/filter/pid.hpp"
+#include "utils/motor/pid_motor_controller.hpp"
 
 #include "drivers.hpp"
-#include "pid_motor_controller.hpp"
 #include "terminal_callback.hpp"
 
 using namespace tap::communication::serial;

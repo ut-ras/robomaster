@@ -4,25 +4,6 @@
 
 namespace pid_motor_controller
 {
-MotorPositionController::MotorPositionController(
-    tap::Drivers* drivers,
-    const MotorId motorId,
-    const tap::can::CanBus motorCanBus,
-    const bool motorInverted,
-    const char* motorName,
-    const uint16_t& maxCurrent,
-    const float& gearRatio,
-    const float& kp,
-    const float& ki,
-    const float& kd)
-    : motor(drivers, motorId, motorCanBus, motorInverted, motorName),
-      maxCurrent(maxCurrent),
-      gearRatio(gearRatio),
-      pid(kp, ki, kd)
-{
-}
-
-void MotorPositionController::initialize() { motor.initialize(); }
 
 /// @brief Update the PID and motor drive strength
 /// @param targetAngle Target angle in radians (unwrapped)

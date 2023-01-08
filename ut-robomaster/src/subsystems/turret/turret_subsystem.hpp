@@ -5,10 +5,8 @@
 #include "modm/math/filter/pid.hpp"
 
 #include "drivers.hpp"
-#include "pid_motor_controller.hpp"
 
 using namespace tap::motor;
-using namespace pid_motor_controller;
 
 namespace subsystems
 {
