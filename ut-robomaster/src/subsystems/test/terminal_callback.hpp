@@ -20,6 +20,7 @@ public:
     float currentAngle = 0.0f;
     float pidOutput = 0.0f;
     float deltaTime = 0.0f;
+    float arg = 0.0f;
 };
 }  // namespace test
 }  // namespace subsystems
