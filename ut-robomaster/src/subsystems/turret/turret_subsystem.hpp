@@ -50,8 +50,6 @@ private:
 
     DjiMotor yawMotor;
     DjiMotor pitchMotor;
-
-    MotorPositionController agitator;
 };
 
 }  // namespace turret

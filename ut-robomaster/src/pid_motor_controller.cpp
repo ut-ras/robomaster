@@ -2,37 +2,43 @@
 
 #include "modm/math.hpp"
 
-#define DELTA_TIME 0.002f
-
 namespace pid_motor_controller
 {
 MotorPositionController::MotorPositionController(
-    DjiMotor motor,
+    tap::Drivers* drivers,
+    const MotorId motorId,
+    const tap::can::CanBus motorCanBus,
+    const bool motorInverted,
+    const char* motorName,
     const uint16_t& maxCurrent,
+    const float& gearRatio,
     const float& kp,
     const float& ki,
     const float& kd)
-    : motor(&motor),
+    : motor(drivers, motorId, motorCanBus, motorInverted, motorName),
       maxCurrent(maxCurrent),
+      gearRatio(gearRatio),
       pid(kp, ki, kd)
 {
 }
 
-void MotorPositionController::init() { motor->initialize(); }
+void MotorPositionController::initialize() { motor.initialize(); }
 
 /// @brief Update the PID and motor drive strength
 /// @param targetAngle Target angle in radians (unwrapped)
-void MotorPositionController::update(float targetAngle)
+void MotorPositionController::update(float targetAngle, float dt)
 {
-    float output = pid.update(targetAngle, this->getAngle(), DELTA_TIME);
-    motor->setDesiredOutput(output * maxCurrent);
+    float output = pid.update(targetAngle, this->getAngle(), dt);
+    motor.setDesiredOutput(output * maxCurrent);
 }
 
 float MotorPositionController::getAngle()
 {
-    int64_t encoderVal = motor->getEncoderUnwrapped();
-    float unwrappedAngle = (M_TWOPI * encoderVal) / DjiMotor::ENC_RESOLUTION;
-    return unwrappedAngle;
+    int64_t encoderVal = motor.getEncoderUnwrapped();
+    float units = static_cast<float>(encoderVal) / DjiMotor::ENC_RESOLUTION;
+    float turns = units / gearRatio;
+    float rads = turns * M_TWOPI;
+    return rads;
 }
 
 // MotorVelocityController::MotorVelocityController(

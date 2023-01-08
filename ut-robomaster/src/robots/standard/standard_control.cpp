@@ -4,8 +4,7 @@
 #include "tap/control/press_command_mapping.hpp"
 #include "tap/drivers.hpp"
 
-#include "subsystems/chassis/command_move_chassis.hpp"
-#include "subsystems/turret/turret_command.hpp"
+#include "subsystems/test/test_command.hpp"
 
 #include "drivers.hpp"
 #include "drivers_singleton.hpp"
@@ -25,12 +24,10 @@ src::driversFunc drivers = src::DoNotUse_getDrivers;
 namespace standard_control
 {
 /* define subsystems --------------------------------------------------------*/
-chassis::ChassisSubsystem theChassis(drivers());
-turret::TurretSubsystem theTurret(drivers());
+test::TestSubsystem theTest(drivers());
 
 /* define commands ----------------------------------------------------------*/
-chassis::MoveChassisCommand moveChassisCommand(&theChassis, drivers());
-turret::TurretCommand turretCommand(&theTurret, drivers());
+test::TestCommand testCommand(&theTest, drivers());
 
 /* define command mappings --------------------------------------------------*/
 // HoldCommandMapping testMoveChassis(
@@ -41,23 +38,14 @@ turret::TurretCommand turretCommand(&theTurret, drivers());
 /* register subsystems here -------------------------------------------------*/
 void registerStandardSubsystems(tap::Drivers *drivers)
 {
-    drivers->commandScheduler.registerSubsystem(&theChassis);
-    drivers->commandScheduler.registerSubsystem(&theTurret);
+    drivers->commandScheduler.registerSubsystem(&theTest);
 }
 
 /* initialize subsystems ----------------------------------------------------*/
-void initializeSubsystems()
-{
-    theChassis.initialize();
-    theTurret.initialize();
-}
+void initializeSubsystems() { theTest.initialize(); }
 
 /* set any default commands to subsystems here ------------------------------*/
-void setDefaultStandardCommands(tap::Drivers *)
-{
-    theChassis.setDefaultCommand(&moveChassisCommand);
-    theTurret.setDefaultCommand(&turretCommand);
-}
+void setDefaultStandardCommands(tap::Drivers *) { theTest.setDefaultCommand(&testCommand); }
 
 /* add any starting commands to the scheduler here --------------------------*/
 void startStandardCommands(tap::Drivers *) {}

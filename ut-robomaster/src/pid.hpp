@@ -7,7 +7,7 @@ public:
     Pid(const float& kp = 1.0f, const float& ki = 0.0f, const float& kd = 0.0f);
     float update(float target, float measured, float dt);
 
-private:
+    // private:
     const float kp;
     const float ki;
     const float kd;

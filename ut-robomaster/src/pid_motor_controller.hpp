@@ -28,18 +28,24 @@ class MotorPositionController
 {
 public:
     MotorPositionController(
-        DjiMotor motor,
+        tap::Drivers* drivers,
+        const MotorId motorId,
+        const tap::can::CanBus motorCanBus,
+        const bool motorInverted,
+        const char* motorName,
         const uint16_t& maxCurrent,
+        const float& gearRatio,
         const float& kp = 1.0f,
         const float& ki = 0.0f,
         const float& kd = 0.0f);
     float getAngle();
-    void init();
-    void update(float targetAngle);
+    void initialize();
+    void update(float targetAngle, float dt);
 
-private:
-    DjiMotor* motor;
+    // private:
+    DjiMotor motor;
     const uint16_t maxCurrent;
+    const float gearRatio;
     Pid pid;
 };
 }  // namespace pid_motor_controller
