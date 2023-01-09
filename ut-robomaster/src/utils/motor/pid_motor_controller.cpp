@@ -20,8 +20,7 @@ float MotorPositionController::getAngle()
     int64_t encoderVal = motor.getEncoderUnwrapped();
     float units = static_cast<float>(encoderVal) / DjiMotor::ENC_RESOLUTION;
     float turns = units / constants.gearRatio;
-    float rads = turns * M_TWOPI;
-    return rads;
+    return turns;
 }
 
 // MotorVelocityController::MotorVelocityController(

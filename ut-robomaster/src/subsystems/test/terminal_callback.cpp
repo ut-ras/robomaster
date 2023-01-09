@@ -8,16 +8,19 @@ namespace test
 {
 bool TestTerminalCallback::terminalSerialCallback(
     char* inputLine,
-    modm::IOStream& outputStream,
+    modm::IOStream& o,
     bool streamingEnabled)
 {
-    arg = atof(inputLine);
+    if (!streamingEnabled)
+    {
+        arg = atof(inputLine);
+        o << currentAngle << ", " << pidOutput << modm::endl;
+    }
     return true;
 }
 
 void TestTerminalCallback::terminalSerialStreamCallback(modm::IOStream& o)
 {
-    // o << static_cast<int>((currentAngle / M_TWOPI * 360.0f)) << modm::endl;
     o << arg << ", " << currentAngle << modm::endl;
 }
 }  // namespace test

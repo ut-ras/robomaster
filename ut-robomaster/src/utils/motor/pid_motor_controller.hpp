@@ -61,6 +61,9 @@ public:
     void update(float target, float dt);
 
     // private:
+
+    /// @brief Get the current position of the motor.
+    /// @return Motor angle, measured in revolutions.
     float getAngle();
 };
 }  // namespace pid_motor_controller

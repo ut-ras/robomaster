@@ -8,11 +8,11 @@ port = '/dev/ttyUSB0'
 dump = 'serial_data.txt'
 baud = 115200
 interval = 0.1
-read_delay = 0.1
+read_delay = 0.001
 
 
-def read_data(sp: serial.Serial, cmd):
-    sp.write(cmd)
+def read_data(sp: serial.Serial, cmd: str):
+    sp.write(cmd.encode('ascii'))
     time.sleep(read_delay)
     raw = sp.readline()
     data = raw.decode('ascii')
@@ -38,6 +38,8 @@ try:
         # plt.tight_layout()
         # ln = plt.plot([], [], '-r', [], [], '-g', [], [], '-b')
 
+        print('start')
+
         start_time = time.time()
         last_time = start_time
 
@@ -53,9 +55,11 @@ try:
                     if len(events) == 0:
                         break
 
-            data = read_data(sp, f'{header} {arg}')
-            file.write(f'{t:.2f}, {arg}, {data}')
-            file.flush()
+            data = read_data(sp, f'{header} {arg}\n')
+            out_line = f'{t:.2f}, {arg}, {data}'
+            print(out_line, end='')
+            file.write(out_line)
+            # file.flush()
 
             # xa.append(t)
 

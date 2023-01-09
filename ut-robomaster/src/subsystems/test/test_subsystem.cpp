@@ -8,9 +8,16 @@ TestSubsystem::TestSubsystem(tap::Drivers* drivers)
     : tap::control::Subsystem(drivers),
       // Ku = 0.45
       // Tu = 0.30
-      agitator(drivers, M3508, MOTOR5, CBUS, false, "agitator", 0.27f, 1.8f, 0.010125f),
-      //   agitator(drivers, MOTOR1, CBUS, false, "agitator", 16384, 3591.0f / 187.0f, 1.0f, 0.0f,
-      //   0.0f),
+      agitator(
+          drivers,
+          M3508,
+          MOTOR5,
+          CBUS,
+          false,
+          "agitator",
+          0.27f * M_TWOPI,
+          1.8f * M_TWOPI,
+          0.010125f * M_TWOPI),
       terminalCallback()
 {
 }
@@ -21,7 +28,7 @@ void TestSubsystem::initialize()
     drivers->terminalSerial.addHeader("abc", &terminalCallback);
 }
 
-void TestSubsystem::input(float a, float b) { angle = (a + 1.0f) * M_PI; }
+void TestSubsystem::input(float a, float b) { angle = a * 0.5f; }
 
 void TestSubsystem::refresh()
 {
