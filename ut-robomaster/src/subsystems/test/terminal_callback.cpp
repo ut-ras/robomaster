@@ -14,14 +14,14 @@ bool TestTerminalCallback::terminalSerialCallback(
     if (!streamingEnabled)
     {
         arg = atof(inputLine);
-        o << currentAngle << ", " << pidOutput << modm::endl;
+        o << lastMeasurement << modm::endl;
     }
     return true;
 }
 
 void TestTerminalCallback::terminalSerialStreamCallback(modm::IOStream& o)
 {
-    o << arg << ", " << currentAngle << modm::endl;
+    o << arg << modm::endl;
 }
 }  // namespace test
 }  // namespace subsystems

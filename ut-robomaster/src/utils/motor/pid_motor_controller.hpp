@@ -30,29 +30,13 @@ public:
 
     void initialize() { motor.initialize(); }
     virtual void update(float target, float dt) = 0;
+    virtual float measure() = 0;
 
     // private:
     const MotorConstants constants;
     DjiMotor motor;
     Pid pid;
 };
-
-// class MotorVelocityController
-// {
-// public:
-//     MotorVelocityController(
-//         tap::motor::DjiMotor* motor,
-//         const float& kp = 5.0f,
-//         const float& ki = 0.0f,
-//         const float& kd = 1.0f,
-//         const float& maxErrorSum = 0.0f,
-//         const float& maxOutput = 16000.0f);
-//     void update(float targetVelocity);
-
-// private:
-//     tap::motor::DjiMotor* motor;
-//     modm::Pid<float> pid;
-// };
 
 class MotorPositionController : public MotorController
 {
@@ -61,9 +45,20 @@ public:
     void update(float target, float dt);
 
     // private:
-
     /// @brief Get the current position of the motor.
     /// @return Motor angle, measured in revolutions.
-    float getAngle();
+    float measure();
+};
+
+class MotorVelocityController : public MotorController
+{
+public:
+    using MotorController::MotorController;
+    void update(float target, float dt);
+
+    // private:
+    /// @brief Get the current velocity of the motor.
+    /// @return Motor velocity, measured in revolutions per second.
+    float measure();
 };
 }  // namespace pid_motor_controller

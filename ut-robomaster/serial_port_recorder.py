@@ -16,18 +16,19 @@ def read_data(sp: serial.Serial, cmd: str):
     time.sleep(read_delay)
     raw = sp.readline()
     data = raw.decode('ascii')
-    return data
+    vars = [float(x.strip()) for x in data.split(",")]
+    return vars
 
 
 # xa = []
 # ya = [[], [], []]
 # max_val = -Infinity
 # min_val = Infinity
-events = [(5, 0.25), (10, 0),
-          (15, 0.5), (20, 0),
-          (25, 0.75), (30, 0),
-          (35, 1), (40, 0),
-          (45, 0)]
+events = [(5, 0.25), (15, 0),
+          (20, 0.5), (30, 0),
+          (35, 0.75), (45, 0),
+          (50, 1.0), (60, 0),
+          (65, 0)]
 arg = 0
 
 try:
@@ -55,8 +56,9 @@ try:
                     if len(events) == 0:
                         break
 
-            data = read_data(sp, f'{header} {arg}\n')
-            out_line = f'{t:.2f}, {arg}, {data}'
+            vars = read_data(sp, f'{header} {arg}\n')
+            vars_str = ', '.join([str(x) for x in vars])
+            out_line = f'{t:.2f}, {arg}, {vars_str}\n'
             print(out_line, end='')
             file.write(out_line)
             # file.flush()
