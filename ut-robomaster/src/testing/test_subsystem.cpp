@@ -1,8 +1,6 @@
 #include "test_subsystem.hpp"
 
-namespace subsystems
-{
-namespace test
+namespace testing
 {
 TestSubsystem::TestSubsystem(tap::Drivers* drivers)
     : tap::control::Subsystem(drivers),
@@ -63,5 +61,4 @@ void TestSubsystem::runHardwareTests()
     // TODO
 }
 
-}  // namespace test
-}  // namespace subsystems
+}  // namespace testing

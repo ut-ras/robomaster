@@ -4,18 +4,16 @@
 #include "tap/motor/dji_motor.hpp"
 
 #include "modm/math/filter/pid.hpp"
-#include "utils/motor/pid_motor_controller.hpp"
+#include "utils/motor_controller/motor_controller.hpp"
 
 #include "drivers.hpp"
-#include "terminal_callback.hpp"
+#include "test_terminal_callback.hpp"
 
 using namespace tap::communication::serial;
 using namespace tap::motor;
-using namespace pid_motor_controller;
+using namespace motor_controller;
 
-namespace subsystems
-{
-namespace test
+namespace testing
 {
 class TestSubsystem : public tap::control::Subsystem
 {
@@ -41,5 +39,4 @@ private:
     uint32_t lastTime = 0;
 };
 
-}  // namespace test
-}  // namespace subsystems
+}  // namespace testing

@@ -1,4 +1,4 @@
-namespace pid_motor_controller
+namespace motor_controller
 {
 
 class Pid
@@ -14,4 +14,4 @@ public:
     float error[3] = {0.0f, 0.0f, 0.0f};
     float output = 0.0f;
 };
-}  // namespace pid_motor_controller
+}  // namespace motor_controller

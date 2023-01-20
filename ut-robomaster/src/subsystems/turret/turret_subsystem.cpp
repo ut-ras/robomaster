@@ -27,7 +27,7 @@ void TurretSubsystem::setDesiredRpm(float yaw, float pitch)
 
 void TurretSubsystem::refresh()
 {
-    // updateMotorRpmPid(&velocityPidYawMotor, &yawMotor, desiredRpmYaw);
+    updateMotorRpmPid(&velocityPidYawMotor, &yawMotor, desiredRpmYaw);
     updateMotorRpmPid(&velocityPidPitchMotor, &pitchMotor, desiredRpmPitch);
 }
 

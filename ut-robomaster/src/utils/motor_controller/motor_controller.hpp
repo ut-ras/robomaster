@@ -1,12 +1,11 @@
 #include "tap/motor/dji_motor.hpp"
 
-#include "utils/motor/motor_constants.hpp"
-
+#include "motor_constants.hpp"
 #include "pid.hpp"
 
 using namespace tap::motor;
 
-namespace pid_motor_controller
+namespace motor_controller
 {
 
 class MotorController
@@ -61,4 +60,4 @@ public:
     /// @return Motor velocity, measured in revolutions per second.
     float measure();
 };
-}  // namespace pid_motor_controller
+}  // namespace motor_controller

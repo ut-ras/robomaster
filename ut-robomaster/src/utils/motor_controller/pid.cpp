@@ -1,6 +1,6 @@
 #include "pid.hpp"
 
-namespace pid_motor_controller
+namespace motor_controller
 {
 Pid::Pid(const float& kp, const float& ki, const float& kd) : kp(kp), ki(ki), kd(kd) {}
 
@@ -21,4 +21,4 @@ float Pid::update(float err, float dt)
 
     return output;
 }
-}  // namespace pid_motor_controller
+}  // namespace motor_controller

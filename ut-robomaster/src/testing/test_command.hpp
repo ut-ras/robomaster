@@ -4,13 +4,11 @@
 #include "drivers.hpp"
 #include "test_subsystem.hpp"
 
-using subsystems::test::TestSubsystem;
 using tap::communication::serial::Remote;
 using tap::control::Subsystem;
+using testing::TestSubsystem;
 
-namespace subsystems
-{
-namespace test
+namespace testing
 {
 class TestCommand : public tap::control::Command
 {
@@ -54,5 +52,4 @@ private:
     tap::Drivers* drivers;
     TestSubsystem* subsystem;
 };
-}  // namespace test
-}  // namespace subsystems
+}  // namespace testing

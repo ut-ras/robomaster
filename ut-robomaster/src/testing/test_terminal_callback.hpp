@@ -2,9 +2,7 @@
 
 using namespace tap::communication::serial;
 
-namespace subsystems
-{
-namespace test
+namespace testing
 {
 class TestTerminalCallback : public TerminalSerialCallbackInterface
 {
@@ -22,5 +20,4 @@ public:
     float deltaTime = 0.0f;
     float arg = 0.0f;
 };
-}  // namespace test
-}  // namespace subsystems
+}  // namespace testing

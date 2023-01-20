@@ -1,10 +1,8 @@
-#include "terminal_callback.hpp"
+#include "test_terminal_callback.hpp"
 
 #include "modm/math/geometry/angle.hpp"
 
-namespace subsystems
-{
-namespace test
+namespace testing
 {
 bool TestTerminalCallback::terminalSerialCallback(
     char* inputLine,
@@ -23,5 +21,4 @@ void TestTerminalCallback::terminalSerialStreamCallback(modm::IOStream& o)
 {
     o << arg << modm::endl;
 }
-}  // namespace test
-}  // namespace subsystems
+}  // namespace testing

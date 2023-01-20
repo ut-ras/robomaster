@@ -1,8 +1,8 @@
-#include "pid_motor_controller.hpp"
+#include "motor_controller.hpp"
 
 #include "modm/math.hpp"
 
-namespace pid_motor_controller
+namespace motor_controller
 {
 void MotorPositionController::update(float target, float dt)
 {
@@ -33,4 +33,4 @@ float MotorVelocityController::measure()
     float rps = rpm / 60.0f;  // revs / sec
     return rps;
 }
-}  // namespace pid_motor_controller
+}  // namespace motor_controller

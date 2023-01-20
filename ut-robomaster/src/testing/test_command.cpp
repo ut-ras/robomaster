@@ -1,8 +1,6 @@
 #include "test_command.hpp"
 
-namespace subsystems
-{
-namespace test
+namespace testing
 {
 void TestCommand::initialize() {}
 
@@ -16,5 +14,4 @@ void TestCommand::execute()
 
 void TestCommand::end(bool interrupted) { subsystem->input(0.0f, 0.0f); }
 bool TestCommand::isFinished(void) const { return false; }
-}  // namespace test
-}  // namespace subsystems
+}  // namespace testing

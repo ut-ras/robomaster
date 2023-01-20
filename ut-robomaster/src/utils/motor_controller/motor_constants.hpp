@@ -1,4 +1,4 @@
-namespace pid_motor_controller
+namespace motor_controller
 {
 struct MotorConstants
 {
@@ -8,4 +8,4 @@ struct MotorConstants
 
 constexpr MotorConstants M3508{16384, 3591.0f / 187.0f};
 
-}  // namespace pid_motor_controller
+}  // namespace motor_controller

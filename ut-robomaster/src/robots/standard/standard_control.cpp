@@ -4,7 +4,9 @@
 #include "tap/control/press_command_mapping.hpp"
 #include "tap/drivers.hpp"
 
-#include "subsystems/test/test_command.hpp"
+#include "subsystems/chassis/command_move_chassis.hpp"
+#include "subsystems/turret/turret_command.hpp"
+#include "testing/test_command.hpp"
 
 #include "drivers.hpp"
 #include "drivers_singleton.hpp"
@@ -24,10 +26,14 @@ src::driversFunc drivers = src::DoNotUse_getDrivers;
 namespace standard_control
 {
 /* define subsystems --------------------------------------------------------*/
-test::TestSubsystem theTest(drivers());
+chassis::ChassisSubsystem theChassis(drivers());
+turret::TurretSubsystem theTurret(drivers());
+testing::TestSubsystem testSubsystem(drivers());
 
 /* define commands ----------------------------------------------------------*/
-test::TestCommand testCommand(&theTest, drivers());
+chassis::MoveChassisCommand moveChassisCommand(&theChassis, drivers());
+turret::TurretCommand turretCommand(&theTurret, drivers());
+testing::TestCommand testCommand(&testSubsystem, drivers());
 
 /* define command mappings --------------------------------------------------*/
 // HoldCommandMapping testMoveChassis(
@@ -38,14 +44,26 @@ test::TestCommand testCommand(&theTest, drivers());
 /* register subsystems here -------------------------------------------------*/
 void registerStandardSubsystems(tap::Drivers *drivers)
 {
-    drivers->commandScheduler.registerSubsystem(&theTest);
+    drivers->commandScheduler.registerSubsystem(&theChassis);
+    drivers->commandScheduler.registerSubsystem(&theTurret);
+    drivers->commandScheduler.registerSubsystem(&testSubsystem);
 }
 
 /* initialize subsystems ----------------------------------------------------*/
-void initializeSubsystems() { theTest.initialize(); }
+void initializeSubsystems()
+{
+    theChassis.initialize();
+    theTurret.initialize();
+    testSubsystem.initialize();
+}
 
 /* set any default commands to subsystems here ------------------------------*/
-void setDefaultStandardCommands(tap::Drivers *) { theTest.setDefaultCommand(&testCommand); }
+void setDefaultStandardCommands(tap::Drivers *)
+{
+    theChassis.setDefaultCommand(&moveChassisCommand);
+    theTurret.setDefaultCommand(&turretCommand);
+    testSubsystem.setDefaultCommand(&testCommand);
+}
 
 /* add any starting commands to the scheduler here --------------------------*/
 void startStandardCommands(tap::Drivers *) {}
