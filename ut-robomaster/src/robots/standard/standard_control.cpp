@@ -2,16 +2,16 @@
 
 // #ifdef TARGET_STANDARD
 
+#include "tap/control/command_mapper.hpp"
+#include "tap/control/hold_command_mapping.hpp"
+#include "tap/control/hold_repeat_command_mapping.hpp"
+#include "tap/control/press_command_mapping.hpp"
+#include "tap/control/toggle_command_mapping.hpp"
+#include "tap/drivers.hpp"
+
 #include "drivers.hpp"
 #include "drivers_singleton.hpp"
-
-#include "tap/control/command_mapper.hpp"
-#include "tap/control/hold_repeat_command_mapping.hpp"
-#include "tap/control/hold_command_mapping.hpp"
-#include "tap/control/press_command_mapping.hpp"
-#include "tap/drivers.hpp"
 #include "robot_comms.hpp"
-
 
 // #include "agitator/agitator_rotate_command.hpp"
 // #include "agitator/agitator_reverse_command.hpp"
@@ -51,7 +51,7 @@ namespace standard_control
 // control::agitator::AgitatorSubsystem theAgitator(drivers());
 comms::RobotComms theRobotComms(drivers());
 subsystems::shooter::ShooterSubsystem theShooter(drivers());
-// control::turret::TurretSubsystem theTurret(drivers());  // mouse  
+// control::turret::TurretSubsystem theTurret(drivers());  // mouse
 // control::gimbal::GimbalSubsystem theGimbal(drivers());   // joystick
 // control::chassis::ChassisSubsystem theChassis(drivers(), &theTurret.getYawMotor());
 
@@ -60,10 +60,11 @@ subsystems::shooter::ShooterSubsystem theShooter(drivers());
 // control::agitator::AgitatorReverseCommand reverseCommand(&theAgitator);
 subsystems::shooter::ShooterOnCommand shooterCommand(&theShooter);
 subsystems::shooter::ShooterSingleFireCommand singleFireCommand(&theShooter);
-// control::chassis::ChassisDriveKeyboardCommand chassisDriveKeyboardCommand(drivers(), &theChassis);  // keyboard
-//control::chassis::ChassisDriveCommand chassisDriveCommand(drivers(), &theChassis);   // joystick
-// control::turret::TurretMoveCommand turretMoveCommand(drivers(), &theTurret);    //mouse 
-//control::gimbal::GimbalMoveCommand gimbalMoveCommand(drivers(), &theGimbal);     //joystick
+// control::chassis::ChassisDriveKeyboardCommand chassisDriveKeyboardCommand(drivers(),
+// &theChassis);  // keyboard
+// control::chassis::ChassisDriveCommand chassisDriveCommand(drivers(), &theChassis);   // joystick
+// control::turret::TurretMoveCommand turretMoveCommand(drivers(), &theTurret);    //mouse
+// control::gimbal::GimbalMoveCommand gimbalMoveCommand(drivers(), &theGimbal);     //joystick
 
 /* define command mappings --------------------------------------------------*/
 // HoldRepeatCommandMapping reverseAgitator(
@@ -79,12 +80,16 @@ subsystems::shooter::ShooterSingleFireCommand singleFireCommand(&theShooter);
 HoldRepeatCommandMapping leftSwitchUp(
     drivers(),
     {&shooterCommand},
-    RemoteMapState(Remote::Switch::LEFT_SWITCH, Remote::SwitchState::UP), true, -1);
+    RemoteMapState(Remote::Switch::LEFT_SWITCH, Remote::SwitchState::UP),
+    true,
+    -1);
 
 HoldRepeatCommandMapping rightMouseDown(
     drivers(),
     {&shooterCommand},
-    RemoteMapState(RemoteMapState::MouseButton::RIGHT), true, -1);
+    RemoteMapState(RemoteMapState::MouseButton::RIGHT),
+    true,
+    -1);
 
 PressCommandMapping singleFire(
     drivers(),
@@ -96,8 +101,6 @@ PressCommandMapping singleFire(
 //     {&rotateCommand},
 //     RemoteMapState(RemoteMapState::MouseButton::LEFT), true, -1);
 
-
-
 /* register subsystems here -------------------------------------------------*/
 void registerStandardSubsystems(tap::Drivers *drivers)
 {
@@ -106,20 +109,21 @@ void registerStandardSubsystems(tap::Drivers *drivers)
     theShooter.registerSubsystems();
     // drivers->commandScheduler.registerSubsystem(&theChassis);
     // drivers->commandScheduler.registerSubsystem(&theTurret);    // mouse
-    //drivers->commandScheduler.registerSubsystem(&theGimbal);     // joystick
+    // drivers->commandScheduler.registerSubsystem(&theGimbal);     // joystick
 }
 
 /* initialize subsystems ----------------------------------------------------*/
-void initializeSubsystems() { 
+void initializeSubsystems()
+{
     // theAgitator.initialize();
     theShooter.initialize();
     // theChassis.initialize();
     // theTurret.initialize();     // mouse
-    //theGimbal.initialize();  // joystick
+    // theGimbal.initialize();  // joystick
 }
 
 /* set any default commands to subsystems here ------------------------------*/
-void setDefaultStandardCommands(tap::Drivers *) 
+void setDefaultStandardCommands(tap::Drivers *)
 {
     // theChassis.setDefaultCommand(&chassisDriveKeyboardCommand); // keyboard
     // theChassis.setDefaultCommand(&chassisDriveCommand);  //joystick
@@ -141,24 +145,21 @@ void registerStandardIoMappings(tap::Drivers *drivers)
     // drivers->commandMapper.addMap(&leftMouseDown);
     drivers->commandMapper.addMap(&rightMouseDown);
 }
-} // namespace standard_control
+}  // namespace standard_control
 
 namespace control
 {
-    void initSubsystemCommands(tap::Drivers *drivers)
-    {
-        comms::RobotCommsSingleton::init(drivers);
+void initSubsystemCommands(tap::Drivers *drivers)
+{
+    comms::RobotCommsSingleton::init(drivers);
 
-        standard_control::initializeSubsystems();
-        standard_control::registerStandardSubsystems(drivers);
-        standard_control::setDefaultStandardCommands(drivers);
-        standard_control::startStandardCommands(drivers);
-        standard_control::registerStandardIoMappings(drivers);
-
-
-        
-    }
+    standard_control::initializeSubsystems();
+    standard_control::registerStandardSubsystems(drivers);
+    standard_control::setDefaultStandardCommands(drivers);
+    standard_control::startStandardCommands(drivers);
+    standard_control::registerStandardIoMappings(drivers);
 }
+}  // namespace control
 
 // #endif
 // #endif
