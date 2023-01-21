@@ -9,8 +9,8 @@ class RobotComms : public tap::communication::serial::TerminalSerialCallbackInte
 public:
     static constexpr char HEADER[] = "startcomm";
 
-    RobotComms(tap::Drivers* drivers) : drivers_(drivers) {}
-    mockable void init();
+    RobotComms() {}
+    mockable void init(tap::Drivers* drivers);
 
     bool terminalSerialCallback(
         char* inputLine,
@@ -19,39 +19,47 @@ public:
 
     void terminalSerialStreamCallback(modm::IOStream& outputStream) override;
 
+    void print(const char* format, ...)
+    {
+        // concatenate the string to robotStream
+        va_list args;
+        va_start(args, format);
+        robotStreamIndex += vsnprintf(
+            robotStream + robotStreamIndex,
+            sizeof(robotStream) - robotStreamIndex,
+            format,
+            args);
+        va_end(args);
+    }
+
+private:
     // robot writes to this stream, and this stream is written to TerminalSerial's stream
     char robotStream[1000];
     uint32_t robotStreamIndex = 0;
 
-private:
-    tap::Drivers* drivers_;
 };
 
 class RobotCommsSingleton
 {
 public:
-    static RobotComms* instance_;
-
     static void init(tap::Drivers* drivers)
     {
-        instance_ = new RobotComms(drivers);
-        instance_->init();
+        instance_.init(drivers);
     }
 
-    static RobotComms& getInstance() { return *instance_; }
+    static RobotComms& getInstance() { return instance_; }
 
     static void print(const char* format, ...)
     {
         // concatenate the string to robotStream
         va_list args;
         va_start(args, format);
-        instance_->robotStreamIndex += vsnprintf(
-            instance_->robotStream + instance_->robotStreamIndex,
-            sizeof(instance_->robotStream) - instance_->robotStreamIndex,
-            format,
-            args);
+        instance_.print(format, args);
         va_end(args);
     }
+
+private:
+    static RobotComms instance_;
 };
 
 }  // namespace comms

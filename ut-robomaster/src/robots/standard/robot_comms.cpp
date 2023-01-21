@@ -5,7 +5,7 @@
 namespace comms
 {
 
-RobotComms* RobotCommsSingleton::instance_ = nullptr;
+RobotComms RobotCommsSingleton::instance_;
 
 void RobotComms::terminalSerialStreamCallback(modm::IOStream& outputStream)
 {
@@ -16,7 +16,7 @@ void RobotComms::terminalSerialStreamCallback(modm::IOStream& outputStream)
     robotStreamIndex = 0;
 }
 
-void RobotComms::init() { drivers_->terminalSerial.addHeader(HEADER, this); }
+void RobotComms::init(tap::Drivers* drivers) { drivers->terminalSerial.addHeader(HEADER, this); }
 
 bool RobotComms::terminalSerialCallback(
     char* inputLine,

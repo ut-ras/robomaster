@@ -58,7 +58,7 @@ void AgitatorSubsystem::rotateToTarget(int64_t targetPosition)
     motor.setDesiredOutput(static_cast<int32_t>(targetAnglePidController.getValue()));
 
     // char* toSend = "Agitator: " + std::to_string(currentPosition) + " " + std::to_string(targetPosition) + " " + std::to_string(error);
-    sprintf(comms::RobotCommsSingleton::getInstance().robotStream, "Agitator: %lld %lld %ld", currentPosition, targetPosition, error);
+    comms::RobotCommsSingleton::print("Agitator: %lld %lld %ld", currentPosition, targetPosition, error);
 
     // strcpy(comms::RobotCommsSingleton::getInstance().robotStream, toSend);
 }

@@ -49,7 +49,6 @@ namespace standard_control
 {
 /* define subsystems --------------------------------------------------------*/
 // control::agitator::AgitatorSubsystem theAgitator(drivers());
-comms::RobotComms theRobotComms(drivers());
 subsystems::shooter::ShooterSubsystem theShooter(drivers());
 // control::turret::TurretSubsystem theTurret(drivers());  // mouse
 // control::gimbal::GimbalSubsystem theGimbal(drivers());   // joystick
