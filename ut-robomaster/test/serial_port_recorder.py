@@ -1,14 +1,10 @@
 import serial
 import time
+import argparse
+import sys
+import logging
 # from numpy import Infinity
 # import matplotlib.pyplot as plt
-
-header = 'abc'
-port = '/dev/ttyUSB0'
-dump = 'serial_data.txt'
-baud = 115200
-interval = 0.1
-read_delay = 0.001
 
 
 def read_data(sp: serial.Serial, cmd: str):
@@ -20,26 +16,60 @@ def read_data(sp: serial.Serial, cmd: str):
     return vars
 
 
+def event_type(s):
+    try:
+        t, a = s.split(',')
+        return float(t), a
+    except:
+        raise argparse.ArgumentTypeError(
+            "Events must be of the form: seconds,argument")
+
+
+arg_parser = argparse.ArgumentParser(
+    prog='serial_port_recorder',
+    description='Requests and logs data from the chosen serial port',
+)
+
+arg_parser.add_argument('request', type=str,
+                        help='format of request to send before each reading (example: \'test {}\')')
+arg_parser.add_argument(
+    'port', type=str, help='the serial port to connect to')
+arg_parser.add_argument('events', nargs='+',
+                        type=event_type, help='events to execute while logging (format: \'seconds,argument seconds,argument ...\')')
+arg_parser.add_argument('-b', '--baud',
+                        default=115200, type=int, help='desired baud rate')
+arg_parser.add_argument('-i', '--interval',
+                        default=0.5, type=float, help='reading interval (s)')
+arg_parser.add_argument('-r', '--read-delay',
+                        default=0.001, type=float, help='delay between sending request and reading response (s)')
+arg_parser.add_argument('-v', '--verbose', action='store_true')
+
+
+args = arg_parser.parse_args()
+request = args.request
+port = args.port
+baud = args.baud
+interval = args.interval
+read_delay = args.read_delay
+events = args.events
+arg = None
 # xa = []
 # ya = [[], [], []]
 # max_val = -Infinity
 # min_val = Infinity
-events = [(5, 0.25), (15, 0),
-          (20, 0.5), (30, 0),
-          (35, 0.75), (45, 0),
-          (50, 1.0), (60, 0),
-          (65, 0)]
-arg = 0
+
+logging.basicConfig(format='%(message)s',
+                    level=logging.INFO if args.verbose else logging.ERROR)
 
 try:
-    with serial.Serial(port, baud) as sp, open(dump, ('w')) as file:
+    with serial.Serial(port, baud) as sp:
         # plt.xlabel('input')
         # plt.ylabel('output')
         # plt.title('Step Response Data')
         # plt.tight_layout()
         # ln = plt.plot([], [], '-r', [], [], '-g', [], [], '-b')
 
-        print('start')
+        logging.info('Connected')
 
         start_time = time.time()
         last_time = start_time
@@ -53,15 +83,13 @@ try:
                 if t >= event_time:
                     arg = new_arg
                     events.pop(0)
+                    logging.info(f'Event reached at {t}s. New argument: {arg}')
                     if len(events) == 0:
                         break
 
-            vars = read_data(sp, f'{header} {arg}\n')
+            vars = read_data(sp, request.format(arg) + '\n')
             vars_str = ', '.join([str(x) for x in vars])
-            out_line = f'{t:.2f}, {arg}, {vars_str}\n'
-            print(out_line, end='')
-            file.write(out_line)
-            # file.flush()
+            print(f'{t:.2f}, {arg}, {vars_str}')
 
             # xa.append(t)
 
@@ -83,9 +111,12 @@ try:
             wait_time = interval - (time.perf_counter() - st)
             time.sleep(wait_time)
             # plt.pause(wait_time)
+
+    logging.info('Done')
 except IOError as ex:
-    print(ex)
+    logging.error(ex)
 except KeyboardInterrupt:
+    logging.info('Keyboard interrupt detected. Exiting...')
     pass
 
 # plt.show()
