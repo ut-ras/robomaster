@@ -83,17 +83,17 @@ HoldRepeatCommandMapping leftSwitchUp(
     true,
     -1);
 
-HoldRepeatCommandMapping rightMouseDown(
+HoldRepeatCommandMapping leftMouseDown(
     drivers(),
     {&shooterCommand},
-    RemoteMapState(RemoteMapState::MouseButton::RIGHT),
+    RemoteMapState(RemoteMapState::MouseButton::LEFT),
     true,
     -1);
 
 PressCommandMapping singleFire(
     drivers(),
     {&singleFireCommand},
-    RemoteMapState(Remote::Switch::RIGHT_SWITCH, Remote::SwitchState::UP));
+    RemoteMapState(tap::control::RemoteMapState::MouseButton::RIGHT));
 
 // HoldRepeatCommandMapping leftMouseDown(
 //     drivers(),
@@ -141,8 +141,8 @@ void registerStandardIoMappings(tap::Drivers *drivers)
     // drivers->commandMapper.addMap(&rightSwitchDown);
     drivers->commandMapper.addMap(&leftSwitchUp);
     drivers->commandMapper.addMap(&singleFire);
-    // drivers->commandMapper.addMap(&leftMouseDown);
-    drivers->commandMapper.addMap(&rightMouseDown);
+    drivers->commandMapper.addMap(&leftMouseDown);
+    // drivers->commandMapper.addMap(&rightMouseDown);
 }
 }  // namespace standard_control
 
