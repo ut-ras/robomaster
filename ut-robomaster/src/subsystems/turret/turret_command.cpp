@@ -32,8 +32,8 @@ void TurretCommand::execute()
     Remote* remote = &drivers->remote;
     // float x = static_cast<float>(remote->getMouseX()) / 1.0f;
     // float y = static_cast<float>(remote->getMouseY()) / 1.0f;
-    float x = remote->getChannel(Remote::Channel::LEFT_HORIZONTAL);
-    float y = remote->getChannel(Remote::Channel::LEFT_VERTICAL);
+    float x = remote->getChannel(Remote::Channel::LEFT_HORIZONTAL)+(Remote->getMouseX()/1.0f);
+    float y = remote->getChannel(Remote::Channel::LEFT_VERTICAL)+(Remote->getMouseY()/1.0f);
     subsystem->setDesiredRpm(-1 * x * 100.0f, y * 100.0f);
 }
 
