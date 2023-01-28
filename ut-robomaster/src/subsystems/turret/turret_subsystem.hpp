@@ -1,3 +1,6 @@
+#ifndef TURRET_SUBSYSTEM_HPP_
+#define TURRET_SUBSYSTEM_HPP_
+
 #include "tap/control/command_scheduler.hpp"
 #include "tap/control/subsystem.hpp"
 #include "tap/motor/dji_motor.hpp"
@@ -52,3 +55,5 @@ private:
 
 }  // namespace turret
 }  // namespace subsystems
+
+#endif

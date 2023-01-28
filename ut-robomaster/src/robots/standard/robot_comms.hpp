@@ -1,3 +1,6 @@
+#ifndef ROBOT_COMMS_HPP_
+#define ROBOT_COMMS_HPP_
+
 #include "tap/communication/serial/terminal_serial.hpp"
 
 namespace comms
@@ -63,3 +66,5 @@ private:
 };
 
 }  // namespace comms
+
+#endif

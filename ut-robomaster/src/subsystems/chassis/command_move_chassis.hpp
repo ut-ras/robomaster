@@ -1,3 +1,6 @@
+#ifndef COMMAND_MOVE_CHASSIS_HPP_
+#define COMMAND_MOVE_CHASSIS_HPP_
+
 #include "tap/control/command.hpp"
 #include "tap/drivers.hpp"
 
@@ -48,3 +51,5 @@ private:
 };
 }  // namespace chassis
 }  // namespace subsystems
+
+#endif
