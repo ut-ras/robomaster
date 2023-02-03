@@ -31,7 +31,7 @@ public:
 
 private:
     static constexpr tap::can::CanBus CBUS = tap::can::CanBus::CAN_BUS1;
-    MotorVelocityController agitator;
+    MotorVelocityController controller;
     TestTerminalCallback terminalCallback;
 
     float angle = 0.0f;

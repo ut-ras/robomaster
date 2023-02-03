@@ -14,10 +14,7 @@ public:
 
     void terminalSerialStreamCallback(modm::IOStream &outputStream);
 
-    float targetAngle = 0.0f;
-    float lastMeasurement = 0.0f;
-    float pidOutput = 0.0f;
-    float deltaTime = 0.0f;
-    float arg = 0.0f;
+    float argument = 0.0f;
+    float output = 0.0f;
 };
 }  // namespace testing

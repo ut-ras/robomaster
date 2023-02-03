@@ -26,13 +26,13 @@ src::driversFunc drivers = src::DoNotUse_getDrivers;
 namespace standard_control
 {
 /* define subsystems --------------------------------------------------------*/
-chassis::ChassisSubsystem theChassis(drivers());
-turret::TurretSubsystem theTurret(drivers());
+// chassis::ChassisSubsystem theChassis(drivers());
+// turret::TurretSubsystem theTurret(drivers());
 testing::TestSubsystem testSubsystem(drivers());
 
 /* define commands ----------------------------------------------------------*/
-chassis::MoveChassisCommand moveChassisCommand(&theChassis, drivers());
-turret::TurretCommand turretCommand(&theTurret, drivers());
+// chassis::MoveChassisCommand moveChassisCommand(&theChassis, drivers());
+// turret::TurretCommand turretCommand(&theTurret, drivers());
 testing::TestCommand testCommand(&testSubsystem, drivers());
 
 /* define command mappings --------------------------------------------------*/
@@ -44,24 +44,24 @@ testing::TestCommand testCommand(&testSubsystem, drivers());
 /* register subsystems here -------------------------------------------------*/
 void registerStandardSubsystems(tap::Drivers *drivers)
 {
-    drivers->commandScheduler.registerSubsystem(&theChassis);
-    drivers->commandScheduler.registerSubsystem(&theTurret);
+    // drivers->commandScheduler.registerSubsystem(&theChassis);
+    // drivers->commandScheduler.registerSubsystem(&theTurret);
     drivers->commandScheduler.registerSubsystem(&testSubsystem);
 }
 
 /* initialize subsystems ----------------------------------------------------*/
 void initializeSubsystems()
 {
-    theChassis.initialize();
-    theTurret.initialize();
+    // theChassis.initialize();
+    // theTurret.initialize();
     testSubsystem.initialize();
 }
 
 /* set any default commands to subsystems here ------------------------------*/
 void setDefaultStandardCommands(tap::Drivers *)
 {
-    theChassis.setDefaultCommand(&moveChassisCommand);
-    theTurret.setDefaultCommand(&turretCommand);
+    // theChassis.setDefaultCommand(&moveChassisCommand);
+    // theTurret.setDefaultCommand(&turretCommand);
     testSubsystem.setDefaultCommand(&testCommand);
 }
 

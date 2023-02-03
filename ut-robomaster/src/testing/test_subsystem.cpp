@@ -16,15 +16,15 @@ TestSubsystem::TestSubsystem(tap::Drivers* drivers)
       //       0.27f * M_TWOPI,
       //       1.8f * M_TWOPI,
       //       0.010125f * M_TWOPI),
-      agitator(drivers, M3508, MOTOR2, CBUS, false, "agitator", 1.0f, 0.0f, 0.0f),
+      controller(drivers, M3508, MOTOR2, CBUS, false, "test motor", 1.0f, 1.0f, 0.0f),
       terminalCallback()
 {
 }
 
 void TestSubsystem::initialize()
 {
-    agitator.initialize();
-    drivers->terminalSerial.addHeader("abc", &terminalCallback);
+    controller.initialize();
+    drivers->terminalSerial.addHeader("test", &terminalCallback);
 }
 
 void TestSubsystem::input(float a, float b)
@@ -39,14 +39,15 @@ void TestSubsystem::refresh()
     float dt = (time - lastTime) / 1000.0f;
     lastTime = time;
 
-    // agitator.update(terminalCallback.arg, dt);  // velocity
-    terminalCallback.lastMeasurement = agitator.measure();
-    float current = 0.5f;  // A
+    controller.update(terminalCallback.argument * 8.0f, dt);  // velocity
+    terminalCallback.output = controller.measure();
+
+    // float current = 0.5f;  // A
     // float torque_constant = 0.3f;               // N*m / A
     // float gear_ratio = agitator.constants.gearRatio;
     // float inertia = 1.0f;  // kg*m^2 (1e-9 * g*mm^2)
     // float acceleration = torque_constant * gear_ratio / inertia * current;
-    agitator.motor.setDesiredOutput(current * 16384.0f / 20.0f);  // accelerating!
+    // agitator.motor.setDesiredOutput(current * 16384.0f / 20.0f);  // accelerating!
     // terminalCallback.pidOutput = agitator.pid.output;
 
     // agitator.update(angle, dt);

@@ -11,14 +11,11 @@ bool TestTerminalCallback::terminalSerialCallback(
 {
     if (!streamingEnabled)
     {
-        arg = atof(inputLine);
-        o << lastMeasurement << modm::endl;
+        argument = atof(inputLine);
+        o << output << modm::endl;
     }
     return true;
 }
 
-void TestTerminalCallback::terminalSerialStreamCallback(modm::IOStream& o)
-{
-    o << arg << modm::endl;
-}
+void TestTerminalCallback::terminalSerialStreamCallback(modm::IOStream&) {}
 }  // namespace testing
