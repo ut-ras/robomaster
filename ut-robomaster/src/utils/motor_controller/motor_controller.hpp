@@ -28,10 +28,12 @@ public:
     }
 
     void initialize() { motor.initialize(); }
-    virtual void update(float target, float dt) = 0;
+    float delta_time();
+    virtual void update(float target) = 0;
     virtual float measure() = 0;
 
     // private:
+    uint32_t lastTime = 0;
     const MotorConstants constants;
     DjiMotor motor;
     Pid pid;
@@ -41,7 +43,7 @@ class MotorPositionController : public MotorController
 {
 public:
     using MotorController::MotorController;
-    void update(float target, float dt);
+    void update(float target);
 
     // private:
     /// @brief Get the current position of the motor.
@@ -53,7 +55,7 @@ class MotorVelocityController : public MotorController
 {
 public:
     using MotorController::MotorController;
-    void update(float target, float dt);
+    void update(float target);
 
     // private:
     /// @brief Get the current velocity of the motor.

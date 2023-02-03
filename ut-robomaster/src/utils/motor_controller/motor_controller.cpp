@@ -4,11 +4,20 @@
 
 namespace motor_controller
 {
-void MotorPositionController::update(float target, float dt)
+float MotorController::delta_time()
+{
+    uint32_t time = tap::arch::clock::getTimeMilliseconds();
+    float dt = (time - lastTime) / 1000.0f;
+    lastTime = time;
+    return dt;
+}
+
+// Position
+void MotorPositionController::update(float target)
 {
     float diff = target - this->measure();
     float smallest_diff = diff - roundf(diff);
-    float output = pid.update(smallest_diff, dt);
+    float output = pid.update(smallest_diff, delta_time());
     motor.setDesiredOutput(output * constants.maxOutput);
 }
 
@@ -20,10 +29,11 @@ float MotorPositionController::measure()
     return turns;
 }
 
-void MotorVelocityController::update(float target, float dt)
+// Velocity
+void MotorVelocityController::update(float target)
 {
     float diff = target - this->measure();
-    float output = pid.update(diff, dt);
+    float output = pid.update(diff, delta_time());
     motor.setDesiredOutput(output * constants.maxOutput);
 }
 
