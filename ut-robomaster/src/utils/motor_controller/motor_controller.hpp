@@ -32,7 +32,7 @@ public:
     virtual void update(float target) = 0;
     virtual float measure() = 0;
 
-    // private:
+protected:
     uint32_t lastTime = 0;
     const MotorConstants constants;
     DjiMotor motor;
@@ -45,7 +45,6 @@ public:
     using MotorController::MotorController;
     void update(float target);
 
-    // private:
     /// @brief Get the current position of the motor.
     /// @return Motor angle, measured in revolutions.
     float measure();
@@ -57,7 +56,6 @@ public:
     using MotorController::MotorController;
     void update(float target);
 
-    // private:
     /// @brief Get the current velocity of the motor.
     /// @return Motor velocity, measured in revolutions per second.
     float measure();
