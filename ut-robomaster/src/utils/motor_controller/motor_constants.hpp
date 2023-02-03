@@ -8,7 +8,7 @@ struct MotorConstants
 
 // C620 controller (16384 = 20A)
 // Max rated motor current is 10A
-constexpr MotorConstants M3508{16384 * (10.0f / 20.0f), 3591.0f / 187.0f};
+constexpr MotorConstants M3508{16384 / 2, 3591.0f / 187.0f};
 constexpr MotorConstants M3508_NOGEARBOX{M3508.maxOutput, 1.0f};
 
 // C610 controller (10000 = 10A)
