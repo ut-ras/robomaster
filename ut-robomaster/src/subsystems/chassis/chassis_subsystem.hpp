@@ -1,3 +1,6 @@
+#ifndef CHASSIS_SUBSYSTEM_HPP_
+#define CHASSIS_SUBSYSTEM_HPP_
+
 #include "tap/control/subsystem.hpp"
 #include "tap/motor/dji_motor.hpp"
 
@@ -74,3 +77,5 @@ private:
 };
 }  // namespace chassis
 }  // namespace subsystems
+
+#endif

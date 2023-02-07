@@ -51,7 +51,7 @@
                 "${workspaceFolder}/taproot/modm/ext/st/stm32/stm32f4xx/Include",
                 "${workspaceFolder}/taproot/modm/ext/arm/cmsis/CMSIS/Core/Include",
                 "${workspaceFolder}/ut-robomaster/taproot/modm/src/modm/processing",
-                "${workspaceFolder}/ut-robomaster/src"
+                "${workspaceFolder}/ut-robomaster/src",
             ],
             "compilerPath": "arm-none-eabi-g++",
             "intelliSenseMode": "gcc-arm",

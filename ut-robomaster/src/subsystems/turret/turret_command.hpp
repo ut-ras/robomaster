@@ -43,7 +43,7 @@ namespace turret
 class TurretCommand : public tap::control::Command
 {
 public:
-    static constexpr int16_t DEFAULT_WHEEL_RPM = 2000;
+    static constexpr int16_t DEFAULT_WHEEL_RPM = 10;
 
     TurretCommand(TurretSubsystem* sub, tap::Drivers* drivers) : drivers(drivers), subsystem(sub)
     {
