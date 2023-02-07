@@ -6,12 +6,14 @@
 
 #include "modm/math/filter/pid.hpp"
 #include "modm/math/geometry.hpp"
+#include "utils/motor_controller/motor_controller.hpp"
 
 #include "drivers.hpp"
 
 using namespace tap::motor;
 using namespace tap::communication::sensors::imu;
 using namespace modm;
+using namespace motor_controller;
 
 namespace subsystems
 {
@@ -20,13 +22,7 @@ namespace chassis
 class ChassisSubsystem : public tap::control::Subsystem
 {
 public:
-    ChassisSubsystem(
-        tap::Drivers* drivers,
-        MotorId leftFrontMotorId = MOTOR2,
-        MotorId rightFrontMotorId = MOTOR1,
-        MotorId leftBackMotorId = MOTOR3,
-        MotorId rightBackMotorId = MOTOR4);
-
+    ChassisSubsystem(tap::Drivers* drivers);
     void initialize() override;
     void refresh() override;
     void runHardwareTests() override;
@@ -43,8 +39,8 @@ private:
     tap::Drivers* drivers;
     static constexpr tap::can::CanBus CAN_BUS_WHEELS = tap::can::CanBus::CAN_BUS1;
 
-    static constexpr float PID_KP = 22.0f;
-    static constexpr float PID_KI = 0.2f;
+    static constexpr float PID_KP = 0.75f;
+    static constexpr float PID_KI = 12.0f;
     static constexpr float PID_KD = 0.0f;
     static constexpr float PID_MAX_ERROR_SUM = 5000.0f;
     static constexpr float PID_MAX_OUTPUT = 16000.0f;
@@ -55,13 +51,12 @@ private:
     static constexpr float WHEEL_DISTANCE_Y = 0.508f;   // meters
     static constexpr float WHEEL_RADIUS = 0.1524f;      // meters
     static constexpr float WHEEL_LXY = (WHEEL_DISTANCE_X + WHEEL_DISTANCE_Y) / 2.0f;
-    static constexpr float WHEEL_MAX_VEL = 200.0f;                                      // rad/s
+    static constexpr float WHEEL_MAX_VEL = 10.5f;                                       // rad/s
     static constexpr float MAX_LINEAR_VEL = WHEEL_MAX_VEL * WHEEL_RADIUS;               // m/s
     static constexpr float MAX_ANGULAR_VEL = WHEEL_MAX_VEL * WHEEL_RADIUS / WHEEL_LXY;  // rad/s
 
-    DjiMotor wheelMotors[4];
-    float targetWheelVels[4];
-    modm::Pid<float> pids[4];
+    MotorVelocityController wheels[4];
+    float targetWheelVels[4] = {0.0f, 0.0f, 0.0f, 0.0f};
 
     bool imuDrive;
     bool setStartTurret;
@@ -72,8 +67,6 @@ private:
     /// @param v Linear velocity (m/s)
     /// @param wZ Angular velocity (rad/s)
     void setMecanumWheelVelocities(Vector2f v, float wZ);
-
-    void updateMotor(modm::Pid<float>* pid, DjiMotor* motor, float target);
 };
 }  // namespace chassis
 }  // namespace subsystems

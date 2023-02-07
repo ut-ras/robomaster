@@ -4,26 +4,52 @@ namespace subsystems
 {
 namespace chassis
 {
-ChassisSubsystem::ChassisSubsystem(
-    tap::Drivers* drivers,
-    MotorId leftFrontMotorId,
-    MotorId rightFrontMotorId,
-    MotorId leftBackMotorId,
-    MotorId rightBackMotorId)
+ChassisSubsystem::ChassisSubsystem(tap::Drivers* drivers)
     : tap::control::Subsystem(drivers),
       drivers(drivers),
-      wheelMotors{
-          DjiMotor(drivers, leftFrontMotorId, CAN_BUS_WHEELS, true, "left front motor"),
-          DjiMotor(drivers, rightFrontMotorId, CAN_BUS_WHEELS, false, "right front motor"),
-          DjiMotor(drivers, leftBackMotorId, CAN_BUS_WHEELS, true, "left back motor"),
-          DjiMotor(drivers, rightBackMotorId, CAN_BUS_WHEELS, false, "right back motor"),
+      wheels{
+          MotorVelocityController(
+              drivers,
+              M3508,
+              MOTOR2,
+              CAN_BUS_WHEELS,
+              true,
+              "left front motor",
+              PID_KP,
+              PID_KI,
+              PID_KD),
+          MotorVelocityController(
+              drivers,
+              M3508,
+              MOTOR1,
+              CAN_BUS_WHEELS,
+              false,
+              "right front motor",
+              PID_KP,
+              PID_KI,
+              PID_KD),
+          MotorVelocityController(
+              drivers,
+              M3508,
+              MOTOR3,
+              CAN_BUS_WHEELS,
+              true,
+              "left back motor",
+              PID_KP,
+              PID_KI,
+              PID_KD),
+          MotorVelocityController(
+              drivers,
+              M3508,
+              MOTOR4,
+              CAN_BUS_WHEELS,
+              false,
+              "right back motor",
+              PID_KP,
+              PID_KI,
+              PID_KD),
       },
       targetWheelVels{0.0f, 0.0f, 0.0f, 0.0f},
-      pids{
-          Pid<float>(PID_KP, PID_KI, PID_KD, PID_MAX_ERROR_SUM, PID_MAX_OUTPUT),
-          Pid<float>(PID_KP, PID_KI, PID_KD, PID_MAX_ERROR_SUM, PID_MAX_OUTPUT),
-          Pid<float>(PID_KP, PID_KI, PID_KD, PID_MAX_ERROR_SUM, PID_MAX_OUTPUT),
-          Pid<float>(PID_KP, PID_KI, PID_KD, PID_MAX_ERROR_SUM, PID_MAX_OUTPUT)},
       imuDrive(false),
       setStartTurret(false),
       startTurretLoc(0.0f)
@@ -34,7 +60,7 @@ void ChassisSubsystem::initialize()
 {
     for (int8_t i = 0; i < WHEELS; i++)
     {
-        wheelMotors[i].initialize();
+        wheels[i].initialize();
     }
 }
 
@@ -42,7 +68,7 @@ void ChassisSubsystem::refresh()
 {
     for (int8_t i = 0; i < WHEELS; i++)
     {
-        updateMotor(&pids[i], &wheelMotors[i], targetWheelVels[i]);
+        wheels[i].update(targetWheelVels[i] / M_TWOPI);  // rad/s to rev/s
     }
 }
 
@@ -101,19 +127,6 @@ void ChassisSubsystem::setMecanumWheelVelocities(Vector2f v, float wZ)
     targetWheelVels[1] = (-v.y + v.x + wZ * WHEEL_LXY) / WHEEL_RADIUS;  // rad/s
     targetWheelVels[2] = (-v.y + v.x - wZ * WHEEL_LXY) / WHEEL_RADIUS;  // rad/s
     targetWheelVels[3] = (-v.y - v.x + wZ * WHEEL_LXY) / WHEEL_RADIUS;  // rad/s
-}
-
-void ChassisSubsystem::updateMotor(Pid<float>* pid, DjiMotor* motor, float targetVelocity)
-{
-    pid->update(targetVelocity * 30.0f / M_PI - motor->getShaftRPM());
-    float val = pid->getValue();
-
-    if (abs(val) < PID_MIN_OUTPUT)
-    {
-        val = 0.0f;
-    }
-
-    motor->setDesiredOutput(val);
 }
 }  // namespace chassis
 }  // namespace subsystems
