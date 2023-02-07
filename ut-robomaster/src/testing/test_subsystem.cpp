@@ -16,7 +16,9 @@ TestSubsystem::TestSubsystem(tap::Drivers* drivers)
       //       0.27f * M_TWOPI,
       //       1.8f * M_TWOPI,
       //       0.010125f * M_TWOPI),
-      controller(drivers, M3508, MOTOR2, CBUS, false, "test motor", 1.0f, 1.0f, 0.0f),
+      // controller(drivers, M3508, MOTOR4, CBUS, false, "test motor", 4.5f, 5.625f, 0.09f),
+      //   controller(drivers, M3508, MOTOR4, CBUS, false, "test motor", 0.75f, 5.0f, 0.0f),
+      controller(drivers, M3508, MOTOR4, CBUS, false, "test motor", 0.75f, 15.0f, 0.0f),
       terminalCallback()
 {
 }
@@ -35,11 +37,7 @@ void TestSubsystem::input(float a, float b)
 
 void TestSubsystem::refresh()
 {
-    uint32_t time = tap::arch::clock::getTimeMilliseconds();
-    float dt = (time - lastTime) / 1000.0f;
-    lastTime = time;
-
-    controller.update(terminalCallback.argument * 8.0f, dt);  // velocity
+    controller.update(terminalCallback.argument);  // velocity
     terminalCallback.output = controller.measure();
 
     // float current = 0.5f;  // A
