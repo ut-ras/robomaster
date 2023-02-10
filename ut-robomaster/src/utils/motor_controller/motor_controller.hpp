@@ -3,19 +3,20 @@
 #include "motor_constants.hpp"
 #include "pid.hpp"
 
-using namespace tap::motor;
+using tap::can::CanBus;
+using tap::motor::DjiMotor;
+using tap::motor::MotorId;
 
 namespace motor_controller
 {
-
 class MotorController
 {
 public:
     MotorController(
-        tap::Drivers* drivers,
+        src::Drivers* drivers,
         const MotorConstants& constants,
         const MotorId motorId,
-        const tap::can::CanBus motorCanBus,
+        const CanBus motorCanBus,
         const bool motorInverted,
         const char* motorName,
         const float& kp = 1.0f,
@@ -28,11 +29,11 @@ public:
     }
 
     void initialize() { motor.initialize(); }
-    float delta_time();
     virtual void update(float target) = 0;
     virtual float measure() = 0;
 
 protected:
+    float delta_time();
     uint32_t lastTime = 0;
     const MotorConstants constants;
     DjiMotor motor;
@@ -43,6 +44,9 @@ class MotorPositionController : public MotorController
 {
 public:
     using MotorController::MotorController;
+
+    /// @brief Update the controller with the desired target position.
+    /// @return Target angle, measured in revolutions.
     void update(float target);
 
     /// @brief Get the current position of the motor.
@@ -54,6 +58,9 @@ class MotorVelocityController : public MotorController
 {
 public:
     using MotorController::MotorController;
+
+    /// @brief Update the controller with the desired target velocity.
+    /// @return Target velocity, measured in revolutions per second.
     void update(float target);
 
     /// @brief Get the current velocity of the motor.

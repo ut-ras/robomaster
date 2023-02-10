@@ -1,7 +1,5 @@
 #include "motor_controller.hpp"
 
-#include "modm/math.hpp"
-
 namespace motor_controller
 {
 float MotorController::delta_time()
