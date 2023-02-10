@@ -23,6 +23,7 @@ public:
     void initialize() override;
     void refresh() override;
     void runHardwareTests() override;
+    void recalibrateIMU();
 
     /// @brief Update robot motion based on simple input controls. Inputs are scaled and corrected
     /// to avoid over-driving motors. This logic can be adjusted to create various input schemes.
@@ -53,6 +54,8 @@ private:
     bool imuDrive = false;
     bool setStartTurret = false;
     float startTurretLoc = 0.0f;
+
+    bmi088::Bmi088 imu;
 
     /// @brief Calculate and set wheel velocities for desired robot motion (based on
     /// https://research.ijcaonline.org/volume113/number3/pxc3901586.pdf).

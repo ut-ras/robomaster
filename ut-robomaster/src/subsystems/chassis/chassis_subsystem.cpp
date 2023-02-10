@@ -1,6 +1,7 @@
 #include "chassis_subsystem.hpp"
 
 #include "robots/robot_constants.hpp"
+#include "robots/standard/robot_comms.hpp"
 
 namespace subsystems
 {
@@ -14,7 +15,8 @@ ChassisSubsystem::ChassisSubsystem(src::Drivers* drivers)
           {drivers, M3508, ID_WHEEL_RF, CAN_WHEELS, false, "right front", PID_KP, PID_KI, PID_KD},
           {drivers, M3508, ID_WHEEL_LB, CAN_WHEELS, true, "left back", PID_KP, PID_KI, PID_KD},
           {drivers, M3508, ID_WHEEL_RB, CAN_WHEELS, false, "right back", PID_KP, PID_KI, PID_KD},
-      }
+      },
+      imu(drivers)
 {
 }
 
@@ -24,7 +26,10 @@ void ChassisSubsystem::initialize()
     {
         wheels[i].initialize();
     }
+    imu.requestRecalibration();
 }
+
+void ChassisSubsystem::recalibrateIMU() { imu.requestRecalibration(); }
 
 void ChassisSubsystem::refresh()
 {
@@ -32,6 +37,11 @@ void ChassisSubsystem::refresh()
     {
         wheels[i].update(targetWheelVels[i] / M_TWOPI);  // rad/s to rev/s
     }
+    comms::RobotCommsSingleton::print(
+        "Imu yaw: %f, pitch: %f, roll: %f",
+        imu.getYaw(),
+        imu.getPitch(),
+        imu.getRoll());
 }
 
 void ChassisSubsystem::runHardwareTests()
