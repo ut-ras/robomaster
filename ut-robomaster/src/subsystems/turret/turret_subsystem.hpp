@@ -29,8 +29,6 @@ public:
     const char* getName() override { return "Turret subsystem"; }
 
 private:
-    static constexpr tap::can::CanBus CAN_BUS_MOTORS = tap::can::CanBus::CAN_BUS1;
-
     static constexpr float PID_KP = 0.75f;
     static constexpr float PID_KI = 12.0f;
     static constexpr float PID_KD = 0.0f;

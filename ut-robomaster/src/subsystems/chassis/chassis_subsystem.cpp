@@ -1,5 +1,7 @@
 #include "chassis_subsystem.hpp"
 
+#include "robots/robot_constants.hpp"
+
 namespace subsystems
 {
 namespace chassis
@@ -11,8 +13,8 @@ ChassisSubsystem::ChassisSubsystem(tap::Drivers* drivers)
           MotorVelocityController(
               drivers,
               M3508,
-              MOTOR2,
-              CAN_BUS_WHEELS,
+              ID_WHEEL_LF,
+              CAN_WHEELS,
               true,
               "left front motor",
               PID_KP,
@@ -21,8 +23,8 @@ ChassisSubsystem::ChassisSubsystem(tap::Drivers* drivers)
           MotorVelocityController(
               drivers,
               M3508,
-              MOTOR1,
-              CAN_BUS_WHEELS,
+              ID_WHEEL_RF,
+              CAN_WHEELS,
               false,
               "right front motor",
               PID_KP,
@@ -31,8 +33,8 @@ ChassisSubsystem::ChassisSubsystem(tap::Drivers* drivers)
           MotorVelocityController(
               drivers,
               M3508,
-              MOTOR3,
-              CAN_BUS_WHEELS,
+              ID_WHEEL_LB,
+              CAN_WHEELS,
               true,
               "left back motor",
               PID_KP,
@@ -41,8 +43,8 @@ ChassisSubsystem::ChassisSubsystem(tap::Drivers* drivers)
           MotorVelocityController(
               drivers,
               M3508,
-              MOTOR4,
-              CAN_BUS_WHEELS,
+              ID_WHEEL_RB,
+              CAN_WHEELS,
               false,
               "right back motor",
               PID_KP,
