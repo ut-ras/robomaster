@@ -25,6 +25,15 @@ void TurretSubsystem::setDesiredRpm(float yaw, float pitch)
     desiredRpmPitch = pitch;
 }
 
+void TurretSubsystem::inputTargetData(Vector3f position, Vector3f velocity, Vector3f acceleration)
+{
+    targetPosition = position;
+    targetVelocity = velocity;
+    targetAcceleration = acceleration;
+}
+
+void TurretSubsystem::setAimStrategy(AimStrategy aimStrategy) { this->aimStrategy = aimStrategy; }
+
 void TurretSubsystem::refresh()
 {
     yawMotor.update(desiredRpmYaw / 60.0f);
