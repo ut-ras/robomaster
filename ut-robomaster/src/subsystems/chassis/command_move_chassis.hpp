@@ -2,9 +2,9 @@
 #define COMMAND_MOVE_CHASSIS_HPP_
 
 #include "tap/control/command.hpp"
-#include "tap/drivers.hpp"
 
 #include "chassis_subsystem.hpp"
+#include "drivers.hpp"
 
 using namespace tap::communication::serial;
 using namespace modm;
@@ -16,7 +16,7 @@ namespace chassis
 class MoveChassisCommand : public tap::control::Command
 {
 public:
-    MoveChassisCommand(ChassisSubsystem *sub, tap::Drivers *drivers)
+    MoveChassisCommand(ChassisSubsystem *sub, src::Drivers *drivers)
         : drivers(drivers),
           subsystem(sub)
     {
@@ -42,7 +42,7 @@ private:
     static constexpr float KEYBOARD_ACCEL = 4.0f;
     static constexpr float KEYBOARD_DECEL = 3.0f;
 
-    tap::Drivers *drivers;
+    src::Drivers *drivers;
     ChassisSubsystem *subsystem;
     Vector2f inputMove = Vector2f(0.0f);
     float inputSpin = 0.0f;

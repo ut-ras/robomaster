@@ -113,7 +113,7 @@ PressCommandMapping singleFire(
 //     RemoteMapState(RemoteMapState::MouseButton::LEFT), true, -1);
 
 /* register subsystems here -------------------------------------------------*/
-void registerStandardSubsystems(tap::Drivers *drivers)
+void registerStandardSubsystems(src::Drivers *drivers)
 {
     drivers->commandScheduler.registerSubsystem(&theChassis);
     drivers->commandScheduler.registerSubsystem(&theTurret);
@@ -138,7 +138,7 @@ void initializeSubsystems()
 }
 
 /* set any default commands to subsystems here ------------------------------*/
-void setDefaultStandardCommands(tap::Drivers *)
+void setDefaultStandardCommands(src::Drivers *)
 {
     theChassis.setDefaultCommand(&moveChassisCommand);
     theTurret.setDefaultCommand(&turretCommand);
@@ -149,10 +149,10 @@ void setDefaultStandardCommands(tap::Drivers *)
 }
 
 /* add any starting commands to the scheduler here --------------------------*/
-void startStandardCommands(tap::Drivers *) {}
+void startStandardCommands(src::Drivers *) {}
 
 /* register io mappings here ------------------------------------------------*/
-void registerStandardIoMappings(tap::Drivers *drivers)
+void registerStandardIoMappings(src::Drivers *drivers)
 {
     // drivers->commandMapper.addMap(&testMoveChassis);
     // drivers->commandMapper.addMap(&rightSwitchUp);
@@ -167,7 +167,7 @@ void registerStandardIoMappings(tap::Drivers *drivers)
 
 namespace control
 {
-void initSubsystemCommands(tap::Drivers *drivers)
+void initSubsystemCommands(src::Drivers *drivers)
 {
     comms::RobotCommsSingleton::init(drivers);
 

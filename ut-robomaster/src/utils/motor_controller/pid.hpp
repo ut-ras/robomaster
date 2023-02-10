@@ -1,6 +1,5 @@
 namespace motor_controller
 {
-
 class Pid
 {
 public:

@@ -45,7 +45,7 @@ class TurretCommand : public tap::control::Command
 public:
     static constexpr int16_t DEFAULT_WHEEL_RPM = 10;
 
-    TurretCommand(TurretSubsystem* sub, tap::Drivers* drivers) : drivers(drivers), subsystem(sub)
+    TurretCommand(TurretSubsystem* sub, src::Drivers* drivers) : drivers(drivers), subsystem(sub)
     {
         addSubsystemRequirement(sub);
     }
@@ -81,7 +81,7 @@ public:
     const char* getName() const override { return "example"; }
 
 private:
-    tap::Drivers* drivers;
+    src::Drivers* drivers;
     TurretSubsystem* subsystem;
 };
 }  // namespace turret

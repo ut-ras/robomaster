@@ -1,10 +1,8 @@
 #ifndef TURRET_SUBSYSTEM_HPP_
 #define TURRET_SUBSYSTEM_HPP_
 
-#include "tap/control/command_scheduler.hpp"
 #include "tap/control/subsystem.hpp"
 
-#include "modm/math/filter/pid.hpp"
 #include "utils/motor_controller/motor_controller.hpp"
 
 #include "drivers.hpp"
@@ -18,7 +16,7 @@ namespace turret
 class TurretSubsystem : public tap::control::Subsystem
 {
 public:
-    TurretSubsystem(tap::Drivers* drivers);
+    TurretSubsystem(src::Drivers* drivers);
     void initialize() override;
 
     void setDesiredRpm(float desRpmYaw, float desRpmPitch);

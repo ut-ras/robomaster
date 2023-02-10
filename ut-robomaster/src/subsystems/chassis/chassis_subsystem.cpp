@@ -6,55 +6,15 @@ namespace subsystems
 {
 namespace chassis
 {
-ChassisSubsystem::ChassisSubsystem(tap::Drivers* drivers)
+ChassisSubsystem::ChassisSubsystem(src::Drivers* drivers)
     : tap::control::Subsystem(drivers),
       drivers(drivers),
       wheels{
-          MotorVelocityController(
-              drivers,
-              M3508,
-              ID_WHEEL_LF,
-              CAN_WHEELS,
-              true,
-              "left front motor",
-              PID_KP,
-              PID_KI,
-              PID_KD),
-          MotorVelocityController(
-              drivers,
-              M3508,
-              ID_WHEEL_RF,
-              CAN_WHEELS,
-              false,
-              "right front motor",
-              PID_KP,
-              PID_KI,
-              PID_KD),
-          MotorVelocityController(
-              drivers,
-              M3508,
-              ID_WHEEL_LB,
-              CAN_WHEELS,
-              true,
-              "left back motor",
-              PID_KP,
-              PID_KI,
-              PID_KD),
-          MotorVelocityController(
-              drivers,
-              M3508,
-              ID_WHEEL_RB,
-              CAN_WHEELS,
-              false,
-              "right back motor",
-              PID_KP,
-              PID_KI,
-              PID_KD),
-      },
-      targetWheelVels{0.0f, 0.0f, 0.0f, 0.0f},
-      imuDrive(false),
-      setStartTurret(false),
-      startTurretLoc(0.0f)
+          {drivers, M3508, ID_WHEEL_LF, CAN_WHEELS, true, "left front", PID_KP, PID_KI, PID_KD},
+          {drivers, M3508, ID_WHEEL_RF, CAN_WHEELS, false, "right front", PID_KP, PID_KI, PID_KD},
+          {drivers, M3508, ID_WHEEL_LB, CAN_WHEELS, true, "left back", PID_KP, PID_KI, PID_KD},
+          {drivers, M3508, ID_WHEEL_RB, CAN_WHEELS, false, "right back", PID_KP, PID_KI, PID_KD},
+      }
 {
 }
 

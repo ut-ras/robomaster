@@ -2,15 +2,12 @@
 #define CHASSIS_SUBSYSTEM_HPP_
 
 #include "tap/control/subsystem.hpp"
-#include "tap/motor/dji_motor.hpp"
 
-#include "modm/math/filter/pid.hpp"
 #include "modm/math/geometry.hpp"
 #include "utils/motor_controller/motor_controller.hpp"
 
 #include "drivers.hpp"
 
-using namespace tap::motor;
 using namespace tap::communication::sensors::imu;
 using namespace modm;
 using namespace motor_controller;
@@ -22,7 +19,7 @@ namespace chassis
 class ChassisSubsystem : public tap::control::Subsystem
 {
 public:
-    ChassisSubsystem(tap::Drivers* drivers);
+    ChassisSubsystem(src::Drivers* drivers);
     void initialize() override;
     void refresh() override;
     void runHardwareTests() override;
@@ -36,13 +33,10 @@ public:
     const char* getName() override { return "Chassis subsystem"; }
 
 private:
-    tap::Drivers* drivers;
+    src::Drivers* drivers;
     static constexpr float PID_KP = 0.75f;
     static constexpr float PID_KI = 12.0f;
     static constexpr float PID_KD = 0.0f;
-    static constexpr float PID_MAX_ERROR_SUM = 5000.0f;
-    static constexpr float PID_MAX_OUTPUT = 16000.0f;
-    static constexpr float PID_MIN_OUTPUT = 1000.0f;
 
     static constexpr int WHEELS = 4;
     static constexpr float WHEEL_DISTANCE_X = 0.4064f;  // meters
@@ -56,9 +50,9 @@ private:
     MotorVelocityController wheels[4];
     float targetWheelVels[4] = {0.0f, 0.0f, 0.0f, 0.0f};
 
-    bool imuDrive;
-    bool setStartTurret;
-    float startTurretLoc;
+    bool imuDrive = false;
+    bool setStartTurret = false;
+    float startTurretLoc = 0.0f;
 
     /// @brief Calculate and set wheel velocities for desired robot motion (based on
     /// https://research.ijcaonline.org/volume113/number3/pxc3901586.pdf).
