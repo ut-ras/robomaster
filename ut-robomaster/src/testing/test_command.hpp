@@ -13,7 +13,7 @@ namespace testing
 class TestCommand : public tap::control::Command
 {
 public:
-    TestCommand(TestSubsystem* sub, tap::Drivers* drivers) : drivers(drivers), subsystem(sub)
+    TestCommand(TestSubsystem* sub, src::Drivers* drivers) : drivers(drivers), subsystem(sub)
     {
         addSubsystemRequirement(sub);
     }
@@ -49,7 +49,7 @@ public:
     const char* getName() const override { return "example"; }
 
 private:
-    tap::Drivers* drivers;
+    src::Drivers* drivers;
     TestSubsystem* subsystem;
 };
 }  // namespace testing

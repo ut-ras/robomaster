@@ -18,7 +18,7 @@ namespace testing
 class TestSubsystem : public tap::control::Subsystem
 {
 public:
-    TestSubsystem(tap::Drivers* drivers);
+    TestSubsystem(src::Drivers* drivers);
 
     void initialize() override;
 

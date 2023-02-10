@@ -1,5 +1,9 @@
+#ifndef MOTOR_CONTROLLER_HPP_
+#define MOTOR_CONTROLLER_HPP_
+
 #include "tap/motor/dji_motor.hpp"
 
+#include "drivers.hpp"
 #include "motor_constants.hpp"
 #include "pid.hpp"
 
@@ -68,3 +72,5 @@ public:
     float measure();
 };
 }  // namespace motor_controller
+
+#endif

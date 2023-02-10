@@ -31,24 +31,25 @@ void TurretCommand::execute()
 {
     Remote* remote = &drivers->remote;
     bool isCTRLKeyPressed = remote->keyPressed(Remote::Key::CTRL);
-    if(isCTRLKeyPressed) //CTRL is being pressed
+    if (isCTRLKeyPressed)  // CTRL is being pressed
     {
-        float x = remote->getChannel(Remote::Channel::LEFT_HORIZONTAL) + (remote->getMouseX() / 1.0f);
+        float x =
+            remote->getChannel(Remote::Channel::LEFT_HORIZONTAL) + (remote->getMouseX() / 1.0f);
         float y = remote->getChannel(Remote::Channel::LEFT_VERTICAL) + (remote->getMouseY() / 1.0f);
         subsystem->setDesiredRpm(-1 * x * 0.1f, y * 0.1f);
     }
     else
     {
-        float x = remote->getChannel(Remote::Channel::LEFT_HORIZONTAL) + (remote->getMouseX() / 1.0f);
+        float x =
+            remote->getChannel(Remote::Channel::LEFT_HORIZONTAL) + (remote->getMouseX() / 1.0f);
         float y = remote->getChannel(Remote::Channel::LEFT_VERTICAL) + (remote->getMouseY() / 1.0f);
         subsystem->setDesiredRpm(-1 * x * 1.0f, y * 1.0f);
     }
     // float x = static_cast<float>(remote->getMouseX()) / 1.0f;
     // float y = static_cast<float>(remote->getMouseY()) / 1.0f;
-    
 }
 
-void TurretCommand::end(bool interrupted) { subsystem->setDesiredRpm(0, 0); }
+void TurretCommand::end(bool) { subsystem->setDesiredRpm(0, 0); }
 
 bool TurretCommand::isFinished(void) const { return false; }
 }  // namespace turret

@@ -7,7 +7,6 @@
 #include "tap/control/hold_repeat_command_mapping.hpp"
 #include "tap/control/press_command_mapping.hpp"
 #include "tap/control/toggle_command_mapping.hpp"
-#include "tap/drivers.hpp"
 
 #include "drivers.hpp"
 #include "drivers_singleton.hpp"
@@ -17,7 +16,7 @@
 // #include "agitator/agitator_reverse_command.hpp"
 // #include "agitator/agitator_subsystem.hpp"
 
-// #include "subsystems/chassis/chassis_subsystem.hpp"
+#include "subsystems/chassis/chassis_subsystem.hpp"
 #include "subsystems/chassis/command_move_chassis.hpp"
 #include "subsystems/shooter/shooter_on_command.hpp"
 #include "subsystems/shooter/shooter_single_fire_command.hpp"
@@ -31,7 +30,7 @@
 #include "tap/communication/gpio/leds.hpp"
 
 #include "subsystems/turret/turret_command.hpp"
-// #include "subsystems/turret/turret_subsystem.hpp"
+#include "subsystems/turret/turret_subsystem.hpp"
 
 using namespace tap::control;
 using namespace tap::communication::serial;

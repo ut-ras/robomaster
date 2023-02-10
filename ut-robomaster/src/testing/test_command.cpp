@@ -12,6 +12,6 @@ void TestCommand::execute()
     subsystem->input(h, v);
 }
 
-void TestCommand::end(bool interrupted) { subsystem->input(0.0f, 0.0f); }
+void TestCommand::end(bool) { subsystem->input(0.0f, 0.0f); }
 bool TestCommand::isFinished(void) const { return false; }
 }  // namespace testing
