@@ -25,7 +25,7 @@ namespace subsystems
 {
 namespace turret
 {
-void TurretCommand::initialize() { subsystem->setDesiredRpm(0, 0); }
+void TurretCommand::initialize() {}
 
 void TurretCommand::execute()
 {
@@ -36,20 +36,27 @@ void TurretCommand::execute()
         float x =
             remote->getChannel(Remote::Channel::LEFT_HORIZONTAL) + (remote->getMouseX() / 1.0f);
         float y = remote->getChannel(Remote::Channel::LEFT_VERTICAL) + (remote->getMouseY() / 1.0f);
-        subsystem->setDesiredRpm(-1 * x * 0.1f, y * 0.1f);
+
+        yaw -= x * 0.1f;
+        pitch += y * 0.1f;
     }
     else
     {
         float x =
             remote->getChannel(Remote::Channel::LEFT_HORIZONTAL) + (remote->getMouseX() / 1.0f);
         float y = remote->getChannel(Remote::Channel::LEFT_VERTICAL) + (remote->getMouseY() / 1.0f);
-        subsystem->setDesiredRpm(-1 * x * 1.0f, y * 1.0f);
+
+        yaw -= x;
+        pitch += y;
     }
+
+    subsystem->setDesiredAngles(yaw, pitch);
+
     // float x = static_cast<float>(remote->getMouseX()) / 1.0f;
     // float y = static_cast<float>(remote->getMouseY()) / 1.0f;
 }
 
-void TurretCommand::end(bool) { subsystem->setDesiredRpm(0, 0); }
+void TurretCommand::end(bool) {}
 
 bool TurretCommand::isFinished(void) const { return false; }
 }  // namespace turret

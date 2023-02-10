@@ -1,6 +1,10 @@
 #include "turret_subsystem.hpp"
 
+#include "tap/algorithms/ballistics.hpp"
+
 #include "robots/robot_constants.hpp"
+
+using namespace tap::algorithms::ballistics;
 
 namespace subsystems
 {
@@ -19,10 +23,10 @@ void TurretSubsystem::initialize()
     pitchMotor.initialize();
 }
 
-void TurretSubsystem::setDesiredRpm(float yaw, float pitch)
+void TurretSubsystem::setDesiredAngles(float yaw, float pitch)
 {
-    desiredRpmYaw = yaw;
-    desiredRpmPitch = pitch;
+    desiredYaw = yaw;
+    desiredPitch = pitch;
 }
 
 void TurretSubsystem::inputTargetData(Vector3f position, Vector3f velocity, Vector3f acceleration)
@@ -36,8 +40,41 @@ void TurretSubsystem::setAimStrategy(AimStrategy aimStrategy) { this->aimStrateg
 
 void TurretSubsystem::refresh()
 {
-    yawMotor.update(desiredRpmYaw / 60.0f);
-    pitchMotor.update(desiredRpmPitch / 60.0f);
+    float yaw = 0.0f;
+    float pitch = 0.0f;
+    float bulletVelocity = 1.0f;
+    uint8_t numBallisticIterations = 1;
+
+    switch (aimStrategy)
+    {
+        case AimStrategy::Manual:
+            yaw = desiredPitch;
+            pitch = desiredPitch;
+            break;
+        case AimStrategy::AutoAim:
+        {
+            float turretPitch = 0.0f;
+            float turretYaw = 0.0f;
+            float projectedTravelTime = 0.0f;
+
+            findTargetProjectileIntersection(
+                {targetPosition, targetVelocity, targetAcceleration},
+                bulletVelocity,
+                numBallisticIterations,
+                &turretPitch,
+                &turretYaw,
+                &projectedTravelTime);
+
+            yaw = turretYaw;
+            pitch = turretPitch;
+            break;
+        }
+        case AimStrategy::AimAssist:  // unimplemented
+            break;
+    }
+
+    yawMotor.update(yaw);
+    pitchMotor.update(pitch);
 }
 
 void TurretSubsystem::runHardwareTests()
