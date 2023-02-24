@@ -12,8 +12,32 @@ namespace turret
 {
 TurretSubsystem::TurretSubsystem(src::Drivers* drivers)
     : tap::control::Subsystem(drivers),
-      yawMotor(drivers, GM6020, ID_YAW, CAN_TURRET, false, "yaw", PID_KP, PID_KI, PID_KD),
-      pitchMotor(drivers, M3508, ID_PITCH, CAN_TURRET, false, "pitch", PID_KP, PID_KI, PID_KD)
+      yawMotor(
+          drivers,
+          GM6020,
+          ID_YAW,
+          CAN_TURRET,
+          false,
+          "yaw",
+          PID_P_KP,
+          PID_P_KI,
+          PID_P_KD,
+          PID_V_KP,
+          PID_V_KI,
+          PID_V_KD),
+      pitchMotor(
+          drivers,
+          M3508,
+          ID_PITCH,
+          CAN_TURRET,
+          false,
+          "pitch",
+          PID_P_KP,
+          PID_P_KI,
+          PID_P_KD,
+          PID_V_KP,
+          PID_V_KI,
+          PID_V_KD)
 {
 }
 
