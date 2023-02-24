@@ -38,14 +38,15 @@ void ChassisSubsystem::refresh()
     {
         wheels[i].update(targetWheelVels[i] / M_TWOPI);  // rad/s to rev/s
     }
-    //currently not connected (need to figure out why)
-    if(imuClock==500)
+    // currently not connected (need to figure out why)
+    if (imuClock == 500)
     {
-    comms::RobotCommsSingleton::print(
-            "Imu state: %s, yaw: %f, pitch: %f, roll: %f",
-            imu.getYaw(),
-            imu.getPitch(),
-            imu.getRoll());
+        talky.print(
+            "Imu state: %d, yaw: %d, pitch: %d, roll: %d",
+            static_cast<int>(imu.getImuState()),
+            static_cast<int>(imu.getYaw() * 1000),
+            static_cast<int>(imu.getPitch() * 1000),
+            static_cast<int>(imu.getRoll() * 1000));
         imuClock = 0;
     }
     imuClock++;
