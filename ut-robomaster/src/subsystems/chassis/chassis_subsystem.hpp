@@ -5,8 +5,8 @@
 
 #include "modm/math/geometry.hpp"
 #include "utils/motor_controller/motor_controller.hpp"
-
 #include "drivers.hpp"
+#include "robots/standard/robot_comms.hpp"
 
 using namespace tap::communication::sensors::imu;
 using namespace modm;
@@ -62,6 +62,7 @@ private:
     /// @param v Linear velocity (m/s)
     /// @param wZ Angular velocity (rad/s)
     void setMecanumWheelVelocities(Vector2f v, float wZ);
+    comms::RobotComms talky;
 };
 }  // namespace chassis
 }  // namespace subsystems
