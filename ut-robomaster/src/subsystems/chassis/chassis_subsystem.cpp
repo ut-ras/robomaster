@@ -1,7 +1,8 @@
 #include "chassis_subsystem.hpp"
 
 #include "robots/robot_constants.hpp"
-#include "robots/standard/robot_comms.hpp"
+
+int imuClock = 0;
 
 namespace subsystems
 {
@@ -19,9 +20,9 @@ ChassisSubsystem::ChassisSubsystem(src::Drivers* drivers)
       imu(drivers)
 {
 }
-
 void ChassisSubsystem::initialize()
 {
+    talky.init(drivers);
     for (int8_t i = 0; i < WHEELS; i++)
     {
         wheels[i].initialize();
@@ -37,11 +38,17 @@ void ChassisSubsystem::refresh()
     {
         wheels[i].update(targetWheelVels[i] / M_TWOPI);  // rad/s to rev/s
     }
+    //currently not connected (need to figure out why)
+    if(imuClock==500)
+    {
     comms::RobotCommsSingleton::print(
-        "Imu yaw: %f, pitch: %f, roll: %f",
-        imu.getYaw(),
-        imu.getPitch(),
-        imu.getRoll());
+            "Imu state: %s, yaw: %f, pitch: %f, roll: %f",
+            imu.getYaw(),
+            imu.getPitch(),
+            imu.getRoll());
+        imuClock = 0;
+    }
+    imuClock++;
 }
 
 void ChassisSubsystem::runHardwareTests()
