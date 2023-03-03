@@ -1,7 +1,6 @@
 #include "chassis_subsystem.hpp"
 
 #include "robots/robot_constants.hpp"
-
 int imuClock = 0;
 
 namespace subsystems
@@ -16,10 +15,7 @@ ChassisSubsystem::ChassisSubsystem(src::Drivers* drivers)
           {drivers, M3508, ID_WHEEL_RF, CAN_WHEELS, false, "right front", PID_KP, PID_KI, PID_KD},
           {drivers, M3508, ID_WHEEL_LB, CAN_WHEELS, true, "left back", PID_KP, PID_KI, PID_KD},
           {drivers, M3508, ID_WHEEL_RB, CAN_WHEELS, false, "right back", PID_KP, PID_KI, PID_KD},
-      },
-      imu(drivers)
-{
-}
+      }, imu(drivers->bmi088){};
 void ChassisSubsystem::initialize()
 {
     talky.init(drivers);
@@ -27,10 +23,11 @@ void ChassisSubsystem::initialize()
     {
         wheels[i].initialize();
     }
-    imu.requestRecalibration();
+    //imu.requestRecalibration();
+    //drivers->bmi088.requestRecalibration();
 }
 
-void ChassisSubsystem::recalibrateIMU() { imu.requestRecalibration(); }
+//void ChassisSubsystem::recalibrateIMU() { imu.requestRecalibration(); }
 
 void ChassisSubsystem::refresh()
 {
@@ -41,12 +38,23 @@ void ChassisSubsystem::refresh()
     // currently not connected (need to figure out why)
     if (imuClock == 500)
     {
-        talky.print(
-            "Imu state: %d, yaw: %d, pitch: %d, roll: %d",
-            static_cast<int>(imu.getImuState()),
-            static_cast<int>(imu.getYaw() * 1000),
-            static_cast<int>(imu.getPitch() * 1000),
-            static_cast<int>(imu.getRoll() * 1000));
+        constexpr auto IMU_DESIRED_TEMPERATURE = tap::communication::sensors::imu_heater::ImuHeater::IMU_DESIRED_TEMPERATURE;
+        float imuTemp = imu.getTemp();
+        //talky.print("%s: %d, %f \n", "Talky Test:", 12, 12.5446);
+        if(IMU_DESIRED_TEMPERATURE>=imuTemp)
+        {
+            talky.print("IMU is below desired temperature: Desired: %d, Current Temperate: %d", static_cast<int>(IMU_DESIRED_TEMPERATURE), static_cast<int>(imuTemp));
+        }
+        else
+        {
+            talky.print("IMU is above desired temperature: Desired: %d, Current Temperate: %d", static_cast<int>(IMU_DESIRED_TEMPERATURE), static_cast<int>(imuTemp));
+        }  
+            talky.print(
+            "Imu state: %d, yaw: %d, pitch: %d, roll: %d\n",
+            static_cast<int>(drivers->bmi088.getImuState()),
+            static_cast<int>(drivers->bmi088.getYaw()),
+            static_cast<int>(drivers->bmi088.getPitch()),
+            static_cast<int>(drivers->bmi088.getRoll()));
         imuClock = 0;
     }
     imuClock++;

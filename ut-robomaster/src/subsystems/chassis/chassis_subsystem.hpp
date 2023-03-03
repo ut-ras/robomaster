@@ -55,7 +55,7 @@ private:
     bool setStartTurret = false;
     float startTurretLoc = 0.0f;
 
-    bmi088::Bmi088 imu;
+    bmi088::Bmi088& imu; // Use reference rather than create object?
 
     /// @brief Calculate and set wheel velocities for desired robot motion (based on
     /// https://research.ijcaonline.org/volume113/number3/pxc3901586.pdf).
