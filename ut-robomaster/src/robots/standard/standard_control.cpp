@@ -21,6 +21,7 @@
 #include "subsystems/shooter/shooter_on_command.hpp"
 #include "subsystems/shooter/shooter_single_fire_command.hpp"
 #include "subsystems/shooter/shooter_subsystem.hpp"
+#include "subsystems/Odometry/Odometry_subsystem.hpp"
 // #include "chassis/chassis_drive_command.hpp"
 // #include "chassis/chassis_drive_keyboard_command.hpp"
 
@@ -49,10 +50,12 @@ namespace standard_control
 /* define subsystems --------------------------------------------------------*/
 subsystems::chassis::ChassisSubsystem theChassis(drivers());
 subsystems::turret::TurretSubsystem theTurret(drivers());
+subsystems::Odometry::OdometrySubsystem odomSys(drivers());
 
 /* define commands ----------------------------------------------------------*/
 subsystems::chassis::MoveChassisCommand moveChassisCommand(&theChassis, drivers());
 subsystems::turret::TurretCommand turretCommand(&theTurret, drivers());
+
 
 /* define command mappings --------------------------------------------------*/
 // HoldCommandMapping testMoveChassis(
@@ -119,6 +122,7 @@ void registerStandardSubsystems(src::Drivers *drivers)
     // drivers->commandScheduler.registerSubsystem(&theAgitator);
     drivers->commandScheduler.registerSubsystem(&theShooter);
     theShooter.registerSubsystems();
+    drivers->commandScheduler.registerSubsystem(&odomSys);
     // drivers->commandScheduler.registerSubsystem(&theChassis);
     // drivers->commandScheduler.registerSubsystem(&theTurret);    // mouse
     // drivers->commandScheduler.registerSubsystem(&theGimbal);     // joystick
@@ -131,6 +135,7 @@ void initializeSubsystems()
     theTurret.initialize();
     // theAgitator.initialize();
     theShooter.initialize();
+    odomSys.initialize();
     // theChassis.initialize();
     // theTurret.initialize();     // mouse
     // theGimbal.initialize();  // joystick
