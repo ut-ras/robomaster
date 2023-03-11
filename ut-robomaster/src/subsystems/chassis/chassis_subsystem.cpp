@@ -35,35 +35,6 @@ void ChassisSubsystem::refresh()
     {
         wheels[i].update(targetWheelVels[i] / M_TWOPI);  // rad/s to rev/s
     }
-    if(imuClock == 200)
-    {
-        modm::Location2D<float> lidarLocation = modm::Location2D(1.0f, 2.0f, 0);
-        //lidarLocation.setOrientation(orientationRef); //set orientation based off lidar
-        
-        
-    }
-    if (imuClock == 500)
-    {
-        constexpr auto IMU_DESIRED_TEMPERATURE = tap::communication::sensors::imu_heater::ImuHeater::IMU_DESIRED_TEMPERATURE;
-        float imuTemp = imu.getTemp();
-        //talky.print("%s: %d, %f \n", "Talky Test:", 12, 12.5446);
-        if(IMU_DESIRED_TEMPERATURE>=imuTemp)
-        {
-            talky.print("IMU is below desired temperature: Desired: %d, Current Temperate: %d", static_cast<int>(IMU_DESIRED_TEMPERATURE), static_cast<int>(imuTemp));
-        }
-        else
-        {
-            talky.print("IMU is above desired temperature: Desired: %d, Current Temperate: %d", static_cast<int>(IMU_DESIRED_TEMPERATURE), static_cast<int>(imuTemp));
-        }  
-            talky.print(
-            "Imu state: %d, Ax: %d, Ay: %d, Az: %d\n",
-            static_cast<int>(drivers->bmi088.getImuState()),
-            static_cast<int>(drivers->bmi088.getAx()),
-            static_cast<int>(drivers->bmi088.getAy()),
-            static_cast<int>(drivers->bmi088.getAz()));
-        imuClock = 0;
-    }
-    imuClock++;
     
 }
 
