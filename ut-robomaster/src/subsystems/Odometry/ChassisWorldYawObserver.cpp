@@ -3,8 +3,8 @@
 namespace subsystem{
     namespace odometry{
         class ChassisWorldYawObserver{
-            ChassisWorldYawObserver::ChassisWorldYawOberver(src::Drivers* drivers){}
-            
+             ChassisWorldYawObserver::ChassisWorldYawObserver(src::Drivers* drivers){};
+             bool ChassisWorldYawObserver::getChassisWorldYaw(float* yaw) {};
         };
     };
 }

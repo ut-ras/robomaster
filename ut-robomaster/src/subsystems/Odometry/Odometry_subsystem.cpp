@@ -4,14 +4,14 @@ namespace subsystems
 {
     namespace odometry
     {
-        OdometrySubsystem::OdometrySubsystem(src::Drivers* drivers) : tap::control::Subsystem(drivers){};
-        void OdometrySubsystem::initialize()
+        odometrySubsystem::odometrySubsystem(src::Drivers* drivers) : tap::control::Subsystem(drivers){};
+        void odometrySubsystem::initialize()
         {
             xPosOffset = 0;
             yPosOffset = 0;
             location = modm::Location2D(0.0f, 0.0f, 0.0f);
         };
-        void OdometrySubsystem::refresh()
+        void odometrySubsystem::refresh()
         {
             modm::Location2D<float> newLoc = odom2DTracker.getCurrentLocation2D(); //location from the IMU
 

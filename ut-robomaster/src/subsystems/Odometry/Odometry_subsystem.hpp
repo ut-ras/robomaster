@@ -16,7 +16,7 @@ namespace subsystems{
             public:
                 odometrySubsystem(src::Drivers* drivers);
                 void initialize() override;
-                void refresh() override; //will take in the IMU location from the 
+                void refresh() override;
                 const char* getName() override { return "Odometry"; }
                 void setIMULoc(modm::Location2D<> newLoc){};
                 void setIMUOrientation(float& newOrienation){}
@@ -26,7 +26,7 @@ namespace subsystems{
                 modm::Location2D<float> location;
                 float xPosOffset;
                 float yPosOffset;
-                subsystems::odometry::ChassisDisplacementObserver* chasssisDisplacement = &(subsystems::odometry::ChassisDisplacementObserver::ChassisDisplacementObserver());
+                subsystems::odometry::ChassisDisplacementObserver* chasssisDisplacement = &(subsystems::odometry::ChassisDisplacementObserver());
                 subsystems::odometry::ChassisWorldYawObserver* chasssisYaw = &(subsystems::odometry::ChassisWorldYawObserver());
                 tap::algorithms::odometry::odometry2DTracker odom2DTracker = (subsystems::odometry::Odometry2DTracker(chasssisYaw, chasssisDisplacement);
                 /*
