@@ -1,7 +1,7 @@
 #include "ChassisWorldYawObserver.hpp"
 
-namespace Subsystem{
-    namespace Odometry{
+namespace subsystem{
+    namespace odometry{
         class ChassisWorldYawObserver{
             ChassisWorldYawObserver::ChassisWorldYawOberver(src::Drivers* drivers){}
             

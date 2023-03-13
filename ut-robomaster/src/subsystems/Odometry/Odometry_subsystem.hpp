@@ -11,10 +11,10 @@
 namespace subsystems{
     namespace Odometry 
     {
-        class OdometrySubsystem : public tap::control::Subsystem
+        class odometrySubsystem : public tap::control::Subsystem
         {
             public:
-                OdometrySubsystem(src::Drivers* drivers);
+                odometrySubsystem(src::Drivers* drivers);
                 void initialize() override;
                 void refresh() override; //will take in the IMU location from the 
                 const char* getName() override { return "Odometry"; }
@@ -28,7 +28,7 @@ namespace subsystems{
                 float yPosOffset;
                 subsystems::odometry::ChassisDisplacementObserver* chasssisDisplacement = &(subsystems::odometry::ChassisDisplacementObserver::ChassisDisplacementObserver());
                 subsystems::odometry::ChassisWorldYawObserver* chasssisYaw = &(subsystems::odometry::ChassisWorldYawObserver());
-                tap::algorithms::odometry::Odometry2DTracker odom2DTracker = (subsystems::odometry::Odometry2DTracker(chasssisYaw, chasssisDisplacement);
+                tap::algorithms::odometry::odometry2DTracker odom2DTracker = (subsystems::odometry::Odometry2DTracker(chasssisYaw, chasssisDisplacement);
                 /*
         ChassisWorldYawObserverInterface* chassisYawObserver,
         ChassisDisplacementObserverInterface* chassisDisplacementObserver)*/

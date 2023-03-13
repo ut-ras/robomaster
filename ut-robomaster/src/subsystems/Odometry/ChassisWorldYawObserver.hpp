@@ -5,7 +5,7 @@
 #include "drivers.hpp"
 #include "modm/math/geometry/location_2d.hpp"
 
-namespace subsystems::Odometry{
+namespace subsystems::odometry{
         
         class ChassisWorldYawOberver{
             public:

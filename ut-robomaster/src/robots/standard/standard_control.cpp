@@ -21,7 +21,7 @@
 #include "subsystems/shooter/shooter_on_command.hpp"
 #include "subsystems/shooter/shooter_single_fire_command.hpp"
 #include "subsystems/shooter/shooter_subsystem.hpp"
-#include "subsystems/Odometry/Odometry_subsystem.hpp"
+#include "subsystems/odometry/odometry_subsystem.hpp"
 // #include "chassis/chassis_drive_command.hpp"
 // #include "chassis/chassis_drive_keyboard_command.hpp"
 
@@ -50,7 +50,7 @@ namespace standard_control
 /* define subsystems --------------------------------------------------------*/
 subsystems::chassis::ChassisSubsystem theChassis(drivers());
 subsystems::turret::TurretSubsystem theTurret(drivers());
-subsystems::Odometry::OdometrySubsystem odomSys(drivers());
+subsystems::odometry::odometrySubsystem odomSys(drivers());
 
 /* define commands ----------------------------------------------------------*/
 subsystems::chassis::MoveChassisCommand moveChassisCommand(&theChassis, drivers());

@@ -1,8 +1,8 @@
-#include "Odometry_subsystem.hpp"
+#include "odometry_subsystem.hpp"
 #include "robots/robot_constants.hpp"
 namespace subsystems
 {
-    namespace Odometry
+    namespace odometry
     {
         OdometrySubsystem::OdometrySubsystem(src::Drivers* drivers) : tap::control::Subsystem(drivers){};
         void OdometrySubsystem::initialize()
