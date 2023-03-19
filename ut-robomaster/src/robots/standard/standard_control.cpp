@@ -18,10 +18,10 @@
 
 #include "subsystems/chassis/chassis_subsystem.hpp"
 #include "subsystems/chassis/command_move_chassis.hpp"
+#include "subsystems/odometry/odometry_subsystem.hpp"
 #include "subsystems/shooter/shooter_on_command.hpp"
 #include "subsystems/shooter/shooter_single_fire_command.hpp"
 #include "subsystems/shooter/shooter_subsystem.hpp"
-#include "subsystems/odometry/odometry_subsystem.hpp"
 // #include "chassis/chassis_drive_command.hpp"
 // #include "chassis/chassis_drive_keyboard_command.hpp"
 
@@ -50,12 +50,11 @@ namespace standard_control
 /* define subsystems --------------------------------------------------------*/
 subsystems::chassis::ChassisSubsystem theChassis(drivers());
 subsystems::turret::TurretSubsystem theTurret(drivers());
-subsystems::odometry::odometrySubsystem odomSys(drivers());
+subsystems::odometry::OdometrySubsystem odomSys(drivers());
 
 /* define commands ----------------------------------------------------------*/
 subsystems::chassis::MoveChassisCommand moveChassisCommand(&theChassis, drivers());
 subsystems::turret::TurretCommand turretCommand(&theTurret, drivers());
-
 
 /* define command mappings --------------------------------------------------*/
 // HoldCommandMapping testMoveChassis(
