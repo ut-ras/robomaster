@@ -14,9 +14,7 @@ ChassisSubsystem::ChassisSubsystem(src::Drivers* drivers)
           {drivers, M3508, ID_WHEEL_RF, CAN_WHEELS, false, "right front", PID_KP, PID_KI, PID_KD},
           {drivers, M3508, ID_WHEEL_LB, CAN_WHEELS, true, "left back", PID_KP, PID_KI, PID_KD},
           {drivers, M3508, ID_WHEEL_RB, CAN_WHEELS, false, "right back", PID_KP, PID_KI, PID_KD},
-      }
-{
-}
+      } {};
 
 void ChassisSubsystem::initialize()
 {
