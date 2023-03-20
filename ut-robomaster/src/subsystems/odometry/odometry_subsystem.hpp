@@ -31,9 +31,8 @@ private:
     src::Drivers* drivers;
     const int IMU_DESIRED_TEMPERATURE =
         tap::communication::sensors::imu_heater::ImuHeater::IMU_DESIRED_TEMPERATURE;
-    modm::Location2D<float> location;
-    float xPosOffset;
-    float yPosOffset;
+    modm::Location2D<float> location = modm::Location2D(0.0f, 0.0f, 0.0f);
+    modm::Vector2f posOffset = modm::Vector2f(0.0f);
     ChassisDisplacementObserver chassisDisplacement;
     ChassisWorldYawObserver chassisYaw;
     Odometry2DTracker tracker;

@@ -50,7 +50,7 @@ namespace standard_control
 /* define subsystems --------------------------------------------------------*/
 subsystems::chassis::ChassisSubsystem theChassis(drivers());
 subsystems::turret::TurretSubsystem theTurret(drivers());
-subsystems::odometry::OdometrySubsystem odomSys(drivers());
+subsystems::odometry::OdometrySubsystem theOdometry(drivers());
 
 /* define commands ----------------------------------------------------------*/
 subsystems::chassis::MoveChassisCommand moveChassisCommand(&theChassis, drivers());
@@ -121,7 +121,7 @@ void registerStandardSubsystems(src::Drivers *drivers)
     // drivers->commandScheduler.registerSubsystem(&theAgitator);
     drivers->commandScheduler.registerSubsystem(&theShooter);
     theShooter.registerSubsystems();
-    drivers->commandScheduler.registerSubsystem(&odomSys);
+    drivers->commandScheduler.registerSubsystem(&theOdometry);
     // drivers->commandScheduler.registerSubsystem(&theChassis);
     // drivers->commandScheduler.registerSubsystem(&theTurret);    // mouse
     // drivers->commandScheduler.registerSubsystem(&theGimbal);     // joystick
@@ -134,7 +134,7 @@ void initializeSubsystems()
     theTurret.initialize();
     // theAgitator.initialize();
     theShooter.initialize();
-    odomSys.initialize();
+    theOdometry.initialize();
     // theChassis.initialize();
     // theTurret.initialize();     // mouse
     // theGimbal.initialize();  // joystick
