@@ -24,7 +24,6 @@ public:
 
 private:
     src::Drivers* drivers;
-    bmi088::Bmi088* const imu;
 };
 
 };  // namespace subsystems::odometry

@@ -2,10 +2,13 @@
 
 namespace subsystems::odometry
 {
-ChassisWorldYawObserver::ChassisWorldYawObserver(src::Drivers* drivers)
-    : drivers(drivers),
-      imu(&drivers->bmi088)
+ChassisWorldYawObserver::ChassisWorldYawObserver(src::Drivers* drivers) : drivers(drivers) {}
+
+bool ChassisWorldYawObserver::getChassisWorldYaw(float* yaw) const
 {
-}
-bool ChassisWorldYawObserver::getChassisWorldYaw(float* yaw) const { return false; };
+    bmi088::Bmi088* imu = &drivers->bmi088;
+    *yaw = imu->getYaw();
+
+    return imu->getImuState() == ImuInterface::ImuState::IMU_CALIBRATED;
+};
 };  // namespace subsystems::odometry

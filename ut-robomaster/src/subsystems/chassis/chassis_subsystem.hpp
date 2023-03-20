@@ -5,9 +5,8 @@
 
 #include "modm/math/geometry.hpp"
 #include "utils/motor_controller/motor_controller.hpp"
+
 #include "drivers.hpp"
-#include "robots/standard/robot_comms.hpp"
-#include "modm/math/geometry/location_2d.hpp"
 
 using namespace tap::communication::sensors::imu;
 using namespace modm;
@@ -22,16 +21,15 @@ class ChassisSubsystem : public tap::control::Subsystem
 public:
     ChassisSubsystem(src::Drivers* drivers);
     void initialize() override;
-    void refresh() override; 
+    void refresh() override;
     void runHardwareTests() override;
-    void recalibrateIMU();
 
     /// @brief Update robot motion based on simple input controls. Inputs are scaled and corrected
     /// to avoid over-driving motors. This logic can be adjusted to create various input schemes.
     /// @param move Linear movement (magnitude should be within [0,1])
     /// @param spin Angular rotation (value should be within [-1,1])
     void input(Vector2f move, float spin);
-    
+
     const char* getName() override { return "Chassis subsystem"; }
 
 private:
@@ -56,14 +54,11 @@ private:
     bool setStartTurret = false;
     float startTurretLoc = 0.0f;
 
-    bmi088::Bmi088& imu; // Use reference rather than create object?
-
     /// @brief Calculate and set wheel velocities for desired robot motion (based on
     /// https://research.ijcaonline.org/volume113/number3/pxc3901586.pdf).
     /// @param v Linear velocity (m/s)
     /// @param wZ Angular velocity (rad/s)
     void setMecanumWheelVelocities(Vector2f v, float wZ);
-    comms::RobotComms talky;
 };
 }  // namespace chassis
 }  // namespace subsystems

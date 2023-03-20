@@ -1,7 +1,6 @@
 #include "chassis_subsystem.hpp"
 
 #include "robots/robot_constants.hpp"
-int imuClock = 0;
 
 namespace subsystems
 {
@@ -15,19 +14,15 @@ ChassisSubsystem::ChassisSubsystem(src::Drivers* drivers)
           {drivers, M3508, ID_WHEEL_RF, CAN_WHEELS, false, "right front", PID_KP, PID_KI, PID_KD},
           {drivers, M3508, ID_WHEEL_LB, CAN_WHEELS, true, "left back", PID_KP, PID_KI, PID_KD},
           {drivers, M3508, ID_WHEEL_RB, CAN_WHEELS, false, "right back", PID_KP, PID_KI, PID_KD},
-      }, imu(drivers->bmi088){};
+      } {};
+
 void ChassisSubsystem::initialize()
 {
-    talky.init(drivers);
     for (int8_t i = 0; i < WHEELS; i++)
     {
         wheels[i].initialize();
     }
-    //imu.requestRecalibration();
-    //drivers->bmi088.requestRecalibration();
 }
-
-//void ChassisSubsystem::recalibrateIMU() { imu.requestRecalibration(); }
 
 void ChassisSubsystem::refresh()
 {
@@ -35,7 +30,6 @@ void ChassisSubsystem::refresh()
     {
         wheels[i].update(targetWheelVels[i] / M_TWOPI);  // rad/s to rev/s
     }
-    
 }
 
 void ChassisSubsystem::runHardwareTests()

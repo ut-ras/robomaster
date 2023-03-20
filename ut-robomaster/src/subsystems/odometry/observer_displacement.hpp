@@ -7,6 +7,7 @@
 
 namespace subsystems::odometry
 {
+using modm::Vector3f;
 using tap::algorithms::odometry::ChassisDisplacementObserverInterface;
 using namespace tap::communication::sensors::imu;
 
@@ -14,18 +15,16 @@ class ChassisDisplacementObserver : public ChassisDisplacementObserverInterface
 {
 public:
     ChassisDisplacementObserver(src::Drivers* drivers);
-    bool getVelocityChassisDisplacement(
-        modm::Vector3f* const velocity,
-        modm::Vector3f* const displacement) const override final;
+    bool getVelocityChassisDisplacement(Vector3f* const velocity, Vector3f* const displacement)
+        const override final;
 
 private:
-    bmi088::Bmi088* const imu;
-
+    src::Drivers* drivers;
     // Used for calculation purposes for Velocity Verlet, hence mutable
-    mutable modm::Vector3f lastAcc;   // m/s^2
-    mutable modm::Vector3f lastVel;   // m/s
-    mutable modm::Vector3f lastDisp;  // m
-    mutable uint32_t lastTime;        // ms
+    mutable Vector3f lastAcc;   // m/s^2
+    mutable Vector3f lastVel;   // m/s
+    mutable Vector3f lastDisp;  // m
+    mutable uint32_t lastTime;  // ms
 };
 }  // namespace subsystems::odometry
 
