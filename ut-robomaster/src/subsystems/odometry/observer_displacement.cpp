@@ -29,7 +29,8 @@ bool ChassisDisplacementObserver::getVelocityChassisDisplacement(
     auto nowTime = imu->getPrevIMUDataReceivedTime();  // Units of us
     auto dt = (nowTime - lastTime) / 1e6f;             // Want units of s
 
-    Vector3f nowAcc{imu->getAx(), imu->getAy(), imu->getAz()};
+    // z is 0 since we're moving on the x-y plane and gravity affects z
+    Vector3f nowAcc{imu->getAx(), imu->getAy(), 0.0f};
     Vector3f nowDisp = lastDisp + lastVel * dt + lastAcc * dt * dt / 2.0f;
     Vector3f nowVel = lastVel + (lastAcc + nowAcc) * dt / 2.0f;
 

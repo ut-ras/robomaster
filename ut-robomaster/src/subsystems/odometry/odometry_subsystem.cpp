@@ -7,6 +7,7 @@ namespace odometry
 {
 OdometrySubsystem::OdometrySubsystem(src::Drivers* drivers)
     : tap::control::Subsystem(drivers),
+      drivers(drivers),
       chassisDisplacement(drivers),
       chassisYaw(drivers),
       tracker(&chassisYaw, &chassisDisplacement){};
