@@ -6,6 +6,7 @@
 #include "modm/math/geometry.hpp"
 #include "modm/math/geometry/location_2d.hpp"
 #include "robots/standard/robot_comms.hpp"
+#include "subsystems/chassis/chassis_subsystem.hpp"
 #include "subsystems/odometry/observer_displacement.hpp"
 #include "subsystems/odometry/observer_yaw_world.hpp"
 
@@ -15,12 +16,13 @@ namespace subsystems
 namespace odometry
 {
 
+using chassis::ChassisSubsystem;
 using tap::algorithms::odometry::Odometry2DTracker;
 
 class OdometrySubsystem : public tap::control::Subsystem
 {
 public:
-    OdometrySubsystem(src::Drivers* drivers);
+    OdometrySubsystem(src::Drivers* drivers, ChassisSubsystem* chassis);
     void initialize() override;
     void refresh() override;
     const char* getName() override { return "Odometry subsystem"; }
@@ -29,6 +31,7 @@ public:
 
 private:
     src::Drivers* drivers;
+    ChassisSubsystem* chassis;
     const int IMU_DESIRED_TEMPERATURE =
         tap::communication::sensors::imu_heater::ImuHeater::IMU_DESIRED_TEMPERATURE;
     modm::Location2D<float> location = modm::Location2D(0.0f, 0.0f, 0.0f);

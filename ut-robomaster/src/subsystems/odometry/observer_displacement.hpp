@@ -3,6 +3,8 @@
 
 #include "tap/algorithms/odometry/chassis_displacement_observer_interface.hpp"
 
+#include "subsystems/chassis/chassis_subsystem.hpp"
+
 #include "drivers.hpp"
 
 namespace subsystems::odometry
@@ -14,12 +16,13 @@ using namespace tap::communication::sensors::imu;
 class ChassisDisplacementObserver : public ChassisDisplacementObserverInterface
 {
 public:
-    ChassisDisplacementObserver(src::Drivers* drivers);
+    ChassisDisplacementObserver(src::Drivers* drivers, chassis::ChassisSubsystem* chassis);
     bool getVelocityChassisDisplacement(Vector3f* const velocity, Vector3f* const displacement)
         const override final;
 
 private:
     src::Drivers* drivers;
+    chassis::ChassisSubsystem* chassis;
     // Used for calculation purposes for Velocity Verlet, hence mutable
     mutable Vector3f lastAcc;   // m/s^2
     mutable Vector3f lastVel;   // m/s

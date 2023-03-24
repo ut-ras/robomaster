@@ -3,7 +3,9 @@
 namespace subsystems::odometry
 {
 
-ChassisDisplacementObserver::ChassisDisplacementObserver(src::Drivers* drivers)
+ChassisDisplacementObserver::ChassisDisplacementObserver(
+    src::Drivers* drivers,
+    chassis::ChassisSubsystem* chassis)
     : ChassisDisplacementObserverInterface(),
       drivers(drivers),
       lastAcc(0.0f),

@@ -48,13 +48,13 @@ src::driversFunc drivers = src::DoNotUse_getDrivers;
 namespace standard_control
 {
 /* define subsystems --------------------------------------------------------*/
-subsystems::chassis::ChassisSubsystem theChassis(drivers());
-subsystems::turret::TurretSubsystem theTurret(drivers());
-subsystems::odometry::OdometrySubsystem theOdometry(drivers());
+chassis::ChassisSubsystem theChassis(drivers());
+turret::TurretSubsystem theTurret(drivers());
+odometry::OdometrySubsystem theOdometry(drivers(), &theChassis);
 
 /* define commands ----------------------------------------------------------*/
-subsystems::chassis::MoveChassisCommand moveChassisCommand(&theChassis, drivers());
-subsystems::turret::TurretCommand turretCommand(&theTurret, drivers());
+chassis::MoveChassisCommand moveChassisCommand(&theChassis, drivers());
+turret::TurretCommand turretCommand(&theTurret, drivers());
 
 /* define command mappings --------------------------------------------------*/
 // HoldCommandMapping testMoveChassis(
@@ -62,7 +62,7 @@ subsystems::turret::TurretCommand turretCommand(&theTurret, drivers());
 //     {&setKinematicsCommand},
 //     RemoteMapState({Remote::Key::F}));
 // control::agitator::AgitatorSubsystem theAgitator(drivers());
-subsystems::shooter::ShooterSubsystem theShooter(drivers());
+shooter::ShooterSubsystem theShooter(drivers());
 // control::turret::TurretSubsystem theTurret(drivers());  // mouse
 // control::gimbal::GimbalSubsystem theGimbal(drivers());   // joystick
 // control::chassis::ChassisSubsystem theChassis(drivers(), &theTurret.getYawMotor());
@@ -70,8 +70,8 @@ subsystems::shooter::ShooterSubsystem theShooter(drivers());
 /* define commands ----------------------------------------------------------*/
 // control::agitator::AgitatorRotateCommand rotateCommand(&theAgitator);
 // control::agitator::AgitatorReverseCommand reverseCommand(&theAgitator);
-subsystems::shooter::ShooterOnCommand shooterCommand(&theShooter);
-subsystems::shooter::ShooterSingleFireCommand singleFireCommand(&theShooter);
+shooter::ShooterOnCommand shooterCommand(&theShooter);
+shooter::ShooterSingleFireCommand singleFireCommand(&theShooter);
 // control::chassis::ChassisDriveKeyboardCommand chassisDriveKeyboardCommand(drivers(),
 // &theChassis);  // keyboard
 // control::chassis::ChassisDriveCommand chassisDriveCommand(drivers(), &theChassis);   // joystick
@@ -106,7 +106,7 @@ HoldRepeatCommandMapping leftMouseDown(
 PressCommandMapping singleFire(
     drivers(),
     {&singleFireCommand},
-    RemoteMapState(tap::control::RemoteMapState::MouseButton::RIGHT));
+    RemoteMapState(RemoteMapState::MouseButton::RIGHT));
 
 // HoldRepeatCommandMapping leftMouseDown(
 //     drivers(),

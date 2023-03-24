@@ -23,6 +23,7 @@ public:
     void initialize() override;
     void refresh() override;
     void runHardwareTests() override;
+    float* getCurrentWheelVelocities();
 
     /// @brief Update robot motion based on simple input controls. Inputs are scaled and corrected
     /// to avoid over-driving motors. This logic can be adjusted to create various input schemes.

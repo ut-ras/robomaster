@@ -88,5 +88,16 @@ void ChassisSubsystem::setMecanumWheelVelocities(Vector2f v, float wZ)
     targetWheelVels[2] = (-v.y + v.x - wZ * WHEEL_LXY) / WHEEL_RADIUS;  // rad/s
     targetWheelVels[3] = (-v.y - v.x + wZ * WHEEL_LXY) / WHEEL_RADIUS;  // rad/s
 }
+
+float* ChassisSubsystem::getCurrentWheelVelocities()
+{
+    float vels[4];
+    for (int i = 0; i < WHEELS; i++)
+    {
+        vels[i] = wheels[i].measure();
+    }
+    return vels;
+}
+
 }  // namespace chassis
 }  // namespace subsystems
