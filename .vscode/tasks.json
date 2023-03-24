@@ -10,7 +10,10 @@
                 "panel": "new"
             },
             "command": "pipenv run scons build",
-            "group": "build",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
             "problemMatcher": [],
             "options": {
                 "cwd": "${workspaceRoot}/ut-robomaster"
@@ -116,7 +119,6 @@
             "command": "pipenv run lbuild build",
             "group": {
                 "kind": "build",
-                "isDefault": true
             },
             "problemMatcher": [],
             "options": {
