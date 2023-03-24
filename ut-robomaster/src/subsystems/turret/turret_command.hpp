@@ -83,6 +83,9 @@ public:
 private:
     src::Drivers* drivers;
     TurretSubsystem* subsystem;
+
+    float yaw = 0.0f;
+    float pitch = 0.0f;
 };
 }  // namespace turret
 }  // namespace subsystems
