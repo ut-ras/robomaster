@@ -49,7 +49,7 @@
                 "${workspaceFolder}/ut-robomaster/taproot/modm/src/modm/processing",
                 "${workspaceFolder}/ut-robomaster/src",
             ],
-            "compilerPath": "C:\\msys64\\mingw64\\bin\\arm-none-eabi-g++.exe",
+            "compilerPath": "arm-none-eabi-g++",
             "intelliSenseMode": "gcc-arm",
             "browse": {
                 "limitSymbolsToIncludedHeaders": true
