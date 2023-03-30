@@ -65,21 +65,21 @@ void ShooterSubsystem::rotateAgitatorToTarget()
     test.set(Leds::LedPin::Red, (valueToDisplay % 3) == 1);
     test.set(Leds::LedPin::Blue, (valueToDisplay % 3) == 2);
 
-    comms::RobotCommsSingleton::print("Balls to shoot: %d", valueToDisplay);
+    // comms::RobotCommsSingleton::print("Balls to shoot: %d", valueToDisplay);
 }
 
 void ShooterSubsystem::shootBalls(int numBalls)
 {
     const char* toPrint = "SHOOTING BALLS; BEFORE COMMAND: ballsToShoot = %d, numBalls = %d";
 
-    comms::RobotCommsSingleton::print(toPrint, ballsToShoot, numBalls);
+    // comms::RobotCommsSingleton::print(toPrint, ballsToShoot, numBalls);
 
     ballsToShoot += numBalls;
 
     const char* newPrint = "AFTER ballsToShoot = %d, numBalls = %d";
 
     // add new balls to shoot to toPrint
-    comms::RobotCommsSingleton::print(newPrint, ballsToShoot, numBalls);
+    // comms::RobotCommsSingleton::print(newPrint, ballsToShoot, numBalls);
 
     // targetAngle += AGITATOR_INCREMENT_AMOUNT;
     // ballsToShoot--;

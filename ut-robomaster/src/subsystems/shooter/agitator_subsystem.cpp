@@ -63,11 +63,11 @@ void AgitatorSubsystem::rotateToTarget(int64_t targetPosition)
 
     // char* toSend = "Agitator: " + std::to_string(currentPosition) + " " +
     // std::to_string(targetPosition) + " " + std::to_string(error);
-    comms::RobotCommsSingleton::print(
-        "Agitator: %lld %lld %ld",
-        currentPosition,
-        targetPosition,
-        error);
+    // comms::RobotCommsSingleton::print(
+    //     "Agitator: %lld %lld %ld",
+    //     currentPosition,
+    //     targetPosition,
+    //     error);
 
     // strcpy(comms::RobotCommsSingleton::getInstance().robotStream, toSend);
 }

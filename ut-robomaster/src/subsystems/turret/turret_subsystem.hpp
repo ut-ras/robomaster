@@ -39,8 +39,8 @@ public:
 
     const char* getName() override { return "Turret subsystem"; }
 
-    TurretMotor getYawTurret() { return yawTurret; }
-    TurretMotor getPitchTurret() { return pitchTurret; }
+    TurretMotor* getYawTurret() { return &yawTurret; }
+    TurretMotor* getPitchTurret() { return &pitchTurret; }
 
 private:
     static constexpr float PID_P_KP = 0.1f;
@@ -69,7 +69,7 @@ private:
     static constexpr tap::algorithms::SmoothPidConfig YAW_PID_CONFIG = {
         .kp = 229'183.1f,
         .ki = 0.0f,
-        .kd = 10'886.2f,
+        .kd = 2'500.0f,
         .maxICumulative = 0.0f,
         .maxOutput = 32'000.0f,
         .tQDerivativeKalman = 1.0f,

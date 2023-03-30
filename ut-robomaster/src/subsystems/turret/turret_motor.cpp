@@ -35,7 +35,8 @@ void TurretMotor::setAngle(float desiredAngle, uint32_t dt) {
     setpoint.setValue(desiredAngle);
 
     float positionControllerError = ContiguousFloat(currentAngle.getValue(), 0, M_TWOPI).difference(setpoint.getValue());
-    drivers->terminal.print("%d", positionControllerError);
+    // drivers->terminal << currentAngle.getValue() << "\n";
+    // drivers->terminal << desiredAngle << "\n";
 
     if (compareFloatClose(0.0f, positionControllerError, 1E-3)) {
         drivers->leds.set(tap::gpio::Leds::Red, true);

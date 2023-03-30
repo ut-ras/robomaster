@@ -15,7 +15,7 @@ void ShooterSingleFireCommand::initialize() {}
 
 void ShooterSingleFireCommand::execute()
 {
-    comms::RobotCommsSingleton::print("ShooterSingleFireCommand::execute()");
+    // comms::RobotCommsSingleton::print("ShooterSingleFireCommand::execute()");
 
     shooter->shootBalls(2);
 }

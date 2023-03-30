@@ -36,7 +36,8 @@ public:
 #endif
     Drivers() 
         : tap::Drivers(),
-          beagleboneCommunicator(this)
+          beagleboneCommunicator(this),
+          terminal(this)
         {
         }
 
