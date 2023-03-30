@@ -134,7 +134,7 @@ void initializeSubsystems()
     theTurret.initialize();
     // theAgitator.initialize();
     theShooter.initialize();
-    theOdometry.initialize();
+    // theOdometry.initialize();
     // theChassis.initialize();
     // theTurret.initialize();     // mouse
     // theGimbal.initialize();  // joystick

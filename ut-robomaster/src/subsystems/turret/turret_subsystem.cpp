@@ -14,37 +14,33 @@ TurretSubsystem::TurretSubsystem(src::Drivers* drivers)
     : tap::control::Subsystem(drivers),
       yawMotor(
           drivers,
-          GM6020,
           ID_YAW,
           CAN_TURRET,
           false,
-          "yaw",
-          PID_P_KP,
-          PID_P_KI,
-          PID_P_KD,
-          PID_V_KP,
-          PID_V_KI,
-          PID_V_KD),
+          "Yaw Motor"),
       pitchMotor(
           drivers,
-          M3508,
           ID_PITCH,
           CAN_TURRET,
           false,
-          "pitch",
-          PID_P_KP,
-          PID_P_KI,
-          PID_P_KD,
-          PID_V_KP,
-          PID_V_KI,
-          PID_V_KD)
+          "Pitch Motor"),
+      yawTurret(
+          drivers,
+          &yawMotor,
+          YAW_PID_CONFIG
+      ),
+      pitchTurret(
+          drivers,
+          &pitchMotor,
+          PITCH_PID_CONFIG
+      )
 {
 }
 
 void TurretSubsystem::initialize()
 {
-    yawMotor.initialize();
-    pitchMotor.initialize();
+    yawTurret.initialize();
+    pitchTurret.initialize();
 }
 
 void TurretSubsystem::setDesiredAngles(float yaw, float pitch)
@@ -97,8 +93,8 @@ void TurretSubsystem::refresh()
             break;
     }
 
-    yawMotor.update(yaw);
-    pitchMotor.update(pitch);
+    yawTurret.updateMotorAngle();
+    pitchTurret.updateMotorAngle();
 }
 
 void TurretSubsystem::runHardwareTests()

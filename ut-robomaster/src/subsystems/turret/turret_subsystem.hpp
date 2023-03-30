@@ -4,11 +4,10 @@
 #include "tap/control/subsystem.hpp"
 
 #include "modm/math/geometry.hpp"
-#include "utils/motor_controller/motor_controller.hpp"
+#include "turret_motor.hpp"
 
 #include "drivers.hpp"
 
-using namespace motor_controller;
 using modm::Vector3f;
 
 namespace subsystems
@@ -40,6 +39,9 @@ public:
 
     const char* getName() override { return "Turret subsystem"; }
 
+    TurretMotor getYawTurret() { return yawTurret; }
+    TurretMotor getPitchTurret() { return pitchTurret; }
+
 private:
     static constexpr float PID_P_KP = 0.1f;
     static constexpr float PID_P_KI = 0.1f;
@@ -57,8 +59,40 @@ private:
 
     AimStrategy aimStrategy = AimStrategy::Manual;
 
-    MotorPositionController yawMotor;
-    MotorPositionController pitchMotor;
+    tap::motor::DjiMotor yawMotor;
+    tap::motor::DjiMotor pitchMotor;
+    TurretMotor yawTurret;
+    TurretMotor pitchTurret;
+
+    // From aruw-mcb, should test to find our own values: 
+    // https://gitlab.com/aruw/controls/aruw-mcb/-/blob/develop/aruw-mcb-project/src/aruwsrc/robot/standard/standard_turret_constants.hpp
+    static constexpr tap::algorithms::SmoothPidConfig YAW_PID_CONFIG = {
+        .kp = 229'183.1f,
+        .ki = 0.0f,
+        .kd = 10'886.2f,
+        .maxICumulative = 0.0f,
+        .maxOutput = 32'000.0f,
+        .tQDerivativeKalman = 1.0f,
+        .tRDerivativeKalman = 30.0f,
+        .tQProportionalKalman = 1.0f,
+        .tRProportionalKalman = 0.0f,
+        .errDeadzone = 0.0f,
+        .errorDerivativeFloor = 0.0f,
+    };
+
+    static constexpr tap::algorithms::SmoothPidConfig PITCH_PID_CONFIG = {
+        .kp = 229'183.1f,
+        .ki = 0.0f,
+        .kd = 7'448.5f,
+        .maxICumulative = 0.0f,
+        .maxOutput = 32000.0f,
+        .tQDerivativeKalman = 1.0f,
+        .tRDerivativeKalman = 10.0f,
+        .tQProportionalKalman = 1.0f,
+        .tRProportionalKalman = 2.0f,
+        .errDeadzone = 0.0f,
+        .errorDerivativeFloor = 0.0f,
+    };
 };
 
 }  // namespace turret

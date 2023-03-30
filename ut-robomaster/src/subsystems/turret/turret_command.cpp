@@ -25,35 +25,33 @@ namespace subsystems
 {
 namespace turret
 {
-void TurretCommand::initialize() {}
+void TurretCommand::initialize() {
+    prevTime = tap::arch::clock::getTimeMilliseconds();
+}
 
 void TurretCommand::execute()
 {
+    uint32_t currTime = tap::arch::clock::getTimeMilliseconds();
+    uint32_t dt = currTime - prevTime;
+    prevTime = currTime;
+
     Remote* remote = &drivers->remote;
-    bool isCTRLKeyPressed = remote->keyPressed(Remote::Key::CTRL);
-    if (isCTRLKeyPressed)  // CTRL is being pressed
-    {
-        float x =
-            remote->getChannel(Remote::Channel::LEFT_HORIZONTAL) + (remote->getMouseX() / 1.0f);
-        float y = remote->getChannel(Remote::Channel::LEFT_VERTICAL) + (remote->getMouseY() / 1.0f);
 
-        yaw -= x * 0.1f;
-        pitch += y * 0.1f;
-    }
-    else
-    {
-        float x =
-            remote->getChannel(Remote::Channel::LEFT_HORIZONTAL) + (remote->getMouseX() / 1.0f);
-        float y = remote->getChannel(Remote::Channel::LEFT_VERTICAL) + (remote->getMouseY() / 1.0f);
-
-        yaw -= x;
-        pitch += y;
+    if (fabs(remote->getChannel(Remote::Channel::LEFT_HORIZONTAL)) > 0.1f) {
+        float yawSetpoint = subsystem->getYawTurret().getAngle() + controllerScalar * -remote->getChannel(Remote::Channel::LEFT_HORIZONTAL);
+        subsystem->getYawTurret().setAngle(yawSetpoint, dt);
+        
+        float pitchSetpoint = subsystem->getPitchTurret().getAngle() + controllerScalar * remote->getChannel(Remote::Channel::LEFT_VERTICAL);
+        subsystem->getPitchTurret().setAngle(pitchSetpoint, dt);
     }
 
-    subsystem->setDesiredAngles(yaw, pitch);
-
-    // float x = static_cast<float>(remote->getMouseX()) / 1.0f;
-    // float y = static_cast<float>(remote->getMouseY()) / 1.0f;
+    else {
+        float yawSetpoint = subsystem->getYawTurret().getSetpoint();
+        subsystem->getYawTurret().setAngle(yawSetpoint, dt);
+        
+        float pitchSetpoint = subsystem->getPitchTurret().getSetpoint();
+        subsystem->getPitchTurret().setAngle(pitchSetpoint, dt);
+    }
 }
 
 void TurretCommand::end(bool) {}
