@@ -1,5 +1,7 @@
 #include "drivers.hpp"
 #include "beaglebone_communicator.hpp"
+#include "tap/communication/serial/uart.hpp"
+
 
 namespace communication {
 
@@ -35,13 +37,20 @@ void BeagleBoneCommunicator::sendMessage() {
 }
 
 void BeagleBoneCommunicator::sendOdometryData() {
-    DJISerial::SerialMessage<sizeof(OdometryData)> message;
+    //DJISerial::SerialMessage<sizeof(OdometryData)> message;
+
+
+    
+    //message.data = data;
     message.messageType = CV_MESSAGE_TYPE_ODOMETRY_DATA;
 
     // TODO: Implement sending of data once odometry module is finished
 
     message.setCRC16();
     drivers->uart.write(BEAGLEBONE_UART_PORT, reinterpret_cast<uint8_t*>(&message), sizeof(message));
+
+
+
 }
 
 bool BeagleBoneCommunicator::decodeTurretData(const ReceivedSerialMessage& message) {
@@ -49,7 +58,7 @@ bool BeagleBoneCommunicator::decodeTurretData(const ReceivedSerialMessage& messa
         memcpy(&lastTurretData, &message.data, sizeof(lastTurretData));
         return true;
     }
-
+    
     return false;
 }
 

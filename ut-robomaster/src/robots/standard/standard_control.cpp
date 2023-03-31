@@ -51,6 +51,7 @@ namespace standard_control
 chassis::ChassisSubsystem theChassis(drivers());
 turret::TurretSubsystem theTurret(drivers());
 odometry::OdometrySubsystem theOdometry(drivers(), &theChassis);
+communication::BeagleBoneCommunicator theBeaglebone(drivers());
 
 /* define commands ----------------------------------------------------------*/
 chassis::MoveChassisCommand moveChassisCommand(&theChassis, drivers());

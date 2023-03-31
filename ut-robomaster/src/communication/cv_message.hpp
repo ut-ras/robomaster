@@ -35,6 +35,9 @@ struct OdometryData {
 
     float turretPitch;
     float turretYaw;
+    
+    float linearVel;
+    float angularVel;
 } modm_packed;
 
 }   // namespace communication
