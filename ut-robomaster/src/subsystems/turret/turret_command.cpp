@@ -43,7 +43,6 @@ void TurretCommand::execute()
         subsystem->getYawTurret()->setAngle(yawSetpoint, dt);
         float setpoint = subsystem->getYawTurret()->getSetpoint();
         drivers->terminal << setpoint << "\n";
-        
         float pitchSetpoint = subsystem->getPitchTurret()->getAngle() + controllerScalar * remote->getChannel(Remote::Channel::LEFT_VERTICAL);
         // subsystem->getPitchTurret().setAngle(pitchSetpoint, dt);
     }

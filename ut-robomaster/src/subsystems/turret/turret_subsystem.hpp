@@ -33,6 +33,7 @@ public:
     void inputTargetData(Vector3f position, Vector3f velocity, Vector3f acceleration);
 
     void setAimStrategy(AimStrategy aimStrategy);
+    float TurretSubsystem::calculateOffset();
     void refresh() override;
 
     void runHardwareTests() override;
