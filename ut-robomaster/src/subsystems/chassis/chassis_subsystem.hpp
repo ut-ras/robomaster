@@ -23,13 +23,16 @@ public:
     void initialize() override;
     void refresh() override;
     void runHardwareTests() override;
-    float* getCurrentWheelVelocities();
 
     /// @brief Update robot motion based on simple input controls. Inputs are scaled and corrected
     /// to avoid over-driving motors. This logic can be adjusted to create various input schemes.
     /// @param move Linear movement (magnitude should be within [0,1])
     /// @param spin Angular rotation (value should be within [-1,1])
     void input(Vector2f move, float spin);
+
+    /// @brief Reconstruct current linear velocity based on measured wheel motion.
+    /// @return Linear velocity (m/s)
+    Vector2f measureLinearVelocity();
 
     const char* getName() override { return "Chassis subsystem"; }
 
@@ -48,8 +51,8 @@ private:
     static constexpr float MAX_LINEAR_VEL = WHEEL_MAX_VEL * WHEEL_RADIUS;               // m/s
     static constexpr float MAX_ANGULAR_VEL = WHEEL_MAX_VEL * WHEEL_RADIUS / WHEEL_LXY;  // rad/s
 
-    MotorVelocityController wheels[4];
-    float targetWheelVels[4] = {0.0f, 0.0f, 0.0f, 0.0f};
+    MotorVelocityController wheels[WHEELS];
+    float targetWheelVels[WHEELS] = {0.0f, 0.0f, 0.0f, 0.0f};
 
     bool imuDrive = false;
     bool setStartTurret = false;
