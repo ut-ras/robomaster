@@ -3,6 +3,7 @@
 
 #include "tap/control/command.hpp"
 
+#include "drivers.hpp"
 #include "shooter_subsystem.hpp"
 
 namespace subsystems
@@ -12,8 +13,9 @@ namespace shooter
 class ShooterSingleFireCommand : public tap::control::Command
 {
 public:
-    ShooterSingleFireCommand(ShooterSubsystem *sub)
-        : shooter(sub)
+    ShooterSingleFireCommand(ShooterSubsystem *sub, src::Drivers *drivers)
+        : subsystem(sub),
+          drivers(drivers)
     {
         addSubsystemRequirement(sub);
     }
@@ -29,10 +31,10 @@ public:
     const char *getName() const override { return "shooter single fire command"; }
 
 private:
-    ShooterSubsystem *shooter;
-
+    ShooterSubsystem *subsystem;
+    src::Drivers *drivers;
 };  // class ShooterOnCommand
 }  // namespace shooter
-}  // namespace control
+}  // namespace subsystems
 
 #endif  // SHOOTER_SINGLE_FIRE_COMMAND_HPP_

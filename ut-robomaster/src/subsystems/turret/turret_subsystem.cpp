@@ -19,12 +19,8 @@ TurretSubsystem::TurretSubsystem(src::Drivers* drivers)
           CAN_TURRET,
           false,
           "yaw",
-          PID_P_KP,
-          PID_P_KI,
-          PID_P_KD,
-          PID_V_KP,
-          PID_V_KI,
-          PID_V_KD),
+          PID_TURRET_VELOCITY,
+          PID_TURRET_POSITION),
       pitchMotor(
           drivers,
           M3508,
@@ -32,12 +28,8 @@ TurretSubsystem::TurretSubsystem(src::Drivers* drivers)
           CAN_TURRET,
           false,
           "pitch",
-          PID_P_KP,
-          PID_P_KI,
-          PID_P_KD,
-          PID_V_KP,
-          PID_V_KI,
-          PID_V_KD)
+          PID_TURRET_VELOCITY,
+          PID_TURRET_POSITION)
 {
 }
 

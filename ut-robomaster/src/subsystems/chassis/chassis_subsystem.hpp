@@ -38,10 +38,6 @@ public:
 
 private:
     src::Drivers* drivers;
-    static constexpr float PID_KP = 0.75f;
-    static constexpr float PID_KI = 12.0f;
-    static constexpr float PID_KD = 0.0f;
-
     static constexpr int WHEELS = 4;
     static constexpr float WHEEL_DISTANCE_X = 0.4064f;  // meters
     static constexpr float WHEEL_DISTANCE_Y = 0.508f;   // meters

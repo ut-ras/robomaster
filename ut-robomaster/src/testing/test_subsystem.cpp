@@ -18,7 +18,7 @@ TestSubsystem::TestSubsystem(src::Drivers* drivers)
       //       0.010125f * M_TWOPI),
       // controller(drivers, M3508, MOTOR4, CBUS, false, "test motor", 4.5f, 5.625f, 0.09f),
       //   controller(drivers, M3508, MOTOR4, CBUS, false, "test motor", 0.75f, 5.0f, 0.0f),
-      controller(drivers, M3508, MOTOR4, CBUS, false, "test motor", 0.75f, 15.0f, 0.0f),
+      controller(drivers, M3508, MOTOR4, CBUS, false, "test motor", {0.75f, 15.0f, 0.0f}),
       terminalCallback()
 {
 }

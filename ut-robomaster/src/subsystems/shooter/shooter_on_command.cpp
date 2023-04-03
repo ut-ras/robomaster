@@ -1,27 +1,36 @@
 #include "shooter_on_command.hpp"
 
-#include "tap/communication/gpio/leds.hpp"
-#include "tap/control/command.hpp"
-
-#include "shooter_subsystem.hpp"
 namespace subsystems
 {
 namespace shooter
 {
+using tap::communication::serial::Remote;
+
 void ShooterOnCommand::initialize() {}
 
 void ShooterOnCommand::execute()
 {
-    shooter->setFlywheelOutput(0.10);
-    shooter->setAgitatorOutput(500);
-    // shooter->rotateAgitatorToTarget();
+    Remote::SwitchState switchState = drivers->remote.getSwitch(Remote::Switch::LEFT_SWITCH);
+
+    FiringState firingState = FiringState::Idle;
+
+    switch (switchState)
+    {
+        case Remote::SwitchState::UP:
+            firingState = FiringState::Firing;
+            break;
+        case Remote::SwitchState::MID:
+            firingState = FiringState::Ready;
+            break;
+        case Remote::SwitchState::DOWN:
+        case Remote::SwitchState::UNKNOWN:
+            break;
+    }
+
+    subsystem->setFiringState(firingState);
 }
 
-void ShooterOnCommand::end(bool)
-{
-    shooter->setFlywheelOutput(0);
-    shooter->setAgitatorOutput(0);
-}
+void ShooterOnCommand::end(bool) {}
 
 bool ShooterOnCommand::isFinished() const { return false; }
 }  // namespace shooter

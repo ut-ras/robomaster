@@ -70,8 +70,8 @@ shooter::ShooterSubsystem theShooter(drivers());
 /* define commands ----------------------------------------------------------*/
 // control::agitator::AgitatorRotateCommand rotateCommand(&theAgitator);
 // control::agitator::AgitatorReverseCommand reverseCommand(&theAgitator);
-shooter::ShooterOnCommand shooterCommand(&theShooter);
-shooter::ShooterSingleFireCommand singleFireCommand(&theShooter);
+shooter::ShooterOnCommand shooterCommand(&theShooter, drivers());
+shooter::ShooterSingleFireCommand singleFireCommand(&theShooter, drivers());
 // control::chassis::ChassisDriveKeyboardCommand chassisDriveKeyboardCommand(drivers(),
 // &theChassis);  // keyboard
 // control::chassis::ChassisDriveCommand chassisDriveCommand(drivers(), &theChassis);   // joystick
