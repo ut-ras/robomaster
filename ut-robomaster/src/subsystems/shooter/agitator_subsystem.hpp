@@ -29,7 +29,13 @@ private:
     const float SPEED = 0.5f;
 
     src::Drivers *drivers;
+
+#if defined TARGET_STANDARD || defined TARGET_SENTRY
+    MotorVelocityController leftMotor;
+    MotorVelocityController rightMotor;
+#elif defined TARGET_HERO
     MotorVelocityController motor;
+#endif
 
     bool isShooting = false;
 };

@@ -1,19 +1,48 @@
 #include "flywheel_subsystem.hpp"
 
-#include "tap/drivers.hpp"
-
 namespace subsystems::shooter
 {
+#if defined TARGET_STANDARD || TARGET_SENTRY
 FlywheelSubsystem::FlywheelSubsystem(src::Drivers* drivers)
     : Subsystem(drivers),
       drivers(drivers),
-      motor{drivers, M2006, ID_FLYWHEEL, CAN_SHOOTER, false, "flywheel", PID_FLYWHEEL}
+      motors{
+          {drivers, M2006, ID_FLYWHEEL_TL, CAN_SHOOTER, false, "flywheel top left", PID_FLYWHEEL},
+          {drivers, M2006, ID_FLYWHEEL_TR, CAN_SHOOTER, true, "flywheel top right", PID_FLYWHEEL},
+          {drivers, M2006, ID_FLYWHEEL_BL, CAN_SHOOTER, true, "flywheel bottom left", PID_FLYWHEEL},
+          {drivers,
+           M2006,
+           ID_FLYWHEEL_BR,
+           CAN_SHOOTER,
+           false,
+           "flywheel bottom right",
+           PID_FLYWHEEL}}
 {
 }
+#elif defined TARGET_HERO
+FlywheelSubsystem::FlywheelSubsystem(src::Drivers* drivers)
+    : Subsystem(drivers),
+      drivers(drivers),
+      motors{{drivers, M2006, ID_FLYWHEEL, CAN_SHOOTER, false, "flywheel", PID_FLYWHEEL}}
+{
+}
+#endif
 
-void FlywheelSubsystem::initialize() { motor.initialize(); }
+void FlywheelSubsystem::initialize()
+{
+    for (int i = 0; i < FLYWHEELS; i++)
+    {
+        motors[i].initialize();
+    }
+}
 
-void FlywheelSubsystem::refresh() { motor.update(isActive ? SPEED : 0.0f); }
+void FlywheelSubsystem::refresh()
+{
+    for (int i = 0; i < FLYWHEELS; i++)
+    {
+        motors[i].update(isActive ? SPEED : 0.0f);
+    }
+}
 
 void FlywheelSubsystem::setActive(bool active) { isActive = active; }
 }  // namespace subsystems::shooter

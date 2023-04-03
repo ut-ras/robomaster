@@ -26,10 +26,16 @@ public:
     void setActive(bool active);
 
 private:
-    const float SPEED = 5.0f;
+#if defined TARGET_STANDARD || defined TARGET_SENTRY
+    static constexpr int FLYWHEELS = 4;
+#elif defined TARGET_HERO
+    static constexpr int FLYWHEELS = 1;
+#endif
 
+    static constexpr float SPEED = 5.0f;
     src::Drivers* drivers;
-    MotorVelocityController motor;
+
+    MotorVelocityController motors[FLYWHEELS];
 
     bool isActive = false;
 };

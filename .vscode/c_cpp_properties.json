@@ -39,6 +39,11 @@
         },
         {
             "name": "Hardware",
+            "defines": [
+                "TARGET_STANDARD",
+                "TARGET_SENTRY",
+                "TARGET_HERO"
+            ],
             "includePath": [
                 "${default}",
                 "${workspaceFolder}/ut-robomaster/taproot/src",
