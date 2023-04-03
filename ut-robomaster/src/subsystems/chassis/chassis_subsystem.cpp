@@ -89,7 +89,7 @@ void ChassisSubsystem::setMecanumWheelVelocities(Vector2f v, float wZ)
     targetWheelVels[3] = (-v.y - v.x + wZ * WHEEL_LXY) / WHEEL_RADIUS;  // rad/s
 }
 
-Vector2f ChassisSubsystem::measureLinearVelocity()
+Vector3f ChassisSubsystem::measureVelocity()
 {
     float w1 = wheels[0].measure();  // rev/s
     float w2 = wheels[1].measure();  // rev/s
@@ -98,9 +98,10 @@ Vector2f ChassisSubsystem::measureLinearVelocity()
 
     float xa = (w1 + w2 + w3 + w4);
     float ya = (-w1 + w2 + w3 - w4);
+    float wa = (-w1 + w2 - w3 + w4) / WHEEL_LXY;
 
     // Rotated -90 deg to match our reference frame
-    return Vector2f(ya, -xa) * WHEEL_RADIUS / 4.0f * M_TWOPI;
+    return Vector3f(ya, -xa, wa) * WHEEL_RADIUS / 4.0f * M_TWOPI;
 }
 
 }  // namespace chassis

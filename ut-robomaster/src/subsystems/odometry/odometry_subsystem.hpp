@@ -9,6 +9,7 @@
 #include "subsystems/chassis/chassis_subsystem.hpp"
 #include "subsystems/odometry/observer_displacement.hpp"
 #include "subsystems/odometry/observer_yaw_world.hpp"
+#include "subsystems/turret/turret_subsystem.hpp"
 
 #include "drivers.hpp"
 namespace subsystems
@@ -18,30 +19,29 @@ namespace odometry
 
 using chassis::ChassisSubsystem;
 using tap::algorithms::odometry::Odometry2DTracker;
+using turret::TurretSubsystem;
 
 class OdometrySubsystem : public tap::control::Subsystem
 {
 public:
-    OdometrySubsystem(src::Drivers* drivers, ChassisSubsystem* chassis);
+    OdometrySubsystem(src::Drivers* drivers, ChassisSubsystem* chassis, TurretSubsystem* turret);
     void initialize() override;
     void refresh() override;
     const char* getName() override { return "Odometry subsystem"; }
-    void setIMULoc(modm::Location2D<> newLoc){};
-    void setIMUOrientation(float& newOrienation) {}
+    Vector2f getPosition();
+    float getYaw();
+    Vector2f getChassisLinearVelocity();
+    float getChassisAngularVelocity();
+    float getTurretYaw();
+    float getTurretPitch();
 
 private:
     src::Drivers* drivers;
     ChassisSubsystem* chassis;
-    const int IMU_DESIRED_TEMPERATURE =
-        tap::communication::sensors::imu_heater::ImuHeater::IMU_DESIRED_TEMPERATURE;
-    modm::Location2D<float> location = modm::Location2D(0.0f, 0.0f, 0.0f);
-    modm::Vector2f posOffset = modm::Vector2f(0.0f);
+    TurretSubsystem* turret;
     ChassisDisplacementObserver chassisDisplacement;
     ChassisWorldYawObserver chassisYaw;
     Odometry2DTracker tracker;
-    /*
-ChassisWorldYawObserverInterface* chassisYawObserver,
-ChassisDisplacementObserverInterface* chassisDisplacementObserver)*/
 };
 }  // namespace odometry
 }  // namespace subsystems

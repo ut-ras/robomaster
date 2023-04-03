@@ -30,9 +30,9 @@ public:
     /// @param spin Angular rotation (value should be within [-1,1])
     void input(Vector2f move, float spin);
 
-    /// @brief Reconstruct current linear velocity based on measured wheel motion.
-    /// @return Linear velocity (m/s)
-    Vector2f measureLinearVelocity();
+    /// @brief Reconstruct current velocities based on measured wheel motion.
+    /// @return x,y is linear velocity (m/s) and z is angular velocity (rad/s)
+    Vector3f measureVelocity();
 
     const char* getName() override { return "Chassis subsystem"; }
 
