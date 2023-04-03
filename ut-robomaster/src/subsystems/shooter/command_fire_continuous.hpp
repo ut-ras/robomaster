@@ -1,5 +1,5 @@
-#ifndef SHOOTER_ON_COMMAND_HPP_
-#define SHOOTER_ON_COMMAND_HPP_
+#ifndef COMMAND_FIRE_CONTINUOUS_HPP_
+#define COMMAND_FIRE_CONTINUOUS_HPP_
 
 #include "tap/control/command.hpp"
 
@@ -10,10 +10,10 @@ namespace subsystems
 {
 namespace shooter
 {
-class ShooterOnCommand : public tap::control::Command
+class CommandFireContinuous : public tap::control::Command
 {
 public:
-    ShooterOnCommand(ShooterSubsystem *sub, src::Drivers *drivers)
+    CommandFireContinuous(ShooterSubsystem *sub, src::Drivers *drivers)
         : subsystem(sub),
           drivers(drivers)
     {
@@ -34,7 +34,7 @@ private:
     ShooterSubsystem *subsystem;
     src::Drivers *drivers;
 
-};  // class ShooterOnCommand
+};  // class CommandFireContinuous
 }  // namespace shooter
 }  // namespace subsystems
 

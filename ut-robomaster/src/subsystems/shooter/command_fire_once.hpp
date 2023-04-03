@@ -1,5 +1,5 @@
-#ifndef SHOOTER_SINGLE_FIRE_COMMAND_HPP_
-#define SHOOTER_SINGLE_FIRE_COMMAND_HPP_
+#ifndef COMMAND_FIRE_ONCE_HPP_
+#define COMMAND_FIRE_ONCE_HPP_
 
 #include "tap/control/command.hpp"
 
@@ -10,12 +10,10 @@ namespace subsystems
 {
 namespace shooter
 {
-class ShooterSingleFireCommand : public tap::control::Command
+class CommandFireOnce : public tap::control::Command
 {
 public:
-    ShooterSingleFireCommand(ShooterSubsystem *sub, src::Drivers *drivers)
-        : subsystem(sub),
-          drivers(drivers)
+    CommandFireOnce(ShooterSubsystem *sub, src::Drivers *drivers) : subsystem(sub), drivers(drivers)
     {
         addSubsystemRequirement(sub);
     }
@@ -33,7 +31,7 @@ public:
 private:
     ShooterSubsystem *subsystem;
     src::Drivers *drivers;
-};  // class ShooterOnCommand
+};  // class CommandFireOnce
 }  // namespace shooter
 }  // namespace subsystems
 

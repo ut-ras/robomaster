@@ -1,4 +1,4 @@
-#include "shooter_on_command.hpp"
+#include "command_fire_continuous.hpp"
 
 namespace subsystems
 {
@@ -6,9 +6,9 @@ namespace shooter
 {
 using tap::communication::serial::Remote;
 
-void ShooterOnCommand::initialize() {}
+void CommandFireContinuous::initialize() {}
 
-void ShooterOnCommand::execute()
+void CommandFireContinuous::execute()
 {
     Remote::SwitchState switchState = drivers->remote.getSwitch(Remote::Switch::LEFT_SWITCH);
 
@@ -30,8 +30,8 @@ void ShooterOnCommand::execute()
     subsystem->setFiringState(firingState);
 }
 
-void ShooterOnCommand::end(bool) {}
+void CommandFireContinuous::end(bool) {}
 
-bool ShooterOnCommand::isFinished() const { return false; }
+bool CommandFireContinuous::isFinished() const { return false; }
 }  // namespace shooter
 }  // namespace subsystems

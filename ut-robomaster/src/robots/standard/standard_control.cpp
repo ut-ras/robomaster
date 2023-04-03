@@ -19,8 +19,8 @@
 #include "subsystems/chassis/chassis_subsystem.hpp"
 #include "subsystems/chassis/command_move_chassis.hpp"
 #include "subsystems/odometry/odometry_subsystem.hpp"
-#include "subsystems/shooter/shooter_on_command.hpp"
-#include "subsystems/shooter/shooter_single_fire_command.hpp"
+#include "subsystems/shooter/command_fire_continuous.hpp"
+#include "subsystems/shooter/command_fire_once.hpp"
 #include "subsystems/shooter/shooter_subsystem.hpp"
 // #include "chassis/chassis_drive_command.hpp"
 // #include "chassis/chassis_drive_keyboard_command.hpp"
@@ -70,8 +70,8 @@ shooter::ShooterSubsystem theShooter(drivers());
 /* define commands ----------------------------------------------------------*/
 // control::agitator::AgitatorRotateCommand rotateCommand(&theAgitator);
 // control::agitator::AgitatorReverseCommand reverseCommand(&theAgitator);
-shooter::ShooterOnCommand shooterCommand(&theShooter, drivers());
-shooter::ShooterSingleFireCommand singleFireCommand(&theShooter, drivers());
+shooter::CommandFireContinuous fireContinuousCommand(&theShooter, drivers());
+shooter::CommandFireOnce fireOnceCommand(&theShooter, drivers());
 // control::chassis::ChassisDriveKeyboardCommand chassisDriveKeyboardCommand(drivers(),
 // &theChassis);  // keyboard
 // control::chassis::ChassisDriveCommand chassisDriveCommand(drivers(), &theChassis);   // joystick
@@ -89,23 +89,9 @@ shooter::ShooterSingleFireCommand singleFireCommand(&theShooter, drivers());
 //     {&reverseCommand},
 //     RemoteMapState(Remote::Switch::RIGHT_SWITCH, Remote::SwitchState::DOWN), true, -1);
 
-HoldRepeatCommandMapping leftSwitchUp(
-    drivers(),
-    {&shooterCommand},
-    RemoteMapState(Remote::Switch::LEFT_SWITCH, Remote::SwitchState::UP),
-    true,
-    -1);
-
-HoldRepeatCommandMapping leftMouseDown(
-    drivers(),
-    {&shooterCommand},
-    RemoteMapState(RemoteMapState::MouseButton::LEFT),
-    true,
-    -1);
-
 PressCommandMapping singleFire(
     drivers(),
-    {&singleFireCommand},
+    {&fireOnceCommand},
     RemoteMapState(RemoteMapState::MouseButton::RIGHT));
 
 // HoldRepeatCommandMapping leftMouseDown(
@@ -145,6 +131,7 @@ void setDefaultStandardCommands(src::Drivers *)
 {
     theChassis.setDefaultCommand(&moveChassisCommand);
     theTurret.setDefaultCommand(&turretCommand);
+    theShooter.setDefaultCommand(&fireContinuousCommand);
     // theChassis.setDefaultCommand(&chassisDriveKeyboardCommand); // keyboard
     // theChassis.setDefaultCommand(&chassisDriveCommand);  //joystick
     // theTurret.setDefaultCommand(&turretMoveCommand);    //mouse
@@ -161,9 +148,7 @@ void registerStandardIoMappings(src::Drivers *drivers)
     // drivers->commandMapper.addMap(&rightSwitchUp);
     // drivers->commandMapper.addMap(&reverseAgitator);
     // drivers->commandMapper.addMap(&rightSwitchDown);
-    drivers->commandMapper.addMap(&leftSwitchUp);
     drivers->commandMapper.addMap(&singleFire);
-    drivers->commandMapper.addMap(&leftMouseDown);
     // drivers->commandMapper.addMap(&rightMouseDown);
 }
 }  // namespace standard_control
