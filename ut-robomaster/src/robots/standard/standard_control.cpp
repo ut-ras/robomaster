@@ -50,7 +50,7 @@ namespace standard_control
 /* define subsystems --------------------------------------------------------*/
 chassis::ChassisSubsystem theChassis(drivers());
 turret::TurretSubsystem theTurret(drivers());
-odometry::OdometrySubsystem theOdometry(drivers(), &theChassis);
+odometry::OdometrySubsystem theOdometry(drivers(), &theChassis, &theTurret);
 
 /* define commands ----------------------------------------------------------*/
 chassis::MoveChassisCommand moveChassisCommand(&theChassis, drivers());
