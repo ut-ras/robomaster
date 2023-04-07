@@ -37,32 +37,25 @@ void TurretCommand::execute()
 
     Remote* remote = &drivers->remote;
 
-    // if (fabs(remote->getChannel(Remote::Channel::LEFT_HORIZONTAL)) > 0.1f) {
-    //     // drivers->terminal << subsystem->getYawTurret().getAngle() << "\n";
-    //     float yawSetpoint = subsystem->getYawTurret()->getAngle() + controllerScalar * -remote->getChannel(Remote::Channel::LEFT_HORIZONTAL);
-    //     subsystem->getYawTurret()->setAngle(yawSetpoint, dt);
-    //     float setpoint = subsystem->getYawTurret()->getSetpoint();
-    //     drivers->terminal << setpoint << "\n";
-    //     float pitchSetpoint = subsystem->getPitchTurret()->getAngle() + controllerScalar * remote->getChannel(Remote::Channel::LEFT_VERTICAL);
-    //     // subsystem->getPitchTurret().setAngle(pitchSetpoint, dt);
-    // }
+    if (fabs(remote->getChannel(Remote::Channel::LEFT_HORIZONTAL)) > 0.1f) {
+        float yawSetpoint = subsystem->getYawTurret()->getAngle() + controllerScalarYaw * -remote->getChannel(Remote::Channel::LEFT_HORIZONTAL);
+        subsystem->getYawTurret()->setAngle(yawSetpoint, dt);
+        subsystem->setPreviousChassisRelativeYawSetpoint(tap::algorithms::ContiguousFloat(yawSetpoint + subsystem->getChassisOffset() * subsystem->BELT_RATIO, 0.0f, M_TWOPI).getValue());
+    }
 
-    // else {
-    //     float yawSetpoint = subsystem->getYawTurret()->getSetpoint();
-    //     // drivers->terminal << yawSetpoint << "\n";
-    //     subsystem->getYawTurret()->setAngle(yawSetpoint, dt);
-        
-    //     float pitchSetpoint = subsystem->getPitchTurret()->getSetpoint();
-    //     // subsystem->getPitchTurret().setAngle(pitchSetpoint, dt);
-    // }
-    
-//    subsystem->getYawTurret()->setAngle((subsystem->getYawTurret()->getAngle()) + subsystem->getYawOffset(), dt);
+    else {
+        subsystem->getYawTurret()->setAngle(subsystem->getTurretWithOffset(), dt);
+    }
 
-    subsystem->getYawTurret()->setAngle(subsystem->getYawTurret()->getAngle() + subsystem->getYawOffset(), dt);
-    // subsystem->setYawOffset(0.0f);
+    if (fabs(remote->getChannel(Remote::Channel::LEFT_VERTICAL)) > 0.1f)  {
+        float pitchSetpoint = subsystem->getPitchTurret()->getAngle() + controllerScalarPitch * remote->getChannel(Remote::Channel::LEFT_VERTICAL);
+        subsystem->getPitchTurret()->setAngle(pitchSetpoint, dt);
+    }
 
-
-   // subsystem->getYawTurret()->setAngle(M_PI/4.0,dt);
+    else {        
+        subsystem->getPitchTurret()->setAngle(subsystem->getPitchTurret()->getSetpoint(), dt);
+        drivers->terminal << subsystem->getPitchTurret()->getAngle() << "\n";
+    }
 }
 
 void TurretCommand::end(bool) {}

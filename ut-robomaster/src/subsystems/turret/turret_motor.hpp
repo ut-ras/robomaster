@@ -14,6 +14,8 @@ class TurretMotor{
 
 public:
     TurretMotor(src::Drivers *drivers, tap::motor::MotorInterface *motor, const tap::algorithms::SmoothPidConfig &pidConfig);
+
+    TurretMotor(src::Drivers *drivers, tap::motor::MotorInterface *motor, const tap::algorithms::SmoothPidConfig &pidConfig, float startAngle);
     void initialize();
     void updateMotorAngle();
     void setAngle(float desiredAngle, uint32_t dt);

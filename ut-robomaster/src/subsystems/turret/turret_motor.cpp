@@ -17,6 +17,15 @@ TurretMotor::TurretMotor(src::Drivers *drivers, tap::motor::MotorInterface *moto
     {
     }
 
+TurretMotor::TurretMotor(src::Drivers *drivers, tap::motor::MotorInterface *motor, const tap::algorithms::SmoothPidConfig &pidConfig, float startAngle)
+    : drivers(drivers),
+      motor(motor),
+      pid(pidConfig),
+      setpoint(startAngle, 0.0f, M_TWOPI),
+      currentAngle(startAngle, 0.0f, M_TWOPI)
+    {
+    }
+
 void TurretMotor::initialize() {
     motor->initialize();
 }

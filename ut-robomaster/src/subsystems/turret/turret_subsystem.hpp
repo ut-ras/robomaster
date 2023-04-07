@@ -6,7 +6,7 @@
 #include "tap/algorithms/contiguous_float.hpp"
 
 #include "modm/math/geometry.hpp"
-
+#include "modm/math/filter/moving_average.hpp"
 #include "turret_motor.hpp"
 
 #include "drivers.hpp"
@@ -44,9 +44,8 @@ public:
 
     void setAimStrategy(AimStrategy aimStrategy);
 
-    // calculate offset of turret in radians
-    void calculateOffset();
-
+    float getChassisOffset();
+    float getTurretWithOffset();
     void refresh() override;
 
     void runHardwareTests() override;
@@ -55,8 +54,16 @@ public:
 
     TurretMotor* getYawTurret() { return &yawTurret; }
     TurretMotor* getPitchTurret() { return &pitchTurret; }
-    float getYawOffset() { return offset.getValue(); } 
-    // float setYawOffset(float offset) { this->offset.setValue(offset); }
+
+    float getPreviousChassisRelativeYawSetpoint() { return previousYawSetpoint; }
+    void setPreviousChassisRelativeYawSetpoint(float setpoint) { this->previousYawSetpoint = setpoint; } 
+
+    static constexpr float BELT_RATIO = 2.0f;
+
+    float getPreviousChassisRelativeYawSetpoint() { return previousYawSetpoint; }
+    void setPreviousChassisRelativeYawSetpoint(float setpoint) { this->previousYawSetpoint = setpoint; } 
+
+    static constexpr float BELT_RATIO = 2.0f;
 
 private:
     static constexpr float PID_P_KP = 0.1f;
@@ -85,6 +92,13 @@ private:
     TurretMotor yawTurret;
     TurretMotor pitchTurret;
 
+    float initialChassisYaw;
+    float initialTurretYaw;
+
+    float previousYawSetpoint;
+
+    tap::algorithms::ContiguousFloat turretOffset;
+
     // From aruw-mcb, should test to find our own values: 
     // https://gitlab.com/aruw/controls/aruw-mcb/-/blob/develop/aruw-mcb-project/src/aruwsrc/robot/standard/standard_turret_constants.hpp
     static constexpr tap::algorithms::SmoothPidConfig YAW_PID_CONFIG = {
@@ -102,15 +116,15 @@ private:
     };
 
     static constexpr tap::algorithms::SmoothPidConfig PITCH_PID_CONFIG = {
-        .kp = 229'183.1f,
+        .kp = 100'183.1f,
         .ki = 0.0f,
-        .kd = 7'448.5f,
+        .kd = 1'000.0f,
         .maxICumulative = 0.0f,
         .maxOutput = 32000.0f,
         .tQDerivativeKalman = 1.0f,
-        .tRDerivativeKalman = 10.0f,
+        .tRDerivativeKalman = 30.0f,
         .tQProportionalKalman = 1.0f,
-        .tRProportionalKalman = 2.0f,
+        .tRProportionalKalman = 0.0f,
         .errDeadzone = 0.0f,
         .errorDerivativeFloor = 0.0f,
     };

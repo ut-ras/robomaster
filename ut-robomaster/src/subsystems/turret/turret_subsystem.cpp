@@ -33,9 +33,14 @@ TurretSubsystem::TurretSubsystem(src::Drivers* drivers)
       pitchTurret(
           drivers,
           &pitchMotor,
-          PITCH_PID_CONFIG
-      )
+          PITCH_PID_CONFIG,
+          4.4f
+      ),
+      turretOffset(0.0f, 0.0f, M_TWOPI)
 {
+    initialChassisYaw = modm::toRadian(drivers->bmi088.getYaw());
+    initialTurretYaw = yawTurret.getAngle();
+    previousYawSetpoint = yawTurret.getSetpoint();
 }
 
 void TurretSubsystem::initialize()
@@ -61,40 +66,17 @@ void TurretSubsystem::inputTargetData(Vector3f position, Vector3f velocity, Vect
 
 void TurretSubsystem::setAimStrategy(AimStrategy aimStrategy) { this->aimStrategy = aimStrategy; }
 
-void TurretSubsystem::calculateOffset() {
-    float currentChassisYaw = drivers->bmi088.getYaw()*(M_PI/180.0);
+float TurretSubsystem::getChassisOffset() {
+    float currentChassisYaw = modm::toRadian(drivers->bmi088.getYaw());
+    float chassisOffset = tap::algorithms::ContiguousFloat(currentChassisYaw - initialChassisYaw, 0.0f, M_TWOPI).getValue();
+    return chassisOffset;
+}
 
-    if(currentChassisYaw == previousChassisYaw) {
-        offset.setValue(0.0f);
-    } else {
-        offset.setValue(initialChassisYaw-currentChassisYaw);
-    }
-    previousChassisYaw = currentChassisYaw;
-
-   // offset=initialChassisYaw - currentChassisYaw;
-
-    //offset = previousTurretYaw;
-    // Mod just in case
-
+float TurretSubsystem::getTurretWithOffset() {
+    float chassisOffset = getChassisOffset();
     
-
-    // Update values
-   // previousTurretYaw = offset;
-
-    //initialChassisYaw = currentChassisYaw;
-
-    // previousYaw has prev. world-view yaw of turret
-   // float currentYaw = getYawTurret()->getAngle() + (drivers->bmi088.getYaw()*(M_PI/180.0));  // chassis + world relative view
-   // offset = previousYaw - currentYaw;
-
-    //previousYaw = currentYaw;
-    
-    // offset = fmod(offset, 2*M_PI);
-    // offset = offset-currentYaw;
-
-    //offset the world relative angle
-   // offset *= M_PI/180;
-   // return offset;
+    turretOffset.setValue(previousYawSetpoint + initialTurretYaw - (chassisOffset * BELT_RATIO));
+    return turretOffset.getValue();
 }
 
 void TurretSubsystem::refresh()
@@ -108,7 +90,7 @@ void TurretSubsystem::refresh()
     switch (aimStrategy)
     {
         case AimStrategy::Manual:
-            yaw = desiredPitch;
+            yaw = desiredYaw;
             pitch = desiredPitch;
             break;
         case AimStrategy::AutoAim:

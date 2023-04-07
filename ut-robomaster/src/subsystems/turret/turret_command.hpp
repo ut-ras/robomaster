@@ -87,7 +87,8 @@ private:
     float yaw = 0.0f;
     float pitch = 0.0f;
 
-    float controllerScalar = 0.10f;
+    float controllerScalarYaw = 0.10f;
+    float controllerScalarPitch = 0.1f;
 
     uint32_t prevTime = 0;
 };
