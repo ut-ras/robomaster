@@ -57,7 +57,7 @@ void AgitatorSubsystem::initialize()
 
 void AgitatorSubsystem::refresh()
 {
-    float time = getTimeMilliseconds() / 1000.0f;  // MAY BREAK ON WRAPPING!
+    float time = (getTimeMilliseconds() - startTime) / 1000.0f;  // MAY BREAK ON WRAPPING!
 
 #if defined TARGET_STANDARD || defined TARGET_SENTRY
     float vel1 = shape(time * BALLS_PER_SEC, 0.0f, 0.0f) / BALLS_PER_REV;
