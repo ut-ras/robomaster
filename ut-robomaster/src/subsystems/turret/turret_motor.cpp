@@ -38,23 +38,23 @@ void TurretMotor::setAngle(float desiredAngle, uint32_t dt) {
     // drivers->terminal << currentAngle.getValue() << "\n";
     // drivers->terminal << desiredAngle << "\n";
 
-    if (compareFloatClose(0.0f, positionControllerError, 1E-3)) {
-        drivers->leds.set(tap::gpio::Leds::Red, true);
-        drivers->leds.set(tap::gpio::Leds::Green, false);
-        drivers->leds.set(tap::gpio::Leds::Blue, false);
-    }
+    // if (compareFloatClose(0.0f, positionControllerError, 1E-3)) {
+    //     drivers->leds.set(tap::gpio::Leds::Red, true);
+    //     drivers->leds.set(tap::gpio::Leds::Green, false);
+    //     drivers->leds.set(tap::gpio::Leds::Blue, false);
+    // }
 
-    else if (positionControllerError > 0.0f) {
-        drivers->leds.set(tap::gpio::Leds::Red, false);
-        drivers->leds.set(tap::gpio::Leds::Green, true);
-        drivers->leds.set(tap::gpio::Leds::Blue, false);
-    }
+    // else if (positionControllerError > 0.0f) {
+    //     drivers->leds.set(tap::gpio::Leds::Red, false);
+    //     drivers->leds.set(tap::gpio::Leds::Green, true);
+    //     drivers->leds.set(tap::gpio::Leds::Blue, false);
+    // }
 
-    else {
-        drivers->leds.set(tap::gpio::Leds::Red, false);
-        drivers->leds.set(tap::gpio::Leds::Green, false);
-        drivers->leds.set(tap::gpio::Leds::Blue, true);
-    }
+    // else {
+    //     drivers->leds.set(tap::gpio::Leds::Red, false);
+    //     drivers->leds.set(tap::gpio::Leds::Green, false);
+    //     drivers->leds.set(tap::gpio::Leds::Blue, true);
+    // }
 
     float output = pid.runController(positionControllerError, (M_TWOPI / 60.0f) * motor->getShaftRPM(), dt);
     

@@ -13,6 +13,12 @@
 
 using modm::Vector3f;
 
+namespace src {
+    class Drivers;
+}
+
+// class TurretMotor;
+
 namespace subsystems
 {
 namespace turret
@@ -75,6 +81,7 @@ private:
 
     tap::motor::DjiMotor yawMotor;
     tap::motor::DjiMotor pitchMotor;
+    
     TurretMotor yawTurret;
     TurretMotor pitchTurret;
 
