@@ -4,8 +4,9 @@
 
 #include "robots/robot_constants.hpp"
 
-using namespace tap::algorithms::ballistics;
+#include "modm/math.hpp"
 
+using namespace tap::algorithms::ballistics;
 namespace subsystems
 {
 namespace turret
@@ -41,6 +42,8 @@ void TurretSubsystem::initialize()
 {
     yawTurret.initialize();
     pitchTurret.initialize();
+    initialChassisYaw = drivers->bmi088.getYaw()*(M_PI/180.0);
+    previousChassisYaw = initialChassisYaw;
 }
 
 void TurretSubsystem::setDesiredAngles(float yaw, float pitch)
@@ -58,54 +61,40 @@ void TurretSubsystem::inputTargetData(Vector3f position, Vector3f velocity, Vect
 
 void TurretSubsystem::setAimStrategy(AimStrategy aimStrategy) { this->aimStrategy = aimStrategy; }
 
-/*
-* Ver 1)
-*   Finding offset (Current - Prev)
-*   float lastUpdatedYawValue = 0.0f;   // put this global somewhere priate in turret motor or subsystem
-*   the yaw of the turret is chassis relative
-*   return the negative offset
-* Ver 2)
-*   Finding offset based off of worldview (current values only)
-*   Subtracting the yaw value from the chassis from the turret yaw ?
-*   -yaw + turret value
-*/
+void TurretSubsystem::calculateOffset() {
+    float currentChassisYaw = drivers->bmi088.getYaw()*(M_PI/180.0);
 
-float TurretSubsystem::calculateOffset() {
-    float offset = 0.0f;
-    // if(drivers->bmi088.getYaw() > ) {
-        
-    // }
-    // tap::algorithms::ContiguousFloat currentAngle;
+    if(currentChassisYaw == previousChassisYaw) {
+        offset.setValue(0.0f);
+    } else {
+        offset.setValue(initialChassisYaw-currentChassisYaw);
+    }
+    previousChassisYaw = currentChassisYaw;
 
-    float yaw = -1*drivers->bmi088.getYaw();   // return radians
-    //float turretYaw = subsystem->getYawTurret()->getAngle();
+   // offset=initialChassisYaw - currentChassisYaw;
 
-            //offset = -getYaw; -> 
-        //offset%=360;  // Make sure if the range is (0,180) to (-180,0)
-            //if(yaw>180)
-                // offset = -(360-getYaw);
-            //convert to radians
-            // use this function for conversion modm_toradians
+    //offset = previousTurretYaw;
+    // Mod just in case
 
-    return offset;
-        // Pseudo code implementation:
-    // create a global variable for offset and initialize to zero
-    // get the yaw value from imu in degrees
-    // encoder in radians
-    // every time yaw value gets updated store a new offset
-        //offset = -getYaw; -> 
-        //offset%=360;  // Make sure if the range is (0,180) to (-180,0)
-            //if(yaw>180)
-                // offset = -(360-getYaw);
-            //convert to radians
-            // use this function for conversion modm_toradians
-    // edge case:
-    // consider the wrapper function, contiguous float? to get smallest degree
-    // manual implementation: check 180 and subtract degrees from 360 (make negative for opposite)
-    float yawSetpoint = getYawTurret()->getAngle();
     
-    drivers->bmi088.getImuState();  // state of IMU (Turned on? Calibrated?) -- enum states
-    drivers->bmi088.getYaw();   // return inradians
+
+    // Update values
+   // previousTurretYaw = offset;
+
+    //initialChassisYaw = currentChassisYaw;
+
+    // previousYaw has prev. world-view yaw of turret
+   // float currentYaw = getYawTurret()->getAngle() + (drivers->bmi088.getYaw()*(M_PI/180.0));  // chassis + world relative view
+   // offset = previousYaw - currentYaw;
+
+    //previousYaw = currentYaw;
+    
+    // offset = fmod(offset, 2*M_PI);
+    // offset = offset-currentYaw;
+
+    //offset the world relative angle
+   // offset *= M_PI/180;
+   // return offset;
 }
 
 void TurretSubsystem::refresh()
@@ -143,6 +132,8 @@ void TurretSubsystem::refresh()
         case AimStrategy::AimAssist:  // unimplemented
             break;
     }
+
+    calculateOffset();
 
     yawTurret.updateMotorAngle();
     pitchTurret.updateMotorAngle();

@@ -3,7 +3,10 @@
 
 #include "tap/control/subsystem.hpp"
 
+#include "tap/algorithms/contiguous_float.hpp"
+
 #include "modm/math/geometry.hpp"
+
 #include "turret_motor.hpp"
 
 #include "drivers.hpp"
@@ -25,6 +28,7 @@ class TurretSubsystem : public tap::control::Subsystem
 {
 public:
     TurretSubsystem(src::Drivers* drivers);
+
     void initialize() override;
 
     void setDesiredAngles(float yaw, float pitch);
@@ -33,7 +37,10 @@ public:
     void inputTargetData(Vector3f position, Vector3f velocity, Vector3f acceleration);
 
     void setAimStrategy(AimStrategy aimStrategy);
-    float TurretSubsystem::calculateOffset();
+
+    // calculate offset of turret in radians
+    void calculateOffset();
+
     void refresh() override;
 
     void runHardwareTests() override;
@@ -42,6 +49,8 @@ public:
 
     TurretMotor* getYawTurret() { return &yawTurret; }
     TurretMotor* getPitchTurret() { return &pitchTurret; }
+    float getYawOffset() { return offset.getValue(); } 
+    // float setYawOffset(float offset) { this->offset.setValue(offset); }
 
 private:
     static constexpr float PID_P_KP = 0.1f;
@@ -53,6 +62,10 @@ private:
 
     float desiredYaw;
     float desiredPitch;
+
+    float initialChassisYaw;
+    float previousChassisYaw;   //  Terminating to check if current is equal to previous (we not moving)
+    tap::algorithms::ContiguousFloat offset = tap::algorithms::ContiguousFloat(0.0f, 0.0f, M_TWOPI);
 
     Vector3f targetPosition = Vector3f(0.0f);
     Vector3f targetVelocity = Vector3f(0.0f);
