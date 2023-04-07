@@ -14,6 +14,7 @@ BeagleBoneCommunicator::BeagleBoneCommunicator(src::Drivers* drivers)
 
 void BeagleBoneCommunicator::initialize() {
     drivers->uart.init<BEAGLEBONE_UART_PORT, BEAGLEBONE_BAUD_RATE>();
+    
 }
 
 void BeagleBoneCommunicator::messageReceiveCallback(const ReceivedSerialMessage& message) {
@@ -31,7 +32,7 @@ void BeagleBoneCommunicator::messageReceiveCallback(const ReceivedSerialMessage&
 }
 
 void BeagleBoneCommunicator::sendMessage() {
-    sendOdometryData();
+    sendOdometryData(); 
 }
 
 void BeagleBoneCommunicator::sendOdometryData() {
@@ -45,11 +46,30 @@ void BeagleBoneCommunicator::sendOdometryData() {
 }
 
 bool BeagleBoneCommunicator::decodeTurretData(const ReceivedSerialMessage& message) {
+
     if (message.header.dataLength == sizeof(lastTurretData)) {
-        memcpy(&lastTurretData, &message.data, sizeof(lastTurretData));
+        memcpy(&lastTurretData, &message.data, sizeof(lastTurretData)); 
+
         return true;
     }
+    return false;
+}
 
+bool BeagleBoneCommunicator::setTurret(){
+    //take lastTurretData, write to turret reference
+    Vector3f position;
+    position.x = lastTurretData.xPos;
+    position.y = lastTurretData.yPos;
+    position.z = lastTurretData.zPos;
+    Vector3f velocity;
+    velocity.x = lastTurretData.xVel;
+    velocity.y = lastTurretData.yVel;
+    velocity.z = lastTurretData.zVel;
+    Vector3f acceleration;
+    acceleration.x = lastTurretData.xAcc;
+    acceleration.y = lastTurretData.yAcc;
+    acceleration.z = lastTurretData.zAcc;
+    turret->inputTargetData(position, velocity, acceleration);
     return false;
 }
 
