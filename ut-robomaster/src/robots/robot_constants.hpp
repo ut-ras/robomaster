@@ -39,10 +39,10 @@ constexpr MotorId ID_AGITATOR_R = MOTOR2;
 constexpr PidConstants PID_FLYWHEEL = PID_VELOCITY_DEFAULT;
 constexpr PidConstants PID_AGITATOR = PID_VELOCITY_DEFAULT;
 #elif defined TARGET_HERO
-constexpr MotorId ID_FLYWHEEL_L = MOTOR8;
-constexpr MotorId ID_FLYWHEEL_R = MOTOR8;
-constexpr MotorId ID_AGITATOR = MOTOR8;
-constexpr MotorId ID_FEEDER = MOTOR8;
+constexpr MotorId ID_FLYWHEEL_L = MOTOR3;
+constexpr MotorId ID_FLYWHEEL_R = MOTOR4;
+constexpr MotorId ID_AGITATOR = MOTOR1;
+constexpr MotorId ID_FEEDER = MOTOR2;
 
 constexpr PidConstants PID_FLYWHEEL = PID_VELOCITY_DEFAULT;
 constexpr PidConstants PID_AGITATOR = PID_VELOCITY_DEFAULT;
