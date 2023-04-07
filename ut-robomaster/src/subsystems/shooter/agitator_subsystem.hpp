@@ -26,17 +26,24 @@ public:
     void setShooting(bool shooting);
 
 private:
-    const float SPEED = 0.5f;
-
     src::Drivers *drivers;
 
 #if defined TARGET_STANDARD || defined TARGET_SENTRY
-    MotorVelocityController leftMotor;
-    MotorVelocityController rightMotor;
+    const float BALLS_PER_SEC = 1.0f;
+    const float BALLS_PER_REV = 8.0f;
+
+    MotorVelocityController leftAgitator;
+    MotorVelocityController rightAgitator;
 #elif defined TARGET_HERO
-    MotorVelocityController motor;
+    const float BALLS_PER_SEC = 1.0f;
+    const float BALLS_PER_REV = 6.0f;
+    const float FEEDER_SPEED = 0.5f;
+
+    MotorVelocityController agitator;
+    MotorVelocityController feeder;
 #endif
 
+    float startTime = 0.0f;
     bool isShooting = false;
 };
 

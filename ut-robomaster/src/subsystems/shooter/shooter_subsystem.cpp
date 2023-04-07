@@ -32,6 +32,10 @@ void ShooterSubsystem::setFiringState(FiringState state)
     firingState = state;
     flywheel.setActive(state != FiringState::Idle);
     agitator.setShooting(state == FiringState::Firing);
+
+    drivers->leds.set(tap::gpio::Leds::Blue, state == FiringState::Idle);
+    drivers->leds.set(tap::gpio::Leds::Green, state == FiringState::Ready);
+    drivers->leds.set(tap::gpio::Leds::Red, state == FiringState::Firing);
 }
 
 }  // namespace shooter
