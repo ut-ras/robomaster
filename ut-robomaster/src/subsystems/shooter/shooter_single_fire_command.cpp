@@ -21,7 +21,3 @@ void ShooterSingleFireCommand::execute()
 }
 
 void ShooterSingleFireCommand::end(bool) {}
-
-bool ShooterSingleFireCommand::isFinished() const { return false; }
-}  // namespace shooter
-}  // namespace subsystems

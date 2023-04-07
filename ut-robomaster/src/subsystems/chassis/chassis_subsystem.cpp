@@ -10,10 +10,10 @@ ChassisSubsystem::ChassisSubsystem(src::Drivers* drivers)
     : tap::control::Subsystem(drivers),
       drivers(drivers),
       wheels{
-          {drivers, M3508, ID_WHEEL_LF, CAN_WHEELS, true, "left front", PID_KP, PID_KI, PID_KD},
-          {drivers, M3508, ID_WHEEL_RF, CAN_WHEELS, false, "right front", PID_KP, PID_KI, PID_KD},
-          {drivers, M3508, ID_WHEEL_LB, CAN_WHEELS, true, "left back", PID_KP, PID_KI, PID_KD},
-          {drivers, M3508, ID_WHEEL_RB, CAN_WHEELS, false, "right back", PID_KP, PID_KI, PID_KD},
+          {drivers, M3508, ID_WHEEL_LF, CAN_WHEELS, true, "left front", PID_WHEELS},
+          {drivers, M3508, ID_WHEEL_RF, CAN_WHEELS, false, "right front", PID_WHEELS},
+          {drivers, M3508, ID_WHEEL_LB, CAN_WHEELS, true, "left back", PID_WHEELS},
+          {drivers, M3508, ID_WHEEL_RB, CAN_WHEELS, false, "right back", PID_WHEELS},
       } {};
 
 void ChassisSubsystem::initialize()
@@ -47,19 +47,19 @@ void ChassisSubsystem::input(Vector2f move, float spin)
     // overdrive error
     float overdrive = max(linearTerm + angularTerm - WHEEL_MAX_VEL, 0.0f);
 
-    // linear velocity correction
-    if (linearTerm > 0.0f)
-    {
-        float correction = min(linearTerm, overdrive);
-        v *= 1.0f - correction / linearTerm;
-        overdrive -= correction;
-    }
-
     // angular velocity correction
     if (angularTerm > 0.0f)
     {
         float correction = min(angularTerm, overdrive);
         wZ *= 1.0f - correction / angularTerm;
+        overdrive -= correction;
+    }
+
+    // linear velocity correction
+    if (linearTerm > 0.0f)
+    {
+        float correction = min(linearTerm, overdrive);
+        v *= 1.0f - correction / linearTerm;
         overdrive -= correction;
     }
 
@@ -82,21 +82,26 @@ void ChassisSubsystem::setMecanumWheelVelocities(Vector2f v, float wZ)
     //     v.rotate(yawAngle - startTurretLoc);
     // }
 
-    // x and y are flipped so that y is forward/back and x is left/right
+    // our velocity is rotated 90 deg, so y is forward/back and x is left/right
     targetWheelVels[0] = (-v.y - v.x - wZ * WHEEL_LXY) / WHEEL_RADIUS;  // rad/s
     targetWheelVels[1] = (-v.y + v.x + wZ * WHEEL_LXY) / WHEEL_RADIUS;  // rad/s
     targetWheelVels[2] = (-v.y + v.x - wZ * WHEEL_LXY) / WHEEL_RADIUS;  // rad/s
     targetWheelVels[3] = (-v.y - v.x + wZ * WHEEL_LXY) / WHEEL_RADIUS;  // rad/s
 }
 
-float* ChassisSubsystem::getCurrentWheelVelocities()
+Vector3f ChassisSubsystem::measureVelocity()
 {
-    float vels[4];
-    for (int i = 0; i < WHEELS; i++)
-    {
-        vels[i] = wheels[i].measure();
-    }
-    return vels;
+    float w1 = wheels[0].measure();  // rev/s
+    float w2 = wheels[1].measure();  // rev/s
+    float w3 = wheels[2].measure();  // rev/s
+    float w4 = wheels[3].measure();  // rev/s
+
+    float xa = (w1 + w2 + w3 + w4);
+    float ya = (-w1 + w2 + w3 - w4);
+    float wa = (-w1 + w2 - w3 + w4) / WHEEL_LXY;
+
+    // Rotated -90 deg to match our reference frame
+    return Vector3f(ya, -xa, wa) * WHEEL_RADIUS / 4.0f * M_TWOPI;
 }
 
 }  // namespace chassis

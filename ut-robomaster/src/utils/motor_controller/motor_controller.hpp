@@ -23,12 +23,10 @@ public:
         const CanBus motorCanBus,
         const bool motorInverted,
         const char* motorName,
-        const float& kp = 1.0f,
-        const float& ki = 0.0f,
-        const float& kd = 0.0f)
+        const PidConstants& pidConstants)
         : constants(constants),
           motor(drivers, motorId, motorCanBus, motorInverted, motorName),
-          pid(kp, ki, kd)
+          pid(pidConstants)
     {
     }
 
@@ -54,12 +52,8 @@ public:
         const CanBus motorCanBus,
         const bool motorInverted,
         const char* motorName,
-        const float& pos_kp = 1.0f,
-        const float& pos_ki = 0.0f,
-        const float& pos_kd = 0.0f,
-        const float& vel_kp = 1.0f,
-        const float& vel_ki = 0.0f,
-        const float& vel_kd = 0.0f)
+        const PidConstants& pidConstantsVel,
+        const PidConstants& pidConstantsPos)
         : MotorController(
               drivers,
               constants,
@@ -67,10 +61,8 @@ public:
               motorCanBus,
               motorInverted,
               motorName,
-              pos_kp,
-              pos_ki,
-              pos_kd),
-          velocityPid(vel_kp, vel_ki, vel_kd)
+              pidConstantsPos),
+          velocityPid(pidConstantsVel)
     {
     }
 

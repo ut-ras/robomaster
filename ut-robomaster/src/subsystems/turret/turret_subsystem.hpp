@@ -66,13 +66,6 @@ public:
     static constexpr float BELT_RATIO = 2.0f;
 
 private:
-    static constexpr float PID_P_KP = 0.1f;
-    static constexpr float PID_P_KI = 0.1f;
-    static constexpr float PID_P_KD = 0.0f;
-    static constexpr float PID_V_KP = 0.75f;
-    static constexpr float PID_V_KI = 12.0f;
-    static constexpr float PID_V_KD = 0.0f;
-
     float desiredYaw;
     float desiredPitch;
 
