@@ -36,7 +36,7 @@ constexpr MotorId ID_FLYWHEEL_BR = MOTOR6;
 constexpr MotorId ID_AGITATOR_L = MOTOR1;
 constexpr MotorId ID_AGITATOR_R = MOTOR2;
 
-constexpr PidConstants PID_FLYWHEEL = PID_VELOCITY_DEFAULT;
+constexpr PidConstants PID_FLYWHEEL = {0.1f, 0.1f, 0.0f};
 constexpr PidConstants PID_AGITATOR = PID_VELOCITY_DEFAULT;
 #elif defined TARGET_HERO
 constexpr MotorId ID_FLYWHEEL_L = MOTOR3;
