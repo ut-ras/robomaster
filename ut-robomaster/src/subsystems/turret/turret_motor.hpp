@@ -4,7 +4,9 @@
 #include "tap/algorithms/smooth_pid.hpp"
 #include "tap/algorithms/contiguous_float.hpp"
 
-#include "drivers.hpp"
+namespace src {
+    class Drivers;
+}
 
 namespace subsystems::turret{
 
