@@ -115,8 +115,6 @@ void TurretSubsystem::refresh()
             break;
     }
 
-    calculateOffset();
-
     yawTurret.updateMotorAngle();
     pitchTurret.updateMotorAngle();
 }
