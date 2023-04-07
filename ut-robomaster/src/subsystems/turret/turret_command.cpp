@@ -25,35 +25,37 @@ namespace subsystems
 {
 namespace turret
 {
-void TurretCommand::initialize() {}
+void TurretCommand::initialize() {
+    prevTime = tap::arch::clock::getTimeMilliseconds();
+}
 
 void TurretCommand::execute()
 {
+    uint32_t currTime = tap::arch::clock::getTimeMilliseconds();
+    uint32_t dt = currTime - prevTime;
+    prevTime = currTime;
+
     Remote* remote = &drivers->remote;
-    bool isCTRLKeyPressed = remote->keyPressed(Remote::Key::CTRL);
-    if (isCTRLKeyPressed)  // CTRL is being pressed
-    {
-        float x =
-            remote->getChannel(Remote::Channel::LEFT_HORIZONTAL) + (remote->getMouseX() / 1.0f);
-        float y = remote->getChannel(Remote::Channel::LEFT_VERTICAL) + (remote->getMouseY() / 1.0f);
 
-        yaw -= x * 0.1f;
-        pitch += y * 0.1f;
-    }
-    else
-    {
-        float x =
-            remote->getChannel(Remote::Channel::LEFT_HORIZONTAL) + (remote->getMouseX() / 1.0f);
-        float y = remote->getChannel(Remote::Channel::LEFT_VERTICAL) + (remote->getMouseY() / 1.0f);
-
-        yaw -= x;
-        pitch += y;
+    if (fabs(remote->getChannel(Remote::Channel::LEFT_HORIZONTAL)) > 0.1f) {
+        float yawSetpoint = subsystem->getYawTurret()->getAngle() + controllerScalarYaw * -remote->getChannel(Remote::Channel::LEFT_HORIZONTAL);
+        subsystem->getYawTurret()->setAngle(yawSetpoint, dt);
+        subsystem->setPreviousChassisRelativeYawSetpoint(tap::algorithms::ContiguousFloat(yawSetpoint + subsystem->getChassisOffset() * subsystem->BELT_RATIO, 0.0f, M_TWOPI).getValue());
     }
 
-    subsystem->setDesiredAngles(yaw, pitch);
+    else {
+        subsystem->getYawTurret()->setAngle(subsystem->getTurretWithOffset(), dt);
+    }
 
-    // float x = static_cast<float>(remote->getMouseX()) / 1.0f;
-    // float y = static_cast<float>(remote->getMouseY()) / 1.0f;
+    if (fabs(remote->getChannel(Remote::Channel::LEFT_VERTICAL)) > 0.1f)  {
+        float pitchSetpoint = subsystem->getPitchTurret()->getAngle() + controllerScalarPitch * remote->getChannel(Remote::Channel::LEFT_VERTICAL);
+        subsystem->getPitchTurret()->setAngle(pitchSetpoint, dt);
+    }
+
+    else {        
+        subsystem->getPitchTurret()->setAngle(subsystem->getPitchTurret()->getSetpoint(), dt);
+        drivers->terminal << subsystem->getPitchTurret()->getAngle() << "\n";
+    }
 }
 
 void TurretCommand::end(bool) {}

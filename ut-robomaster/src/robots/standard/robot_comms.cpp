@@ -1,22 +1,20 @@
 #include "robot_comms.hpp"
 
-#include "tap/drivers.hpp"
-
 namespace comms
 {
-
-RobotComms RobotCommsSingleton::instance_;
+RobotComms::RobotComms(tap::Drivers *drivers, const char *header)
+    : HEADER(header), device(drivers), stream(device)
+{
+    drivers->terminalSerial.addHeader(HEADER, this);
+}
 
 void RobotComms::terminalSerialStreamCallback(modm::IOStream& outputStream)
 {
     outputStream << robotStream << modm::endl;
     outputStream.flush();
-    outputStream << "hello" << modm::endl;
     memset(robotStream, 0, sizeof(robotStream));
     robotStreamIndex = 0;
 }
-
-void RobotComms::init(tap::Drivers* drivers) { drivers->terminalSerial.addHeader(HEADER, this); }
 
 bool RobotComms::terminalSerialCallback(
     char* inputLine,
@@ -26,11 +24,26 @@ bool RobotComms::terminalSerialCallback(
     // remove everything from robotStream and write to outputStream
     outputStream << robotStream << modm::endl;
     outputStream.flush();
-    outputStream << "hello" << modm::endl;
     memset(robotStream, 0, sizeof(robotStream));
     robotStreamIndex = 0;
     streamingEnabled = true;
     return true;
+}
+
+RobotComms &RobotComms::operator<<(const char *str)
+{
+    stream << str;
+    return *this;
+}
+RobotComms &RobotComms::operator<<(const int &v)
+{
+    stream << v;
+    return *this;
+}
+RobotComms &RobotComms::operator<<(const float &v)
+{
+    stream << v;
+    return *this;
 }
 
 }  // namespace comms

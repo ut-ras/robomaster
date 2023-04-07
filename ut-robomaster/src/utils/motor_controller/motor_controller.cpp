@@ -3,6 +3,7 @@
 namespace
 {
 using namespace motor_controller;
+using namespace tap::algorithms;
 
 float measure_position(DjiMotor* motor, const MotorConstants& constants)
 {

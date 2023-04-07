@@ -23,6 +23,8 @@
 #include "tap/drivers.hpp"
 #include "communication/beaglebone_communicator.hpp"
 
+#include "robots/standard/robot_comms.hpp"
+
 namespace src
 {
 class Drivers : public tap::Drivers
@@ -34,12 +36,14 @@ public:
 #endif
     Drivers() 
         : tap::Drivers(),
-          beagleboneCommunicator(this)
+          beagleboneCommunicator(this),
+          terminal(this)
         {
         }
 
 public:
     communication::BeagleBoneCommunicator beagleboneCommunicator;
+    comms::RobotComms terminal;
 };  // class Drivers
 
 }  // namespace src

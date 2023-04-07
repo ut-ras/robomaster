@@ -10,7 +10,7 @@
 
 #include "drivers.hpp"
 #include "drivers_singleton.hpp"
-#include "robot_comms.hpp"
+// #include "robot_comms.hpp"
 
 // #include "agitator/agitator_rotate_command.hpp"
 // #include "agitator/agitator_reverse_command.hpp"
@@ -120,7 +120,7 @@ void initializeSubsystems()
     theTurret.initialize();
     // theAgitator.initialize();
     theShooter.initialize();
-    theOdometry.initialize();
+    // theOdometry.initialize();
     // theChassis.initialize();
     // theTurret.initialize();     // mouse
     // theGimbal.initialize();  // joystick
@@ -157,7 +157,7 @@ namespace control
 {
 void initSubsystemCommands(src::Drivers *drivers)
 {
-    comms::RobotCommsSingleton::init(drivers);
+    // comms::RobotCommsSingleton::init(drivers);
 
     standard_control::initializeSubsystems();
     standard_control::registerStandardSubsystems(drivers);
