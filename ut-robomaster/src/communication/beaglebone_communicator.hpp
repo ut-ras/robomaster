@@ -17,14 +17,18 @@ class Drivers;
 namespace communication {
 
 using subsystems::turret::TurretSubsystem;
-
+enum AimStrategy
+    {
+        Manual,
+        AutoAim,
+        AimAssist
+    };
 class BeagleBoneCommunicator : public tap::communication::serial::DJISerial {
 public:
     OdometryData data;
     BeagleBoneCommunicator(src::Drivers* drivers);
     DISALLOW_COPY_AND_ASSIGN(BeagleBoneCommunicator);
     virtual ~BeagleBoneCommunicator() = default;
-    
     /**
      * Initializes the UART line and callback interface, UART defaults to Uart1
      * 
@@ -71,9 +75,9 @@ public:
 
     const TurretData& getTurretData() const;
     /**
-    * @return true if the Turret was written to, sets the yaw and pitch of the turret
+    * Sends ballistics data to Turret
     */
-    bool setTurret(); 
+    void setTurret(); 
 
 private:
     src::Drivers* drivers;
