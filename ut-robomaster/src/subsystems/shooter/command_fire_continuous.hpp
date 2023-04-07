@@ -1,19 +1,21 @@
-#ifndef SHOOTER_ON_COMMAND_HPP_
-#define SHOOTER_ON_COMMAND_HPP_
+#ifndef COMMAND_FIRE_CONTINUOUS_HPP_
+#define COMMAND_FIRE_CONTINUOUS_HPP_
 
 #include "tap/control/command.hpp"
 
+#include "drivers.hpp"
 #include "shooter_subsystem.hpp"
 
 namespace subsystems
 {
 namespace shooter
 {
-class ShooterOnCommand : public tap::control::Command
+class CommandFireContinuous : public tap::control::Command
 {
 public:
-    ShooterOnCommand(ShooterSubsystem *sub)
-        : shooter(sub)
+    CommandFireContinuous(ShooterSubsystem *sub, src::Drivers *drivers)
+        : subsystem(sub),
+          drivers(drivers)
     {
         addSubsystemRequirement(sub);
     }
@@ -29,10 +31,11 @@ public:
     const char *getName() const override { return "shooter on command"; }
 
 private:
-    ShooterSubsystem *shooter;
+    ShooterSubsystem *subsystem;
+    src::Drivers *drivers;
 
-};  // class ShooterOnCommand
+};  // class CommandFireContinuous
 }  // namespace shooter
-}  // namespace control
+}  // namespace subsystems
 
 #endif  // SHOOTER_ON_COMMAND_HPP_

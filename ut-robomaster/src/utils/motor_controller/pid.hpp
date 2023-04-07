@@ -1,16 +1,27 @@
+#ifndef UTILS_MOTOR_CONTROLLER_PID_HPP_
+#define UTILS_MOTOR_CONTROLLER_PID_HPP_
+
 namespace motor_controller
 {
+struct PidConstants
+{
+    float p;
+    float i;
+    float d;
+};
+
 class Pid
 {
 public:
-    Pid(const float& kp = 1.0f, const float& ki = 0.0f, const float& kd = 0.0f);
+    Pid(const PidConstants& constants);
     float update(float err, float dt);
 
+    const PidConstants k;
+
     // private:
-    const float kp;
-    const float ki;
-    const float kd;
     float error[3] = {0.0f, 0.0f, 0.0f};
     float output = 0.0f;
 };
 }  // namespace motor_controller
+
+#endif
