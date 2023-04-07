@@ -60,8 +60,10 @@ void AgitatorSubsystem::refresh()
     float time = getTimeMilliseconds() / 1000.0f;  // MAY BREAK ON WRAPPING!
 
 #if defined TARGET_STANDARD || defined TARGET_SENTRY
-    float vel1 = shape(time * BALLS_PER_SEC, 0.0f, 0.0f) / BALLS_PER_REV;
-    float vel2 = shape(time * BALLS_PER_SEC, 0.0f, 1.0f) / BALLS_PER_REV;
+    // float vel1 = shape(time * BALLS_PER_SEC, 0.0f, 0.0f) / BALLS_PER_REV;
+    // float vel2 = shape(time * BALLS_PER_SEC, 0.0f, 1.0f) / BALLS_PER_REV;
+    float vel1 = time * BALLS_PER_SEC / BALLS_PER_REV;
+    float vel2 = time * BALLS_PER_SEC / BALLS_PER_REV;
 
     leftAgitator.update(isShooting ? vel1 : 0.0f);
     rightAgitator.update(isShooting ? vel2 : 0.0f);
