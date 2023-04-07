@@ -39,11 +39,18 @@ public:
 private:
     src::Drivers* drivers;
     static constexpr int WHEELS = 4;
-    static constexpr float WHEEL_DISTANCE_X = 0.4064f;  // meters
-    static constexpr float WHEEL_DISTANCE_Y = 0.508f;   // meters
-    static constexpr float WHEEL_RADIUS = 0.1524f;      // meters
+
+#if defined TARGET_STANDARD || defined TARGET_SENTRY
+    static constexpr float WHEEL_DISTANCE_X = 0.391f;  // meters
+    static constexpr float WHEEL_DISTANCE_Y = 0.315f;  // meters
+#elif defined TARGET_HERO
+    static constexpr float WHEEL_DISTANCE_X = 0.525f;  // meters
+    static constexpr float WHEEL_DISTANCE_Y = 0.400f;  // meters
+#endif
+
+    static constexpr float WHEEL_RADIUS = 0.1524f;  // meters
     static constexpr float WHEEL_LXY = (WHEEL_DISTANCE_X + WHEEL_DISTANCE_Y) / 2.0f;
-    static constexpr float WHEEL_MAX_VEL = 10.5f;                                       // rad/s
+    static constexpr float WHEEL_MAX_VEL = 15.0f;                                       // rad/s
     static constexpr float MAX_LINEAR_VEL = WHEEL_MAX_VEL * WHEEL_RADIUS;               // m/s
     static constexpr float MAX_ANGULAR_VEL = WHEEL_MAX_VEL * WHEEL_RADIUS / WHEEL_LXY;  // rad/s
 

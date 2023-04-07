@@ -47,19 +47,19 @@ void ChassisSubsystem::input(Vector2f move, float spin)
     // overdrive error
     float overdrive = max(linearTerm + angularTerm - WHEEL_MAX_VEL, 0.0f);
 
-    // linear velocity correction
-    if (linearTerm > 0.0f)
-    {
-        float correction = min(linearTerm, overdrive);
-        v *= 1.0f - correction / linearTerm;
-        overdrive -= correction;
-    }
-
     // angular velocity correction
     if (angularTerm > 0.0f)
     {
         float correction = min(angularTerm, overdrive);
         wZ *= 1.0f - correction / angularTerm;
+        overdrive -= correction;
+    }
+
+    // linear velocity correction
+    if (linearTerm > 0.0f)
+    {
+        float correction = min(linearTerm, overdrive);
+        v *= 1.0f - correction / linearTerm;
         overdrive -= correction;
     }
 
