@@ -4,10 +4,6 @@
 #include "tap/architecture/timeout.hpp"
 #include "tap/communication/serial/dji_serial.hpp"
 #include "tap/communication/serial/uart.hpp"
-#include "robots/standard/robot_comms.hpp"
-#include "tap/control/subsystem.hpp"
-#include "subsystems/turret/turret_subsystem.hpp"
-#include "subsystems/odometry/odometry_subsystem.hpp"
 
 #include "cv_message.hpp"
 
@@ -16,19 +12,12 @@ class Drivers;
 }
 namespace communication {
 
-using subsystems::turret::TurretSubsystem;
-enum AimStrategy
-    {
-        Manual,
-        AutoAim,
-        AimAssist
-    };
 class BeagleBoneCommunicator : public tap::communication::serial::DJISerial {
 public:
-    OdometryData data;
     BeagleBoneCommunicator(src::Drivers* drivers);
     DISALLOW_COPY_AND_ASSIGN(BeagleBoneCommunicator);
     virtual ~BeagleBoneCommunicator() = default;
+
     /**
      * Initializes the UART line and callback interface, UART defaults to Uart1
      * 
@@ -72,17 +61,10 @@ public:
     /**
      * @return a reference to lastTurretData (the last turret aiming data received from the BeagleBone)
      */
-
     const TurretData& getTurretData() const;
-    /**
-    * Sends ballistics data to Turret
-    */
-    void setTurret(); 
 
 private:
     src::Drivers* drivers;
-    /**For positioning the Turret*/
-    TurretSubsystem* turret;
 
     /** Last turret aiming data received from the BeagleBone */
     TurretData lastTurretData;

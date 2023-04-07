@@ -1,3 +1,4 @@
+
 #include "drivers.hpp"
 #include "beaglebone_communicator.hpp"
 
@@ -49,17 +50,17 @@ bool BeagleBoneCommunicator::decodeTurretData(const ReceivedSerialMessage& messa
 
     if (message.header.dataLength == sizeof(lastTurretData)) {
         memcpy(&lastTurretData, &message.data, sizeof(lastTurretData)); 
-        if(lastTurretData.hasTarget){
-            setTurret();
-        }
-        else{
-            turret->setAimStrategy(subsystems::turret::AimStrategy::Manual);
-        }
+        // if(lastTurretData.hasTarget){
+        //     //setTurret();
+        // }
+        // else{
+        //     //turret->setAimStrategy(subsystems::turret::AimStrategy::Manual);
+        // }
         return true;
     }
     return false;
 }
-
+/*
 void BeagleBoneCommunicator::setTurret(){
     //take lastTurretData, write to turret reference
     Vector3f position;
@@ -74,8 +75,8 @@ void BeagleBoneCommunicator::setTurret(){
     acceleration.x = lastTurretData.xAcc;
     acceleration.y = lastTurretData.yAcc;
     acceleration.z = lastTurretData.zAcc;
-    turret->inputTargetData(position, velocity, acceleration);
-}
+    //turret->inputTargetData(position, velocity, acceleration);
+}*/
 
 bool BeagleBoneCommunicator::isBeagleBoneOnline() const {
     return !beagleboneOfflineTimeout.isExpired();
