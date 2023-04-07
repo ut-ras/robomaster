@@ -12,6 +12,7 @@
 #include "subsystems/turret/turret_subsystem.hpp"
 
 #include "drivers.hpp"
+
 namespace subsystems
 {
 namespace odometry
@@ -45,6 +46,7 @@ private:
     ChassisDisplacementObserver chassisDisplacement;
     ChassisWorldYawObserver chassisYaw;
     Odometry2DTracker tracker;
+    TurretSubsystem* turret;
 };
 }  // namespace odometry
 }  // namespace subsystems

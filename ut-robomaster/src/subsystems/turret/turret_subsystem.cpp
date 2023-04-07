@@ -47,8 +47,6 @@ void TurretSubsystem::initialize()
 {
     yawTurret.initialize();
     pitchTurret.initialize();
-    initialChassisYaw = drivers->bmi088.getYaw()*(M_PI/180.0);
-    previousChassisYaw = initialChassisYaw;
 }
 
 void TurretSubsystem::setDesiredAngles(float yaw, float pitch)

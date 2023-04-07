@@ -5,7 +5,7 @@
 #include "tap/communication/serial/dji_serial.hpp"
 #include "tap/communication/serial/uart.hpp"
 
-#include "subsystems/turret/turret_subsystem.hpp"
+// #include "subsystems/turret/turret_subsystem.hpp"
 
 #include "cv_message.hpp"
 

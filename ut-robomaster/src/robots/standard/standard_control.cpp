@@ -18,7 +18,7 @@
 
 #include "subsystems/chassis/chassis_subsystem.hpp"
 #include "subsystems/chassis/command_move_chassis.hpp"
-#include "subsystems/odometry/odometry_subsystem.hpp"
+// #include "subsystems/odometry/odometry_subsystem.hpp"
 #include "subsystems/shooter/command_fire_continuous.hpp"
 #include "subsystems/shooter/command_fire_once.hpp"
 #include "subsystems/shooter/shooter_subsystem.hpp"
@@ -50,7 +50,7 @@ namespace standard_control
 /* define subsystems --------------------------------------------------------*/
 chassis::ChassisSubsystem theChassis(drivers());
 turret::TurretSubsystem theTurret(drivers());
-odometry::OdometrySubsystem theOdometry(drivers(), &theChassis, &theTurret);
+// odometry::OdometrySubsystem theOdometry(drivers(), &theChassis, &theTurret);
 
 /* define commands ----------------------------------------------------------*/
 chassis::MoveChassisCommand moveChassisCommand(&theChassis, drivers());
@@ -107,7 +107,7 @@ void registerStandardSubsystems(src::Drivers *drivers)
     // drivers->commandScheduler.registerSubsystem(&theAgitator);
     drivers->commandScheduler.registerSubsystem(&theShooter);
     theShooter.registerSubsystems();
-    drivers->commandScheduler.registerSubsystem(&theOdometry);
+    // drivers->commandScheduler.registerSubsystem(&theOdometry);
     // drivers->commandScheduler.registerSubsystem(&theChassis);
     // drivers->commandScheduler.registerSubsystem(&theTurret);    // mouse
     // drivers->commandScheduler.registerSubsystem(&theGimbal);     // joystick

@@ -60,17 +60,10 @@ public:
 
     static constexpr float BELT_RATIO = 2.0f;
 
-    float getPreviousChassisRelativeYawSetpoint() { return previousYawSetpoint; }
-    void setPreviousChassisRelativeYawSetpoint(float setpoint) { this->previousYawSetpoint = setpoint; } 
-
-    static constexpr float BELT_RATIO = 2.0f;
-
 private:
     float desiredYaw;
     float desiredPitch;
-
-    float initialChassisYaw;
-    float previousChassisYaw;   //  Terminating to check if current is equal to previous (we not moving)
+  //  Terminating to check if current is equal to previous (we not moving)
     tap::algorithms::ContiguousFloat offset = tap::algorithms::ContiguousFloat(0.0f, 0.0f, M_TWOPI);
 
     Vector3f targetPosition = Vector3f(0.0f);
