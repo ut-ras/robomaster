@@ -44,7 +44,7 @@ constexpr MotorId ID_FLYWHEEL_R = MOTOR4;
 constexpr MotorId ID_AGITATOR = MOTOR1;
 constexpr MotorId ID_FEEDER = MOTOR2;
 
-constexpr PidConstants PID_FLYWHEEL = PID_VELOCITY_DEFAULT;
+constexpr PidConstants PID_FLYWHEEL = {0.1f, 0.1f, 0.0f};
 constexpr PidConstants PID_AGITATOR = PID_VELOCITY_DEFAULT;
 constexpr PidConstants PID_FEEDER = PID_VELOCITY_DEFAULT;
 #endif

@@ -46,14 +46,14 @@ FlywheelSubsystem::FlywheelSubsystem(src::Drivers* drivers)
            M3508_NOGEARBOX,
            ID_FLYWHEEL_L,
            CAN_SHOOTER,
-           false,
+           true,
            "flywheel left",
            PID_FLYWHEEL},
           {drivers,
            M3508_NOGEARBOX,
            ID_FLYWHEEL_R,
            CAN_SHOOTER,
-           true,
+           false,
            "flywheel right",
            PID_FLYWHEEL}}
 {
