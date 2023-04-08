@@ -35,7 +35,7 @@ private:
     MotorVelocityController leftAgitator;
     MotorVelocityController rightAgitator;
 #elif defined TARGET_HERO
-    const float BALLS_PER_SEC = 2.0f;
+    const float BALLS_PER_SEC = 4.0f;
     const float BALLS_PER_REV = 6.0f;
     const float FEEDER_SPEED = BALLS_PER_SEC / BALLS_PER_REV;
 
