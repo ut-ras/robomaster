@@ -85,6 +85,7 @@ private:
 
     tap::algorithms::ContiguousFloat turretOffset;
 
+    #ifdef TARGET_STANDARD
     // From aruw-mcb, should test to find our own values: 
     // https://gitlab.com/aruw/controls/aruw-mcb/-/blob/develop/aruw-mcb-project/src/aruwsrc/robot/standard/standard_turret_constants.hpp
     static constexpr tap::algorithms::SmoothPidConfig YAW_PID_CONFIG = {
@@ -100,6 +101,25 @@ private:
         .errDeadzone = 0.0f,
         .errorDerivativeFloor = 0.0f,
     };
+    #endif
+
+     #ifdef TARGET_HERO
+    // From aruw-mcb, should test to find our own values: 
+    // https://gitlab.com/aruw/controls/aruw-mcb/-/blob/develop/aruw-mcb-project/src/aruwsrc/robot/standard/standard_turret_constants.hpp
+    static constexpr tap::algorithms::SmoothPidConfig YAW_PID_CONFIG = {
+        .kp = 100'183.1f,
+        .ki = 0.0f,
+        .kd = 2'500.0f,
+        .maxICumulative = 0.0f,
+        .maxOutput = 32'000.0f,
+        .tQDerivativeKalman = 1.0f,
+        .tRDerivativeKalman = 30.0f,
+        .tQProportionalKalman = 1.0f,
+        .tRProportionalKalman = 0.0f,
+        .errDeadzone = 0.0f,
+        .errorDerivativeFloor = 0.0f,
+    };
+    #endif
 
     static constexpr tap::algorithms::SmoothPidConfig PITCH_PID_CONFIG = {
         .kp = 100'183.1f,
