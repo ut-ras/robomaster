@@ -117,7 +117,7 @@ private:
         .tQProportionalKalman = 1.0f,
         .tRProportionalKalman = 0.0f,
         .errDeadzone = 0.0f,
-        .errorDerivativeFloor = 0.0f,
+        .errorDerivativeFloor = 10.0f,
     };
     #endif
 
