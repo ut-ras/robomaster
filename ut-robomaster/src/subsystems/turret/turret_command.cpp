@@ -48,17 +48,17 @@ void TurretCommand::execute()
         subsystem->getYawTurret()->setAngle(subsystem->getTurretWithOffset(), dt);
     }
 
-    pitch = std::clamp(pitch, pitchLowerLimit, pitchUpperLimit);
 
     if (fabs(remote->getChannel(Remote::Channel::LEFT_VERTICAL)) > 0.1f)  {
         pitch += controllerScalarPitch * remote->getChannel(Remote::Channel::LEFT_VERTICAL);
-        subsystem->getPitchTurret()->setAngle(pitch, dt);
     }
 
     else {        
-        subsystem->getPitchTurret()->setAngle(pitch, dt);
         drivers->terminal << subsystem->getPitchTurret()->getAngle() << "\n";
     }
+
+    pitch = std::clamp(pitch, pitchLowerLimit, pitchUpperLimit);
+    subsystem->getPitchTurret()->setAngle(pitch, dt);
 }
 
 void TurretCommand::end(bool) {}
