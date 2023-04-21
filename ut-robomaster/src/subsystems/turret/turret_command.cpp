@@ -25,9 +25,7 @@ namespace subsystems
 {
 namespace turret
 {
-void TurretCommand::initialize() {
-    prevTime = tap::arch::clock::getTimeMilliseconds();
-}
+void TurretCommand::initialize() { prevTime = tap::arch::clock::getTimeMilliseconds(); }
 
 void TurretCommand::execute()
 {
@@ -37,22 +35,37 @@ void TurretCommand::execute()
 
     Remote* remote = &drivers->remote;
 
-    if (fabs(remote->getChannel(Remote::Channel::LEFT_HORIZONTAL)) > 0.1f) {
-        float yawSetpoint = subsystem->getYawTurret()->getAngle() + controllerScalarYaw * -remote->getChannel(Remote::Channel::LEFT_HORIZONTAL);
+    if (!remote->isConnected()) return;  // avoid snapping until controller is on
+
+    if (fabs(remote->getChannel(Remote::Channel::LEFT_HORIZONTAL)) > 0.1f)
+    {
+        float yawSetpoint =
+            subsystem->getYawTurret()->getAngle() +
+            controllerScalarYaw * -remote->getChannel(Remote::Channel::LEFT_HORIZONTAL);
         subsystem->getYawTurret()->setAngle(yawSetpoint, dt);
-        subsystem->setPreviousChassisRelativeYawSetpoint(tap::algorithms::ContiguousFloat(yawSetpoint + subsystem->getChassisOffset() * subsystem->BELT_RATIO, 0.0f, M_TWOPI).getValue());
+        subsystem->setPreviousChassisRelativeYawSetpoint(
+            tap::algorithms::ContiguousFloat(
+                yawSetpoint + subsystem->getChassisOffset() * subsystem->BELT_RATIO,
+                0.0f,
+                M_TWOPI)
+                .getValue());
     }
 
-    else {
+    else
+    {
         subsystem->getYawTurret()->setAngle(subsystem->getTurretWithOffset(), dt);
     }
 
-    if (fabs(remote->getChannel(Remote::Channel::LEFT_VERTICAL)) > 0.1f)  {
-        float pitchSetpoint = subsystem->getPitchTurret()->getAngle() + controllerScalarPitch * remote->getChannel(Remote::Channel::LEFT_VERTICAL);
+    if (fabs(remote->getChannel(Remote::Channel::LEFT_VERTICAL)) > 0.1f)
+    {
+        float pitchSetpoint =
+            subsystem->getPitchTurret()->getAngle() +
+            controllerScalarPitch * remote->getChannel(Remote::Channel::LEFT_VERTICAL);
         subsystem->getPitchTurret()->setAngle(pitchSetpoint, dt);
     }
 
-    else {        
+    else
+    {
         subsystem->getPitchTurret()->setAngle(subsystem->getPitchTurret()->getSetpoint(), dt);
         drivers->terminal << subsystem->getPitchTurret()->getAngle() << "\n";
     }
