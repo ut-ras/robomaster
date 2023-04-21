@@ -87,9 +87,9 @@ private:
 
     #ifdef TARGET_STANDARD
     static constexpr tap::algorithms::SmoothPidConfig YAW_PID_CONFIG = {
-        .kp = 229'183.1f,
+        .kp = 65'000.0f,
         .ki = 0.0f,
-        .kd = 2'500.0f,
+        .kd = 3'000.0f,
         .maxICumulative = 0.0f,
         .maxOutput = 32'000.0f,
         .tQDerivativeKalman = 1.0f,

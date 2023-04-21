@@ -34,7 +34,9 @@ TurretSubsystem::TurretSubsystem(src::Drivers* drivers)
           drivers,
           &pitchMotor,
           PITCH_PID_CONFIG,
-          4.4f
+          4.2f,
+          3.93f,
+          4.38f
       ),
       turretOffset(0.0f, 0.0f, M_TWOPI)
 {

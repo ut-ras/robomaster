@@ -15,7 +15,7 @@ class TurretMotor{
 public:
     TurretMotor(src::Drivers *drivers, tap::motor::MotorInterface *motor, const tap::algorithms::SmoothPidConfig &pidConfig);
 
-    TurretMotor(src::Drivers *drivers, tap::motor::MotorInterface *motor, const tap::algorithms::SmoothPidConfig &pidConfig, float startAngle);
+    TurretMotor(src::Drivers *drivers, tap::motor::MotorInterface *motor, const tap::algorithms::SmoothPidConfig &pidConfig, float startAngle, float lowerRange, float upperRange);
     void initialize();
     void updateMotorAngle();
     void setAngle(float desiredAngle, uint32_t dt);
@@ -30,6 +30,9 @@ private:
     float unwrappedAngle = 0;
     tap::algorithms::ContiguousFloat currentAngle;
     float lastUpdatedEncoderValue = 0;
+
+    float lowerRange = -1.0f;
+    float upperRange = -1.0f;
 
     static constexpr float GM6020_MAX_OUTPUT = 30000.0f;
 };
