@@ -25,7 +25,10 @@ namespace subsystems
 {
 namespace turret
 {
-void TurretCommand::initialize() { prevTime = tap::arch::clock::getTimeMilliseconds(); }
+void TurretCommand::initialize() {
+    prevTime = tap::arch::clock::getTimeMilliseconds();
+    pitch = subsystem->getPitchTurret()->getAngle();
+}
 
 void TurretCommand::execute()
 {
@@ -56,19 +59,16 @@ void TurretCommand::execute()
         subsystem->getYawTurret()->setAngle(subsystem->getTurretWithOffset(), dt);
     }
 
-    if (fabs(remote->getChannel(Remote::Channel::LEFT_VERTICAL)) > 0.1f)
-    {
-        float pitchSetpoint =
-            subsystem->getPitchTurret()->getAngle() +
-            controllerScalarPitch * remote->getChannel(Remote::Channel::LEFT_VERTICAL);
-        subsystem->getPitchTurret()->setAngle(pitchSetpoint, dt);
+    if (fabs(remote->getChannel(Remote::Channel::LEFT_VERTICAL)) > 0.1f)  {
+        pitch += controllerScalarPitch * remote->getChannel(Remote::Channel::LEFT_VERTICAL);
     }
 
-    else
-    {
-        subsystem->getPitchTurret()->setAngle(subsystem->getPitchTurret()->getSetpoint(), dt);
+    else {
         drivers->terminal << subsystem->getPitchTurret()->getAngle() << "\n";
     }
+
+    pitch = std::clamp(pitch, pitchLowerLimit, pitchUpperLimit);
+    subsystem->getPitchTurret()->setAngle(pitch, dt);
 }
 
 void TurretCommand::end(bool) {}
