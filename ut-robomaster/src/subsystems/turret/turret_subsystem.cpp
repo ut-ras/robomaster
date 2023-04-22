@@ -2,9 +2,8 @@
 
 #include "tap/algorithms/ballistics.hpp"
 
-#include "robots/robot_constants.hpp"
-
 #include "modm/math.hpp"
+#include "robots/robot_constants.hpp"
 
 using namespace tap::algorithms::ballistics;
 namespace subsystems
@@ -13,31 +12,17 @@ namespace turret
 {
 TurretSubsystem::TurretSubsystem(src::Drivers* drivers)
     : tap::control::Subsystem(drivers),
-      yawMotor(
-          drivers,
-          ID_YAW,
-          CAN_TURRET,
-          false,
-          "Yaw Motor"),
-      pitchMotor(
-          drivers,
-          ID_PITCH,
-          CAN_TURRET,
-          false,
-          "Pitch Motor"),
-      yawTurret(
-          drivers,
-          &yawMotor,
-          YAW_PID_CONFIG
-      ),
+      yawMotor(drivers, ID_YAW, CAN_TURRET, false, "Yaw Motor"),
+      pitchMotor(drivers, ID_PITCH, CAN_TURRET, false, "Pitch Motor"),
+      yawTurret(drivers, &yawMotor, YAW_PID_CONFIG),
       pitchTurret(
           drivers,
           &pitchMotor,
           PITCH_PID_CONFIG,
           4.2f,
-          3.93f,
-          4.38f
-      ),
+          -1.0f,  //   3.93f,
+          -1.0f   //   4.38f
+          ),
       turretOffset(0.0f, 0.0f, M_TWOPI)
 {
     initialChassisYaw = modm::toRadian(drivers->bmi088.getYaw());
@@ -66,15 +51,19 @@ void TurretSubsystem::inputTargetData(Vector3f position, Vector3f velocity, Vect
 
 void TurretSubsystem::setAimStrategy(AimStrategy aimStrategy) { this->aimStrategy = aimStrategy; }
 
-float TurretSubsystem::getChassisOffset() {
+float TurretSubsystem::getChassisOffset()
+{
     float currentChassisYaw = modm::toRadian(drivers->bmi088.getYaw());
-    float chassisOffset = tap::algorithms::ContiguousFloat(currentChassisYaw - initialChassisYaw, 0.0f, M_TWOPI).getValue();
+    float chassisOffset =
+        tap::algorithms::ContiguousFloat(currentChassisYaw - initialChassisYaw, 0.0f, M_TWOPI)
+            .getValue();
     return chassisOffset;
 }
 
-float TurretSubsystem::getTurretWithOffset() {
+float TurretSubsystem::getTurretWithOffset()
+{
     float chassisOffset = getChassisOffset();
-    
+
     turretOffset.setValue(previousYawSetpoint + initialTurretYaw - (chassisOffset * BELT_RATIO));
     return turretOffset.getValue();
 }
@@ -118,7 +107,6 @@ void TurretSubsystem::refresh()
     yawTurret.updateMotorAngle();
     pitchTurret.updateMotorAngle();
 }
-
 
 void TurretSubsystem::runHardwareTests()
 {
