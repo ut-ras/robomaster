@@ -19,56 +19,34 @@
 
 #include "turret_command.hpp"
 
-#define POSDEADZONE 0.2
+#define ANALOG_DEAD_ZONE 0.1
 
 namespace subsystems
 {
 namespace turret
 {
-void TurretCommand::initialize() {
-    prevTime = tap::arch::clock::getTimeMilliseconds();
+void TurretCommand::initialize()
+{
+    yaw = subsystem->getYawTurret()->getAngle();
     pitch = subsystem->getPitchTurret()->getAngle();
 }
 
 void TurretCommand::execute()
 {
-    uint32_t currTime = tap::arch::clock::getTimeMilliseconds();
-    uint32_t dt = currTime - prevTime;
-    prevTime = currTime;
-
     Remote* remote = &drivers->remote;
+    float h = remote->getChannel(Remote::Channel::LEFT_HORIZONTAL);
+    float v = remote->getChannel(Remote::Channel::LEFT_VERTICAL);
 
-    if (!remote->isConnected()) return;  // avoid snapping until controller is on
+    if (abs(h) < ANALOG_DEAD_ZONE) h = 0.0f;
+    if (abs(v) < ANALOG_DEAD_ZONE) v = 0.0f;
 
-    if (fabs(remote->getChannel(Remote::Channel::LEFT_HORIZONTAL)) > 0.1f)
-    {
-        float yawSetpoint =
-            subsystem->getYawTurret()->getAngle() +
-            controllerScalarYaw * -remote->getChannel(Remote::Channel::LEFT_HORIZONTAL);
-        subsystem->getYawTurret()->setAngle(yawSetpoint, dt);
-        subsystem->setPreviousChassisRelativeYawSetpoint(
-            tap::algorithms::ContiguousFloat(
-                yawSetpoint + subsystem->getChassisOffset() * subsystem->BELT_RATIO,
-                0.0f,
-                M_TWOPI)
-                .getValue());
-    }
+    yaw -= h * yawInputScale;
+    pitch += v * pitchInputScale;
+    pitch = std::clamp(pitch, pitchMin, pitchMax);
 
-    else
-    {
-        subsystem->getYawTurret()->setAngle(subsystem->getTurretWithOffset(), dt);
-    }
+    // drivers->terminal << subsystem->getPitchTurret()->getAngle() << "\n";
 
-    if (fabs(remote->getChannel(Remote::Channel::LEFT_VERTICAL)) > 0.1f)  {
-        pitch += controllerScalarPitch * remote->getChannel(Remote::Channel::LEFT_VERTICAL);
-    }
-
-    else {
-        drivers->terminal << subsystem->getPitchTurret()->getAngle() << "\n";
-    }
-
-    pitch = std::clamp(pitch, pitchLowerLimit, pitchUpperLimit);
-    subsystem->getPitchTurret()->setAngle(pitch, dt);
+    subsystem->setDesiredAngles(yaw, pitch);
 }
 
 void TurretCommand::end(bool) {}

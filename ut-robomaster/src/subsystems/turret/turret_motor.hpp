@@ -1,21 +1,32 @@
 #pragma once
 
-#include "tap/motor/motor_interface.hpp"
-#include "tap/algorithms/smooth_pid.hpp"
 #include "tap/algorithms/contiguous_float.hpp"
+#include "tap/algorithms/smooth_pid.hpp"
+#include "tap/motor/motor_interface.hpp"
 
-namespace src {
-    class Drivers;
+namespace src
+{
+class Drivers;
 }
 
-namespace subsystems::turret{
+namespace subsystems::turret
+{
 
-class TurretMotor{
-
+class TurretMotor
+{
 public:
-    TurretMotor(src::Drivers *drivers, tap::motor::MotorInterface *motor, const tap::algorithms::SmoothPidConfig &pidConfig);
+    TurretMotor(
+        src::Drivers *drivers,
+        tap::motor::MotorInterface *motor,
+        const tap::algorithms::SmoothPidConfig &pidConfig);
 
-    TurretMotor(src::Drivers *drivers, tap::motor::MotorInterface *motor, const tap::algorithms::SmoothPidConfig &pidConfig, float startAngle, float lowerRange, float upperRange);
+    TurretMotor(
+        src::Drivers *drivers,
+        tap::motor::MotorInterface *motor,
+        const tap::algorithms::SmoothPidConfig &pidConfig,
+        float startAngle,
+        float lowerRange,
+        float upperRange);
     void initialize();
     void updateMotorAngle();
     void setAngle(float desiredAngle, uint32_t dt);
@@ -36,4 +47,4 @@ private:
 
     static constexpr float GM6020_MAX_OUTPUT = 30000.0f;
 };
-}
+}  // namespace subsystems::turret

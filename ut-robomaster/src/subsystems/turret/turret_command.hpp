@@ -85,16 +85,21 @@ private:
     TurretSubsystem* subsystem;
 
     float yaw = 0.0f;
-    float pitch = 0.0f; // Target pitch, state kept here to prevent drifting
+    float pitch = 0.0f;  // Normalized pitch [-1.0, 1.0]
 
-    float controllerScalarYaw = 0.10f;
-    static constexpr float controllerScalarPitch = 0.004f; // Tune for pitch speed
+    static constexpr float yawInputScale = 0.01f;
+    static constexpr float pitchInputScale = 0.004f;  // Tune for pitch speed
 
-    // Tune these hardcoded values or replace with another means of determining minimum and maximum pitch angles
-    static constexpr float pitchLowerLimit = 3.6f;
-    static constexpr float pitchUpperLimit = 4.2f;
+    // Tune these hardcoded values or replace with another means of determining minimum and maximum
+    // pitch angles
 
-    uint32_t prevTime = 0;
+#if defined TARGET_STANDARD || defined TARGET_SENTRY
+    static constexpr float pitchMin = -0.5f;
+    static constexpr float pitchMax = 0.5f;
+#elif defined TARGET_HERO
+    static constexpr float pitchMin = 3.6f;
+    static constexpr float pitchMax = 4.2f;
+#endif
 };
 }  // namespace turret
 }  // namespace subsystems

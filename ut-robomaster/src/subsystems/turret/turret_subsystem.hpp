@@ -1,28 +1,24 @@
 #ifndef TURRET_SUBSYSTEM_HPP_
 #define TURRET_SUBSYSTEM_HPP_
 
+#include "tap/algorithms/contiguous_float.hpp"
 #include "tap/control/subsystem.hpp"
 
-#include "tap/algorithms/contiguous_float.hpp"
-
-#include "modm/math/geometry.hpp"
 #include "modm/math/filter/moving_average.hpp"
-#include "turret_motor.hpp"
+#include "modm/math/geometry.hpp"
 
 #include "drivers.hpp"
+#include "turret_motor.hpp"
 
 using modm::Vector3f;
-
-namespace src {
-    class Drivers;
-}
-
-// class TurretMotor;
 
 namespace subsystems
 {
 namespace turret
 {
+using tap::algorithms::ContiguousFloat;
+using tap::motor::DjiMotor;
+
 enum AimStrategy
 {
     Manual,
@@ -44,8 +40,6 @@ public:
 
     void setAimStrategy(AimStrategy aimStrategy);
 
-    float getChassisOffset();
-    float getTurretWithOffset();
     void refresh() override;
 
     void runHardwareTests() override;
@@ -55,16 +49,14 @@ public:
     TurretMotor* getYawTurret() { return &yawTurret; }
     TurretMotor* getPitchTurret() { return &pitchTurret; }
 
-    float getPreviousChassisRelativeYawSetpoint() { return previousYawSetpoint; }
-    void setPreviousChassisRelativeYawSetpoint(float setpoint) { this->previousYawSetpoint = setpoint; } 
-
     static constexpr float BELT_RATIO = 2.0f;
 
 private:
     float desiredYaw;
     float desiredPitch;
-  //  Terminating to check if current is equal to previous (we not moving)
-    tap::algorithms::ContiguousFloat offset = tap::algorithms::ContiguousFloat(0.0f, 0.0f, M_TWOPI);
+    uint32_t lastTime;
+    //  Terminating to check if current is equal to previous (we not moving)
+    ContiguousFloat offset = ContiguousFloat(0.0f, 0.0f, M_TWOPI);
 
     Vector3f targetPosition = Vector3f(0.0f);
     Vector3f targetVelocity = Vector3f(0.0f);
@@ -72,9 +64,9 @@ private:
 
     AimStrategy aimStrategy = AimStrategy::Manual;
 
-    tap::motor::DjiMotor yawMotor;
-    tap::motor::DjiMotor pitchMotor;
-    
+    DjiMotor yawMotor;
+    DjiMotor pitchMotor;
+
     TurretMotor yawTurret;
     TurretMotor pitchTurret;
 
@@ -83,9 +75,9 @@ private:
 
     float previousYawSetpoint;
 
-    tap::algorithms::ContiguousFloat turretOffset;
+    ContiguousFloat turretOffset;
 
-    #ifdef TARGET_STANDARD
+#ifdef TARGET_STANDARD
     static constexpr tap::algorithms::SmoothPidConfig YAW_PID_CONFIG = {
         .kp = 65'000.0f,
         .ki = 0.0f,
@@ -113,9 +105,9 @@ private:
         .errDeadzone = 0.0f,
         .errorDerivativeFloor = 0.0f,
     };
-    #endif
+#endif
 
-    #ifdef TARGET_HERO
+#ifdef TARGET_HERO
     static constexpr tap::algorithms::SmoothPidConfig YAW_PID_CONFIG = {
         .kp = 100'183.1f,
         .ki = 0.0f,
@@ -143,7 +135,7 @@ private:
         .errDeadzone = 0.0f,
         .errorDerivativeFloor = 0.0f,
     };
-    #endif
+#endif
 };
 
 }  // namespace turret

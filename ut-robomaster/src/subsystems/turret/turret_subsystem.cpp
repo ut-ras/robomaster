@@ -12,17 +12,10 @@ namespace turret
 {
 TurretSubsystem::TurretSubsystem(src::Drivers* drivers)
     : tap::control::Subsystem(drivers),
-      yawMotor(drivers, ID_YAW, CAN_TURRET, false, "Yaw Motor"),
-      pitchMotor(drivers, ID_PITCH, CAN_TURRET, false, "Pitch Motor"),
+      yawMotor(drivers, ID_YAW, CAN_TURRET, false, "yaw"),
+      pitchMotor(drivers, ID_PITCH, CAN_TURRET, false, "pitch"),
       yawTurret(drivers, &yawMotor, YAW_PID_CONFIG),
-      pitchTurret(
-          drivers,
-          &pitchMotor,
-          PITCH_PID_CONFIG,
-          4.2f,
-          -1.0f,  //   3.93f,
-          -1.0f   //   4.38f
-          ),
+      pitchTurret(drivers, &pitchMotor, PITCH_PID_CONFIG),
       turretOffset(0.0f, 0.0f, M_TWOPI)
 {
     initialChassisYaw = modm::toRadian(drivers->bmi088.getYaw());
@@ -34,6 +27,7 @@ void TurretSubsystem::initialize()
 {
     yawTurret.initialize();
     pitchTurret.initialize();
+    lastTime = tap::arch::clock::getTimeMilliseconds();
 }
 
 void TurretSubsystem::setDesiredAngles(float yaw, float pitch)
@@ -50,23 +44,6 @@ void TurretSubsystem::inputTargetData(Vector3f position, Vector3f velocity, Vect
 }
 
 void TurretSubsystem::setAimStrategy(AimStrategy aimStrategy) { this->aimStrategy = aimStrategy; }
-
-float TurretSubsystem::getChassisOffset()
-{
-    float currentChassisYaw = modm::toRadian(drivers->bmi088.getYaw());
-    float chassisOffset =
-        tap::algorithms::ContiguousFloat(currentChassisYaw - initialChassisYaw, 0.0f, M_TWOPI)
-            .getValue();
-    return chassisOffset;
-}
-
-float TurretSubsystem::getTurretWithOffset()
-{
-    float chassisOffset = getChassisOffset();
-
-    turretOffset.setValue(previousYawSetpoint + initialTurretYaw - (chassisOffset * BELT_RATIO));
-    return turretOffset.getValue();
-}
 
 void TurretSubsystem::refresh()
 {
@@ -104,8 +81,17 @@ void TurretSubsystem::refresh()
             break;
     }
 
-    yawTurret.updateMotorAngle();
-    pitchTurret.updateMotorAngle();
+    if (drivers->remote.isConnected())  // avoid snapping until controller is on
+    {
+        uint32_t time = tap::arch::clock::getTimeMilliseconds();
+        uint32_t dt = time - lastTime;
+        lastTime = time;
+
+        yawTurret.updateMotorAngle();
+        pitchTurret.updateMotorAngle();
+        yawTurret.setAngle((yaw - modm::toRadian(drivers->bmi088.getYaw())) * BELT_RATIO, dt);
+        pitchTurret.setAngle(pitch, dt);
+    }
 }
 
 void TurretSubsystem::runHardwareTests()
