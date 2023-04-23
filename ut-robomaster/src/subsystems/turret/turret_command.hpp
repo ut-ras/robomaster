@@ -87,8 +87,8 @@ private:
     float yaw = 0.0f;
     float pitch = 0.0f;
 
-    static constexpr float yawInputScale = 0.01f;
-    static constexpr float pitchInputScale = 0.004f;
+    static constexpr float yawInputScale = 0.02f;
+    static constexpr float pitchInputScale = 0.01f;
 };
 }  // namespace turret
 }  // namespace subsystems

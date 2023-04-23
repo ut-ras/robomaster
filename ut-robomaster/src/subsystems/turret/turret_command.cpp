@@ -36,8 +36,11 @@ void TurretCommand::execute()
     if (abs(h) < ANALOG_DEAD_ZONE) h = 0.0f;
     if (abs(v) < ANALOG_DEAD_ZONE) v = 0.0f;
 
-    yaw -= h * yawInputScale;
-    pitch += v * pitchInputScale;
+    float yawInput = h * abs(h);    // quadratic input map
+    float pitchInput = v * abs(v);  // quadratic input map
+
+    yaw -= yawInput * yawInputScale;
+    pitch += pitchInput * pitchInputScale;
     pitch = modm::min(modm::max(pitch, PITCH_MIN), PITCH_MAX);
 
     subsystem->setDesiredAngles(yaw, pitch);
