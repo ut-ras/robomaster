@@ -18,9 +18,6 @@ TurretSubsystem::TurretSubsystem(src::Drivers* drivers)
       pitchTurret(drivers, &pitchMotor, PITCH_PID_CONFIG),
       turretOffset(0.0f, 0.0f, M_TWOPI)
 {
-    initialChassisYaw = modm::toRadian(drivers->bmi088.getYaw());
-    initialTurretYaw = yawTurret.getAngle();
-    previousYawSetpoint = yawTurret.getSetpoint();
 }
 
 void TurretSubsystem::initialize()
@@ -81,16 +78,27 @@ void TurretSubsystem::refresh()
             break;
     }
 
-    if (drivers->remote.isConnected())  // avoid snapping until controller is on
+    yawTurret.updateMotorAngle();
+    pitchTurret.updateMotorAngle();
+
+    if (!isCalibrated && pitchMotor.isMotorOnline() &&
+        yawMotor.isMotorOnline())  // calibrate on controller connect
     {
+        baseYaw = yawTurret.getAngle();
+        basePitch = pitchTurret.getAngle();
+        isCalibrated = true;
+    }
+
+    if (isCalibrated)
+    {
+        float world_yaw = (yaw - modm::toRadian(drivers->bmi088.getYaw())) * BELT_RATIO;
+
         uint32_t time = tap::arch::clock::getTimeMilliseconds();
         uint32_t dt = time - lastTime;
         lastTime = time;
 
-        yawTurret.updateMotorAngle();
-        pitchTurret.updateMotorAngle();
-        yawTurret.setAngle((yaw - modm::toRadian(drivers->bmi088.getYaw())) * BELT_RATIO, dt);
-        pitchTurret.setAngle(pitch, dt);
+        yawTurret.setAngle(baseYaw + world_yaw, dt);
+        pitchTurret.setAngle(basePitch + pitch, dt);
     }
 }
 

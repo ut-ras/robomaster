@@ -55,8 +55,6 @@ private:
     float desiredYaw;
     float desiredPitch;
     uint32_t lastTime;
-    //  Terminating to check if current is equal to previous (we not moving)
-    ContiguousFloat offset = ContiguousFloat(0.0f, 0.0f, M_TWOPI);
 
     Vector3f targetPosition = Vector3f(0.0f);
     Vector3f targetVelocity = Vector3f(0.0f);
@@ -70,10 +68,9 @@ private:
     TurretMotor yawTurret;
     TurretMotor pitchTurret;
 
-    float initialChassisYaw;
-    float initialTurretYaw;
-
-    float previousYawSetpoint;
+    float isCalibrated = false;
+    float basePitch = 0.0f;
+    float baseYaw = 0.0f;
 
     ContiguousFloat turretOffset;
 

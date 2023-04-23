@@ -38,6 +38,9 @@ constexpr MotorId ID_PITCH = MOTOR7;
 
 constexpr PidConstants PID_FLYWHEEL = {0.1f, 0.1f, 0.0f};
 constexpr PidConstants PID_AGITATOR = PID_VELOCITY_DEFAULT;
+
+constexpr float PITCH_MIN = -0.2185f;
+constexpr float PITCH_MAX = 0.2299f;
 #elif defined TARGET_HERO
 constexpr MotorId ID_FLYWHEEL_L = MOTOR3;
 constexpr MotorId ID_FLYWHEEL_R = MOTOR4;
@@ -50,6 +53,9 @@ constexpr MotorId ID_PITCH = MOTOR6;
 constexpr PidConstants PID_FLYWHEEL = {0.1f, 0.1f, 0.0f};
 constexpr PidConstants PID_AGITATOR = PID_VELOCITY_DEFAULT;
 constexpr PidConstants PID_FEEDER = PID_VELOCITY_DEFAULT;
+
+constexpr float PITCH_MIN = -0.3349f;
+constexpr float PITCH_MAX = 0.3534f;
 #endif
 
 #endif

@@ -29,6 +29,8 @@
 #include "tap/communication/serial/remote.hpp"
 #include "tap/control/command.hpp"
 
+#include "robots/robot_constants.hpp"
+
 #include "drivers.hpp"
 #include "turret_subsystem.hpp"
 
@@ -43,8 +45,6 @@ namespace turret
 class TurretCommand : public tap::control::Command
 {
 public:
-    static constexpr int16_t DEFAULT_WHEEL_RPM = 10;
-
     TurretCommand(TurretSubsystem* sub, src::Drivers* drivers) : drivers(drivers), subsystem(sub)
     {
         addSubsystemRequirement(sub);
@@ -85,21 +85,10 @@ private:
     TurretSubsystem* subsystem;
 
     float yaw = 0.0f;
-    float pitch = 0.0f;  // Normalized pitch [-1.0, 1.0]
+    float pitch = 0.0f;
 
     static constexpr float yawInputScale = 0.01f;
-    static constexpr float pitchInputScale = 0.004f;  // Tune for pitch speed
-
-    // Tune these hardcoded values or replace with another means of determining minimum and maximum
-    // pitch angles
-
-#if defined TARGET_STANDARD || defined TARGET_SENTRY
-    static constexpr float pitchMin = -0.5f;
-    static constexpr float pitchMax = 0.5f;
-#elif defined TARGET_HERO
-    static constexpr float pitchMin = 3.6f;
-    static constexpr float pitchMax = 4.2f;
-#endif
+    static constexpr float pitchInputScale = 0.004f;
 };
 }  // namespace turret
 }  // namespace subsystems

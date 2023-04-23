@@ -25,11 +25,7 @@ namespace subsystems
 {
 namespace turret
 {
-void TurretCommand::initialize()
-{
-    yaw = subsystem->getYawTurret()->getAngle();
-    pitch = subsystem->getPitchTurret()->getAngle();
-}
+void TurretCommand::initialize() {}
 
 void TurretCommand::execute()
 {
@@ -42,9 +38,7 @@ void TurretCommand::execute()
 
     yaw -= h * yawInputScale;
     pitch += v * pitchInputScale;
-    pitch = std::clamp(pitch, pitchMin, pitchMax);
-
-    // drivers->terminal << subsystem->getPitchTurret()->getAngle() << "\n";
+    pitch = modm::min(modm::max(pitch, PITCH_MIN), PITCH_MAX);
 
     subsystem->setDesiredAngles(yaw, pitch);
 }
