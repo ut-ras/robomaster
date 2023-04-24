@@ -58,6 +58,7 @@ void AgitatorSubsystem::initialize()
 void AgitatorSubsystem::refresh()
 {
     float time = getTimeMilliseconds() / 1000.0f;  // MAY BREAK ON WRAPPING!
+    bool killSwitch = drivers->isKillSwitched();
 
 #if defined TARGET_STANDARD || defined TARGET_SENTRY
     // float vel1 = shape(time * BALLS_PER_SEC, 0.0f, 0.0f) / BALLS_PER_REV;
@@ -65,10 +66,17 @@ void AgitatorSubsystem::refresh()
     float vel1 = time * BALLS_PER_SEC / BALLS_PER_REV;
     float vel2 = time * BALLS_PER_SEC / BALLS_PER_REV;
 
+    leftAgitator.setActive(!killSwitch);
+    rightAgitator.setActive(!killSwitch);
+
     leftAgitator.update(isShooting ? vel1 : 0.0f);
     rightAgitator.update(isShooting ? vel2 : 0.0f);
 #elif defined TARGET_HERO
     float vel = shape(time * BALLS_PER_SEC, 0.0f, 1.0f) / BALLS_PER_REV;
+
+    agitator.setActive(!killSwitch);
+    feeder.setActive(!killSwitch);
+
     agitator.update(isShooting ? vel : 0.0f);
     feeder.update(isShooting ? FEEDER_SPEED : 0.0f);
 #endif

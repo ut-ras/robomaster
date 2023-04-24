@@ -29,6 +29,7 @@ void ChassisSubsystem::refresh()
 {
     for (int8_t i = 0; i < WHEELS; i++)
     {
+        wheels[i].setActive(!drivers->isKillSwitched());
         wheels[i].update(targetWheelVels[i] / M_TWOPI);  // rad/s to rev/s
     }
 }

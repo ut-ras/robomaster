@@ -21,8 +21,8 @@
 #define DRIVERS_HPP_
 
 #include "tap/drivers.hpp"
-#include "communication/beaglebone_communicator.hpp"
 
+#include "communication/beaglebone_communicator.hpp"
 #include "robots/standard/robot_comms.hpp"
 
 namespace src
@@ -34,16 +34,20 @@ class Drivers : public tap::Drivers
 #ifdef ENV_UNIT_TESTS
 public:
 #endif
-    Drivers() 
-        : tap::Drivers(),
-          beagleboneCommunicator(this),
-          terminal(this)
-        {
-        }
+    Drivers() : tap::Drivers(), beagleboneCommunicator(this), terminal(this) {}
 
 public:
     communication::BeagleBoneCommunicator beagleboneCommunicator;
     comms::RobotComms terminal;
+
+    bool isKillSwitched()
+    {
+#ifdef TARGET_SENTRY
+        return false;
+#else
+        return !remote.isConnected();
+#endif
+    }
 };  // class Drivers
 
 }  // namespace src

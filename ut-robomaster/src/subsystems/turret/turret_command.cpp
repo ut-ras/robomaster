@@ -30,18 +30,27 @@ void TurretCommand::initialize() {}
 void TurretCommand::execute()
 {
     Remote* remote = &drivers->remote;
-    float h = remote->getChannel(Remote::Channel::LEFT_HORIZONTAL);
-    float v = remote->getChannel(Remote::Channel::LEFT_VERTICAL);
 
-    if (abs(h) < ANALOG_DEAD_ZONE) h = 0.0f;
-    if (abs(v) < ANALOG_DEAD_ZONE) v = 0.0f;
+    if (drivers->isKillSwitched())
+    {
+        yaw = subsystem->getChassisYaw();
+        pitch = 0.0f;
+    }
+    else
+    {
+        float h = remote->getChannel(Remote::Channel::LEFT_HORIZONTAL);
+        float v = remote->getChannel(Remote::Channel::LEFT_VERTICAL);
 
-    float yawInput = h * abs(h);    // quadratic input map
-    float pitchInput = v * abs(v);  // quadratic input map
+        if (abs(h) < ANALOG_DEAD_ZONE) h = 0.0f;
+        if (abs(v) < ANALOG_DEAD_ZONE) v = 0.0f;
 
-    yaw -= yawInput * yawInputScale;
-    pitch += pitchInput * pitchInputScale;
-    pitch = modm::min(modm::max(pitch, PITCH_MIN), PITCH_MAX);
+        float yawInput = h * abs(h);    // quadratic input map
+        float pitchInput = v * abs(v);  // quadratic input map
+
+        yaw -= yawInput * yawInputScale;
+        pitch += pitchInput * pitchInputScale;
+        pitch = modm::min(modm::max(pitch, PITCH_MIN), PITCH_MAX);
+    }
 
     subsystem->inputManualAngles(yaw, pitch);
 }

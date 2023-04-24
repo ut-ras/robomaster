@@ -12,6 +12,7 @@ namespace turret
 {
 TurretSubsystem::TurretSubsystem(src::Drivers* drivers)
     : tap::control::Subsystem(drivers),
+      drivers(drivers),
       yawMotor(drivers, ID_YAW, CAN_TURRET, false, "yaw"),
       pitchMotor(drivers, ID_PITCH, CAN_TURRET, false, "pitch"),
       yawTurret(drivers, &yawMotor, YAW_PID_CONFIG),
@@ -42,12 +43,9 @@ void TurretSubsystem::inputTargetData(Vector3f position, Vector3f velocity, Vect
 
 void TurretSubsystem::setAimStrategy(AimStrategy aimStrategy) { this->aimStrategy = aimStrategy; }
 
-float TurretSubsystem::getLocalYaw()
-{
-    return targetWorldYaw - modm::toRadian(drivers->bmi088.getYaw() - 180.0f);
-}
-
+float TurretSubsystem::getChassisYaw() { return modm::toRadian(drivers->bmi088.getYaw() - 180.0f); }
 float TurretSubsystem::getWorldYaw() { return targetWorldYaw; }
+float TurretSubsystem::getLocalYaw() { return targetWorldYaw - getChassisYaw(); }
 
 void TurretSubsystem::refresh()
 {
@@ -86,7 +84,9 @@ void TurretSubsystem::refresh()
     yawTurret.updateMotorAngle();
     pitchTurret.updateMotorAngle();
 
-    if (!isCalibrated && pitchMotor.isMotorOnline() &&
+    bool isKillSwitched = drivers->isKillSwitched();
+
+    if (!isCalibrated && !isKillSwitched && pitchMotor.isMotorOnline() &&
         yawMotor.isMotorOnline())  // calibrate on controller connect
     {
         baseYaw = yawTurret.getAngle() / BELT_RATIO;
@@ -94,7 +94,7 @@ void TurretSubsystem::refresh()
         isCalibrated = true;
     }
 
-    if (isCalibrated)
+    if (isCalibrated && !isKillSwitched)
     {
         float localYaw = getLocalYaw();
         float localPitch = targetWorldPitch;
@@ -105,6 +105,12 @@ void TurretSubsystem::refresh()
 
         yawTurret.setAngle((baseYaw + localYaw) * BELT_RATIO, dt);
         pitchTurret.setAngle(basePitch + localPitch, dt);
+    }
+    else
+    {
+        yawTurret.reset();
+        pitchTurret.reset();
+        isCalibrated = false;
     }
 }
 

@@ -70,8 +70,11 @@ void FlywheelSubsystem::initialize()
 
 void FlywheelSubsystem::refresh()
 {
+    bool killSwitch = drivers->isKillSwitched();
+
     for (int i = 0; i < FLYWHEELS; i++)
     {
+        motors[i].setActive(!killSwitch);
         motors[i].update(isActive ? SPEED : 0.0f);
     }
 }

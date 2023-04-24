@@ -23,6 +23,23 @@ float measure_velocity(DjiMotor* motor, const MotorConstants& constants)
 
 namespace motor_controller
 {
+
+void MotorController::initialize()
+{
+    motor.initialize();
+    setActive(true);
+}
+
+void MotorController::setActive(bool active)
+{
+    isActive = active;
+    if (!active)
+    {
+        pid.reset();
+        motor.setDesiredOutput(0);
+    }
+}
+
 float MotorController::delta_time()
 {
     uint32_t time = tap::arch::clock::getTimeMilliseconds();
@@ -34,6 +51,8 @@ float MotorController::delta_time()
 // Position
 void MotorPositionController::update(float target)
 {
+    if (!isActive) return;
+
     float dt = delta_time();
 
     // position
@@ -50,9 +69,17 @@ void MotorPositionController::update(float target)
 
 float MotorPositionController::measure() { return measure_position(&motor, constants); }
 
+void MotorPositionController::setActive(bool active)
+{
+    MotorController::setActive(active);
+    if (!active) velocityPid.reset();
+}
+
 // Velocity
 void MotorVelocityController::update(float target)
 {
+    if (!isActive) return;
+
     float diff = target - this->measure();
     float output = pid.update(diff, delta_time());
     motor.setDesiredOutput(output * constants.maxOutput);

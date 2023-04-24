@@ -3,16 +3,13 @@
 #include "tap/algorithms/math_user_utils.hpp"
 #include "tap/motor/dji_motor.hpp"
 
-using namespace tap::motor;
-using namespace tap::algorithms;
-
 namespace subsystems::turret
 {
 
 TurretMotor::TurretMotor(
     src::Drivers *drivers,
-    tap::motor::MotorInterface *motor,
-    const tap::algorithms::SmoothPidConfig &pidConfig)
+    MotorInterface *motor,
+    const SmoothPidConfig &pidConfig)
     : drivers(drivers),
       motor(motor),
       pid(pidConfig),
@@ -21,24 +18,13 @@ TurretMotor::TurretMotor(
 {
 }
 
-TurretMotor::TurretMotor(
-    src::Drivers *drivers,
-    tap::motor::MotorInterface *motor,
-    const tap::algorithms::SmoothPidConfig &pidConfig,
-    float startAngle,
-    float lowerRange,
-    float upperRange)
-    : drivers(drivers),
-      motor(motor),
-      pid(pidConfig),
-      setpoint(startAngle, 0.0f, M_TWOPI),
-      currentAngle(startAngle, 0.0f, M_TWOPI),
-      lowerRange(lowerRange),
-      upperRange(upperRange)
-{
-}
-
 void TurretMotor::initialize() { motor->initialize(); }
+
+void TurretMotor::reset()
+{
+    pid.reset();
+    motor->setDesiredOutput(0);
+}
 
 void TurretMotor::updateMotorAngle()
 {
@@ -55,21 +41,10 @@ void TurretMotor::updateMotorAngle()
 
 void TurretMotor::setAngle(float desiredAngle, uint32_t dt)
 {
-    if (lowerRange != -1.0f && upperRange != -1.0f)
-    {
-        if (desiredAngle < lowerRange || desiredAngle > upperRange)
-        {
-            return;
-        }
-    }
-
     setpoint.setValue(desiredAngle);
 
     float positionControllerError =
         ContiguousFloat(currentAngle.getValue(), 0, M_TWOPI).difference(setpoint.getValue());
-    // drivers->terminal << currentAngle.getValue() << "\n";
-    // drivers->terminal << desiredAngle << "\n";
-
     float output =
         pid.runController(positionControllerError, (M_TWOPI / 60.0f) * motor->getShaftRPM(), dt);
 

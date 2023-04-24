@@ -30,13 +30,15 @@ public:
     {
     }
 
-    void initialize() { motor.initialize(); }
+    void initialize();
+    virtual void setActive(bool active);
     virtual void update(float target) = 0;
     virtual float measure() = 0;
 
 protected:
     float delta_time();
     uint32_t lastTime = 0;
+    bool isActive = false;
     const MotorConstants constants;
     DjiMotor motor;
     Pid pid;
@@ -73,6 +75,8 @@ public:
     /// @brief Get the current position of the motor.
     /// @return Motor angle, measured in revolutions.
     float measure();
+
+    void setActive(bool active) override;
 
 private:
     Pid velocityPid;

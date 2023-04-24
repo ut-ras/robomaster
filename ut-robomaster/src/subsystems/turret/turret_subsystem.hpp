@@ -40,8 +40,9 @@ public:
 
     void setAimStrategy(AimStrategy aimStrategy);
 
-    float getLocalYaw();
+    float getChassisYaw();
     float getWorldYaw();
+    float getLocalYaw();
 
     void refresh() override;
 
@@ -55,6 +56,8 @@ public:
     static constexpr float BELT_RATIO = 2.0f;
 
 private:
+    src::Drivers* drivers;
+
     float targetWorldYaw = 0.0f;
     float targetWorldPitch = 0.0f;
     float inputYaw = 0.0f;

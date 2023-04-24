@@ -21,4 +21,13 @@ float Pid::update(float err, float dt)
 
     return output;
 }
+
+void Pid::reset()
+{
+    error[0] = 0;
+    error[1] = 0;
+    error[2] = 0;
+    output = 0.0f;
+}
+
 }  // namespace motor_controller

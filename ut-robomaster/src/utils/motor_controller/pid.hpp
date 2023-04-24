@@ -15,6 +15,7 @@ class Pid
 public:
     Pid(const PidConstants& constants);
     float update(float err, float dt);
+    void reset();
 
     const PidConstants k;
 
