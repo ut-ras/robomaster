@@ -11,10 +11,10 @@ ChassisSubsystem::ChassisSubsystem(src::Drivers* drivers, turret::TurretSubsyste
       drivers(drivers),
       turret(turret),
       wheels{
-          {drivers, M3508, ID_WHEEL_LF, CAN_WHEELS, true, "left front", PID_WHEELS},
-          {drivers, M3508, ID_WHEEL_RF, CAN_WHEELS, false, "right front", PID_WHEELS},
-          {drivers, M3508, ID_WHEEL_LB, CAN_WHEELS, true, "left back", PID_WHEELS},
-          {drivers, M3508, ID_WHEEL_RB, CAN_WHEELS, false, "right back", PID_WHEELS},
+          {drivers, M3508, ID_WHEEL_LF, CAN_WHEELS, false, "left front", PID_WHEELS},
+          {drivers, M3508, ID_WHEEL_RF, CAN_WHEELS, true, "right front", PID_WHEELS},
+          {drivers, M3508, ID_WHEEL_LB, CAN_WHEELS, false, "left back", PID_WHEELS},
+          {drivers, M3508, ID_WHEEL_RB, CAN_WHEELS, true, "right back", PID_WHEELS},
       } {};
 
 void ChassisSubsystem::initialize()
