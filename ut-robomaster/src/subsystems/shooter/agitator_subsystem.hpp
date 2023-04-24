@@ -23,13 +23,14 @@ public:
 
     void initialize() override;
     void refresh() override;
+    float getShapedVelocity(float time, float a, float phi);
     void setShooting(bool shooting);
 
 private:
     src::Drivers *drivers;
 
 #if defined TARGET_STANDARD || defined TARGET_SENTRY
-    const float BALLS_PER_SEC = 0.133f;
+    const float BALLS_PER_SEC = 4.0f;
     const float BALLS_PER_REV = 8.0f;
 
     MotorVelocityController leftAgitator;

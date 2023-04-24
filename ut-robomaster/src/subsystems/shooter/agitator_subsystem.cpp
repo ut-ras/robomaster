@@ -1,13 +1,5 @@
 #include "agitator_subsystem.hpp"
 
-namespace
-{
-float shape(float t, float a, float phi)
-{
-    return (1.0f - a) * cos((2.0f * t + phi) * M_PI) + 1.0f;
-}
-}  // namespace
-
 namespace subsystems::shooter
 {
 using tap::arch::clock::getTimeMilliseconds;
@@ -61,25 +53,25 @@ void AgitatorSubsystem::refresh()
     bool killSwitch = drivers->isKillSwitched();
 
 #if defined TARGET_STANDARD || defined TARGET_SENTRY
-    // float vel1 = shape(time * BALLS_PER_SEC, 0.0f, 0.0f) / BALLS_PER_REV;
-    // float vel2 = shape(time * BALLS_PER_SEC, 0.0f, 1.0f) / BALLS_PER_REV;
-    float vel1 = time * BALLS_PER_SEC / BALLS_PER_REV;
-    float vel2 = time * BALLS_PER_SEC / BALLS_PER_REV;
-
     leftAgitator.setActive(!killSwitch);
     rightAgitator.setActive(!killSwitch);
 
-    leftAgitator.update(isShooting ? vel1 : 0.0f);
-    rightAgitator.update(isShooting ? vel2 : 0.0f);
+    leftAgitator.update(isShooting ? getShapedVelocity(time, -0.5f, 0.0f) : 0.0f);
+    rightAgitator.update(isShooting ? getShapedVelocity(time, -0.5f, 1.0f) : 0.0f);
 #elif defined TARGET_HERO
-    float vel = shape(time * BALLS_PER_SEC, 0.0f, 1.0f) / BALLS_PER_REV;
-
     agitator.setActive(!killSwitch);
     feeder.setActive(!killSwitch);
 
-    agitator.update(isShooting ? vel : 0.0f);
+    agitator.update(isShooting ? getShapedVelocity(time, -0.5f, 1.0f) : 0.0f);
     feeder.update(isShooting ? FEEDER_SPEED : 0.0f);
 #endif
+}
+
+float AgitatorSubsystem::getShapedVelocity(float time, float a, float phi)
+{
+    float t = time * BALLS_PER_SEC;
+    float maxVel = BALLS_PER_SEC / BALLS_PER_REV;
+    return ((1.0f - a) * cos((2.0f * t + phi) * M_PI) + 1.0f) * maxVel;
 }
 
 void AgitatorSubsystem::setShooting(bool shooting)
