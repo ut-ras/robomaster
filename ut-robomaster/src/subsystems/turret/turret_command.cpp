@@ -33,8 +33,8 @@ void TurretCommand::execute()
 
     if (drivers->isKillSwitched())
     {
-        yaw = subsystem->getChassisYaw();
-        pitch = 0.0f;
+        yaw = subsystem->getCurrentLocalYaw() + subsystem->getChassisYaw();
+        pitch = subsystem->getCurrentLocalPitch();
     }
     else
     {

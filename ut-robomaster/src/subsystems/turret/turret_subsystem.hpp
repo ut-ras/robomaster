@@ -41,8 +41,10 @@ public:
     void setAimStrategy(AimStrategy aimStrategy);
 
     float getChassisYaw();
-    float getWorldYaw();
-    float getLocalYaw();
+    float getTargetLocalYaw();
+    float getTargetLocalPitch();
+    float getCurrentLocalYaw();
+    float getCurrentLocalPitch();
 
     void refresh() override;
 

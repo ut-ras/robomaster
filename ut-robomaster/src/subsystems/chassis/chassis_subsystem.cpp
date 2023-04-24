@@ -46,7 +46,7 @@ void ChassisSubsystem::input(Vector2f move, float spin, bool turretRelative)
 
     if (turretRelative)
     {
-        v.rotate(turret->getLocalYaw());
+        v.rotate(turret->getTargetLocalYaw());
     }
 
     float linearTerm = (abs(v.x) + abs(v.y)) / WHEEL_RADIUS;

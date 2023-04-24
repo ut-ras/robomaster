@@ -44,8 +44,18 @@ void TurretSubsystem::inputTargetData(Vector3f position, Vector3f velocity, Vect
 void TurretSubsystem::setAimStrategy(AimStrategy aimStrategy) { this->aimStrategy = aimStrategy; }
 
 float TurretSubsystem::getChassisYaw() { return modm::toRadian(drivers->bmi088.getYaw() - 180.0f); }
-float TurretSubsystem::getWorldYaw() { return targetWorldYaw; }
-float TurretSubsystem::getLocalYaw() { return targetWorldYaw - getChassisYaw(); }
+float TurretSubsystem::getTargetLocalYaw() { return targetWorldYaw - getChassisYaw(); }
+float TurretSubsystem::getTargetLocalPitch() { return targetWorldPitch; }
+
+float TurretSubsystem::getCurrentLocalYaw()
+{
+    return !isCalibrated ? 0.0f : yawTurret.getAngle() / BELT_RATIO - baseYaw;
+}
+
+float TurretSubsystem::getCurrentLocalPitch()
+{
+    return !isCalibrated ? 0.0f : pitchTurret.getAngle() - basePitch;
+}
 
 void TurretSubsystem::refresh()
 {
@@ -84,33 +94,26 @@ void TurretSubsystem::refresh()
     yawTurret.updateMotorAngle();
     pitchTurret.updateMotorAngle();
 
-    bool isKillSwitched = drivers->isKillSwitched();
-
-    if (!isCalibrated && !isKillSwitched && pitchMotor.isMotorOnline() &&
-        yawMotor.isMotorOnline())  // calibrate on controller connect
+    if (!isCalibrated && yawMotor.isMotorOnline() && pitchMotor.isMotorOnline())
     {
         baseYaw = yawTurret.getAngle() / BELT_RATIO;
-        basePitch = pitchTurret.getAngle();
+        basePitch = pitchTurret.getAngle() - PITCH_MIN;
         isCalibrated = true;
     }
 
-    if (isCalibrated && !isKillSwitched)
+    if (isCalibrated && !drivers->isKillSwitched())
     {
-        float localYaw = getLocalYaw();
-        float localPitch = targetWorldPitch;
-
         uint32_t time = tap::arch::clock::getTimeMilliseconds();
         uint32_t dt = time - lastTime;
         lastTime = time;
 
-        yawTurret.setAngle((baseYaw + localYaw) * BELT_RATIO, dt);
-        pitchTurret.setAngle(basePitch + localPitch, dt);
+        yawTurret.setAngle((baseYaw + getTargetLocalYaw()) * BELT_RATIO, dt);
+        pitchTurret.setAngle(basePitch + getTargetLocalPitch(), dt);
     }
     else
     {
         yawTurret.reset();
         pitchTurret.reset();
-        isCalibrated = false;
     }
 }
 
