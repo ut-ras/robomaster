@@ -48,8 +48,8 @@ src::driversFunc drivers = src::DoNotUse_getDrivers;
 namespace standard_control
 {
 /* define subsystems --------------------------------------------------------*/
-chassis::ChassisSubsystem theChassis(drivers());
 turret::TurretSubsystem theTurret(drivers());
+chassis::ChassisSubsystem theChassis(drivers(), &theTurret);
 // odometry::OdometrySubsystem theOdometry(drivers(), &theChassis, &theTurret);
 
 /* define commands ----------------------------------------------------------*/

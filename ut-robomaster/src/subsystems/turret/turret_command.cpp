@@ -43,7 +43,7 @@ void TurretCommand::execute()
     pitch += pitchInput * pitchInputScale;
     pitch = modm::min(modm::max(pitch, PITCH_MIN), PITCH_MAX);
 
-    subsystem->setDesiredAngles(yaw, pitch);
+    subsystem->inputManualAngles(yaw, pitch);
 }
 
 void TurretCommand::end(bool) {}

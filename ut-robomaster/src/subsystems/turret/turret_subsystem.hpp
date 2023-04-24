@@ -33,12 +33,15 @@ public:
 
     void initialize() override;
 
-    void setDesiredAngles(float yaw, float pitch);
+    void inputManualAngles(float yaw, float pitch);
 
     /// @brief Input target data from CV (relative to camera)
     void inputTargetData(Vector3f position, Vector3f velocity, Vector3f acceleration);
 
     void setAimStrategy(AimStrategy aimStrategy);
+
+    float getLocalYaw();
+    float getWorldYaw();
 
     void refresh() override;
 
@@ -52,8 +55,10 @@ public:
     static constexpr float BELT_RATIO = 2.0f;
 
 private:
-    float desiredYaw;
-    float desiredPitch;
+    float targetWorldYaw = 0.0f;
+    float targetWorldPitch = 0.0f;
+    float inputYaw = 0.0f;
+    float inputPitch = 0.0f;
     uint32_t lastTime;
 
     Vector3f targetPosition = Vector3f(0.0f);

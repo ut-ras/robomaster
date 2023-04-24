@@ -6,9 +6,10 @@ namespace subsystems
 {
 namespace chassis
 {
-ChassisSubsystem::ChassisSubsystem(src::Drivers* drivers)
+ChassisSubsystem::ChassisSubsystem(src::Drivers* drivers, turret::TurretSubsystem* turret)
     : tap::control::Subsystem(drivers),
       drivers(drivers),
+      turret(turret),
       wheels{
           {drivers, M3508, ID_WHEEL_LF, CAN_WHEELS, true, "left front", PID_WHEELS},
           {drivers, M3508, ID_WHEEL_RF, CAN_WHEELS, false, "right front", PID_WHEELS},
@@ -37,10 +38,16 @@ void ChassisSubsystem::runHardwareTests()
     // TODO
 }
 
-void ChassisSubsystem::input(Vector2f move, float spin)
+void ChassisSubsystem::input(Vector2f move, float spin, bool turretRelative)
 {
     Vector2f v = move * MAX_LINEAR_VEL;
     float wZ = spin * MAX_ANGULAR_VEL;
+
+    if (turretRelative)
+    {
+        v.rotate(turret->getLocalYaw());
+    }
+
     float linearTerm = (abs(v.x) + abs(v.y)) / WHEEL_RADIUS;
     float angularTerm = abs(wZ) * WHEEL_LXY / WHEEL_RADIUS;
 
@@ -68,20 +75,6 @@ void ChassisSubsystem::input(Vector2f move, float spin)
 
 void ChassisSubsystem::setMecanumWheelVelocities(Vector2f v, float wZ)
 {
-    // if (imuDrive && yawMotor->isMotorOnline() &&
-    //     drivers->bmi088.getImuState() == ImuInterface::ImuState::IMU_CALIBRATED)
-    // {
-    //     float yawAngle = yawMotor->getEncoderUnwrapped() / 8192 * M_TWOPI;
-
-    //     if (!setStartTurret)
-    //     {
-    //         startTurretLoc = yawAngle;
-    //         setStartTurret = true;
-    //     }
-
-    //     v.rotate(yawAngle - startTurretLoc);
-    // }
-
     // our velocity is rotated 90 deg, so y is forward/back and x is left/right
     targetWheelVels[0] = (-v.y - v.x - wZ * WHEEL_LXY) / WHEEL_RADIUS;  // rad/s
     targetWheelVels[1] = (-v.y + v.x + wZ * WHEEL_LXY) / WHEEL_RADIUS;  // rad/s
@@ -103,6 +96,5 @@ Vector3f ChassisSubsystem::measureVelocity()
     // Rotated -90 deg to match our reference frame
     return Vector3f(ya, -xa, wa) * WHEEL_RADIUS / 4.0f * M_TWOPI;
 }
-
 }  // namespace chassis
 }  // namespace subsystems

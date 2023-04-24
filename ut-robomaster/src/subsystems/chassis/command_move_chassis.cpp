@@ -10,23 +10,31 @@ void MoveChassisCommand::execute()
 {
     if (drivers->bmi088.getImuState() == ImuInterface::ImuState::IMU_CALIBRATING)
     {
-        subsystem->input(Vector2f(0.0f), 0.0f);
+        subsystem->input(Vector2f(0.0f), 0.0f, false);
     }
     else
     {
-        bool useControllerInput =
-            drivers->remote.getSwitch(Remote::Switch::RIGHT_SWITCH) == Remote::SwitchState::UP;
+        bool turretRelative = true;
 
-        if (useControllerInput)
-            doControllerInput();
-        else
-            doKeyboardInput();
+        switch (drivers->remote.getSwitch(Remote::Switch::RIGHT_SWITCH))
+        {
+            case Remote::SwitchState::DOWN:
+                doKeyboardInput();
+                break;
+            case Remote::SwitchState::MID:
+                doControllerInput();
+                turretRelative = false;
+                break;
+            default:
+                doControllerInput();
+                break;
+        }
 
-        subsystem->input(inputMove, inputSpin);
+        subsystem->input(inputMove, inputSpin, turretRelative);
     }
 }
 
-void MoveChassisCommand::end(bool) { subsystem->input(Vector2f(0.0f), 0.0f); }
+void MoveChassisCommand::end(bool) { subsystem->input(Vector2f(0.0f), 0.0f, false); }
 bool MoveChassisCommand::isFinished() const { return false; }
 
 void MoveChassisCommand::doControllerInput()
