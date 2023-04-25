@@ -30,7 +30,7 @@ private:
     src::Drivers *drivers;
 
 #if defined TARGET_STANDARD || defined TARGET_SENTRY
-    const float BALLS_PER_SEC = 4.0f;
+    const float BALLS_PER_SEC = 6.0f;
     const float BALLS_PER_REV = 8.0f;
 
     MotorVelocityController leftAgitator;

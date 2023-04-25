@@ -56,13 +56,13 @@ void AgitatorSubsystem::refresh()
     leftAgitator.setActive(!killSwitch);
     rightAgitator.setActive(!killSwitch);
 
-    leftAgitator.update(isShooting ? getShapedVelocity(time, -0.5f, 0.0f) : 0.0f);
-    rightAgitator.update(isShooting ? getShapedVelocity(time, -0.5f, 1.0f) : 0.0f);
+    leftAgitator.update(isShooting ? getShapedVelocity(time, 1.0f, 0.0f) : 0.0f);
+    rightAgitator.update(isShooting ? getShapedVelocity(time, 1.0f, 1.0f) : 0.0f);
 #elif defined TARGET_HERO
     agitator.setActive(!killSwitch);
     feeder.setActive(!killSwitch);
 
-    agitator.update(isShooting ? getShapedVelocity(time, -0.5f, 1.0f) : 0.0f);
+    agitator.update(isShooting ? getShapedVelocity(time, 1.0f, 1.0f) : 0.0f);
     feeder.update(isShooting ? FEEDER_SPEED : 0.0f);
 #endif
 }

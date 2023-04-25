@@ -87,8 +87,13 @@ private:
     float yaw = 0.0f;
     float pitch = 0.0f;
 
+#if defined TARGET_STANDARD || defined TARGET_SENTRY
     static constexpr float yawInputScale = 0.02f;
     static constexpr float pitchInputScale = 0.01f;
+#elif defined TARGET_HERO
+    static constexpr float yawInputScale = 0.008f;
+    static constexpr float pitchInputScale = 0.01f;
+#endif
 };
 }  // namespace turret
 }  // namespace subsystems
