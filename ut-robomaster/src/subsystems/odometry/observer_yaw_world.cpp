@@ -7,7 +7,7 @@ ChassisWorldYawObserver::ChassisWorldYawObserver(src::Drivers* drivers) : driver
 bool ChassisWorldYawObserver::getChassisWorldYaw(float* yaw) const
 {
     bmi088::Bmi088* imu = &drivers->bmi088;
-    *yaw = imu->getYaw();
+    *yaw = modm::toRadian(imu->getYaw() - 180.0f);
 
     return imu->getImuState() == ImuInterface::ImuState::IMU_CALIBRATED;
 };

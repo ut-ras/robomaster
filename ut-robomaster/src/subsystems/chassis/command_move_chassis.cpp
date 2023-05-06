@@ -4,13 +4,13 @@ namespace subsystems
 {
 namespace chassis
 {
-void MoveChassisCommand::initialize() {}
+void CommandMoveChassis::initialize() {}
 
-void MoveChassisCommand::execute()
+void CommandMoveChassis::execute()
 {
     if (drivers->bmi088.getImuState() == ImuInterface::ImuState::IMU_CALIBRATING)
     {
-        subsystem->input(Vector2f(0.0f), 0.0f, false);
+        chassis->input(Vector2f(0.0f), 0.0f);
     }
     else
     {
@@ -30,14 +30,19 @@ void MoveChassisCommand::execute()
                 break;
         }
 
-        subsystem->input(inputMove, inputSpin, turretRelative);
+        if (turretRelative)
+        {
+            inputMove.rotate(turret->getTargetLocalYaw());
+        }
+
+        chassis->input(inputMove, inputSpin);
     }
 }
 
-void MoveChassisCommand::end(bool) { subsystem->input(Vector2f(0.0f), 0.0f, false); }
-bool MoveChassisCommand::isFinished() const { return false; }
+void CommandMoveChassis::end(bool) { chassis->input(Vector2f(0.0f), 0.0f); }
+bool CommandMoveChassis::isFinished() const { return false; }
 
-void MoveChassisCommand::doControllerInput()
+void CommandMoveChassis::doControllerInput()
 {
     Remote* remote = &drivers->remote;
     inputMove = Vector2f(
@@ -65,7 +70,7 @@ void MoveChassisCommand::doControllerInput()
     inputSpin *= abs(inputSpin);
 }
 
-void MoveChassisCommand::doKeyboardInput()
+void CommandMoveChassis::doKeyboardInput()
 {
     Remote* remote = &drivers->remote;
     bool isRKeyPressed = remote->keyPressed(Remote::Key::R);

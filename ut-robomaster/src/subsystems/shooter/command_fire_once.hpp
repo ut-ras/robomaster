@@ -13,9 +13,11 @@ namespace shooter
 class CommandFireOnce : public tap::control::Command
 {
 public:
-    CommandFireOnce(ShooterSubsystem *sub, src::Drivers *drivers) : subsystem(sub), drivers(drivers)
+    CommandFireOnce(src::Drivers *drivers, ShooterSubsystem *shooter)
+        : drivers(drivers),
+          shooter(shooter)
     {
-        addSubsystemRequirement(sub);
+        addSubsystemRequirement(shooter);
     }
 
     void initialize() override;
@@ -29,10 +31,10 @@ public:
     const char *getName() const override { return "shooter single fire command"; }
 
 private:
-    ShooterSubsystem *subsystem;
     src::Drivers *drivers;
+    ShooterSubsystem *shooter;
 };  // class CommandFireOnce
 }  // namespace shooter
 }  // namespace subsystems
 
-#endif  // SHOOTER_SINGLE_FIRE_COMMAND_HPP_
+#endif

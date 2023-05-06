@@ -3,24 +3,29 @@
 
 #include "tap/control/command.hpp"
 
+#include "subsystems/turret/turret_subsystem.hpp"
+
 #include "chassis_subsystem.hpp"
 #include "drivers.hpp"
-
-using namespace tap::communication::serial;
-using namespace modm;
 
 namespace subsystems
 {
 namespace chassis
 {
-class MoveChassisCommand : public tap::control::Command
+using namespace tap::communication::serial;
+using namespace modm;
+using turret::TurretSubsystem;
+
+class CommandMoveChassis : public tap::control::Command
 {
 public:
-    MoveChassisCommand(ChassisSubsystem *sub, src::Drivers *drivers)
+    CommandMoveChassis(src::Drivers *drivers, ChassisSubsystem *chassis, TurretSubsystem *turret)
         : drivers(drivers),
-          subsystem(sub)
+          chassis(chassis),
+          turret(turret)
     {
-        addSubsystemRequirement(sub);
+        addSubsystemRequirement(chassis);
+        // addSubsystemRequirement(turret); // this conflicts with the turret move command
     }
 
     void initialize() override;
@@ -31,7 +36,7 @@ public:
 
     bool isFinished() const override;
 
-    const char *getName() const override { return "set kinematics command"; }
+    const char *getName() const override { return "move chassis command"; }
 
 private:
     void doControllerInput();
@@ -43,7 +48,9 @@ private:
     static constexpr float KEYBOARD_DECEL = 3.0f;
 
     src::Drivers *drivers;
-    ChassisSubsystem *subsystem;
+    ChassisSubsystem *chassis;
+    TurretSubsystem *turret;
+
     Vector2f inputMove = Vector2f(0.0f);
     float inputSpin = 0.0f;
     bool wasRKeyPressed = false;

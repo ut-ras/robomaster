@@ -27,7 +27,7 @@ void CommandFireContinuous::execute()
             break;
     }
 
-    subsystem->setFiringState(firingState);
+    shooter->setFiringState(firingState);
 }
 
 void CommandFireContinuous::end(bool) {}

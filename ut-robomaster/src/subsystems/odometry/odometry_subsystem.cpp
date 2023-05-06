@@ -15,22 +15,21 @@ OdometrySubsystem::OdometrySubsystem(
       turret(turret),
       chassisDisplacement(drivers, chassis),
       chassisYaw(drivers),
-      tracker(&chassisYaw, &chassisDisplacement){};
+      chassisTracker(&chassisYaw, &chassisDisplacement){};
 
 void OdometrySubsystem::initialize(){};
-void OdometrySubsystem::refresh() { tracker.update(); }
+void OdometrySubsystem::refresh() { chassisTracker.update(); }
 
-Vector2f OdometrySubsystem::getPosition() { return tracker.getCurrentLocation2D().getPosition(); }
-float OdometrySubsystem::getYaw() { return tracker.getYaw(); }
-Vector2f OdometrySubsystem::getChassisLinearVelocity() { return tracker.getCurrentVelocity2D(); }
-float OdometrySubsystem::getChassisAngularVelocity() { return chassis->measureVelocity().z; }
-float OdometrySubsystem::getTurretYaw()
+Vector2f OdometrySubsystem::getPosition()
 {
-    return 0.0f;  // TODO
+    return chassisTracker.getCurrentLocation2D().getPosition();
 }
-float OdometrySubsystem::getTurretPitch()
-{
-    return 0.0f;  // TODO
-};
+Vector2f OdometrySubsystem::getLinearVelocity() { return chassisTracker.getCurrentVelocity2D(); }
+
+float OdometrySubsystem::getChassisYaw() { return chassisTracker.getYaw(); }
+float OdometrySubsystem::getChassisAngularVelocity() { return chassis->measureVelocity().z; }
+
+float OdometrySubsystem::getTurretLocalYaw() { return turret->getCurrentLocalPitch(); }
+float OdometrySubsystem::getTurretLocalPitch() { return turret->getCurrentLocalYaw(); }
 };  // namespace odometry
 }  // namespace subsystems

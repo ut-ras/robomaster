@@ -13,11 +13,11 @@ namespace shooter
 class CommandFireContinuous : public tap::control::Command
 {
 public:
-    CommandFireContinuous(ShooterSubsystem *sub, src::Drivers *drivers)
-        : subsystem(sub),
-          drivers(drivers)
+    CommandFireContinuous(src::Drivers *drivers, ShooterSubsystem *shooter)
+        : drivers(drivers),
+          shooter(shooter)
     {
-        addSubsystemRequirement(sub);
+        addSubsystemRequirement(shooter);
     }
 
     void initialize() override;
@@ -31,11 +31,11 @@ public:
     const char *getName() const override { return "shooter on command"; }
 
 private:
-    ShooterSubsystem *subsystem;
     src::Drivers *drivers;
+    ShooterSubsystem *shooter;
 
 };  // class CommandFireContinuous
 }  // namespace shooter
 }  // namespace subsystems
 
-#endif  // SHOOTER_ON_COMMAND_HPP_
+#endif

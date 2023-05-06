@@ -6,10 +6,9 @@ namespace subsystems
 {
 namespace chassis
 {
-ChassisSubsystem::ChassisSubsystem(src::Drivers* drivers, turret::TurretSubsystem* turret)
+ChassisSubsystem::ChassisSubsystem(src::Drivers* drivers)
     : tap::control::Subsystem(drivers),
       drivers(drivers),
-      turret(turret),
       wheels{
           {drivers, M3508, ID_WHEEL_LF, CAN_WHEELS, false, "left front", PID_WHEELS},
           {drivers, M3508, ID_WHEEL_RF, CAN_WHEELS, true, "right front", PID_WHEELS},
@@ -39,15 +38,10 @@ void ChassisSubsystem::runHardwareTests()
     // TODO
 }
 
-void ChassisSubsystem::input(Vector2f move, float spin, bool turretRelative)
+void ChassisSubsystem::input(Vector2f move, float spin)
 {
     Vector2f v = move * MAX_LINEAR_VEL;
     float wZ = spin * MAX_ANGULAR_VEL;
-
-    if (turretRelative)
-    {
-        v.rotate(turret->getTargetLocalYaw());
-    }
 
     float linearTerm = (abs(v.x) + abs(v.y)) / WHEEL_RADIUS;
     float angularTerm = abs(wZ) * WHEEL_LXY / WHEEL_RADIUS;

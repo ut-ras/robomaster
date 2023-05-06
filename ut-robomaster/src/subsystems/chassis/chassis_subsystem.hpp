@@ -4,7 +4,6 @@
 #include "tap/control/subsystem.hpp"
 
 #include "modm/math/geometry.hpp"
-#include "subsystems/turret/turret_subsystem.hpp"
 #include "utils/motor_controller/motor_controller.hpp"
 
 #include "drivers.hpp"
@@ -21,7 +20,7 @@ namespace chassis
 class ChassisSubsystem : public tap::control::Subsystem
 {
 public:
-    ChassisSubsystem(src::Drivers* drivers, turret::TurretSubsystem* turret);
+    ChassisSubsystem(src::Drivers* drivers);
     void initialize() override;
     void refresh() override;
     void runHardwareTests() override;
@@ -30,7 +29,7 @@ public:
     /// to avoid over-driving motors. This logic can be adjusted to create various input schemes.
     /// @param move Linear movement (magnitude should be within [0,1])
     /// @param spin Angular rotation (value should be within [-1,1])
-    void input(Vector2f move, float spin, bool turretRelative);
+    void input(Vector2f move, float spin);
 
     /// @brief Reconstruct current velocities based on measured wheel motion.
     /// @return x,y is linear velocity (m/s) and z is angular velocity (rad/s)
@@ -40,7 +39,6 @@ public:
 
 private:
     src::Drivers* drivers;
-    turret::TurretSubsystem* turret;
     static constexpr int WHEELS = 4;
 
 #if defined TARGET_STANDARD || defined TARGET_SENTRY

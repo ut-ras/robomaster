@@ -29,24 +29,24 @@ public:
     void initialize() override;
     void refresh() override;
     const char* getName() override { return "Odometry subsystem"; }
+
     Vector2f getPosition();
-    float getYaw();
-    Vector2f getChassisLinearVelocity();
+    Vector2f getLinearVelocity();
+
+    float getChassisYaw();
     float getChassisAngularVelocity();
-    float getTurretYaw();
-    float getTurretPitch();
+
+    float getTurretLocalYaw();
+    float getTurretLocalPitch();
 
 private:
     src::Drivers* drivers;
     ChassisSubsystem* chassis;
-    const int IMU_DESIRED_TEMPERATURE =
-    tap::communication::sensors::imu_heater::ImuHeater::IMU_DESIRED_TEMPERATURE;
-    modm::Location2D<float> location = modm::Location2D(0.0f, 0.0f, 0.0f);
-    modm::Vector2f posOffset = modm::Vector2f(0.0f);
+    TurretSubsystem* turret;
+
     ChassisDisplacementObserver chassisDisplacement;
     ChassisWorldYawObserver chassisYaw;
-    Odometry2DTracker tracker;
-    TurretSubsystem* turret;
+    Odometry2DTracker chassisTracker;
 };
 }  // namespace odometry
 }  // namespace subsystems
