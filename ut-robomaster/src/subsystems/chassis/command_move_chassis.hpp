@@ -44,6 +44,7 @@ private:
 
     static constexpr float DELTA_TIME = 0.002f;
     static constexpr float ANALOG_DEAD_ZONE = 0.1f;
+    static constexpr float TURRET_ALIGN_FACTOR = 0.5f;
     static constexpr float KEYBOARD_ACCEL = 4.0f;
     static constexpr float KEYBOARD_DECEL = 3.0f;
 

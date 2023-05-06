@@ -32,7 +32,16 @@ void CommandMoveChassis::execute()
 
         if (turretRelative)
         {
-            inputMove.rotate(turret->getTargetLocalYaw());
+            float turretYaw = turret->getTargetLocalYaw();
+            inputMove.rotate(turretYaw);
+
+            // auto-align to turret when moving
+            if (inputMove.getLengthSquared() > 0.0f && inputSpin == 0.0f)
+            {
+                float deltaAngle = turretYaw - roundf(turretYaw / M_PI_2) * M_PI_2;  // nearest side
+                float correction = deltaAngle / M_PI_2 * 4.0f;
+                inputSpin = correction / max(1.0f, abs(correction)) * TURRET_ALIGN_FACTOR;
+            }
         }
 
         chassis->input(inputMove, inputSpin);
