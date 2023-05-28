@@ -4,6 +4,9 @@ namespace subsystems
 {
 namespace chassis
 {
+
+#define SNAP_ANGLE M_PI
+
 void CommandMoveChassis::initialize() {}
 
 void CommandMoveChassis::execute()
@@ -38,8 +41,9 @@ void CommandMoveChassis::execute()
             // auto-align to turret when moving
             if (inputMove.getLengthSquared() > 0.0f && inputSpin == 0.0f)
             {
-                float deltaAngle = turretYaw - roundf(turretYaw / M_PI_2) * M_PI_2;  // nearest side
-                float correction = deltaAngle / M_PI_2 * 4.0f;
+                float deltaAngle =
+                    turretYaw - roundf(turretYaw / SNAP_ANGLE) * SNAP_ANGLE;  // nearest side
+                float correction = deltaAngle / SNAP_ANGLE * 4.0f;
                 inputSpin = correction / max(1.0f, abs(correction)) * TURRET_ALIGN_FACTOR;
             }
         }
