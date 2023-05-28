@@ -7,6 +7,7 @@
 
 #include "subsystems/chassis/chassis_subsystem.hpp"
 #include "subsystems/chassis/command_move_chassis.hpp"
+#include "subsystems/chassis/command_sentry_position.hpp"
 #include "subsystems/odometry/odometry_subsystem.hpp"
 #include "subsystems/shooter/command_fire_continuous.hpp"
 #include "subsystems/shooter/command_fire_once.hpp"
@@ -39,6 +40,7 @@ odometry::OdometrySubsystem odometry(drivers(), &chassis, &turret);
 
 // Commands
 chassis::CommandMoveChassis moveChassisCommand(drivers(), &chassis, &turret);
+chassis::CommandSentryPosition sentryPositionCommand(drivers(), &chassis);
 turret::CommandMoveTurret moveTurretCommand(drivers(), &turret);
 shooter::CommandFireContinuous fireContinuousCommand(drivers(), &shooter);
 shooter::CommandFireOnce fireOnceCommand(drivers(), &shooter);
@@ -68,7 +70,7 @@ void initializeSubsystems()
 
 void setDefaultCommands(src::Drivers *)
 {
-    chassis.setDefaultCommand(&moveChassisCommand);
+    chassis.setDefaultCommand(&sentryPositionCommand);
     turret.setDefaultCommand(&moveTurretCommand);
     shooter.setDefaultCommand(&fireContinuousCommand);
 }
