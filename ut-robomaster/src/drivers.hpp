@@ -34,10 +34,10 @@ class Drivers : public tap::Drivers
 #ifdef ENV_UNIT_TESTS
 public:
 #endif
-    Drivers() : tap::Drivers(), beagleboneCommunicator(this), terminal(this) {}
+    Drivers() : tap::Drivers(), beaglebone(this), terminal(this) {}
 
 public:
-    communication::BeagleBoneCommunicator beagleboneCommunicator;
+    communication::BeagleBoneCommunicator beaglebone;
     comms::RobotComms terminal;
 
     bool isKillSwitched()
