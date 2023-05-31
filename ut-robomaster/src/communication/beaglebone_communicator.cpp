@@ -1,25 +1,24 @@
-
-#include "drivers.hpp"
 #include "beaglebone_communicator.hpp"
 
-namespace communication {
+#include "drivers.hpp"
 
+namespace communication
+{
 BeagleBoneCommunicator::BeagleBoneCommunicator(src::Drivers* drivers)
-    : DJISerial(drivers, BEAGLEBONE_UART_PORT),
+    : DJISerial(drivers, UART_PORT),
       drivers(drivers),
       lastTurretData(),
-      beagleboneOfflineTimeout()
+      offlineTimeout()
 {
     lastTurretData.hasTarget = false;
 }
 
-void BeagleBoneCommunicator::initialize() {
-    drivers->uart.init<BEAGLEBONE_UART_PORT, BEAGLEBONE_BAUD_RATE>();
-    
-}
+void BeagleBoneCommunicator::initialize() { drivers->uart.init<UART_PORT, BAUD_RATE>(); }
 
-void BeagleBoneCommunicator::messageReceiveCallback(const ReceivedSerialMessage& message) {
-    beagleboneOfflineTimeout.restart(BEAGLEBONE_OFFLINE_TIMEOUT_MS);
+void BeagleBoneCommunicator::messageReceiveCallback(const ReceivedSerialMessage& message)
+{
+    offlineTimeout.restart(OFFLINE_TIMEOUT_MS);
+
     switch (message.messageType)
     {
         case CV_MESSAGE_TYPE_TURRET_AIM:
@@ -32,24 +31,24 @@ void BeagleBoneCommunicator::messageReceiveCallback(const ReceivedSerialMessage&
     }
 }
 
-void BeagleBoneCommunicator::sendMessage() {
-    sendOdometryData(); 
-}
+void BeagleBoneCommunicator::sendMessage() { sendOdometryData(); }
 
-void BeagleBoneCommunicator::sendOdometryData() {
+void BeagleBoneCommunicator::sendOdometryData()
+{
     DJISerial::SerialMessage<sizeof(OdometryData)> message;
     message.messageType = CV_MESSAGE_TYPE_ODOMETRY_DATA;
 
     // TODO: Implement sending of data once odometry module is finished
 
     message.setCRC16();
-    drivers->uart.write(BEAGLEBONE_UART_PORT, reinterpret_cast<uint8_t*>(&message), sizeof(message));
+    drivers->uart.write(UART_PORT, reinterpret_cast<uint8_t*>(&message), sizeof(message));
 }
 
-bool BeagleBoneCommunicator::decodeTurretData(const ReceivedSerialMessage& message) {
-
-    if (message.header.dataLength == sizeof(lastTurretData)) {
-        memcpy(&lastTurretData, &message.data, sizeof(lastTurretData)); 
+bool BeagleBoneCommunicator::decodeTurretData(const ReceivedSerialMessage& message)
+{
+    if (message.header.dataLength == sizeof(lastTurretData))
+    {
+        memcpy(&lastTurretData, &message.data, sizeof(lastTurretData));
         // if(lastTurretData.hasTarget){
         //     //setTurret();
         // }
@@ -78,11 +77,7 @@ void BeagleBoneCommunicator::setTurret(){
     //turret->inputTargetData(position, velocity, acceleration);
 }*/
 
-bool BeagleBoneCommunicator::isBeagleBoneOnline() const {
-    return !beagleboneOfflineTimeout.isExpired();
-}
+bool BeagleBoneCommunicator::isOnline() const { return !offlineTimeout.isExpired(); }
 
-const TurretData& BeagleBoneCommunicator::getTurretData() const {
-    return lastTurretData;
-}
-}   // namespace communication
+const TurretData& BeagleBoneCommunicator::getTurretData() const { return lastTurretData; }
+}  // namespace communication
