@@ -38,6 +38,7 @@ public:
     /// @brief Input target data from CV (relative to camera)
     void inputTargetData(Vector3f position, Vector3f velocity, Vector3f acceleration);
 
+    void setTargetWorldAngles(float yaw, float pitch);
     void setAimStrategy(AimStrategy aimStrategy);
 
     float getChassisYaw();
@@ -52,8 +53,7 @@ public:
 
     const char* getName() override { return "Turret subsystem"; }
 
-    TurretMotor* getYawTurret() { return &yawTurret; }
-    TurretMotor* getPitchTurret() { return &pitchTurret; }
+    void updateAutoAim();
 
     static constexpr float BELT_RATIO = 2.0f;
 
@@ -70,7 +70,7 @@ private:
     Vector3f targetVelocity = Vector3f(0.0f);
     Vector3f targetAcceleration = Vector3f(0.0f);
 
-    AimStrategy aimStrategy = AimStrategy::Manual;
+    AimStrategy aimStrategy = AimStrategy::AutoAim;
 
     DjiMotor yawMotor;
     DjiMotor pitchMotor;

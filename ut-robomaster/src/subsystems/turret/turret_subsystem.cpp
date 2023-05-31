@@ -5,11 +5,14 @@
 #include "modm/math.hpp"
 #include "robots/robot_constants.hpp"
 
-using namespace tap::algorithms::ballistics;
 namespace subsystems
 {
 namespace turret
 {
+using namespace tap::algorithms::ballistics;
+using communication::TurretData;
+using modm::Vector2f;
+
 TurretSubsystem::TurretSubsystem(src::Drivers* drivers)
     : tap::control::Subsystem(drivers),
       drivers(drivers),
@@ -41,6 +44,12 @@ void TurretSubsystem::inputTargetData(Vector3f position, Vector3f velocity, Vect
     targetAcceleration = acceleration;
 }
 
+void TurretSubsystem::setTargetWorldAngles(float yaw, float pitch)
+{
+    targetWorldYaw = yaw;
+    targetWorldPitch = modm::min(modm::max(pitch, PITCH_MIN), PITCH_MAX);
+}
+
 void TurretSubsystem::setAimStrategy(AimStrategy aimStrategy) { this->aimStrategy = aimStrategy; }
 
 float TurretSubsystem::getChassisYaw() { return modm::toRadian(drivers->bmi088.getYaw() - 180.0f); }
@@ -66,25 +75,11 @@ void TurretSubsystem::refresh()
     switch (aimStrategy)
     {
         case AimStrategy::Manual:
-            targetWorldYaw = inputYaw;
-            targetWorldPitch = inputPitch;
+            setTargetWorldAngles(inputYaw, inputPitch);
             break;
         case AimStrategy::AutoAim:
         {
-            float turretPitch = 0.0f;
-            float turretYaw = 0.0f;
-            float projectedTravelTime = 0.0f;
-
-            findTargetProjectileIntersection(
-                {targetPosition, targetVelocity, targetAcceleration},
-                bulletVelocity,
-                numBallisticIterations,
-                &turretPitch,
-                &turretYaw,
-                &projectedTravelTime);
-
-            targetWorldYaw = turretYaw;
-            targetWorldPitch = turretPitch;
+            updateAutoAim();
             break;
         }
         case AimStrategy::AimAssist:  // unimplemented
@@ -122,5 +117,41 @@ void TurretSubsystem::runHardwareTests()
     // TODO
 }
 
+void TurretSubsystem::updateAutoAim()
+{
+    // float turretPitch = 0.0f;
+    // float turretYaw = 0.0f;
+    // float projectedTravelTime = 0.0f;
+
+    // findTargetProjectileIntersection(
+    //     {targetPosition, targetVelocity, targetAcceleration},
+    //     bulletVelocity,
+    //     numBallisticIterations,
+    //     &turretPitch,
+    //     &turretYaw,
+    //     &projectedTravelTime);
+
+    // targetWorldYaw = turretYaw;
+    // targetWorldPitch = turretPitch;
+
+    // ^ Ignoring ballistics for now
+
+    if (!drivers->beaglebone.isOnline()) return;
+
+    TurretData turretData = drivers->beaglebone.getTurretData();
+    if (!turretData.hasTarget) return;
+
+    float yawSpeed = 0.001f;
+    float pitchSpeed = 0.001f;
+    float minThreshold = 0.1f;
+
+    float deltaYaw = turretData.xPos / abs(turretData.xPos) * -yawSpeed;
+    float deltaPitch = turretData.yPos / abs(turretData.yPos) * pitchSpeed;
+
+    if (abs(deltaYaw) < 0.1f) deltaYaw = 0.0f;
+    if (abs(deltaPitch) < 0.1f) deltaPitch = 0.0f;
+
+    setTargetWorldAngles(targetWorldYaw + deltaYaw, targetWorldPitch + deltaPitch);
+}
 }  // namespace turret
 }  // namespace subsystems
