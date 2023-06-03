@@ -13,20 +13,34 @@ BeagleBoneCommunicator::BeagleBoneCommunicator(src::Drivers* drivers)
     lastTurretData.hasTarget = false;
 }
 
-void BeagleBoneCommunicator::initialize() { drivers->uart.init<UART_PORT, BAUD_RATE>(); }
+void BeagleBoneCommunicator::initialize()
+{
+    drivers->uart.init<UART_PORT, BAUD_RATE>();
+    drivers->terminal << "init\n";
+}
 
 void BeagleBoneCommunicator::messageReceiveCallback(const ReceivedSerialMessage& message)
 {
+    drivers->terminal << "msg ";
+
     offlineTimeout.restart(OFFLINE_TIMEOUT_MS);
 
     switch (message.messageType)
     {
         case CV_MESSAGE_TYPE_TURRET_AIM:
         {
+            drivers->terminal << "trt: ";
             decodeTurretData(message);
+            drivers->terminal << lastTurretData.xPos;
+            drivers->terminal << ", ";
+            drivers->terminal << lastTurretData.yPos;
+            drivers->terminal << ", ";
+            drivers->terminal << lastTurretData.zPos;
+            drivers->terminal << "\n";
             return;
         }
         default:
+            drivers->terminal << "other\n";
             return;
     }
 }
@@ -78,6 +92,19 @@ void BeagleBoneCommunicator::setTurret(){
 }*/
 
 bool BeagleBoneCommunicator::isOnline() const { return !offlineTimeout.isExpired(); }
+
+void BeagleBoneCommunicator::test()
+{
+    uint8_t b;
+    bool got = drivers->uart.read(UART_PORT, &b);
+
+    if (got)
+    {
+        drivers->terminal << "got: ";
+        drivers->terminal << b;
+        drivers->terminal << "\n";
+    }
+}
 
 const TurretData& BeagleBoneCommunicator::getTurretData() const { return lastTurretData; }
 }  // namespace communication

@@ -136,9 +136,27 @@ void TurretSubsystem::updateAutoAim()
 
     // ^ Ignoring ballistics for now
 
+    // drivers->terminal << "t ";
+
+    if (drivers->isKillSwitched())
+    {
+        drivers->terminal << "ded\n";
+    }
+
     if (!drivers->beaglebone.isOnline()) return;
 
+    // drivers->terminal << "o ";
+
     TurretData turretData = drivers->beaglebone.getTurretData();
+
+    // drivers->terminal << turretData.xPos;
+    // drivers->terminal << ", ";
+    // drivers->terminal << turretData.yPos;
+    // drivers->terminal << ", ";
+    // drivers->terminal << turretData.zPos;
+
+    // drivers->terminal << "\r\n";
+
     if (!turretData.hasTarget) return;
 
     float yawSpeed = 0.001f;
@@ -151,7 +169,7 @@ void TurretSubsystem::updateAutoAim()
     if (abs(deltaYaw) < 0.1f) deltaYaw = 0.0f;
     if (abs(deltaPitch) < 0.1f) deltaPitch = 0.0f;
 
-    setTargetWorldAngles(targetWorldYaw + deltaYaw, targetWorldPitch + deltaPitch);
+    // setTargetWorldAngles(targetWorldYaw + deltaYaw, targetWorldPitch + deltaPitch);
 }
 }  // namespace turret
 }  // namespace subsystems

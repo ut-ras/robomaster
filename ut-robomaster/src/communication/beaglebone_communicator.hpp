@@ -61,6 +61,7 @@ public:
      * BEAGLEBONE_OFFLINE_TIMEOUT_MS milliseconds, false if otherwise
      */
     bool isOnline() const;
+    void test();
 
     /**
      * @return a reference to lastTurretData (the last turret aiming data received from the
