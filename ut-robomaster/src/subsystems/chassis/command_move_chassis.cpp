@@ -91,17 +91,7 @@ void CommandMoveChassis::doControllerInput()
 void CommandMoveChassis::doKeyboardInput()
 {
     Remote* remote = &drivers->remote;
-    bool isRKeyPressed = remote->keyPressed(Remote::Key::R);
-    if (isRKeyPressed != wasRKeyPressed)
-    {
-        wasRKeyPressed = isRKeyPressed;
-        if (isRKeyPressed)
-        {
-            isBeyblading = !isBeyblading;
-        }
-    }
-
-    inputSpin = isBeyblading ? 1.0f : 0.0f;
+    inputSpin = state->isBeyblading ? 1.0f : 0.0f;
 
     Vector2f rawMoveInput = Vector2f(
         remote->keyPressed(Remote::Key::D) - remote->keyPressed(Remote::Key::A),

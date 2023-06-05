@@ -5,8 +5,10 @@
 #include "tap/control/press_command_mapping.hpp"
 #include "tap/control/toggle_command_mapping.hpp"
 
+#include "robots/robot_state.hpp"
 #include "subsystems/chassis/chassis_subsystem.hpp"
 #include "subsystems/chassis/command_move_chassis.hpp"
+#include "subsystems/chassis/command_toggle_beyblade.hpp"
 #include "subsystems/odometry/odometry_subsystem.hpp"
 #include "subsystems/shooter/command_fire_continuous.hpp"
 #include "subsystems/shooter/command_fire_once.hpp"
@@ -31,6 +33,8 @@ src::driversFunc drivers = src::DoNotUse_getDrivers;
 
 namespace standard_control
 {
+RobotState state;
+
 // Subsystems
 chassis::ChassisSubsystem chassis(drivers());
 turret::TurretSubsystem turret(drivers());
@@ -38,16 +42,22 @@ shooter::ShooterSubsystem shooter(drivers());
 odometry::OdometrySubsystem odometry(drivers(), &chassis, &turret);
 
 // Commands
-chassis::CommandMoveChassis moveChassisCommand(drivers(), &chassis, &turret);
+chassis::CommandMoveChassis moveChassisCommand(drivers(), &state, &chassis, &turret);
 turret::CommandMoveTurret moveTurretCommand(drivers(), &turret);
 shooter::CommandFireContinuous fireContinuousCommand(drivers(), &shooter);
 shooter::CommandFireOnce fireOnceCommand(drivers(), &shooter);
+chassis::CommandToggleBeyblade toggleBeybladeCommand(drivers(), &state);
 
 // Mappings
 PressCommandMapping singleFire(
     drivers(),
     {&fireOnceCommand},
     RemoteMapState(RemoteMapState::MouseButton::RIGHT));
+
+PressCommandMapping toggleBeyblade(
+    drivers(),
+    {&toggleBeybladeCommand},
+    RemoteMapState({Remote::Key::R}));
 
 void registerStandardSubsystems(src::Drivers *drivers)
 {
@@ -75,7 +85,11 @@ void setDefaultCommands(src::Drivers *)
 
 void runStartupCommands(src::Drivers *) {}
 
-void registerMappings(src::Drivers *drivers) { drivers->commandMapper.addMap(&singleFire); }
+void registerMappings(src::Drivers *drivers)
+{
+    drivers->commandMapper.addMap(&singleFire);
+    drivers->commandMapper.addMap(&toggleBeyblade);
+}
 }  // namespace standard_control
 
 namespace control

@@ -3,6 +3,7 @@
 
 #include "tap/control/command.hpp"
 
+#include "robots/robot_state.hpp"
 #include "subsystems/turret/turret_subsystem.hpp"
 
 #include "chassis_subsystem.hpp"
@@ -19,8 +20,13 @@ using turret::TurretSubsystem;
 class CommandMoveChassis : public tap::control::Command
 {
 public:
-    CommandMoveChassis(src::Drivers *drivers, ChassisSubsystem *chassis, TurretSubsystem *turret)
+    CommandMoveChassis(
+        src::Drivers *drivers,
+        RobotState *state,
+        ChassisSubsystem *chassis,
+        TurretSubsystem *turret)
         : drivers(drivers),
+          state(state),
           chassis(chassis),
           turret(turret)
     {
@@ -49,13 +55,12 @@ private:
     static constexpr float KEYBOARD_DECEL = 3.0f;
 
     src::Drivers *drivers;
+    RobotState *state;
     ChassisSubsystem *chassis;
     TurretSubsystem *turret;
 
     Vector2f inputMove = Vector2f(0.0f);
     float inputSpin = 0.0f;
-    bool wasRKeyPressed = false;
-    bool isBeyblading = false;
 };
 }  // namespace chassis
 }  // namespace subsystems
