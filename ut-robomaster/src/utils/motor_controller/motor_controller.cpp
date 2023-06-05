@@ -85,5 +85,12 @@ void MotorVelocityController::update(float target)
     motor.setDesiredOutput(output * constants.maxOutput);
 }
 
+// Overload method to allow for power limiting
+// Non-overloaded update method should be called first before this one, as this does not update the pid
+void MotorVelocityController::applyPowerScalar(float powerLimitScalar) {
+    if (!isActive) return;
+    motor.setDesiredOutput(motor.getOutputDesired() * constants.maxOutput * powerLimitScalar);
+}
+
 float MotorVelocityController::measure() { return measure_velocity(&motor, constants); }
 }  // namespace motor_controller

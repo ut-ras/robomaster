@@ -34,6 +34,7 @@ public:
     virtual void setActive(bool active);
     virtual void update(float target) = 0;
     virtual float measure() = 0;
+    virtual Pid getPid() { return pid; }
 
 protected:
     float delta_time();
@@ -90,6 +91,8 @@ public:
     /// @brief Update the controller with the desired target velocity.
     /// @return Target velocity, measured in revolutions per second.
     void update(float target);
+
+    void applyPowerScalar(float powerLimitScalar);
 
     /// @brief Get the current velocity of the motor.
     /// @return Motor velocity, measured in revolutions per second.

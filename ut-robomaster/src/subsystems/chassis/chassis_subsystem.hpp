@@ -5,6 +5,7 @@
 
 #include "modm/math/geometry.hpp"
 #include "utils/motor_controller/motor_controller.hpp"
+#include "utils/power_limiter/power_limiter.hpp"
 
 #include "drivers.hpp"
 
@@ -23,6 +24,7 @@ public:
     ChassisSubsystem(src::Drivers* drivers);
     void initialize() override;
     void refresh() override;
+    void limitChassisPower();
     void runHardwareTests() override;
 
     /// @brief Update robot motion based on simple input controls. Inputs are scaled and corrected
@@ -39,11 +41,14 @@ public:
 
 private:
     src::Drivers* drivers;
+    power_limiter::PowerLimiter powerLimiter;
+
     static constexpr int WHEELS = 4;
 
 #if defined TARGET_STANDARD || defined TARGET_SENTRY
     static constexpr float WHEEL_DISTANCE_X = 0.391f;  // meters
     static constexpr float WHEEL_DISTANCE_Y = 0.315f;  // meters
+
 #elif defined TARGET_HERO
     static constexpr float WHEEL_DISTANCE_X = 0.525f;  // meters
     static constexpr float WHEEL_DISTANCE_Y = 0.400f;  // meters
@@ -63,6 +68,9 @@ private:
     /// @param v Linear velocity (m/s)
     /// @param wZ Angular velocity (rad/s)
     void setMecanumWheelVelocities(Vector2f v, float wZ);
+
+    static constexpr float ENERGY_BUFFER_LIMIT_THRESHOLD = 60.0f;
+    static constexpr float ENERGY_BUFFER_CRIT_THRESHOLD = 10.0f;
 };
 }  // namespace chassis
 }  // namespace subsystems

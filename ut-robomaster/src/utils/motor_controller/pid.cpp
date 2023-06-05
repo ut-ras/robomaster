@@ -19,6 +19,7 @@ float Pid::update(float err, float dt)
     else if (output < -1.0f)
         output = -1.0f;
 
+    lastError = output;
     return output;
 }
 
