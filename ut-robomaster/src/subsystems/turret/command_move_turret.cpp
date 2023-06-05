@@ -19,14 +19,27 @@ void CommandMoveTurret::execute()
     }
     else
     {
-        float h = remote->getChannel(Remote::Channel::LEFT_HORIZONTAL);
-        float v = remote->getChannel(Remote::Channel::LEFT_VERTICAL);
+        float yawInput = 0.0f;
+        float pitchInput = 0.0f;
 
-        if (abs(h) < ANALOG_DEAD_ZONE) h = 0.0f;
-        if (abs(v) < ANALOG_DEAD_ZONE) v = 0.0f;
+        if (remote->getSwitch(Remote::Switch::RIGHT_SWITCH) == Remote::SwitchState::DOWN)
+        {
+            // mouse
+            yawInput += remote->getMouseX() * MOUSE_SENS_YAW;
+            pitchInput += remote->getMouseY() * MOUSE_SENS_PITCH;
+        }
+        else
+        {
+            // controller
+            float h = remote->getChannel(Remote::Channel::LEFT_HORIZONTAL);
+            float v = remote->getChannel(Remote::Channel::LEFT_VERTICAL);
 
-        float yawInput = h * abs(h);    // quadratic input map
-        float pitchInput = v * abs(v);  // quadratic input map
+            if (abs(h) < ANALOG_DEAD_ZONE) h = 0.0f;
+            if (abs(v) < ANALOG_DEAD_ZONE) v = 0.0f;
+
+            yawInput = h * abs(h);    // quadratic input map
+            pitchInput = v * abs(v);  // quadratic input map
+        }
 
         yaw -= yawInput * yawInputScale;
         pitch += pitchInput * pitchInputScale;

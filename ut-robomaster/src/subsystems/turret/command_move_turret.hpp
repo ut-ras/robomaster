@@ -37,6 +37,9 @@ private:
     src::Drivers* drivers;
     TurretSubsystem* turret;
 
+    static constexpr float MOUSE_SENS_YAW = 0.01f;
+    static constexpr float MOUSE_SENS_PITCH = 0.01f;
+
     float yaw = 0.0f;
     float pitch = 0.0f;
 
