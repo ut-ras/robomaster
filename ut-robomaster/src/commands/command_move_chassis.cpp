@@ -1,10 +1,7 @@
 #include "command_move_chassis.hpp"
 
-namespace subsystems
+namespace commands
 {
-namespace chassis
-{
-
 #define SNAP_ANGLE M_PI
 
 void CommandMoveChassis::initialize() {}
@@ -114,5 +111,4 @@ void CommandMoveChassis::doKeyboardInput()
         }
     }
 }
-}  // namespace chassis
-}  // namespace subsystems
+}  // namespace commands

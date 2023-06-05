@@ -1,21 +1,19 @@
-#ifndef COMMAND_MOVE_CHASSIS_HPP_
-#define COMMAND_MOVE_CHASSIS_HPP_
+#pragma once
 
 #include "tap/control/command.hpp"
 
 #include "robots/robot_state.hpp"
+#include "subsystems/chassis/chassis_subsystem.hpp"
 #include "subsystems/turret/turret_subsystem.hpp"
 
-#include "chassis_subsystem.hpp"
 #include "drivers.hpp"
 
-namespace subsystems
-{
-namespace chassis
+namespace commands
 {
 using namespace tap::communication::serial;
 using namespace modm;
-using turret::TurretSubsystem;
+using subsystems::chassis::ChassisSubsystem;
+using subsystems::turret::TurretSubsystem;
 
 class CommandMoveChassis : public tap::control::Command
 {
@@ -35,13 +33,9 @@ public:
     }
 
     void initialize() override;
-
     void execute() override;
-
     void end(bool interrupted) override;
-
     bool isFinished() const override;
-
     const char *getName() const override { return "move chassis command"; }
 
 private:
@@ -62,7 +56,4 @@ private:
     Vector2f inputMove = Vector2f(0.0f);
     float inputSpin = 0.0f;
 };
-}  // namespace chassis
-}  // namespace subsystems
-
-#endif
+}  // namespace commands

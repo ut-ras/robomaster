@@ -5,15 +5,15 @@
 #include "tap/control/press_command_mapping.hpp"
 #include "tap/control/toggle_command_mapping.hpp"
 
+#include "commands/command_fire_continuous.hpp"
+#include "commands/command_fire_once.hpp"
+#include "commands/command_move_chassis.hpp"
+#include "commands/command_move_turret.hpp"
+#include "commands/command_toggle_beyblade.hpp"
 #include "robots/robot_state.hpp"
 #include "subsystems/chassis/chassis_subsystem.hpp"
-#include "subsystems/chassis/command_move_chassis.hpp"
-#include "subsystems/chassis/command_toggle_beyblade.hpp"
 #include "subsystems/odometry/odometry_subsystem.hpp"
-#include "subsystems/shooter/command_fire_continuous.hpp"
-#include "subsystems/shooter/command_fire_once.hpp"
 #include "subsystems/shooter/shooter_subsystem.hpp"
-#include "subsystems/turret/command_move_turret.hpp"
 #include "subsystems/turret/turret_subsystem.hpp"
 
 #include "drivers.hpp"
@@ -21,6 +21,7 @@
 
 using namespace tap::control;
 using namespace tap::communication::serial;
+using namespace commands;
 using namespace subsystems;
 
 /*
@@ -42,11 +43,11 @@ shooter::ShooterSubsystem shooter(drivers());
 odometry::OdometrySubsystem odometry(drivers(), &chassis, &turret);
 
 // Commands
-chassis::CommandMoveChassis moveChassisCommand(drivers(), &state, &chassis, &turret);
-turret::CommandMoveTurret moveTurretCommand(drivers(), &turret);
-shooter::CommandFireContinuous fireContinuousCommand(drivers(), &shooter);
-shooter::CommandFireOnce fireOnceCommand(drivers(), &shooter);
-chassis::CommandToggleBeyblade toggleBeybladeCommand(drivers(), &state);
+CommandMoveChassis moveChassisCommand(drivers(), &state, &chassis, &turret);
+CommandMoveTurret moveTurretCommand(drivers(), &turret);
+CommandFireContinuous fireContinuousCommand(drivers(), &shooter);
+CommandFireOnce fireOnceCommand(drivers(), &shooter);
+CommandToggleBeyblade toggleBeybladeCommand(drivers(), &state);
 
 // Mappings
 PressCommandMapping singleFire(

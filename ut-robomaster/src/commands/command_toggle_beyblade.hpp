@@ -1,5 +1,4 @@
-#ifndef COMMAND_TOGGLE_BEYBLADE_HPP_
-#define COMMAND_TOGGLE_BEYBLADE_HPP_
+#pragma once
 
 #include "tap/control/command.hpp"
 
@@ -7,9 +6,7 @@
 
 #include "drivers.hpp"
 
-namespace subsystems
-{
-namespace chassis
+namespace commands
 {
 using namespace tap::communication::serial;
 
@@ -34,7 +31,4 @@ private:
     src::Drivers *drivers;
     RobotState *state;
 };
-}  // namespace chassis
-}  // namespace subsystems
-
-#endif
+}  // namespace commands

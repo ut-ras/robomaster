@@ -1,15 +1,15 @@
-#ifndef COMMAND_FIRE_CONTINUOUS_HPP_
-#define COMMAND_FIRE_CONTINUOUS_HPP_
+#pragma once
 
 #include "tap/control/command.hpp"
 
-#include "drivers.hpp"
-#include "shooter_subsystem.hpp"
+#include "subsystems/shooter/shooter_subsystem.hpp"
 
-namespace subsystems
+#include "drivers.hpp"
+
+namespace commands
 {
-namespace shooter
-{
+using subsystems::shooter::ShooterSubsystem;
+
 class CommandFireContinuous : public tap::control::Command
 {
 public:
@@ -21,21 +21,14 @@ public:
     }
 
     void initialize() override;
-
     void execute() override;
-
     void end(bool interrupted) override;
-
     bool isFinished() const override;
-
-    const char *getName() const override { return "shooter on command"; }
+    const char *getName() const override { return "shooter continuous fire command"; }
 
 private:
     src::Drivers *drivers;
     ShooterSubsystem *shooter;
 
 };  // class CommandFireContinuous
-}  // namespace shooter
-}  // namespace subsystems
-
-#endif
+}  // namespace commands

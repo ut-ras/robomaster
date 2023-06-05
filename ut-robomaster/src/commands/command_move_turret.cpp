@@ -2,9 +2,7 @@
 
 #define ANALOG_DEAD_ZONE 0.1
 
-namespace subsystems
-{
-namespace turret
+namespace commands
 {
 void CommandMoveTurret::initialize() {}
 
@@ -52,5 +50,4 @@ void CommandMoveTurret::execute()
 void CommandMoveTurret::end(bool) {}
 
 bool CommandMoveTurret::isFinished(void) const { return false; }
-}  // namespace turret
-}  // namespace subsystems
+}  // namespace commands

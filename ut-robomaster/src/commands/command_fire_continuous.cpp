@@ -1,9 +1,8 @@
 #include "command_fire_continuous.hpp"
 
-namespace subsystems
+namespace commands
 {
-namespace shooter
-{
+using subsystems::shooter::FiringState;
 using tap::communication::serial::Remote;
 
 void CommandFireContinuous::initialize() {}
@@ -33,5 +32,4 @@ void CommandFireContinuous::execute()
 void CommandFireContinuous::end(bool) {}
 
 bool CommandFireContinuous::isFinished() const { return false; }
-}  // namespace shooter
-}  // namespace subsystems
+}  // namespace command

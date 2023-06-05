@@ -1,21 +1,19 @@
-#ifndef COMMAND_MOVE_TURRET_HPP_
-#define COMMAND_MOVE_TURRET_HPP_
+#pragma once
 
 #include "tap/communication/serial/remote.hpp"
 #include "tap/control/command.hpp"
 
 #include "robots/robot_constants.hpp"
+#include "subsystems/turret/turret_subsystem.hpp"
 
 #include "drivers.hpp"
-#include "turret_subsystem.hpp"
 
 using tap::communication::serial::Remote;
-using tap::control::Subsystem;
 
-namespace subsystems
+namespace commands
 {
-namespace turret
-{
+using subsystems::turret::TurretSubsystem;
+
 class CommandMoveTurret : public tap::control::Command
 {
 public:
@@ -30,7 +28,6 @@ public:
     void execute() override;
     void end(bool interrupted) override;
     bool isFinished() const override;
-
     const char* getName() const override { return "move turret command"; }
 
 private:
@@ -51,7 +48,4 @@ private:
     static constexpr float pitchInputScale = 0.01f;
 #endif
 };
-}  // namespace turret
-}  // namespace subsystems
-
-#endif
+}  // namespace commands
