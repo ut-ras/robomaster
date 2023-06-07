@@ -4,21 +4,22 @@
 #include "tap/control/command.hpp"
 
 #include "robots/robot_constants.hpp"
+#include "robots/robot_state.hpp"
 #include "subsystems/turret/turret_subsystem.hpp"
 
 #include "drivers.hpp"
 
-using tap::communication::serial::Remote;
-
 namespace commands
 {
 using subsystems::turret::TurretSubsystem;
+using tap::communication::serial::Remote;
 
 class CommandMoveTurret : public tap::control::Command
 {
 public:
-    CommandMoveTurret(src::Drivers* drivers, TurretSubsystem* turret)
+    CommandMoveTurret(src::Drivers* drivers, RobotState* state, TurretSubsystem* turret)
         : drivers(drivers),
+          state(state),
           turret(turret)
     {
         addSubsystemRequirement(turret);
@@ -32,6 +33,7 @@ public:
 
 private:
     src::Drivers* drivers;
+    RobotState* state;
     TurretSubsystem* turret;
 
     static constexpr float MOUSE_SENS_YAW = 0.01f;

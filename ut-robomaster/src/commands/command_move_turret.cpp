@@ -44,7 +44,8 @@ void CommandMoveTurret::execute()
         pitch = modm::min(modm::max(pitch, PITCH_MIN), PITCH_MAX);
     }
 
-    turret->inputManualAngles(yaw, pitch);
+    float lookBehindYawOffset = state->isLookingBehind ? M_PI : 0.0f;
+    turret->inputManualAngles(yaw + lookBehindYawOffset, pitch);
 }
 
 void CommandMoveTurret::end(bool) {}

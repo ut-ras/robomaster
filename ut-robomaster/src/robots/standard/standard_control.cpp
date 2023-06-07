@@ -7,6 +7,7 @@
 
 #include "commands/command_fire_continuous.hpp"
 #include "commands/command_fire_once.hpp"
+#include "commands/command_look_behind.hpp"
 #include "commands/command_move_chassis.hpp"
 #include "commands/command_move_turret.hpp"
 #include "commands/command_toggle_beyblade.hpp"
@@ -44,10 +45,11 @@ odometry::OdometrySubsystem odometry(drivers(), &chassis, &turret);
 
 // Commands
 CommandMoveChassis moveChassisCommand(drivers(), &state, &chassis, &turret);
-CommandMoveTurret moveTurretCommand(drivers(), &turret);
+CommandMoveTurret moveTurretCommand(drivers(), &state, &turret);
 CommandFireContinuous fireContinuousCommand(drivers(), &shooter);
 CommandFireOnce fireOnceCommand(drivers(), &shooter);
-CommandToggleBeyblade toggleBeybladeCommand(drivers(), &state);
+CommandToggleBeyblade toggleBeybladeCommand(&state);
+CommandLookBehind lookBehindCommand(&state);
 
 // Mappings
 PressCommandMapping singleFire(
@@ -59,6 +61,8 @@ PressCommandMapping toggleBeyblade(
     drivers(),
     {&toggleBeybladeCommand},
     RemoteMapState({Remote::Key::R}));
+
+PressCommandMapping lookBehind(drivers(), {&lookBehindCommand}, RemoteMapState({Remote::Key::B}));
 
 void registerStandardSubsystems(src::Drivers *drivers)
 {
@@ -90,6 +94,7 @@ void registerMappings(src::Drivers *drivers)
 {
     drivers->commandMapper.addMap(&singleFire);
     drivers->commandMapper.addMap(&toggleBeyblade);
+    drivers->commandMapper.addMap(&lookBehind);
 }
 }  // namespace standard_control
 

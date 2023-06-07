@@ -8,16 +8,16 @@
 
 namespace commands
 {
-class CommandToggleBeyblade : public tap::control::Command
+class CommandLookBehind : public tap::control::Command
 {
 public:
-    CommandToggleBeyblade(RobotState *state) : state(state) {}
+    CommandLookBehind(RobotState *state) : state(state) {}
 
     void initialize() override;
     void execute() override;
     void end(bool interrupted) override;
     bool isFinished() const override;
-    const char *getName() const override { return "toggle beyblade command"; }
+    const char *getName() const override { return "look behind command"; }
 
 private:
     RobotState *state;
