@@ -69,6 +69,11 @@ public:
      */
     const TurretData& getTurretData() const;
 
+    /**
+     * Identifier for the last turret data packet received, so we can check for new data
+     */
+    uint8_t turretDataIndex = 0;
+
 private:
     src::Drivers* drivers;
 

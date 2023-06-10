@@ -136,40 +136,17 @@ void TurretSubsystem::updateAutoAim()
 
     // ^ Ignoring ballistics for now
 
-    // drivers->terminal << "t ";
-
-    if (drivers->isKillSwitched())
-    {
-        drivers->terminal << "ded\n";
-    }
-
     if (!drivers->beaglebone.isOnline()) return;
-
-    // drivers->terminal << "o ";
+    if (lastTurretDataIndex == drivers->beaglebone.turretDataIndex) return;
+    lastTurretDataIndex = drivers->beaglebone.turretDataIndex;
 
     TurretData turretData = drivers->beaglebone.getTurretData();
-
-    // drivers->terminal << turretData.xPos;
-    // drivers->terminal << ", ";
-    // drivers->terminal << turretData.yPos;
-    // drivers->terminal << ", ";
-    // drivers->terminal << turretData.zPos;
-
-    // drivers->terminal << "\r\n";
-
     if (!turretData.hasTarget) return;
 
-    float yawSpeed = 0.001f;
-    float pitchSpeed = 0.001f;
-    float minThreshold = 0.1f;
-
-    float deltaYaw = turretData.xPos / abs(turretData.xPos) * -yawSpeed;
-    float deltaPitch = turretData.yPos / abs(turretData.yPos) * pitchSpeed;
-
-    if (abs(deltaYaw) < 0.1f) deltaYaw = 0.0f;
-    if (abs(deltaPitch) < 0.1f) deltaPitch = 0.0f;
-
-    // setTargetWorldAngles(targetWorldYaw + deltaYaw, targetWorldPitch + deltaPitch);
+    float deltaYaw = -atan(turretData.xPos / turretData.zPos);  // yaw is opposite to camera X
+    float deltaPitch = atan(turretData.yPos / turretData.zPos);
+    float scale = 0.5f;
+    setTargetWorldAngles(targetWorldYaw + deltaYaw * scale, targetWorldPitch + deltaPitch * scale);
 }
 }  // namespace turret
 }  // namespace subsystems

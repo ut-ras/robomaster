@@ -13,35 +13,19 @@ BeagleBoneCommunicator::BeagleBoneCommunicator(src::Drivers* drivers)
     lastTurretData.hasTarget = false;
 }
 
-void BeagleBoneCommunicator::initialize()
-{
-    drivers->uart.init<UART_PORT, BAUD_RATE>();
-    drivers->terminal << "init\n";
-}
+void BeagleBoneCommunicator::initialize() { drivers->uart.init<UART_PORT, BAUD_RATE>(); }
 
 void BeagleBoneCommunicator::messageReceiveCallback(const ReceivedSerialMessage& message)
 {
-    drivers->terminal << "msg ";
-
     offlineTimeout.restart(OFFLINE_TIMEOUT_MS);
 
     switch (message.messageType)
     {
         case CV_MESSAGE_TYPE_TURRET_AIM:
-        {
-            drivers->terminal << "trt: ";
             decodeTurretData(message);
-            drivers->terminal << lastTurretData.xPos;
-            drivers->terminal << ", ";
-            drivers->terminal << lastTurretData.yPos;
-            drivers->terminal << ", ";
-            drivers->terminal << lastTurretData.zPos;
-            drivers->terminal << "\n";
-            return;
-        }
+            break;
         default:
-            drivers->terminal << "other\n";
-            return;
+            break;
     }
 }
 
@@ -63,48 +47,12 @@ bool BeagleBoneCommunicator::decodeTurretData(const ReceivedSerialMessage& messa
     if (message.header.dataLength == sizeof(lastTurretData))
     {
         memcpy(&lastTurretData, &message.data, sizeof(lastTurretData));
-        // if(lastTurretData.hasTarget){
-        //     //setTurret();
-        // }
-        // else{
-        //     //turret->setAimStrategy(subsystems::turret::AimStrategy::Manual);
-        // }
+        turretDataIndex += 1;
         return true;
     }
     return false;
 }
-/*
-void BeagleBoneCommunicator::setTurret(){
-    //take lastTurretData, write to turret reference
-    Vector3f position;
-    position.x = lastTurretData.xPos;
-    position.y = lastTurretData.yPos;
-    position.z = lastTurretData.zPos;
-    Vector3f velocity;
-    velocity.x = lastTurretData.xVel;
-    velocity.y = lastTurretData.yVel;
-    velocity.z = lastTurretData.zVel;
-    Vector3f acceleration;
-    acceleration.x = lastTurretData.xAcc;
-    acceleration.y = lastTurretData.yAcc;
-    acceleration.z = lastTurretData.zAcc;
-    //turret->inputTargetData(position, velocity, acceleration);
-}*/
 
 bool BeagleBoneCommunicator::isOnline() const { return !offlineTimeout.isExpired(); }
-
-void BeagleBoneCommunicator::test()
-{
-    uint8_t b;
-    bool got = drivers->uart.read(UART_PORT, &b);
-
-    if (got)
-    {
-        drivers->terminal << "got: ";
-        drivers->terminal << b;
-        drivers->terminal << "\n";
-    }
-}
-
 const TurretData& BeagleBoneCommunicator::getTurretData() const { return lastTurretData; }
 }  // namespace communication

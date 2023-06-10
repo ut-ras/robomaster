@@ -131,8 +131,7 @@ static void updateIo(src::Drivers *drivers)
 
     drivers->canRxHandler.pollCanData();
     // drivers->refSerial.updateSerial();
-    // drivers->beaglebone.updateSerial();
-    drivers->beaglebone.test();
+    drivers->beaglebone.updateSerial();
     drivers->remote.read();
     // drivers->mpu6500.read();
 }
