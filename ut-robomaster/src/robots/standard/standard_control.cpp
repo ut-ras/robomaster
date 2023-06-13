@@ -69,7 +69,7 @@ PressCommandMapping lookBehind(drivers(), {&lookBehindCommand}, RemoteMapState({
 PressCommandMapping changeAimStrategy(
     drivers(),
     {&aimStrategyCommand},
-    RemoteMapState(RemoteMapState::MouseButton::RIGHT)); // TODO: map to a different button
+    RemoteMapState(RemoteMapState::MouseButton::RIGHT));
 
 void registerStandardSubsystems(src::Drivers *drivers)
 {
@@ -102,6 +102,7 @@ void registerMappings(src::Drivers *drivers)
     drivers->commandMapper.addMap(&singleFire);
     drivers->commandMapper.addMap(&toggleBeyblade);
     drivers->commandMapper.addMap(&lookBehind);
+    drivers->commandMapper.addMap(&changeAimStrategy);
 }
 }  // namespace standard_control
 

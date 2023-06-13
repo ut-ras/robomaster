@@ -10,20 +10,14 @@ namespace commands
     void CommandAimStrategy::execute() 
     {
         Remote* remote = &drivers->remote;
-
-        if(remote->getMouseR()) // Any concerns for holding right click for too long?
+        
+        if(remote->getMouseR())
         {
-            switch (turret->getAimStrategy())
-            {
-            case subsystems::turret::AimStrategy::Manual:
-                turret->setAimStrategy(subsystems::turret::AimStrategy::AutoAim);
-                break;
-            case subsystems::turret::AimStrategy::AutoAim:
-                turret->setAimStrategy(subsystems::turret::AimStrategy::Manual);
-                break;
-            default:
-                break;
-            }
+            turret->setAimStrategy(subsystems::turret::AimStrategy::AutoAim);
+        }
+        else
+        {
+            turret->setAimStrategy(subsystems::turret::AimStrategy::Manual);
         }
     }
 

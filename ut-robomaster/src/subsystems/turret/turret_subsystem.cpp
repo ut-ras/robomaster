@@ -43,8 +43,6 @@ void TurretSubsystem::inputTargetData(Vector3f position, Vector3f velocity, Vect
 
 void TurretSubsystem::setAimStrategy(AimStrategy aimStrategy) { this->aimStrategy = aimStrategy; }
 
-AimStrategy TurretSubsystem::getAimStrategy() { return this->aimStrategy; }
-
 float TurretSubsystem::getChassisYaw() { return modm::toRadian(drivers->bmi088.getYaw() - 180.0f); }
 float TurretSubsystem::getTargetLocalYaw() { return targetWorldYaw - getChassisYaw(); }
 float TurretSubsystem::getTargetLocalPitch() { return targetWorldPitch; }
