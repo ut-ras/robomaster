@@ -39,6 +39,7 @@ public:
     void inputTargetData(Vector3f position, Vector3f velocity, Vector3f acceleration);
 
     void setAimStrategy(AimStrategy aimStrategy);
+    AimStrategy getAimStrategy();
 
     float getChassisYaw();
     float getTargetLocalYaw();

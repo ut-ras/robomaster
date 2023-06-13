@@ -11,6 +11,7 @@
 #include "commands/command_move_chassis.hpp"
 #include "commands/command_move_turret.hpp"
 #include "commands/command_toggle_beyblade.hpp"
+#include "commands/command_aim_strategy.hpp"
 #include "robots/robot_state.hpp"
 #include "subsystems/chassis/chassis_subsystem.hpp"
 #include "subsystems/odometry/odometry_subsystem.hpp"
@@ -50,6 +51,7 @@ CommandFireContinuous fireContinuousCommand(drivers(), &shooter);
 CommandFireOnce fireOnceCommand(drivers(), &shooter);
 CommandToggleBeyblade toggleBeybladeCommand(&state);
 CommandLookBehind lookBehindCommand(&state);
+CommandAimStrategy aimStrategyCommand(drivers(), &turret);
 
 // Mappings
 PressCommandMapping singleFire(
@@ -63,6 +65,11 @@ PressCommandMapping toggleBeyblade(
     RemoteMapState({Remote::Key::R}));
 
 PressCommandMapping lookBehind(drivers(), {&lookBehindCommand}, RemoteMapState({Remote::Key::B}));
+
+PressCommandMapping changeAimStrategy(
+    drivers(),
+    {&aimStrategyCommand},
+    RemoteMapState(RemoteMapState::MouseButton::RIGHT)); // TODO: map to a different button
 
 void registerStandardSubsystems(src::Drivers *drivers)
 {
