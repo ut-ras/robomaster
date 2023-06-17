@@ -56,8 +56,29 @@ void AgitatorSubsystem::refresh()
     leftAgitator.setActive(!killSwitch);
     rightAgitator.setActive(!killSwitch);
 
-    leftAgitator.update(isShooting ? getShapedVelocity(time, 1.0f, 0.0f) : 0.0f);
-    rightAgitator.update(isShooting ? getShapedVelocity(time, 1.0f, 1.0f) : 0.0f);
+    if (drivers->refSerial.getRefSerialReceivingData()) {
+        bool isShootingLeft = false;
+        bool isShootingRight = false;
+
+        if (isShooting) {
+            if (drivers->refSerial.getRobotData().turret.heat17ID1 < drivers->refSerial.getRobotData().turret.heatLimit17ID1 - BARREL_HEAT_BUFFER) {
+                isShootingLeft = true;
+            }
+
+            if (drivers->refSerial.getRobotData().turret.heat17ID2 < drivers->refSerial.getRobotData().turret.heatLimit17ID2 - BARREL_HEAT_BUFFER) {
+                isShootingRight = true;
+            }
+        }
+
+        leftAgitator.update(isShootingLeft ? getShapedVelocity(time, 1.0f, 0.0f) : 0.0f);
+        rightAgitator.update(isShootingRight ? getShapedVelocity(time, 1.0f, 1.0f) : 0.0f);
+    }
+
+    else {
+        leftAgitator.update(isShooting ? getShapedVelocity(time, 1.0f, 0.0f) : 0.0f);
+        rightAgitator.update(isShooting ? getShapedVelocity(time, 1.0f, 1.0f) : 0.0f);
+    }
+
 #elif defined TARGET_HERO
     agitator.setActive(!killSwitch);
     feeder.setActive(!killSwitch);
