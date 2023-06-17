@@ -3,15 +3,21 @@
 #include "tap/control/command.hpp"
 
 #include "robots/robot_state.hpp"
+#include "subsystems/turret/turret_subsystem.hpp"
 
 #include "drivers.hpp"
 
 namespace commands
 {
+using subsystems::turret::TurretSubsystem;
+
 class CommandLookBehind : public tap::control::Command
 {
 public:
-    CommandLookBehind(RobotState *state) : state(state) {}
+    CommandLookBehind(TurretSubsystem *turret, RobotState *state) : state(state)
+    {
+        addSubsystemRequirement(turret);
+    }
 
     void initialize() override;
     void execute() override;

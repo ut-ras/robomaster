@@ -1,5 +1,7 @@
 #include "command_move_turret.hpp"
 
+#include "utils/mouse_tracker.hpp"
+
 #define ANALOG_DEAD_ZONE 0.1
 
 namespace commands
@@ -23,8 +25,8 @@ void CommandMoveTurret::execute()
         if (remote->getSwitch(Remote::Switch::RIGHT_SWITCH) == Remote::SwitchState::DOWN)
         {
             // mouse
-            yawInput += remote->getMouseX() * MOUSE_SENS_YAW;
-            pitchInput += remote->getMouseY() * MOUSE_SENS_PITCH;
+            yawInput = remote->getMouseX() * MOUSE_SENS_YAW;
+            pitchInput = -remote->getMouseY() * MOUSE_SENS_PITCH;
         }
         else
         {

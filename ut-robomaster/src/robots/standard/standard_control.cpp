@@ -5,13 +5,14 @@
 #include "tap/control/press_command_mapping.hpp"
 #include "tap/control/toggle_command_mapping.hpp"
 
+#include "commands/command_aim_strategy.hpp"
 #include "commands/command_fire_continuous.hpp"
 #include "commands/command_fire_once.hpp"
 #include "commands/command_look_behind.hpp"
 #include "commands/command_move_chassis.hpp"
 #include "commands/command_move_turret.hpp"
+#include "commands/command_shooter_default.hpp"
 #include "commands/command_toggle_beyblade.hpp"
-#include "commands/command_aim_strategy.hpp"
 #include "robots/robot_state.hpp"
 #include "subsystems/chassis/chassis_subsystem.hpp"
 #include "subsystems/odometry/odometry_subsystem.hpp"
@@ -47,17 +48,18 @@ odometry::OdometrySubsystem odometry(drivers(), &chassis, &turret);
 // Commands
 CommandMoveChassis moveChassisCommand(drivers(), &state, &chassis, &turret);
 CommandMoveTurret moveTurretCommand(drivers(), &state, &turret);
+CommandShooterDefault shooterDefaultCommand(drivers(), &shooter);
 CommandFireContinuous fireContinuousCommand(drivers(), &shooter);
 CommandFireOnce fireOnceCommand(drivers(), &shooter);
-CommandToggleBeyblade toggleBeybladeCommand(&state);
-CommandLookBehind lookBehindCommand(&state);
+CommandToggleBeyblade toggleBeybladeCommand(&chassis, &state);
+CommandLookBehind lookBehindCommand(&turret, &state);
 CommandAimStrategy aimStrategyCommand(drivers(), &turret);
 
 // Mappings
-PressCommandMapping singleFire(
+HoldCommandMapping fire(
     drivers(),
-    {&fireOnceCommand},
-    RemoteMapState(RemoteMapState::MouseButton::RIGHT));
+    {&fireContinuousCommand},
+    RemoteMapState(RemoteMapState::MouseButton::LEFT));
 
 PressCommandMapping toggleBeyblade(
     drivers(),
@@ -92,14 +94,14 @@ void setDefaultCommands(src::Drivers *)
 {
     chassis.setDefaultCommand(&moveChassisCommand);
     turret.setDefaultCommand(&moveTurretCommand);
-    shooter.setDefaultCommand(&fireContinuousCommand);
+    shooter.setDefaultCommand(&shooterDefaultCommand);
 }
 
 void runStartupCommands(src::Drivers *) {}
 
 void registerMappings(src::Drivers *drivers)
 {
-    drivers->commandMapper.addMap(&singleFire);
+    drivers->commandMapper.addMap(&fire);
     drivers->commandMapper.addMap(&toggleBeyblade);
     drivers->commandMapper.addMap(&lookBehind);
     drivers->commandMapper.addMap(&changeAimStrategy);

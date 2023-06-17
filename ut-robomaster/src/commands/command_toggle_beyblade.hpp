@@ -3,15 +3,21 @@
 #include "tap/control/command.hpp"
 
 #include "robots/robot_state.hpp"
+#include "subsystems/chassis/chassis_subsystem.hpp"
 
 #include "drivers.hpp"
 
 namespace commands
 {
+using subsystems::chassis::ChassisSubsystem;
+
 class CommandToggleBeyblade : public tap::control::Command
 {
 public:
-    CommandToggleBeyblade(RobotState *state) : state(state) {}
+    CommandToggleBeyblade(ChassisSubsystem *chassis, RobotState *state) : state(state)
+    {
+        addSubsystemRequirement(chassis);
+    }
 
     void initialize() override;
     void execute() override;
