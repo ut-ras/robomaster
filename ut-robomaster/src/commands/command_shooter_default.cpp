@@ -1,14 +1,13 @@
-#include "command_fire_continuous.hpp"
+#include "command_shooter_default.hpp"
 
-namespace subsystems
+namespace commands
 {
-namespace shooter
-{
+using subsystems::shooter::FiringState;
 using tap::communication::serial::Remote;
 
-void CommandFireContinuous::initialize() {}
+void CommandShooterDefault::initialize() {}
 
-void CommandFireContinuous::execute()
+void CommandShooterDefault::execute()
 {
     Remote::SwitchState switchState = drivers->remote.getSwitch(Remote::Switch::LEFT_SWITCH);
 
@@ -27,11 +26,16 @@ void CommandFireContinuous::execute()
             break;
     }
 
+    // Always stay ready in keyboard mode
+    if (drivers->remote.getSwitch(Remote::Switch::RIGHT_SWITCH) == Remote::SwitchState::DOWN)
+    {
+        firingState = FiringState::Ready;
+    }
+
     shooter->setFiringState(firingState);
 }
 
-void CommandFireContinuous::end(bool) {}
+void CommandShooterDefault::end(bool) {}
 
-bool CommandFireContinuous::isFinished() const { return false; }
-}  // namespace shooter
-}  // namespace subsystems
+bool CommandShooterDefault::isFinished() const { return false; }
+}  // namespace commands

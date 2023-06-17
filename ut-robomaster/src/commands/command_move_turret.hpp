@@ -1,26 +1,25 @@
-#ifndef COMMAND_MOVE_TURRET_HPP_
-#define COMMAND_MOVE_TURRET_HPP_
+#pragma once
 
 #include "tap/communication/serial/remote.hpp"
 #include "tap/control/command.hpp"
 
 #include "robots/robot_constants.hpp"
+#include "robots/robot_state.hpp"
+#include "subsystems/turret/turret_subsystem.hpp"
 
 #include "drivers.hpp"
-#include "turret_subsystem.hpp"
 
+namespace commands
+{
+using subsystems::turret::TurretSubsystem;
 using tap::communication::serial::Remote;
-using tap::control::Subsystem;
 
-namespace subsystems
-{
-namespace turret
-{
 class CommandMoveTurret : public tap::control::Command
 {
 public:
-    CommandMoveTurret(src::Drivers* drivers, TurretSubsystem* turret)
+    CommandMoveTurret(src::Drivers* drivers, RobotState* state, TurretSubsystem* turret)
         : drivers(drivers),
+          state(state),
           turret(turret)
     {
         addSubsystemRequirement(turret);
@@ -30,12 +29,15 @@ public:
     void execute() override;
     void end(bool interrupted) override;
     bool isFinished() const override;
-
     const char* getName() const override { return "move turret command"; }
 
 private:
     src::Drivers* drivers;
+    RobotState* state;
     TurretSubsystem* turret;
+
+    static constexpr float MOUSE_SENS_YAW = 0.01f;
+    static constexpr float MOUSE_SENS_PITCH = 0.02f;
 
     float yaw = 0.0f;
     float pitch = 0.0f;
@@ -48,7 +50,4 @@ private:
     static constexpr float pitchInputScale = 0.01f;
 #endif
 };
-}  // namespace turret
-}  // namespace subsystems
-
-#endif
+}  // namespace commands

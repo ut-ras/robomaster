@@ -1,10 +1,7 @@
 #include "command_move_chassis.hpp"
 
-namespace subsystems
+namespace commands
 {
-namespace chassis
-{
-
 #define SNAP_ANGLE M_PI
 
 void CommandMoveChassis::initialize() {}
@@ -36,7 +33,8 @@ void CommandMoveChassis::execute()
         if (turretRelative)
         {
             float turretYaw = turret->getTargetLocalYaw();
-            inputMove.rotate(turretYaw);
+            Vector2f turretRelativeMove = Vector2f(inputMove);
+            turretRelativeMove.rotate(turretYaw);
 
             // auto-align to turret when moving
             if (inputMove.getLengthSquared() > 0.0f && inputSpin == 0.0f)
@@ -46,9 +44,13 @@ void CommandMoveChassis::execute()
                 float correction = deltaAngle / SNAP_ANGLE * 4.0f;
                 inputSpin = correction / max(1.0f, abs(correction)) * TURRET_ALIGN_FACTOR;
             }
-        }
 
-        chassis->input(inputMove, inputSpin);
+            chassis->input(turretRelativeMove, inputSpin);
+        }
+        else
+        {
+            chassis->input(inputMove, inputSpin);
+        }
     }
 }
 
@@ -86,17 +88,7 @@ void CommandMoveChassis::doControllerInput()
 void CommandMoveChassis::doKeyboardInput()
 {
     Remote* remote = &drivers->remote;
-    bool isRKeyPressed = remote->keyPressed(Remote::Key::R);
-    if (isRKeyPressed != wasRKeyPressed)
-    {
-        wasRKeyPressed = isRKeyPressed;
-        if (isRKeyPressed)
-        {
-            isBeyblading = !isBeyblading;
-        }
-    }
-
-    inputSpin = isBeyblading ? 1.0f : 0.0f;
+    inputSpin = state->isBeyblading ? 1.0f : 0.0f;
 
     Vector2f rawMoveInput = Vector2f(
         remote->keyPressed(Remote::Key::D) - remote->keyPressed(Remote::Key::A),
@@ -119,5 +111,4 @@ void CommandMoveChassis::doKeyboardInput()
         }
     }
 }
-}  // namespace chassis
-}  // namespace subsystems
+}  // namespace commands
