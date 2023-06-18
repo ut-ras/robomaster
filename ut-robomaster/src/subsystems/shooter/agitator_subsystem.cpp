@@ -56,7 +56,7 @@ void AgitatorSubsystem::refresh()
     leftAgitator.setActive(!killSwitch);
     rightAgitator.setActive(!killSwitch);
 
-    if (isUnjammming)
+    if (isUnjamming)
     {
         leftAgitator.update(-UNJAM_SPEED);
         rightAgitator.update(-UNJAM_SPEED);
@@ -110,5 +110,7 @@ void AgitatorSubsystem::setShooting(bool shooting)
     isShooting = shooting;
     startTime = getTimeMilliseconds();
 }
+
+void AgitatorSubsystem::setUnjamming(bool unjamming) { isUnjamming = unjamming; }
 
 }  // namespace subsystems::shooter
