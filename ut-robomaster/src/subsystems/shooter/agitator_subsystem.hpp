@@ -46,6 +46,7 @@ private:
 
     float startTime = 0.0f;
     bool isShooting = false;
+    const uint16_t BARREL_HEAT_BUFFER = 20.0f;
 };
 
 }  // namespace shooter
