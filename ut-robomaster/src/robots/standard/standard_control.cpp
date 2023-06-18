@@ -75,7 +75,7 @@ PressCommandMapping changeAimStrategy(
     {&aimStrategyCommand},
     RemoteMapState(RemoteMapState::MouseButton::RIGHT));
 
-HoldCommandMapping unjam(drivers(), {&unjamCommand}, RemoteMapState({Remote::Key::G}));
+HoldCommandMapping unjam(drivers(), {&unjamCommand}, RemoteMapState({Remote::Key::X}));
 
 void registerStandardSubsystems(src::Drivers *drivers)
 {
@@ -109,6 +109,7 @@ void registerMappings(src::Drivers *drivers)
     drivers->commandMapper.addMap(&toggleBeyblade);
     drivers->commandMapper.addMap(&lookBehind);
     drivers->commandMapper.addMap(&changeAimStrategy);
+    drivers->commandMapper.addMap(&unjam);
 }
 }  // namespace standard_control
 
