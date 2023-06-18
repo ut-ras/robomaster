@@ -25,6 +25,7 @@ public:
     void refresh() override;
     float getShapedVelocity(float time, float a, float phi);
     void setShooting(bool shooting);
+    void setUnjamming(bool unjamming);
 
 private:
     src::Drivers *drivers;
@@ -46,6 +47,7 @@ private:
 
     float startTime = 0.0f;
     bool isShooting = false;
+    bool isUnjamming = false;
 };
 
 }  // namespace shooter

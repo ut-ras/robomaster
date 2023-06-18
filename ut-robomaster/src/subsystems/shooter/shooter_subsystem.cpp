@@ -38,5 +38,7 @@ void ShooterSubsystem::setFiringState(FiringState state)
     drivers->leds.set(tap::gpio::Leds::Red, state == FiringState::Firing);
 }
 
+void ShooterSubsystem::setUnjamming(bool unjam) { agitator.setUnjamming(unjam); }
+
 }  // namespace shooter
 }  // namespace subsystems

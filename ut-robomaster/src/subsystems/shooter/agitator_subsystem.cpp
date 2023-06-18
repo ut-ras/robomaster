@@ -53,11 +53,24 @@ void AgitatorSubsystem::refresh()
     bool killSwitch = drivers->isKillSwitched();
 
 #if defined TARGET_STANDARD || defined TARGET_SENTRY
-    leftAgitator.setActive(!killSwitch);
+    leftAgitator.setActive(!killSwitch && false);
     rightAgitator.setActive(!killSwitch);
 
-    leftAgitator.update(isShooting ? getShapedVelocity(time, 1.0f, 0.0f) : 0.0f);
-    rightAgitator.update(isShooting ? getShapedVelocity(time, 1.0f, 1.0f) : 0.0f);
+    if (isUnjamming)
+    {
+        leftAgitator.update(-0.2f);
+        rightAgitator.update(-0.2f);
+    }
+    else if (isShooting)
+    {
+        leftAgitator.update(getShapedVelocity(time, 1.0f, 0.0f));
+        rightAgitator.update(getShapedVelocity(time, 1.0f, 1.0f));
+    }
+    else
+    {
+        leftAgitator.update(0.0f);
+        rightAgitator.update(0.0f);
+    }
 #elif defined TARGET_HERO
     agitator.setActive(!killSwitch);
     feeder.setActive(!killSwitch);
@@ -79,5 +92,7 @@ void AgitatorSubsystem::setShooting(bool shooting)
     isShooting = shooting;
     startTime = getTimeMilliseconds();
 }
+
+void AgitatorSubsystem::setUnjamming(bool unjamming) { isUnjamming = unjamming; }
 
 }  // namespace subsystems::shooter

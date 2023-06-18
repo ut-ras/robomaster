@@ -51,7 +51,7 @@ private:
 
     static constexpr float WHEEL_RADIUS = 0.1524f;  // meters
     static constexpr float WHEEL_LXY = (WHEEL_DISTANCE_X + WHEEL_DISTANCE_Y) / 2.0f;
-    static constexpr float WHEEL_MAX_VEL = 20.0f;                                       // rad/s
+    static constexpr float WHEEL_MAX_VEL = 10.0f;                                       // rad/s
     static constexpr float MAX_LINEAR_VEL = WHEEL_MAX_VEL * WHEEL_RADIUS;               // m/s
     static constexpr float MAX_ANGULAR_VEL = WHEEL_MAX_VEL * WHEEL_RADIUS / WHEEL_LXY;  // rad/s
 

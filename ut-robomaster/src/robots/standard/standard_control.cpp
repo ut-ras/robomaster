@@ -13,6 +13,7 @@
 #include "commands/command_move_turret.hpp"
 #include "commands/command_shooter_default.hpp"
 #include "commands/command_toggle_beyblade.hpp"
+#include "commands/command_unjam.hpp"
 #include "robots/robot_state.hpp"
 #include "subsystems/chassis/chassis_subsystem.hpp"
 #include "subsystems/odometry/odometry_subsystem.hpp"
@@ -54,6 +55,7 @@ CommandFireOnce fireOnceCommand(drivers(), &shooter);
 CommandToggleBeyblade toggleBeybladeCommand(&chassis, &state);
 CommandLookBehind lookBehindCommand(&turret, &state);
 CommandAimStrategy aimStrategyCommand(drivers(), &turret);
+CommandUnjam unjamCommand(drivers(), &shooter);
 
 // Mappings
 HoldCommandMapping fire(
@@ -72,6 +74,8 @@ PressCommandMapping changeAimStrategy(
     drivers(),
     {&aimStrategyCommand},
     RemoteMapState(RemoteMapState::MouseButton::RIGHT));
+
+HoldCommandMapping unjam(drivers(), {&unjamCommand}, RemoteMapState({Remote::Key::G}));
 
 void registerStandardSubsystems(src::Drivers *drivers)
 {
