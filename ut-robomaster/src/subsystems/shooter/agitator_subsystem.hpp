@@ -25,9 +25,12 @@ public:
     void refresh() override;
     float getShapedVelocity(float time, float a, float phi);
     void setShooting(bool shooting);
+    void setUnjamming(bool unjamming);
 
 private:
     src::Drivers *drivers;
+
+    const float UNJAM_SPEED = 0.4f;  // rev/s
 
 #if defined TARGET_STANDARD || defined TARGET_SENTRY
     const float BALLS_PER_SEC = 6.0f;
@@ -46,6 +49,7 @@ private:
 
     float startTime = 0.0f;
     bool isShooting = false;
+    bool isUnjamming = false;
     const uint16_t BARREL_HEAT_BUFFER = 20.0f;
 };
 

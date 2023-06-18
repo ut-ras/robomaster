@@ -29,7 +29,6 @@ private:
 #if defined TARGET_STANDARD || defined TARGET_SENTRY
     static constexpr int FLYWHEELS = 4;
     static constexpr float DEFAULT_SPEED = 120.0f;
-
 #elif defined TARGET_HERO
     static constexpr int FLYWHEELS = 2;
     static constexpr float DEFAULT_SPEED = 120.0f;

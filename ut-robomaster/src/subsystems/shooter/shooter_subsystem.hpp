@@ -30,6 +30,7 @@ public:
     void refresh() override;
 
     void setFiringState(FiringState state);
+    void setUnjamming(bool unjam);
 
 private:
     src::Drivers* drivers;
