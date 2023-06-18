@@ -73,30 +73,37 @@ void FlywheelSubsystem::refresh()
     bool killSwitch = drivers->isKillSwitched();
     float launchSpeed = DEFAULT_SPEED;
 
-    if (drivers->refSerial.getRefSerialReceivingData()) {
-
-        #if defined(TARGET_STANDARD) || defined(TARGET_SENTRY)
-        float refSystemLaunchSpeedLeft = drivers->refSerial.getRobotData().turret.barrelSpeedLimit17ID1;
-        float refSystemLaunchSpeedRight = drivers->refSerial.getRobotData().turret.barrelSpeedLimit17ID2;
+    if (drivers->refSerial.getRefSerialReceivingData())
+    {
+#if defined(TARGET_STANDARD) || defined(TARGET_SENTRY)
+        uint16_t refSystemLaunchSpeedLeft =
+            drivers->refSerial.getRobotData().turret.barrelSpeedLimit17ID1;
+        uint16_t refSystemLaunchSpeedRight =
+            drivers->refSerial.getRobotData().turret.barrelSpeedLimit17ID2;
 
         float launchSpeedLeft = 0.0f;
         float launchSpeedRight = 0.0f;
 
-        for (int i = 0; i < 3; i++) {
-            if (FLYWHEEL_RPS_MAPPING[i].getFirst() == refSystemLaunchSpeedLeft) {
+        for (int i = 0; i < 3; i++)
+        {
+            if (FLYWHEEL_RPS_MAPPING[i].getFirst() == refSystemLaunchSpeedLeft)
+            {
                 launchSpeedLeft = FLYWHEEL_RPS_MAPPING[i].getSecond();
             }
 
-            if (FLYWHEEL_RPS_MAPPING[i].getFirst() == refSystemLaunchSpeedRight) {
+            if (FLYWHEEL_RPS_MAPPING[i].getFirst() == refSystemLaunchSpeedRight)
+            {
                 launchSpeedRight = FLYWHEEL_RPS_MAPPING[i].getSecond();
             }
 
-            if (launchSpeedLeft != 0.0f && launchSpeedRight != 0.0f) {
+            if (launchSpeedLeft != 0.0f && launchSpeedRight != 0.0f)
+            {
                 break;
             }
         }
 
-        for (int i = 0; i < FLYWHEELS; i++) {
+        for (int i = 0; i < FLYWHEELS; i++)
+        {
             motors[i].setActive(!killSwitch);
         }
 
@@ -108,28 +115,31 @@ void FlywheelSubsystem::refresh()
         motors[1].update(isActive ? launchSpeedRight : 0.0f);
         motors[3].update(isActive ? launchSpeedRight : 0.0f);
 
-
-        #elif defined(TARGET_HERO)
-        float refSystemLaunchSpeed = drivers->refSerial.getRobotData().turret.barrelSpeedLimit42;
+#elif defined(TARGET_HERO)
+        uint16_t refSystemLaunchSpeed = drivers->refSerial.getRobotData().turret.barrelSpeedLimit42;
         launchSpeedLeft = 0.0f;
 
-        for (int i = 0; i < 3; i++) {
-            if (FLYWHEEL_RPS_MAPPING[i].getFirst() == refSystemLaunchSpeed) {
+        for (int i = 0; i < 3; i++)
+        {
+            if (FLYWHEEL_RPS_MAPPING[i].getFirst() == refSystemLaunchSpeed)
+            {
                 launchSpeed = FLYWHEEL_RPS_MAPPING[i].getSecond();
                 break;
             }
         }
 
-        for (int i = 0; i < FLYWHEELS; i++) {
+        for (int i = 0; i < FLYWHEELS; i++)
+        {
             motors[i].setActive(!killSwitch);
             motors[i].update(isActive ? launchSpeed : 0.0f);
         }
-        #endif
+#endif
     }
-
-    // NO REF SYSTEM DATA
-    else {
-        for (int i = 0; i < FLYWHEELS; i++) {
+    else
+    {
+        // NO REF SYSTEM DATA
+        for (int i = 0; i < FLYWHEELS; i++)
+        {
             motors[i].setActive(!killSwitch);
             motors[i].update(isActive ? launchSpeed : 0.0f);
         }

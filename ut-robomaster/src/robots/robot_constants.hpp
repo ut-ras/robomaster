@@ -3,6 +3,7 @@
 
 #include "tap/communication/can/can_bus.hpp"
 #include "tap/motor/dji_motor.hpp"
+
 #include "modm/container/pair.hpp"
 #include "utils/motor_controller/pid.hpp"
 
@@ -44,9 +45,8 @@ constexpr float PITCH_MAX = 0.2299f;
 
 static constexpr modm::Pair<uint16_t, float> FLYWHEEL_RPS_MAPPING[] = {
     {15, 70.0f},
-    {18, 80.0f},
-    {30, 115.0f}
-};
+    {18, 78.57f},
+    {30, 125.0f}};
 
 #elif defined(TARGET_HERO)
 constexpr MotorId ID_FLYWHEEL_L = MOTOR3;
@@ -64,10 +64,7 @@ constexpr PidConstants PID_FEEDER = PID_VELOCITY_DEFAULT;
 constexpr float PITCH_MIN = -0.3349f;
 constexpr float PITCH_MAX = 0.3534f;
 
-static constexpr modm::Pair<uint16_t, float> FLYWHEEL_RPS_MAPPING[] = {
-    {10, 60.0f},
-    {16, 110.0f}
-};
+static constexpr modm::Pair<uint16_t, float> FLYWHEEL_RPS_MAPPING[] = {{10, 60.0f}, {16, 110.0f}};
 #endif
 
 #endif
