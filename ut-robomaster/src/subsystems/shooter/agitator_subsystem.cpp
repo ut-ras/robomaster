@@ -53,7 +53,7 @@ void AgitatorSubsystem::refresh()
     bool killSwitch = drivers->isKillSwitched();
 
 #if defined TARGET_STANDARD || defined TARGET_SENTRY
-    leftAgitator.setActive(!killSwitch && false);
+    leftAgitator.setActive(!killSwitch);
     rightAgitator.setActive(!killSwitch);
 
     if (isUnjamming)
