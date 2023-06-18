@@ -56,15 +56,33 @@ void AgitatorSubsystem::refresh()
     leftAgitator.setActive(!killSwitch);
     rightAgitator.setActive(!killSwitch);
 
-    if (isUnjamming)
+    if (isUnjammming)
     {
-        leftAgitator.update(-0.2f);
-        rightAgitator.update(-0.2f);
+        leftAgitator.update(-UNJAM_SPEED);
+        rightAgitator.update(-UNJAM_SPEED);
     }
     else if (isShooting)
     {
-        leftAgitator.update(getShapedVelocity(time, 1.0f, 0.0f));
-        rightAgitator.update(getShapedVelocity(time, 1.0f, 1.0f));
+        bool isShootingLeft = true;
+        bool isShootingRight = true;
+
+        if (drivers->refSerial.getRefSerialReceivingData())
+        {
+            if (drivers->refSerial.getRobotData().turret.heat17ID1 >=
+                drivers->refSerial.getRobotData().turret.heatLimit17ID1 - BARREL_HEAT_BUFFER)
+            {
+                isShootingLeft = false;
+            }
+
+            if (drivers->refSerial.getRobotData().turret.heat17ID2 >=
+                drivers->refSerial.getRobotData().turret.heatLimit17ID2 - BARREL_HEAT_BUFFER)
+            {
+                isShootingRight = false;
+            }
+        }
+
+        leftAgitator.update(isShootingLeft ? getShapedVelocity(time, 1.0f, 0.0f) : 0.0f);
+        rightAgitator.update(isShootingRight ? getShapedVelocity(time, 1.0f, 1.0f) : 0.0f);
     }
     else
     {
@@ -92,7 +110,5 @@ void AgitatorSubsystem::setShooting(bool shooting)
     isShooting = shooting;
     startTime = getTimeMilliseconds();
 }
-
-void AgitatorSubsystem::setUnjamming(bool unjamming) { isUnjamming = unjamming; }
 
 }  // namespace subsystems::shooter

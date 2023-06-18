@@ -28,15 +28,14 @@ public:
 private:
 #if defined TARGET_STANDARD || defined TARGET_SENTRY
     static constexpr int FLYWHEELS = 4;
-    static constexpr float SPEED = 120.0f * 18.0f / 25.0f;
+    static constexpr float DEFAULT_SPEED = 120.0f;
 #elif defined TARGET_HERO
     static constexpr int FLYWHEELS = 2;
-    static constexpr float SPEED = 120.0f;
+    static constexpr float DEFAULT_SPEED = 120.0f;
 #endif
+
     src::Drivers* drivers;
-
     MotorVelocityController motors[FLYWHEELS];
-
     bool isActive = false;
 };
 
