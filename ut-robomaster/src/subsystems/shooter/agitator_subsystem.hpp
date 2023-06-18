@@ -33,7 +33,7 @@ private:
     const float UNJAM_SPEED = 0.4f;  // rev/s
 
 #if defined TARGET_STANDARD || defined TARGET_SENTRY
-    const float BALLS_PER_SEC = 6.0f;
+    const float BALLS_PER_SEC = 10.0f;
     const float BALLS_PER_REV = 8.0f;
 
     MotorVelocityController leftAgitator;
