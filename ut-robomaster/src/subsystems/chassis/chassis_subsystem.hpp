@@ -6,6 +6,8 @@
 #include "modm/math/geometry.hpp"
 #include "utils/motor_controller/motor_controller.hpp"
 
+#include "robots/robot_constants.hpp"
+
 #include "drivers.hpp"
 
 using namespace tap::communication::sensors::imu;
@@ -16,13 +18,15 @@ namespace subsystems
 {
 namespace chassis
 {
-
 class ChassisSubsystem : public tap::control::Subsystem
 {
 public:
     ChassisSubsystem(src::Drivers* drivers);
+
     void initialize() override;
+
     void refresh() override;
+
     void runHardwareTests() override;
 
     /// @brief Update robot motion based on simple input controls. Inputs are scaled and corrected
@@ -39,22 +43,6 @@ public:
 
 private:
     src::Drivers* drivers;
-    static constexpr int WHEELS = 4;
-
-#if defined TARGET_STANDARD || defined TARGET_SENTRY
-    static constexpr float WHEEL_DISTANCE_X = 0.391f;  // meters
-    static constexpr float WHEEL_DISTANCE_Y = 0.315f;  // meters
-#elif defined TARGET_HERO
-    static constexpr float WHEEL_DISTANCE_X = 0.525f;  // meters
-    static constexpr float WHEEL_DISTANCE_Y = 0.400f;  // meters
-#endif
-
-    static constexpr float WHEEL_RADIUS = 0.1524f;  // meters
-    static constexpr float WHEEL_LXY = (WHEEL_DISTANCE_X + WHEEL_DISTANCE_Y) / 2.0f;
-    static constexpr float WHEEL_MAX_VEL = 10.0f;                                       // rad/s
-    static constexpr float MAX_LINEAR_VEL = WHEEL_MAX_VEL * WHEEL_RADIUS;               // m/s
-    static constexpr float MAX_ANGULAR_VEL = WHEEL_MAX_VEL * WHEEL_RADIUS / WHEEL_LXY;  // rad/s
-
     MotorVelocityController wheels[WHEELS];
     float targetWheelVels[WHEELS] = {0.0f, 0.0f, 0.0f, 0.0f};
 

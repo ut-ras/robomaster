@@ -113,16 +113,17 @@ void registerMappings(src::Drivers *drivers)
     drivers->commandMapper.addMap(&changeAimStrategy);
     drivers->commandMapper.addMap(&unjam);
 }
-}  // namespace standard_control
+}  // namespace sentry_control
 
 namespace control
 {
 void initSubsystemCommands(src::Drivers *drivers)
 {
-    standard_control::initializeSubsystems();
-    standard_control::registerStandardSubsystems(drivers);
-    standard_control::setDefaultCommands(drivers);
-    standard_control::runStartupCommands(drivers);
-    standard_control::registerMappings(drivers);
+    sentry_control::initializeSubsystems();
+    sentry_control::registerStandardSubsystems(drivers);
+    sentry_control::setDefaultCommands(drivers);
+    sentry_control::runStartupCommands(drivers);
+    sentry_control::registerMappings(drivers);
 }
 }  // namespace control
+#endif

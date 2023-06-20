@@ -111,4 +111,9 @@ void AgitatorSubsystem::setShooting(bool shooting)
     startTime = getTimeMilliseconds();
 }
 
+void AgitatorSubsystem::setUnjamming(bool unjamming)
+{
+    isUnjamming = unjamming;
+}
+
 }  // namespace subsystems::shooter

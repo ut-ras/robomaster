@@ -113,16 +113,17 @@ void registerMappings(src::Drivers *drivers)
     drivers->commandMapper.addMap(&changeAimStrategy);
     drivers->commandMapper.addMap(&unjam);
 }
-}  // namespace standard_control
+}  // namespace hero_control
 
 namespace control
 {
 void initSubsystemCommands(src::Drivers *drivers)
 {
-    standard_control::initializeSubsystems();
-    standard_control::registerStandardSubsystems(drivers);
-    standard_control::setDefaultCommands(drivers);
-    standard_control::runStartupCommands(drivers);
-    standard_control::registerMappings(drivers);
+    hero_control::initializeSubsystems();
+    hero_control::registerStandardSubsystems(drivers);
+    hero_control::setDefaultCommands(drivers);
+    hero_control::runStartupCommands(drivers);
+    hero_control::registerMappings(drivers);
 }
 }  // namespace control
+#endif

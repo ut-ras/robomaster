@@ -19,6 +19,15 @@ constexpr MotorId ID_WHEEL_RF = MOTOR1;
 constexpr MotorId ID_WHEEL_LB = MOTOR3;
 constexpr MotorId ID_WHEEL_RB = MOTOR4;
 
+static constexpr int WHEELS = 4;
+static constexpr float WHEEL_DISTANCE_X = 0.391f;  // meters
+static constexpr float WHEEL_DISTANCE_Y = 0.315f;  // meters
+static constexpr float WHEEL_RADIUS = 0.1524f;  // meters
+static constexpr float WHEEL_LXY = (WHEEL_DISTANCE_X + WHEEL_DISTANCE_Y) / 2.0f;
+static constexpr float WHEEL_MAX_VEL = 10.0f;                                       // rad/s
+static constexpr float MAX_LINEAR_VEL = WHEEL_MAX_VEL * WHEEL_RADIUS;               // m/s
+static constexpr float MAX_ANGULAR_VEL = WHEEL_MAX_VEL * WHEEL_RADIUS / WHEEL_LXY;  // rad/s
+
 constexpr PidConstants PID_VELOCITY_DEFAULT = {0.75f, 12.0f, 0.0f};
 constexpr PidConstants PID_WHEELS = PID_VELOCITY_DEFAULT;
 constexpr PidConstants PID_TURRET_VELOCITY = PID_VELOCITY_DEFAULT;

@@ -126,3 +126,4 @@ void initSubsystemCommands(src::Drivers *drivers)
     standard_control::registerMappings(drivers);
 }
 }  // namespace control
+#endif
