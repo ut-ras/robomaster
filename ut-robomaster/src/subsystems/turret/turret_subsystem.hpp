@@ -41,9 +41,13 @@ public:
     void setAimStrategy(AimStrategy aimStrategy);
 
     float getChassisYaw();
+
     float getTargetLocalYaw();
+
     float getTargetLocalPitch();
+
     float getCurrentLocalYaw();
+
     float getCurrentLocalPitch();
 
     void refresh() override;
@@ -53,6 +57,7 @@ public:
     const char* getName() override { return "Turret subsystem"; }
 
     TurretMotor* getYawTurret() { return &yawTurret; }
+    
     TurretMotor* getPitchTurret() { return &pitchTurret; }
 
     static constexpr float BELT_RATIO = 2.0f;

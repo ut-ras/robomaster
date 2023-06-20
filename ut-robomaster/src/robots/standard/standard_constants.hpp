@@ -10,6 +10,7 @@ using motor_controller::PidConstants;
 using tap::can::CanBus;
 using namespace tap::motor;
 
+// General constants ------------------------------------------------
 constexpr CanBus CAN_WHEELS = CanBus::CAN_BUS1;
 constexpr CanBus CAN_TURRET = CanBus::CAN_BUS1;
 constexpr CanBus CAN_SHOOTER = CanBus::CAN_BUS2;
