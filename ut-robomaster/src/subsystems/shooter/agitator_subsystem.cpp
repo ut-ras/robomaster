@@ -56,7 +56,7 @@ void AgitatorSubsystem::refresh()
     leftAgitator.setActive(!killSwitch);
     rightAgitator.setActive(!killSwitch);
 
-    if (isUnjammming)
+    if (isUnjamming)
     {
         leftAgitator.update(-UNJAM_SPEED);
         rightAgitator.update(-UNJAM_SPEED);

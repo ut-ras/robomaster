@@ -1,4 +1,4 @@
-#ifdef TARGET_STANDARD
+#ifdef TARGET_SENTRY
 
 #include "tap/communication/gpio/leds.hpp"
 #include "tap/control/command_mapper.hpp"
@@ -38,7 +38,7 @@ using namespace subsystems;
  */
 src::driversFunc drivers = src::DoNotUse_getDrivers;
 
-namespace standard_control
+namespace sentry_control
 {
 RobotState state;
 
