@@ -4,16 +4,18 @@
 
 #include "subsystems/agitator/agitator_subsystem.hpp"
 
+#include "robots/robot_constants.hpp"
+
 #include "drivers.hpp"
 
 namespace commands
 {
 using subsystems::agitator::AgitatorSubsystem;
 
-class CommandUnjam : public tap::control::Command
+class CommandRotateAgitatorContinuous : public tap::control::Command
 {
 public:
-    CommandUnjam(src::Drivers *drivers, AgitatorSubsystem *agitator)
+    CommandRotateAgitatorContinuous(src::Drivers *drivers, AgitatorSubsystem *agitator)
         : drivers(drivers),
           agitator(agitator)
     {
@@ -21,14 +23,17 @@ public:
     }
 
     void initialize() override;
+
     void execute() override;
+
     void end(bool interrupted) override;
+
     bool isFinished() const override;
-    const char *getName() const override { return "agitator unjam command"; }
+
+    const char *getName() const override { return "rotate agitator continuous command"; }
 
 private:
     src::Drivers *drivers;
     AgitatorSubsystem *agitator;
-
 };  // class CommandFireContinuous
 }  // namespace commands

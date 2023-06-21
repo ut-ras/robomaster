@@ -2,11 +2,11 @@
 
 namespace commands
 {
-void CommandUnjam::initialize() { shooter->setUnjamming(true); }
+void CommandUnjam::initialize() { }
 
 void CommandUnjam::execute() {}
 
-void CommandUnjam::end(bool) { shooter->setUnjamming(false); }
+void CommandUnjam::end(bool) { }
 
 bool CommandUnjam::isFinished() const { return false; }
 }  // namespace commands

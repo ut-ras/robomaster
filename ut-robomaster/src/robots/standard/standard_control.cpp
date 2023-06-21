@@ -16,17 +16,16 @@
 #include "subsystems/chassis/command_move_chassis_keyboard.hpp"
 #include "subsystems/chassis/command_beyblade_chassis_keyboard.hpp"
 
+// Agitator includes
+#include "subsystems/agitator/agitator_subsystem.hpp"
+#include "subsystems/agitator/command_rotate_agitator_continuous.hpp"
+#include "subsystems/agitator/command_unjam_agitator.hpp"
 
-#include "commands/command_aim_strategy.hpp"
-#include "commands/command_fire_continuous.hpp"
-#include "commands/command_fire_once.hpp"
-#include "commands/command_look_behind.hpp"
-#include "commands/command_move_turret.hpp"
-#include "commands/command_shooter_default.hpp"
-#include "commands/command_unjam.hpp"
+// #include "commands/command_aim_strategy.hpp"
+// #include "commands/command_look_behind.hpp"
+// #include "commands/command_move_turret.hpp"
 
 #include "subsystems/odometry/odometry_subsystem.hpp"
-#include "subsystems/shooter/shooter_subsystem.hpp"
 #include "subsystems/turret/turret_subsystem.hpp"
 
 using namespace tap::control;
@@ -34,7 +33,7 @@ using namespace tap::communication::serial;
 
 using namespace subsystems::chassis;
 using namespace subsystems::turret;
-using namespace subsystems::shooter;
+using namespace subsystems::agitator;
 using namespace subsystems::odometry;
 
 using namespace commands;
@@ -53,7 +52,7 @@ namespace standard_control
 // Subsystem definitions ---------------------------------------------------------
 ChassisSubsystem chassis(drivers());
 TurretSubsystem turret(drivers());
-ShooterSubsystem shooter(drivers());
+AgitatorSubsystem agitator(drivers());
 OdometrySubsystem odometry(drivers(), &chassis, &turret);
 
 // Command definitions -----------------------------------------------------------
@@ -61,13 +60,16 @@ CommandMoveChassisJoystick moveChassisCommandJoystick(drivers(), &chassis, &turr
 CommandMoveChassisKeyboard moveChassisCommandKeyboard(drivers(), &chassis, &turret);
 CommandBeybladeChassisKeyboard beybladeChassisCommandKeyboard(drivers(), &chassis, &turret);
 
+CommandRotateAgitatorContinuous rotateAgitatorContinuousCommand(drivers(), &agitator);
+CommandUnjamAgitator unjamAgitatorCommand(drivers(), &agitator);
+
 // CommandMoveTurret moveTurretCommand(drivers(), &state, &turret);
-CommandShooterDefault shooterDefaultCommand(drivers(), &shooter);
-CommandFireContinuous fireContinuousCommand(drivers(), &shooter);
-CommandFireOnce fireOnceCommand(drivers(), &shooter);
+// CommandShooterDefault shooterDefaultCommand(drivers(), &shooter);
+// CommandFireContinuous fireContinuousCommand(drivers(), &shooter);
+// CommandFireOnce fireOnceCommand(drivers(), &shooter);
 // CommandLookBehind lookBehindCommand(&turret, &state);
-CommandAimStrategy aimStrategyCommand(drivers(), &turret);
-CommandUnjam unjamCommand(drivers(), &shooter);
+// CommandAimStrategy aimStrategyCommand(drivers(), &turret);
+// CommandUnjam unjamCommand(drivers(), &shooter);
 
 // Command mapping definitions ---------------------------------------------------
 HoldCommandMapping rightSwitchDown(
@@ -80,28 +82,28 @@ ToggleCommandMapping keyRToggled(
     {&beybladeChassisCommandKeyboard},
     RemoteMapState({Remote::Key::R}));
 
-HoldCommandMapping fire(
+HoldCommandMapping leftMouseDown(
     drivers(),
-    {&fireContinuousCommand},
+    {&rotateAgitatorContinuousCommand},
     RemoteMapState(RemoteMapState::MouseButton::LEFT));
 
-PressCommandMapping lookBehind(drivers(), {&lookBehindCommand}, RemoteMapState({Remote::Key::B}));
+HoldCommandMapping keyXHeld(drivers(), {&unjamAgitatorCommand}, RemoteMapState({Remote::Key::X}));
+// PressCommandMapping lookBehind(drivers(), {&lookBehindCommand}, RemoteMapState({Remote::Key::B}));
 
-PressCommandMapping changeAimStrategy(
-    drivers(),
-    {&aimStrategyCommand},
-    RemoteMapState(RemoteMapState::MouseButton::RIGHT));
+// PressCommandMapping changeAimStrategy(
+//     drivers(),
+//     {&aimStrategyCommand},
+//     RemoteMapState(RemoteMapState::MouseButton::RIGHT));
 
-HoldCommandMapping unjam(drivers(), {&unjamCommand}, RemoteMapState({Remote::Key::X}));
+
 
 // Register subsystems here -----------------------------------------------
 void registerStandardSubsystems(src::Drivers *drivers)
 {
     drivers->commandScheduler.registerSubsystem(&chassis);
     drivers->commandScheduler.registerSubsystem(&turret);
-    drivers->commandScheduler.registerSubsystem(&shooter);
+    drivers->commandScheduler.registerSubsystem(&agitator);
     drivers->commandScheduler.registerSubsystem(&odometry);
-    shooter.registerSubsystems();
 }
 
 // Initialize subsystems here ---------------------------------------------
@@ -109,7 +111,7 @@ void initializeSubsystems()
 {
     chassis.initialize();
     turret.initialize();
-    shooter.initialize();
+    agitator.initialize();
     odometry.initialize();
 }
 
@@ -118,7 +120,6 @@ void setDefaultCommands(src::Drivers *)
 {
     chassis.setDefaultCommand(&moveChassisCommandKeyboard);
     // turret.setDefaultCommand(&moveTurretCommand);
-    shooter.setDefaultCommand(&shooterDefaultCommand);
 }
 
 void runStartupCommands(src::Drivers *) {}
@@ -128,10 +129,10 @@ void registerMappings(src::Drivers *drivers)
 {
     drivers->commandMapper.addMap(&rightSwitchDown);
     drivers->commandMapper.addMap(&keyRToggled);
-    drivers->commandMapper.addMap(&fire);
-    drivers->commandMapper.addMap(&lookBehind);
-    drivers->commandMapper.addMap(&changeAimStrategy);
-    drivers->commandMapper.addMap(&unjam);
+    drivers->commandMapper.addMap(&leftMouseDown);
+    drivers->commandMapper.addMap(&keyXHeld);
+    // drivers->commandMapper.addMap(&lookBehind);
+    // drivers->commandMapper.addMap(&changeAimStrategy);
 }
 }  // namespace standard_control
 

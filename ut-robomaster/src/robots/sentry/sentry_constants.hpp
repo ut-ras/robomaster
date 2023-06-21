@@ -54,3 +54,9 @@ static constexpr modm::Pair<uint16_t, float> FLYWHEEL_RPS_MAPPING[] = {
     {15, 70.0f},
     {18, 78.57f},
     {30, 125.0f}};
+
+const float BALLS_PER_SEC = 6.0f;
+const float BALLS_PER_REV = 8.0f;
+const uint16_t BARREL_HEAT_BUFFER = 20.0f;
+
+const float UNJAM_SPEED = 0.4f;  // rev/s
