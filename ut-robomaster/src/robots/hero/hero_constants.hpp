@@ -57,3 +57,6 @@ const float FEEDER_SPEED = BALLS_PER_SEC / BALLS_PER_REV;
 const uint16_t BARREL_HEAT_BUFFER = 50.0f;
 
 const float UNJAM_SPEED = 0.4f;  // rev/s
+
+static constexpr int FLYWHEELS = 2;
+static constexpr float DEFAULT_SPEED = 60.0f;

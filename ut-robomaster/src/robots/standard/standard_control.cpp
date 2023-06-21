@@ -16,10 +16,15 @@
 #include "subsystems/chassis/command_move_chassis_keyboard.hpp"
 #include "subsystems/chassis/command_beyblade_chassis_keyboard.hpp"
 
-// Agitator includes
+// Agitator includes ----------------------------------------
 #include "subsystems/agitator/agitator_subsystem.hpp"
 #include "subsystems/agitator/command_rotate_agitator_continuous.hpp"
 #include "subsystems/agitator/command_unjam_agitator.hpp"
+
+// Flywheel includes ----------------------------------------
+#include "subsystems/flywheel/flywheel_subsystem.hpp"
+#include "subsystems/flywheel/command_rotate_flywheel.hpp"
+#include "subsystems/flywheel/command_flywheel_off.hpp"
 
 // #include "commands/command_aim_strategy.hpp"
 // #include "commands/command_look_behind.hpp"
@@ -32,8 +37,9 @@ using namespace tap::control;
 using namespace tap::communication::serial;
 
 using namespace subsystems::chassis;
-using namespace subsystems::turret;
 using namespace subsystems::agitator;
+using namespace subsystems::flywheel;
+using namespace subsystems::turret;
 using namespace subsystems::odometry;
 
 using namespace commands;
@@ -51,8 +57,9 @@ namespace standard_control
 
 // Subsystem definitions ---------------------------------------------------------
 ChassisSubsystem chassis(drivers());
-TurretSubsystem turret(drivers());
 AgitatorSubsystem agitator(drivers());
+FlywheelSubsystem flywheel(drivers());
+TurretSubsystem turret(drivers());
 OdometrySubsystem odometry(drivers(), &chassis, &turret);
 
 // Command definitions -----------------------------------------------------------
@@ -63,20 +70,14 @@ CommandBeybladeChassisKeyboard beybladeChassisCommandKeyboard(drivers(), &chassi
 CommandRotateAgitatorContinuous rotateAgitatorContinuousCommand(drivers(), &agitator);
 CommandUnjamAgitator unjamAgitatorCommand(drivers(), &agitator);
 
+CommandRotateFlywheel rotateFlywheelCommand(drivers(), &flywheel);
+CommandFlywheelOff flywheelOffCommand(drivers(), &flywheel);
+
 // CommandMoveTurret moveTurretCommand(drivers(), &state, &turret);
-// CommandShooterDefault shooterDefaultCommand(drivers(), &shooter);
-// CommandFireContinuous fireContinuousCommand(drivers(), &shooter);
-// CommandFireOnce fireOnceCommand(drivers(), &shooter);
 // CommandLookBehind lookBehindCommand(&turret, &state);
 // CommandAimStrategy aimStrategyCommand(drivers(), &turret);
-// CommandUnjam unjamCommand(drivers(), &shooter);
 
-// Command mapping definitions ---------------------------------------------------
-HoldCommandMapping rightSwitchDown(
-    drivers(),
-    {&moveChassisCommandJoystick},
-    RemoteMapState(Remote::Switch::RIGHT_SWITCH, Remote::SwitchState::DOWN));
-
+// Keyboard mappings ------------------------------------------------------------
 ToggleCommandMapping keyRToggled(
     drivers(),
     {&beybladeChassisCommandKeyboard},
@@ -87,7 +88,32 @@ HoldCommandMapping leftMouseDown(
     {&rotateAgitatorContinuousCommand},
     RemoteMapState(RemoteMapState::MouseButton::LEFT));
 
-HoldCommandMapping keyXHeld(drivers(), {&unjamAgitatorCommand}, RemoteMapState({Remote::Key::X}));
+HoldCommandMapping keyXHeld(
+    drivers(), 
+    {&unjamAgitatorCommand}, 
+    RemoteMapState({Remote::Key::X}));
+
+// Joystick mappings ------------------------------------------------------------
+HoldCommandMapping rightSwitchDown(
+    drivers(),
+    {&moveChassisCommandJoystick},
+    RemoteMapState(Remote::Switch::RIGHT_SWITCH, Remote::SwitchState::DOWN));
+
+HoldCommandMapping leftSwitchDown(
+    drivers(),
+    {&flywheelOffCommand},
+    RemoteMapState(Remote::Switch::LEFT_SWITCH, Remote::SwitchState::DOWN));
+
+HoldCommandMapping leftSwitchMid(
+    drivers(),
+    {&rotateFlywheelCommand},
+    RemoteMapState(Remote::Switch::LEFT_SWITCH, Remote::SwitchState::MID));
+
+HoldCommandMapping leftSwitchUp(
+    drivers(),
+    {&rotateAgitatorContinuousCommand, &rotateFlywheelCommand},
+    RemoteMapState(Remote::Switch::LEFT_SWITCH, Remote::SwitchState::UP));
+    
 // PressCommandMapping lookBehind(drivers(), {&lookBehindCommand}, RemoteMapState({Remote::Key::B}));
 
 // PressCommandMapping changeAimStrategy(
@@ -101,8 +127,9 @@ HoldCommandMapping keyXHeld(drivers(), {&unjamAgitatorCommand}, RemoteMapState({
 void registerStandardSubsystems(src::Drivers *drivers)
 {
     drivers->commandScheduler.registerSubsystem(&chassis);
-    drivers->commandScheduler.registerSubsystem(&turret);
     drivers->commandScheduler.registerSubsystem(&agitator);
+    drivers->commandScheduler.registerSubsystem(&flywheel);
+    drivers->commandScheduler.registerSubsystem(&turret);
     drivers->commandScheduler.registerSubsystem(&odometry);
 }
 
@@ -110,8 +137,9 @@ void registerStandardSubsystems(src::Drivers *drivers)
 void initializeSubsystems()
 {
     chassis.initialize();
-    turret.initialize();
     agitator.initialize();
+    flywheel.initialize();
+    turret.initialize();
     odometry.initialize();
 }
 
@@ -119,6 +147,7 @@ void initializeSubsystems()
 void setDefaultCommands(src::Drivers *)
 {
     chassis.setDefaultCommand(&moveChassisCommandKeyboard);
+    flywheel.setDefaultCommand(&rotateFlywheelCommand);
     // turret.setDefaultCommand(&moveTurretCommand);
 }
 
@@ -127,10 +156,16 @@ void runStartupCommands(src::Drivers *) {}
 // Register IO mappings here -----------------------------------------------
 void registerMappings(src::Drivers *drivers)
 {
-    drivers->commandMapper.addMap(&rightSwitchDown);
+    // Keyboard mappings ------------------------------------------------------------
     drivers->commandMapper.addMap(&keyRToggled);
     drivers->commandMapper.addMap(&leftMouseDown);
     drivers->commandMapper.addMap(&keyXHeld);
+
+    // Joystick mappings ------------------------------------------------------------
+    drivers->commandMapper.addMap(&rightSwitchDown);    
+    drivers->commandMapper.addMap(&leftSwitchDown);
+    drivers->commandMapper.addMap(&leftSwitchMid);
+    drivers->commandMapper.addMap(&leftSwitchUp);
     // drivers->commandMapper.addMap(&lookBehind);
     // drivers->commandMapper.addMap(&changeAimStrategy);
 }

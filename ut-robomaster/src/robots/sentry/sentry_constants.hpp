@@ -60,3 +60,6 @@ const float BALLS_PER_REV = 8.0f;
 const uint16_t BARREL_HEAT_BUFFER = 20.0f;
 
 const float UNJAM_SPEED = 0.4f;  // rev/s
+
+static constexpr int FLYWHEELS = 4;
+static constexpr float DEFAULT_SPEED = 70.0f;

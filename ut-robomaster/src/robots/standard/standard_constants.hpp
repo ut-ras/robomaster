@@ -47,6 +47,9 @@ static constexpr modm::Pair<uint16_t, float> FLYWHEEL_RPS_MAPPING[] = {
     {18, 78.57f},
     {30, 125.0f}};
 
+static constexpr int FLYWHEELS = 4;
+static constexpr float DEFAULT_SPEED = 70.0f;
+
 // Agitator constants ------------------------------------------------
 constexpr MotorId ID_AGITATOR_L = MOTOR1;
 constexpr MotorId ID_AGITATOR_R = MOTOR2;
