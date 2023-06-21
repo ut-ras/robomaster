@@ -15,10 +15,10 @@ using namespace modm;
 using subsystems::chassis::ChassisSubsystem;
 using subsystems::turret::TurretSubsystem;
 
-class CommandBeybladeChassis : public tap::control::Command
+class CommandBeybladeChassisKeyboard : public tap::control::Command
 {
 public:
-    CommandBeybladeChassis(
+    CommandBeybladeChassisKeyboard(
         src::Drivers *drivers,
         ChassisSubsystem *chassis,
         TurretSubsystem *turret)

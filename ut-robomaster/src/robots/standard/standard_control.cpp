@@ -14,7 +14,7 @@
 #include "subsystems/chassis/chassis_subsystem.hpp"
 #include "subsystems/chassis/command_move_chassis_joystick.hpp"
 #include "subsystems/chassis/command_move_chassis_keyboard.hpp"
-#include "subsystems/chassis/command_beyblade_chassis.hpp"
+#include "subsystems/chassis/command_beyblade_chassis_keyboard.hpp"
 
 
 #include "commands/command_aim_strategy.hpp"
@@ -59,7 +59,7 @@ OdometrySubsystem odometry(drivers(), &chassis, &turret);
 // Command definitions -----------------------------------------------------------
 CommandMoveChassisJoystick moveChassisCommandJoystick(drivers(), &chassis, &turret);
 CommandMoveChassisKeyboard moveChassisCommandKeyboard(drivers(), &chassis, &turret);
-CommandBeybladeChassis beybladeChassisCommand(drivers(), &chassis, &turret);
+CommandBeybladeChassisKeyboard beybladeChassisCommandKeyboard(drivers(), &chassis, &turret);
 
 // CommandMoveTurret moveTurretCommand(drivers(), &state, &turret);
 CommandShooterDefault shooterDefaultCommand(drivers(), &shooter);
@@ -77,7 +77,7 @@ HoldCommandMapping rightSwitchDown(
 
 ToggleCommandMapping keyRToggled(
     drivers(),
-    {&beybladeChassisCommand},
+    {&beybladeChassisCommandKeyboard},
     RemoteMapState({Remote::Key::R}));
 
 HoldCommandMapping fire(

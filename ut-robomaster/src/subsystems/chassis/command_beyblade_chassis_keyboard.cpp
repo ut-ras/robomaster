@@ -1,10 +1,10 @@
-#include "command_beyblade_chassis.hpp"
+#include "command_beyblade_chassis_keyboard.hpp"
 
 namespace commands
 {
-void CommandBeybladeChassis::initialize() {}
+void CommandBeybladeChassisKeyboard::initialize() {}
 
-void CommandBeybladeChassis::execute() {
+void CommandBeybladeChassisKeyboard::execute() {
 
     if (drivers->bmi088.getImuState() == ImuInterface::ImuState::IMU_CALIBRATING) {
         chassis->input(Vector2f(0.0f), 0.0f);
@@ -42,7 +42,7 @@ void CommandBeybladeChassis::execute() {
     }
 }
 
-void CommandBeybladeChassis::end(bool) { chassis->input(Vector2f(0.0f), 0.0f); }
+void CommandBeybladeChassisKeyboard::end(bool) { chassis->input(Vector2f(0.0f), 0.0f); }
 
-bool CommandBeybladeChassis::isFinished() const { return false; }
+bool CommandBeybladeChassisKeyboard::isFinished() const { return false; }
 }  // namespace commands
