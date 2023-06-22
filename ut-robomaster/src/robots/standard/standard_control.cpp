@@ -26,12 +26,13 @@
 #include "subsystems/flywheel/command_rotate_flywheel.hpp"
 #include "subsystems/flywheel/command_flywheel_off.hpp"
 
-// #include "commands/command_aim_strategy.hpp"
-// #include "commands/command_look_behind.hpp"
-// #include "commands/command_move_turret.hpp"
+// Turret includes ------------------------------------------
+#include "subsystems/turret/turret_subsystem.hpp"
+#include "subsystems/turret/command_move_turret_joystick.hpp"
+#include "subsystems/turret/command_move_turret_mouse.hpp"
+#include "subsystems/turret/command_move_turret_aimbot.hpp"
 
 #include "subsystems/odometry/odometry_subsystem.hpp"
-#include "subsystems/turret/turret_subsystem.hpp"
 
 using namespace tap::control;
 using namespace tap::communication::serial;
@@ -73,9 +74,9 @@ CommandUnjamAgitator unjamAgitatorCommand(drivers(), &agitator);
 CommandRotateFlywheel rotateFlywheelCommand(drivers(), &flywheel);
 CommandFlywheelOff flywheelOffCommand(drivers(), &flywheel);
 
-// CommandMoveTurret moveTurretCommand(drivers(), &state, &turret);
-// CommandLookBehind lookBehindCommand(&turret, &state);
-// CommandAimStrategy aimStrategyCommand(drivers(), &turret);
+CommandMoveTurretJoystick moveTurretCommandJoystick(drivers(), &turret);
+CommandMoveTurretMouse moveTurretCommandMouse(drivers(), &turret);
+CommandMoveTurretAimbot moveTurretCommandAimbot(drivers(), &turret);
 
 // Keyboard mappings ------------------------------------------------------------
 ToggleCommandMapping keyRToggled(
@@ -93,10 +94,15 @@ HoldCommandMapping keyXHeld(
     {&unjamAgitatorCommand}, 
     RemoteMapState({Remote::Key::X}));
 
+HoldCommandMapping rightMouseDown(
+    drivers(),
+    {&moveTurretCommandAimbot},
+    RemoteMapState(RemoteMapState::MouseButton::RIGHT));
+
 // Joystick mappings ------------------------------------------------------------
 HoldCommandMapping rightSwitchDown(
     drivers(),
-    {&moveChassisCommandJoystick},
+    {&moveChassisCommandJoystick, &moveTurretCommandJoystick},
     RemoteMapState(Remote::Switch::RIGHT_SWITCH, Remote::SwitchState::DOWN));
 
 HoldCommandMapping leftSwitchDown(
@@ -113,7 +119,7 @@ HoldCommandMapping leftSwitchUp(
     drivers(),
     {&rotateAgitatorContinuousCommand, &rotateFlywheelCommand},
     RemoteMapState(Remote::Switch::LEFT_SWITCH, Remote::SwitchState::UP));
-    
+
 // PressCommandMapping lookBehind(drivers(), {&lookBehindCommand}, RemoteMapState({Remote::Key::B}));
 
 // PressCommandMapping changeAimStrategy(
@@ -148,7 +154,7 @@ void setDefaultCommands(src::Drivers *)
 {
     chassis.setDefaultCommand(&moveChassisCommandKeyboard);
     flywheel.setDefaultCommand(&rotateFlywheelCommand);
-    // turret.setDefaultCommand(&moveTurretCommand);
+    turret.setDefaultCommand(&moveTurretCommandMouse);
 }
 
 void runStartupCommands(src::Drivers *) {}
@@ -160,14 +166,13 @@ void registerMappings(src::Drivers *drivers)
     drivers->commandMapper.addMap(&keyRToggled);
     drivers->commandMapper.addMap(&leftMouseDown);
     drivers->commandMapper.addMap(&keyXHeld);
+    drivers->commandMapper.addMap(&rightMouseDown);
 
     // Joystick mappings ------------------------------------------------------------
     drivers->commandMapper.addMap(&rightSwitchDown);    
     drivers->commandMapper.addMap(&leftSwitchDown);
     drivers->commandMapper.addMap(&leftSwitchMid);
     drivers->commandMapper.addMap(&leftSwitchUp);
-    // drivers->commandMapper.addMap(&lookBehind);
-    // drivers->commandMapper.addMap(&changeAimStrategy);
 }
 }  // namespace standard_control
 

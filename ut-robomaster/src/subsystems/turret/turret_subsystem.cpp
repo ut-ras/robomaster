@@ -21,21 +21,18 @@ TurretSubsystem::TurretSubsystem(src::Drivers* drivers)
 {
 }
 
-void TurretSubsystem::initialize()
-{
+void TurretSubsystem::initialize() {
     yawTurret.initialize();
     pitchTurret.initialize();
     lastTime = tap::arch::clock::getTimeMilliseconds();
 }
 
-void TurretSubsystem::inputManualAngles(float yaw, float pitch)
-{
+void TurretSubsystem::inputManualAngles(float yaw, float pitch) {
     inputYaw = yaw;
     inputPitch = pitch;
 }
 
-void TurretSubsystem::inputTargetData(Vector3f position, Vector3f velocity, Vector3f acceleration)
-{
+void TurretSubsystem::inputTargetData(Vector3f position, Vector3f velocity, Vector3f acceleration) {
     targetPosition = position;
     targetVelocity = velocity;
     targetAcceleration = acceleration;
@@ -49,62 +46,25 @@ float TurretSubsystem::getTargetLocalYaw() { return targetWorldYaw - getChassisY
 
 float TurretSubsystem::getTargetLocalPitch() { return targetWorldPitch; }
 
-float TurretSubsystem::getCurrentLocalYaw()
-{
+float TurretSubsystem::getCurrentLocalYaw() {
     return !isCalibrated ? 0.0f : yawTurret.getAngle() / BELT_RATIO - baseYaw;
 }
 
-float TurretSubsystem::getCurrentLocalPitch()
-{
+float TurretSubsystem::getCurrentLocalPitch() {
     return !isCalibrated ? 0.0f : pitchTurret.getAngle() - basePitch;
 }
 
-void TurretSubsystem::refresh()
-{
-    float bulletVelocity = 1.0f;
-    float offset = 0.0f;
-    uint8_t numBallisticIterations = 1;
-
-    switch (aimStrategy)
-    {
-        case AimStrategy::Manual:
-            targetWorldYaw = inputYaw;
-            targetWorldPitch = inputPitch;
-            break;
-        case AimStrategy::AutoAim:
-        {
-            float turretPitch = 0.0f;
-            float turretYaw = 0.0f;
-            float projectedTravelTime = 0.0f;
-
-            findTargetProjectileIntersection(
-                {targetPosition, targetVelocity, targetAcceleration},
-                bulletVelocity,
-                numBallisticIterations,
-                &turretPitch,
-                &turretYaw,
-                &projectedTravelTime);
-
-            targetWorldYaw = turretYaw;
-            targetWorldPitch = turretPitch;
-            break;
-        }
-        case AimStrategy::AimAssist:  // unimplemented
-            break;
-    }
-
+void TurretSubsystem::refresh() {
     yawTurret.updateMotorAngle();
     pitchTurret.updateMotorAngle();
 
-    if (!isCalibrated && yawMotor.isMotorOnline() && pitchMotor.isMotorOnline())
-    {
+    if (!isCalibrated && yawMotor.isMotorOnline() && pitchMotor.isMotorOnline()) {
         baseYaw = yawTurret.getAngle() / BELT_RATIO;
         basePitch = pitchTurret.getAngle() - PITCH_MIN;
         isCalibrated = true;
     }
 
-    if (isCalibrated && !drivers->isKillSwitched())
-    {
+    if (isCalibrated && !drivers->isKillSwitched()) {
         uint32_t time = tap::arch::clock::getTimeMilliseconds();
         uint32_t dt = time - lastTime;
         lastTime = time;
@@ -112,8 +72,8 @@ void TurretSubsystem::refresh()
         yawTurret.setAngle((baseYaw + getTargetLocalYaw()) * BELT_RATIO, dt);
         pitchTurret.setAngle(basePitch + getTargetLocalPitch(), dt);
     }
-    else
-    {
+    
+    else {
         yawTurret.reset();
         pitchTurret.reset();
     }

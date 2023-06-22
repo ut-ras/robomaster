@@ -2,9 +2,12 @@
 
 #include "tap/communication/can/can_bus.hpp"
 #include "tap/motor/dji_motor.hpp"
+#include "tap/algorithms/smooth_pid.hpp"
 
 #include "modm/container/pair.hpp"
+
 #include "utils/motor_controller/pid.hpp"
+
 
 using motor_controller::PidConstants;
 using tap::can::CanBus;
@@ -72,3 +75,39 @@ constexpr float PITCH_MAX = 0.2299f;
 
 constexpr PidConstants PID_TURRET_VELOCITY = PID_VELOCITY_DEFAULT;
 constexpr PidConstants PID_TURRET_POSITION = {0.1f, 0.1f, 0.0f};
+
+static constexpr float BELT_RATIO = 2.0f;
+
+static constexpr float YAW_INPUT_SCALE = 0.02f;
+static constexpr float PITCH_INPUT_SCALE = 0.01f;
+
+static constexpr float MOUSE_SENS_YAW = 0.01f;
+static constexpr float MOUSE_SENS_PITCH = 0.02f;
+
+static constexpr tap::algorithms::SmoothPidConfig YAW_PID_CONFIG = {
+    .kp = 65'000.0f,
+    .ki = 0.0f,
+    .kd = 3'000.0f,
+    .maxICumulative = 0.0f,
+    .maxOutput = 32'000.0f,
+    .tQDerivativeKalman = 1.0f,
+    .tRDerivativeKalman = 30.0f,
+    .tQProportionalKalman = 1.0f,
+    .tRProportionalKalman = 0.0f,
+    .errDeadzone = 0.0f,
+    .errorDerivativeFloor = 10.0f,
+};
+
+static constexpr tap::algorithms::SmoothPidConfig PITCH_PID_CONFIG = {
+    .kp = 100'183.1f,
+    .ki = 0.0f,
+    .kd = 1'000.0f,
+    .maxICumulative = 0.0f,
+    .maxOutput = 32000.0f,
+    .tQDerivativeKalman = 1.0f,
+    .tRDerivativeKalman = 30.0f,
+    .tQProportionalKalman = 1.0f,
+    .tRProportionalKalman = 0.0f,
+    .errDeadzone = 0.0f,
+    .errorDerivativeFloor = 0.0f,
+};

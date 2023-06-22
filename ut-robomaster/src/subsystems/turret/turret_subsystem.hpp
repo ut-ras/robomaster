@@ -9,6 +9,7 @@
 
 #include "drivers.hpp"
 #include "turret_motor.hpp"
+#include "robots/robot_constants.hpp"
 
 using modm::Vector3f;
 
@@ -60,7 +61,9 @@ public:
     
     TurretMotor* getPitchTurret() { return &pitchTurret; }
 
-    static constexpr float BELT_RATIO = 2.0f;
+    float getInputYaw() { return inputYaw; }
+
+    float getInputPitch() { return inputPitch; }
 
 private:
     src::Drivers* drivers;
@@ -88,66 +91,6 @@ private:
     float baseYaw = 0.0f;
 
     ContiguousFloat turretOffset;
-
-#ifdef TARGET_STANDARD
-    static constexpr tap::algorithms::SmoothPidConfig YAW_PID_CONFIG = {
-        .kp = 65'000.0f,
-        .ki = 0.0f,
-        .kd = 3'000.0f,
-        .maxICumulative = 0.0f,
-        .maxOutput = 32'000.0f,
-        .tQDerivativeKalman = 1.0f,
-        .tRDerivativeKalman = 30.0f,
-        .tQProportionalKalman = 1.0f,
-        .tRProportionalKalman = 0.0f,
-        .errDeadzone = 0.0f,
-        .errorDerivativeFloor = 10.0f,
-    };
-
-    static constexpr tap::algorithms::SmoothPidConfig PITCH_PID_CONFIG = {
-        .kp = 100'183.1f,
-        .ki = 0.0f,
-        .kd = 1'000.0f,
-        .maxICumulative = 0.0f,
-        .maxOutput = 32000.0f,
-        .tQDerivativeKalman = 1.0f,
-        .tRDerivativeKalman = 30.0f,
-        .tQProportionalKalman = 1.0f,
-        .tRProportionalKalman = 0.0f,
-        .errDeadzone = 0.0f,
-        .errorDerivativeFloor = 0.0f,
-    };
-#endif
-
-#ifdef TARGET_HERO
-    static constexpr tap::algorithms::SmoothPidConfig YAW_PID_CONFIG = {
-        .kp = 100'183.1f,
-        .ki = 0.0f,
-        .kd = 2'500.0f,
-        .maxICumulative = 0.0f,
-        .maxOutput = 32'000.0f,
-        .tQDerivativeKalman = 1.0f,
-        .tRDerivativeKalman = 30.0f,
-        .tQProportionalKalman = 1.0f,
-        .tRProportionalKalman = 0.0f,
-        .errDeadzone = 0.0f,
-        .errorDerivativeFloor = 10.0f,
-    };
-
-    static constexpr tap::algorithms::SmoothPidConfig PITCH_PID_CONFIG = {
-        .kp = 100'183.1f,
-        .ki = 0.0f,
-        .kd = 1'000.0f,
-        .maxICumulative = 0.0f,
-        .maxOutput = 32000.0f,
-        .tQDerivativeKalman = 1.0f,
-        .tRDerivativeKalman = 30.0f,
-        .tQProportionalKalman = 1.0f,
-        .tRProportionalKalman = 0.0f,
-        .errDeadzone = 0.0f,
-        .errorDerivativeFloor = 0.0f,
-    };
-#endif
 };
 
 }  // namespace turret

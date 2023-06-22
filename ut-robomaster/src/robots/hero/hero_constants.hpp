@@ -2,6 +2,7 @@
 
 #include "tap/communication/can/can_bus.hpp"
 #include "tap/motor/dji_motor.hpp"
+#include "tap/algorithms/smooth_pid.hpp"
 
 #include "modm/container/pair.hpp"
 #include "utils/motor_controller/pid.hpp"
@@ -60,3 +61,39 @@ const float UNJAM_SPEED = 0.4f;  // rev/s
 
 static constexpr int FLYWHEELS = 2;
 static constexpr float DEFAULT_SPEED = 60.0f;
+
+static constexpr tap::algorithms::SmoothPidConfig YAW_PID_CONFIG = {
+    .kp = 100'183.1f,
+    .ki = 0.0f,
+    .kd = 2'500.0f,
+    .maxICumulative = 0.0f,
+    .maxOutput = 32'000.0f,
+    .tQDerivativeKalman = 1.0f,
+    .tRDerivativeKalman = 30.0f,
+    .tQProportionalKalman = 1.0f,
+    .tRProportionalKalman = 0.0f,
+    .errDeadzone = 0.0f,
+    .errorDerivativeFloor = 10.0f,
+};
+
+static constexpr tap::algorithms::SmoothPidConfig PITCH_PID_CONFIG = {
+    .kp = 100'183.1f,
+    .ki = 0.0f,
+    .kd = 1'000.0f,
+    .maxICumulative = 0.0f,
+    .maxOutput = 32000.0f,
+    .tQDerivativeKalman = 1.0f,
+    .tRDerivativeKalman = 30.0f,
+    .tQProportionalKalman = 1.0f,
+    .tRProportionalKalman = 0.0f,
+    .errDeadzone = 0.0f,
+    .errorDerivativeFloor = 0.0f,
+};
+
+static constexpr float BELT_RATIO = 2.0f;
+
+static constexpr float YAW_INPUT_SCALE = 0.008f;
+static constexpr float PITCH_INPUT_SCALE = 0.01f;
+
+static constexpr float MOUSE_SENS_YAW = 0.01f;
+static constexpr float MOUSE_SENS_PITCH = 0.02f;
