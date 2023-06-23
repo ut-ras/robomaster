@@ -70,9 +70,10 @@
         "variant": "cpp",
         "SConstruct": "python",
         "SConscript": "python",
-        "stop_token": "cpp"
+        "stop_token": "cpp",
+        "cassert": "cpp"
     },
-    "C_Cpp.errorSquiggles": "Enabled",
+    "C_Cpp.errorSquiggles": "enabled",
     "C_Cpp.default.includePath": [
         "template-project/taproot/src",
         "template-project/src",

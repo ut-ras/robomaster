@@ -43,9 +43,7 @@
 /* control includes ---------------------------------------------------------*/
 #include "tap/architecture/clock.hpp"
 
-#include "control/robot_control.hpp"
-
-#include "led_test/led.hpp"
+#include "robots/robot_control.hpp"
 
 /* define timers here -------------------------------------------------------*/
 tap::arch::PeriodicMilliTimer sendMotorTimeout(2);
@@ -80,7 +78,6 @@ int main()
     Board::initialize();
     initializeIo(drivers);
     control::initSubsystemCommands(drivers);
-    // led_test::init();
 
 #ifdef PLATFORM_HOSTED
     tap::motorsim::SimHandler::resetMotorSims();
@@ -100,7 +97,7 @@ int main()
             PROFILE(drivers->profiler, drivers->commandScheduler.run, ());
             PROFILE(drivers->profiler, drivers->djiMotorTxHandler.encodeAndSendCanData, ());
             PROFILE(drivers->profiler, drivers->terminalSerial.update, ());
-        } 
+        }
         // led_test::ledOn();
         modm::delay_us(10);
     }
@@ -135,4 +132,5 @@ static void updateIo(src::Drivers *drivers)
     drivers->refSerial.updateSerial();
     drivers->remote.read();
     // drivers->mpu6500.read();
+    drivers->mouseTracker.update();
 }

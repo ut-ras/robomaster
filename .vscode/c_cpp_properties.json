@@ -39,25 +39,28 @@
         },
         {
             "name": "Hardware",
+            "defines": [
+                "TARGET_STANDARD",
+                "TARGET_SENTRY",
+                "TARGET_HERO"
+            ],
             "includePath": [
                 "${default}",
-                "template-project/taproot/modm/src",
-                "template-project/taproot/modm/ext/cmsis/core",
-                "template-project/taproot/modm/ext/cmsis/device",
-                "template-project/taproot/modm/ext/cmsis/dsp",
                 "${workspaceFolder}/ut-robomaster/taproot/src",
                 "${workspaceFolder}/taproot/modm/src",
                 "${workspaceFolder}/ut-robomaster/taproot/modm/src",
                 "${workspaceFolder}/taproot/modm/ext/st/stm32/stm32f4xx/Include",
                 "${workspaceFolder}/taproot/modm/ext/arm/cmsis/CMSIS/Core/Include",
                 "${workspaceFolder}/ut-robomaster/taproot/modm/src/modm/processing",
-                "${workspaceFolder}/ut-robomaster/src"
+                "${workspaceFolder}/ut-robomaster/src",
             ],
             "compilerPath": "arm-none-eabi-g++",
             "intelliSenseMode": "gcc-arm",
             "browse": {
                 "limitSymbolsToIncludedHeaders": true
-            }
+            },
+            "cStandard": "c17",
+            "cppStandard": "c++17"
         }
     ],
     "version": 4
