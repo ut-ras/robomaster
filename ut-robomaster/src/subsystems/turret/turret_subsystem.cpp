@@ -136,17 +136,48 @@ void TurretSubsystem::updateAutoAim()
 
     // ^ Ignoring ballistics for now
 
+    // only run if the BeagleBone is online
     if (!drivers->beaglebone.isOnline()) return;
+
+    // only run when there's new data
     if (lastTurretDataIndex == drivers->beaglebone.turretDataIndex) return;
     lastTurretDataIndex = drivers->beaglebone.turretDataIndex;
 
-    TurretData turretData = drivers->beaglebone.getTurretData();
-    if (!turretData.hasTarget) return;
+    // only run if we have a target
+    TurretData data = drivers->beaglebone.getTurretData();
+    if (!data.hasTarget) return;
 
-    float deltaYaw = -atan(turretData.xPos / turretData.zPos);  // yaw is opposite to camera X
-    float deltaPitch = atan(turretData.yPos / turretData.zPos);
-    float scale = 0.5f;
-    setTargetWorldAngles(targetWorldYaw + deltaYaw * scale, targetWorldPitch + deltaPitch * scale);
+    float cameraToPitch = 0.0f;
+    float nozzleToPitch = 0.0f;
+    float bulletSpeed = 15.0f;
+    int numIterations = 2;
+
+    Vector3f targetPos(data.xPos, data.zPos + cameraToPitch, data.yPos);
+    Vector3f targetVel(data.xVel, data.zVel, data.yVel);
+    Vector3f targetAcc(data.xAcc, data.zAcc, data.yAcc);
+
+    MeasuredKinematicState kinState{targetPos, targetVel, targetAcc};
+
+    float turretPitch = 0.0f;
+    float turretYaw = 0.0f;
+    float travelTime = 0.0f;
+
+    bool validBallistcs = findTargetProjectileIntersection(
+        kinState,
+        bulletSpeed,
+        numIterations,
+        &turretPitch,
+        &turretYaw,
+        &travelTime,
+        -nozzleToPitch);
+
+    setTargetWorldAngles(targetWorldYaw + turretYaw, turretPitch);
+
+    // float deltaYaw = -atan(turretData.xPos / turretData.zPos);  // yaw is opposite to camera X
+    // float deltaPitch = atan(turretData.yPos / turretData.zPos);
+    // float scale = 0.5f;
+    // setTargetWorldAngles(targetWorldYaw + deltaYaw * scale, targetWorldPitch + deltaPitch *
+    // scale);
 }
 }  // namespace turret
 }  // namespace subsystems
