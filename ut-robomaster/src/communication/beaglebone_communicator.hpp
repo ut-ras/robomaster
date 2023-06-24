@@ -81,7 +81,7 @@ private:
     TurretData lastTurretData;
 
     /** UART port to communicate with the BeagleBone on */
-    static constexpr Uart::UartPort UART_PORT = Uart::Uart6;
+    static constexpr Uart::UartPort UART_PORT = Uart::Uart1;
 
     /** Baud rate of the UART line */
     static constexpr uint32_t BAUD_RATE = 115200;
