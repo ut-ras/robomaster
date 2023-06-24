@@ -119,23 +119,6 @@ void TurretSubsystem::runHardwareTests()
 
 void TurretSubsystem::updateAutoAim()
 {
-    // float turretPitch = 0.0f;
-    // float turretYaw = 0.0f;
-    // float projectedTravelTime = 0.0f;
-
-    // findTargetProjectileIntersection(
-    //     {targetPosition, targetVelocity, targetAcceleration},
-    //     bulletVelocity,
-    //     numBallisticIterations,
-    //     &turretPitch,
-    //     &turretYaw,
-    //     &projectedTravelTime);
-
-    // targetWorldYaw = turretYaw;
-    // targetWorldPitch = turretPitch;
-
-    // ^ Ignoring ballistics for now
-
     // only run if the BeagleBone is online
     if (!drivers->beaglebone.isOnline()) return;
 
@@ -147,14 +130,24 @@ void TurretSubsystem::updateAutoAim()
     TurretData data = drivers->beaglebone.getTurretData();
     if (!data.hasTarget) return;
 
+    float cameraToBarrels = 0.0f;
     float cameraToPitch = 0.0f;
     float nozzleToPitch = 0.0f;
     float bulletSpeed = 15.0f;
     int numIterations = 2;
 
-    Vector3f targetPos(data.xPos, data.zPos + cameraToPitch, data.yPos);
+    // Pitch axis relative (y/z flipped)
+    Vector3f targetPos(data.xPos, data.zPos + cameraToPitch, data.yPos + cameraToBarrels);
     Vector3f targetVel(data.xVel, data.zVel, data.yVel);
     Vector3f targetAcc(data.xAcc, data.zAcc, data.yAcc);
+
+    // Rotate to world relative pitch
+    float a = getCurrentLocalPitch();
+    const float matData[9] = {1.0f, 0, 0, 0, cos(a), -sin(a), 0, sin(a), cos(a)};
+    modm::Matrix3f rotMat(matData);
+    targetPos = rotMat * targetPos;
+    targetVel = rotMat * targetVel;
+    targetAcc = rotMat * targetAcc;
 
     MeasuredKinematicState kinState{targetPos, targetVel, targetAcc};
 
@@ -171,7 +164,9 @@ void TurretSubsystem::updateAutoAim()
         &travelTime,
         -nozzleToPitch);
 
-    setTargetWorldAngles(targetWorldYaw + turretYaw, turretPitch);
+    float currentWorldYaw = getCurrentLocalYaw() + getChassisYaw();
+
+    setTargetWorldAngles(currentWorldYaw + turretYaw, turretPitch);
 
     // float deltaYaw = -atan(turretData.xPos / turretData.zPos);  // yaw is opposite to camera X
     // float deltaPitch = atan(turretData.yPos / turretData.zPos);
