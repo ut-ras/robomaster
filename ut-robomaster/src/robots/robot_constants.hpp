@@ -44,9 +44,9 @@ constexpr float PITCH_MIN = -0.2185f;
 constexpr float PITCH_MAX = 0.2299f;
 
 static constexpr modm::Pair<uint16_t, float> FLYWHEEL_RPS_MAPPING[] = {
-    {15, 70.0f},
-    {18, 78.57f},
-    {30, 125.0f}};
+    {15, 67.0f},
+    {18, 75.0f},
+    {30, 122.0f}};
 
 #elif defined(TARGET_HERO)
 constexpr MotorId ID_FLYWHEEL_L = MOTOR3;
