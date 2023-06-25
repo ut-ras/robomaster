@@ -130,49 +130,54 @@ void TurretSubsystem::updateAutoAim()
     TurretData data = drivers->beaglebone.getTurretData();
     if (!data.hasTarget) return;
 
-    float cameraToBarrels = 0.0f;
-    float cameraToPitch = 0.0f;
-    float nozzleToPitch = 0.0f;
+    float cameraToPitch = 0.13555f;
+    float nozzleToPitch = 0.18151f;
+    float cameraToBarrels = 0.0427f;
+    float cameraXOffset = -0.0335f;
     float bulletSpeed = 15.0f;
     int numIterations = 2;
 
     // Pitch axis relative (y/z flipped)
-    Vector3f targetPos(data.xPos, data.zPos + cameraToPitch, data.yPos + cameraToBarrels);
+    Vector3f targetPos(
+        data.xPos + cameraXOffset,
+        data.zPos + cameraToPitch,
+        data.yPos + cameraToBarrels);
     Vector3f targetVel(data.xVel, data.zVel, data.yVel);
     Vector3f targetAcc(data.xAcc, data.zAcc, data.yAcc);
 
-    // Rotate to world relative pitch
-    float a = getCurrentLocalPitch();
-    const float matData[9] = {1.0f, 0, 0, 0, cos(a), -sin(a), 0, sin(a), cos(a)};
-    modm::Matrix3f rotMat(matData);
-    targetPos = rotMat * targetPos;
-    targetVel = rotMat * targetVel;
-    targetAcc = rotMat * targetAcc;
+    // // Rotate to world relative pitch
+    // float a = getCurrentLocalPitch();
+    // const float matData[9] = {1.0f, 0, 0, 0, cos(a), -sin(a), 0, sin(a), cos(a)};
+    // modm::Matrix3f rotMat(matData);
+    // targetPos = rotMat * targetPos;
+    // targetVel = rotMat * targetVel;
+    // targetAcc = rotMat * targetAcc;
 
-    MeasuredKinematicState kinState{targetPos, targetVel, targetAcc};
+    // MeasuredKinematicState kinState{targetPos, targetVel, targetAcc};
 
-    float turretPitch = 0.0f;
-    float turretYaw = 0.0f;
-    float travelTime = 0.0f;
+    // float turretPitch = 0.0f;
+    // float turretYaw = 0.0f;
+    // float travelTime = 0.0f;
 
-    bool validBallistcs = findTargetProjectileIntersection(
-        kinState,
-        bulletSpeed,
-        numIterations,
-        &turretPitch,
-        &turretYaw,
-        &travelTime,
-        -nozzleToPitch);
+    // bool validBallistcs = findTargetProjectileIntersection(
+    //     kinState,
+    //     bulletSpeed,
+    //     numIterations,
+    //     &turretPitch,
+    //     &turretYaw,
+    //     &travelTime,
+    //     -nozzleToPitch);
 
+    // float currentWorldYaw = getCurrentLocalYaw() + getChassisYaw();
+
+    // setTargetWorldAngles(currentWorldYaw + turretYaw, turretPitch);
+
+    float deltaYaw = -atan(targetPos.x / targetPos.y);  // yaw is opposite to camera X
+    float deltaPitch = atan(targetPos.z / targetPos.y);
+    float scale = 0.001f;
     float currentWorldYaw = getCurrentLocalYaw() + getChassisYaw();
-
-    setTargetWorldAngles(currentWorldYaw + turretYaw, turretPitch);
-
-    // float deltaYaw = -atan(turretData.xPos / turretData.zPos);  // yaw is opposite to camera X
-    // float deltaPitch = atan(turretData.yPos / turretData.zPos);
-    // float scale = 0.5f;
-    // setTargetWorldAngles(targetWorldYaw + deltaYaw * scale, targetWorldPitch + deltaPitch *
-    // scale);
+    float currentWorldPitch = getCurrentLocalPitch();
+    setTargetWorldAngles(targetWorldYaw + deltaYaw * scale, targetWorldPitch + deltaPitch * scale);
 }
 }  // namespace turret
 }  // namespace subsystems
