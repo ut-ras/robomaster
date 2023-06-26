@@ -71,7 +71,9 @@ CommandBeybladeChassisKeyboard beybladeChassisCommandKeyboard(drivers(), &chassi
 CommandRotateAgitatorContinuous rotateAgitatorContinuousCommand(drivers(), &agitator);
 CommandUnjamAgitator unjamAgitatorCommand(drivers(), &agitator);
 
-CommandRotateFlywheel rotateFlywheelCommand(drivers(), &flywheel);
+CommandRotateFlywheel rotateFlywheelDefaultCommand(drivers(), &flywheel);
+CommandRotateFlywheel rotateFlywheelNoAgitatorCommand(drivers(), &flywheel);
+CommandRotateFlywheel rotateFlywheelWithAgitatorCommand(drivers(), &flywheel);
 CommandFlywheelOff flywheelOffCommand(drivers(), &flywheel);
 
 CommandMoveTurretJoystick moveTurretCommandJoystick(drivers(), &turret);
@@ -112,21 +114,13 @@ HoldCommandMapping leftSwitchDown(
 
 HoldCommandMapping leftSwitchMid(
     drivers(),
-    {&rotateFlywheelCommand},
+    {&rotateFlywheelNoAgitatorCommand},
     RemoteMapState(Remote::Switch::LEFT_SWITCH, Remote::SwitchState::MID));
 
 HoldCommandMapping leftSwitchUp(
     drivers(),
-    {&rotateAgitatorContinuousCommand, &rotateFlywheelCommand},
+    {&rotateAgitatorContinuousCommand, &rotateFlywheelWithAgitatorCommand},
     RemoteMapState(Remote::Switch::LEFT_SWITCH, Remote::SwitchState::UP));
-
-// PressCommandMapping lookBehind(drivers(), {&lookBehindCommand}, RemoteMapState({Remote::Key::B}));
-
-// PressCommandMapping changeAimStrategy(
-//     drivers(),
-//     {&aimStrategyCommand},
-//     RemoteMapState(RemoteMapState::MouseButton::RIGHT));
-
 
 
 // Register subsystems here -----------------------------------------------
@@ -153,7 +147,7 @@ void initializeSubsystems()
 void setDefaultCommands(src::Drivers *)
 {
     chassis.setDefaultCommand(&moveChassisCommandKeyboard);
-    flywheel.setDefaultCommand(&rotateFlywheelCommand);
+    flywheel.setDefaultCommand(&rotateFlywheelDefaultCommand);
     turret.setDefaultCommand(&moveTurretCommandMouse);
 }
 
