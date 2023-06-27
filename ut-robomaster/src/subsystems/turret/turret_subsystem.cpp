@@ -32,14 +32,6 @@ void TurretSubsystem::inputManualAngles(float yaw, float pitch) {
     inputPitch = pitch;
 }
 
-void TurretSubsystem::inputTargetData(Vector3f position, Vector3f velocity, Vector3f acceleration) {
-    targetPosition = position;
-    targetVelocity = velocity;
-    targetAcceleration = acceleration;
-}
-
-void TurretSubsystem::setAimStrategy(AimStrategy aimStrategy) { this->aimStrategy = aimStrategy; }
-
 float TurretSubsystem::getChassisYaw() { return modm::toRadian(drivers->bmi088.getYaw() - 180.0f); }
 
 float TurretSubsystem::getTargetLocalYaw() { return targetWorldYaw - getChassisYaw(); }
@@ -55,6 +47,9 @@ float TurretSubsystem::getCurrentLocalPitch() {
 }
 
 void TurretSubsystem::refresh() {
+    targetWorldYaw = inputYaw;
+    targetWorldPitch = inputPitch;
+
     yawTurret.updateMotorAngle();
     pitchTurret.updateMotorAngle();
 

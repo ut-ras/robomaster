@@ -36,11 +36,6 @@ public:
 
     void inputManualAngles(float yaw, float pitch);
 
-    /// @brief Input target data from CV (relative to camera)
-    void inputTargetData(Vector3f position, Vector3f velocity, Vector3f acceleration);
-
-    void setAimStrategy(AimStrategy aimStrategy);
-
     float getChassisYaw();
 
     float getTargetLocalYaw();
