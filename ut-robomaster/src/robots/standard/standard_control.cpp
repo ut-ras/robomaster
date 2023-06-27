@@ -13,6 +13,7 @@
 // Chassis includes ----------------------------------------
 #include "subsystems/chassis/chassis_subsystem.hpp"
 #include "subsystems/chassis/command_move_chassis_joystick.hpp"
+#include "subsystems/chassis/command_move_chassis_turret_relative_joystick.hpp"
 #include "subsystems/chassis/command_move_chassis_keyboard.hpp"
 #include "subsystems/chassis/command_beyblade_chassis_keyboard.hpp"
 
@@ -65,6 +66,7 @@ OdometrySubsystem odometry(drivers(), &chassis, &turret);
 
 // Command definitions -----------------------------------------------------------
 CommandMoveChassisJoystick moveChassisCommandJoystick(drivers(), &chassis, &turret);
+CommandMoveChassisTurretRelativeJoystick moveChassisTurretRelativeCommandJoystick(drivers(), &chassis, &turret);
 CommandMoveChassisKeyboard moveChassisCommandKeyboard(drivers(), &chassis, &turret);
 CommandBeybladeChassisKeyboard beybladeChassisCommandKeyboard(drivers(), &chassis, &turret);
 
@@ -77,6 +79,7 @@ CommandRotateFlywheel rotateFlywheelWithAgitatorCommand(drivers(), &flywheel);
 CommandFlywheelOff flywheelOffCommand(drivers(), &flywheel);
 
 CommandMoveTurretJoystick moveTurretCommandJoystick(drivers(), &turret);
+CommandMoveTurretJoystick moveTurretWhenChassisIsTurretRelativeCommandJoystick(drivers(), &turret);
 CommandMoveTurretMouse moveTurretCommandMouse(drivers(), &turret);
 CommandMoveTurretAimbot moveTurretCommandAimbot(drivers(), &turret);
 
@@ -102,10 +105,15 @@ HoldCommandMapping rightMouseDown(
     RemoteMapState(RemoteMapState::MouseButton::RIGHT));
 
 // Joystick mappings ------------------------------------------------------------
-HoldCommandMapping rightSwitchDown(
+HoldCommandMapping rightSwitchUp(
+    drivers(),
+    {&moveChassisTurretRelativeCommandJoystick, &moveTurretWhenChassisIsTurretRelativeCommandJoystick},
+    RemoteMapState(Remote::Switch::RIGHT_SWITCH, Remote::SwitchState::UP));
+
+HoldCommandMapping rightSwitchMid(
     drivers(),
     {&moveChassisCommandJoystick, &moveTurretCommandJoystick},
-    RemoteMapState(Remote::Switch::RIGHT_SWITCH, Remote::SwitchState::DOWN));
+    RemoteMapState(Remote::Switch::RIGHT_SWITCH, Remote::SwitchState::MID));
 
 HoldCommandMapping leftSwitchDown(
     drivers(),
@@ -163,7 +171,8 @@ void registerMappings(src::Drivers *drivers)
     drivers->commandMapper.addMap(&rightMouseDown);
 
     // Joystick mappings ------------------------------------------------------------
-    drivers->commandMapper.addMap(&rightSwitchDown);    
+    drivers->commandMapper.addMap(&rightSwitchUp);    
+    drivers->commandMapper.addMap(&rightSwitchMid);
     drivers->commandMapper.addMap(&leftSwitchDown);
     drivers->commandMapper.addMap(&leftSwitchMid);
     drivers->commandMapper.addMap(&leftSwitchUp);
