@@ -23,7 +23,7 @@
 #include "tap/drivers.hpp"
 
 #include "communication/beaglebone_communicator.hpp"
-#include "robots/standard/robot_comms.hpp"
+#include "utils/robot_comms.hpp"
 #include "utils/mouse_tracker.hpp"
 
 namespace src
