@@ -31,7 +31,7 @@ static constexpr float WHEEL_DISTANCE_X = 0.391f;  // meters
 static constexpr float WHEEL_DISTANCE_Y = 0.315f;  // meters
 static constexpr float WHEEL_RADIUS = 0.1524f;  // meters
 static constexpr float WHEEL_LXY = (WHEEL_DISTANCE_X + WHEEL_DISTANCE_Y) / 2.0f;
-static constexpr float WHEEL_MAX_VEL = 10.0f;                                       // rad/s
+static constexpr float WHEEL_MAX_VEL = 20.0f;                                       // rad/s
 static constexpr float MAX_LINEAR_VEL = WHEEL_MAX_VEL * WHEEL_RADIUS;               // m/s
 static constexpr float MAX_ANGULAR_VEL = WHEEL_MAX_VEL * WHEEL_RADIUS / WHEEL_LXY;  // rad/s
 
@@ -46,9 +46,9 @@ constexpr MotorId ID_FLYWHEEL_BR = MOTOR6;
 constexpr PidConstants PID_FLYWHEEL = {0.1f, 0.1f, 0.0f};
 
 static constexpr modm::Pair<uint16_t, float> FLYWHEEL_RPS_MAPPING[] = {
-    {15, 70.0f},
-    {18, 78.57f},
-    {30, 125.0f}};
+    {15, 67.0f},
+    {18, 75.0f},
+    {30, 122.0f}};
 
 static constexpr int FLYWHEELS = 4;
 static constexpr float DEFAULT_SPEED = 70.0f;
@@ -59,7 +59,7 @@ constexpr MotorId ID_AGITATOR_R = MOTOR2;
 
 constexpr PidConstants PID_AGITATOR = PID_VELOCITY_DEFAULT;
 
-const float BALLS_PER_SEC = 6.0f;
+const float BALLS_PER_SEC = 10.0f;
 const float BALLS_PER_REV = 8.0f;
 
 const uint16_t BARREL_HEAT_BUFFER = 20.0f;
