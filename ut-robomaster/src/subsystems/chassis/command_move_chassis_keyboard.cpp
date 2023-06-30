@@ -12,6 +12,7 @@ void CommandMoveChassisKeyboard::execute() {
     
     else {
         Remote* remote = &drivers->remote;
+        inputSpin = 0.0f;
 
         Vector2f rawMoveInput = Vector2f(
             remote->keyPressed(Remote::Key::D) - remote->keyPressed(Remote::Key::A),
