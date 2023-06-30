@@ -1,6 +1,10 @@
 #include "chassis_subsystem.hpp"
 
+#include "tap/algorithms/math_user_utils.hpp"
+
 #include "robots/robot_constants.hpp"
+
+using namespace tap::algorithms;
 
 namespace subsystems
 {
@@ -9,6 +13,7 @@ namespace chassis
 ChassisSubsystem::ChassisSubsystem(src::Drivers* drivers)
     : tap::control::Subsystem(drivers),
       drivers(drivers),
+      powerLimiter(drivers, ENERGY_BUFFER_LIMIT_THRESHOLD, ENERGY_BUFFER_CRIT_THRESHOLD),
       wheels{
           {drivers, M3508, ID_WHEEL_LF, CAN_WHEELS, false, "left front", PID_WHEELS},
           {drivers, M3508, ID_WHEEL_RF, CAN_WHEELS, true, "right front", PID_WHEELS},
@@ -26,10 +31,33 @@ void ChassisSubsystem::initialize()
 
 void ChassisSubsystem::refresh()
 {
-    for (int8_t i = 0; i < WHEELS; i++)
-    {
+    for (int8_t i = 0; i < WHEELS; i++) {
         wheels[i].setActive(!drivers->isKillSwitched());
         wheels[i].update(targetWheelVels[i] / M_TWOPI);  // rad/s to rev/s
+    }
+
+    limitChassisPower();
+}
+
+void ChassisSubsystem::limitChassisPower() 
+{
+    float powerScalar = powerLimiter.getPowerLimitRatio();
+    if (compareFloatClose(1.0f, powerScalar, 1E-3)) { 
+        powerScalar = 1.0f; 
+    }
+
+    float totalError = 0.0f;
+    for (size_t i = 0; i < WHEELS; i++) {
+        totalError += abs(wheels[i].getPid().getLastError());
+    }
+
+    for (int8_t i = 0; i < WHEELS; i++) {
+        bool totalErrorZero = compareFloatClose(0.0f, totalError, 1E-3);
+        float velocityErrorScalar = totalErrorZero ? (1.0f / WHEELS) : (abs(wheels[i].getPid().getLastError()) / totalError);
+        float modifiedPowerScalar = limitVal(WHEELS * powerScalar * velocityErrorScalar, 0.0f, 1.0f);
+
+        wheels[i].setActive(!drivers->isKillSwitched());
+        wheels[i].applyPowerScalar(modifiedPowerScalar);
     }
 }
 

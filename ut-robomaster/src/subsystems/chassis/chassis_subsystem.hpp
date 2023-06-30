@@ -4,9 +4,9 @@
 #include "tap/control/subsystem.hpp"
 
 #include "modm/math/geometry.hpp"
-#include "utils/motor_controller/motor_controller.hpp"
-
 #include "robots/robot_constants.hpp"
+#include "utils/motor_controller/motor_controller.hpp"
+#include "utils/power_limiter/power_limiter.hpp"
 
 #include "drivers.hpp"
 
@@ -27,6 +27,8 @@ public:
 
     void refresh() override;
 
+    void limitChassisPower();
+
     void runHardwareTests() override;
 
     /// @brief Update robot motion based on simple input controls. Inputs are scaled and corrected
@@ -43,6 +45,7 @@ public:
 
 private:
     src::Drivers* drivers;
+    power_limiter::PowerLimiter powerLimiter;
     MotorVelocityController wheels[WHEELS];
     float targetWheelVels[WHEELS] = {0.0f, 0.0f, 0.0f, 0.0f};
 
@@ -51,6 +54,9 @@ private:
     /// @param v Linear velocity (m/s)
     /// @param wZ Angular velocity (rad/s)
     void setMecanumWheelVelocities(Vector2f v, float wZ);
+
+    static constexpr float ENERGY_BUFFER_LIMIT_THRESHOLD = 60.0f;
+    static constexpr float ENERGY_BUFFER_CRIT_THRESHOLD = 10.0f;
 };
 }  // namespace chassis
 }  // namespace subsystems
