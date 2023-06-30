@@ -132,4 +132,5 @@ static void updateIo(src::Drivers *drivers)
     drivers->refSerial.updateSerial();
     drivers->remote.read();
     // drivers->mpu6500.read();
+    drivers->mouseTracker.update();
 }

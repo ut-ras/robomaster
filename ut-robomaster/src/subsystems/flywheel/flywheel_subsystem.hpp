@@ -10,7 +10,7 @@
 
 namespace subsystems
 {
-namespace shooter
+namespace flywheel
 {
 
 using namespace motor_controller;
@@ -19,25 +19,29 @@ class FlywheelSubsystem : public tap::control::Subsystem
 {
 public:
     FlywheelSubsystem(src::Drivers* drivers);
+
     ~FlywheelSubsystem() = default;
+
     void initialize() override;
+
     void refresh() override;
 
-    void setActive(bool active);
+    void setLaunchSpeed(float speed);
+
+    // Overloaded method to allow independent control of left and right flywheels
+    void setLaunchSpeed(float leftSpeed, float rightSpeed);
 
 private:
-#if defined TARGET_STANDARD || defined TARGET_SENTRY
-    static constexpr int FLYWHEELS = 4;
-    static constexpr float SPEED = 120.0f;
-#elif defined TARGET_HERO
-    static constexpr int FLYWHEELS = 2;
-    static constexpr float SPEED = 120.0f;
-#endif
     src::Drivers* drivers;
-
     MotorVelocityController motors[FLYWHEELS];
 
-    bool isActive = false;
+    #if defined(TARGET_STANDARD) || defined(TARGET_SENTRY)
+        float launchSpeedLeft = 0.0f;
+        float launchSpeedRight = 0.0f;
+
+    #elif defined(TARGET_HERO)
+        float launchSpeedHero = 0.0f;
+    #endif
 };
 
 }  // namespace shooter

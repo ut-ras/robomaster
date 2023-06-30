@@ -3,9 +3,8 @@
 
 #include "drivers.hpp"
 
-namespace control
-{
-void initSubsystemCommands(src::Drivers *drivers);
+namespace control {
+    void initSubsystemCommands(src::Drivers *drivers);
 }  // namespace control
 
 #endif  // ROBOT_CONTROL_HPP_
