@@ -73,7 +73,7 @@ CommandBeybladeChassisKeyboard beybladeChassisCommandKeyboard(drivers(), &chassi
 CommandRotateAgitatorContinuous rotateAgitatorContinuousCommand(drivers(), &agitator);
 CommandUnjamAgitator unjamAgitatorCommand(drivers(), &agitator);
 
-CommandRotateFlywheel rotateFlywheelDefaultCommand(drivers(), &flywheel);
+CommandRotateFlywheel rotateFlywheelKeyboardCommand(drivers(), &flywheel);
 CommandRotateFlywheel rotateFlywheelNoAgitatorCommand(drivers(), &flywheel);
 CommandRotateFlywheel rotateFlywheelWithAgitatorCommand(drivers(), &flywheel);
 CommandFlywheelOff flywheelOffCommand(drivers(), &flywheel);
@@ -115,10 +115,10 @@ HoldCommandMapping rightSwitchMid(
     {&moveChassisCommandJoystick, &moveTurretCommandJoystick},
     RemoteMapState(Remote::Switch::RIGHT_SWITCH, Remote::SwitchState::MID));
 
-HoldCommandMapping leftSwitchDown(
+HoldCommandMapping rightSwitchDown(
     drivers(),
-    {&flywheelOffCommand},
-    RemoteMapState(Remote::Switch::LEFT_SWITCH, Remote::SwitchState::DOWN));
+    {&rotateFlywheelKeyboardCommand},
+    RemoteMapState(Remote::Switch::RIGHT_SWITCH, Remote::SwitchState::DOWN));
 
 HoldCommandMapping leftSwitchMid(
     drivers(),
@@ -155,7 +155,7 @@ void initializeSubsystems()
 void setDefaultCommands(src::Drivers *)
 {
     chassis.setDefaultCommand(&moveChassisCommandKeyboard);
-    flywheel.setDefaultCommand(&rotateFlywheelDefaultCommand);
+    flywheel.setDefaultCommand(&flywheelOffCommand);
     turret.setDefaultCommand(&moveTurretCommandMouse);
 }
 
@@ -173,7 +173,7 @@ void registerMappings(src::Drivers *drivers)
     // Joystick mappings ------------------------------------------------------------
     drivers->commandMapper.addMap(&rightSwitchUp);    
     drivers->commandMapper.addMap(&rightSwitchMid);
-    drivers->commandMapper.addMap(&leftSwitchDown);
+    drivers->commandMapper.addMap(&rightSwitchDown);
     drivers->commandMapper.addMap(&leftSwitchMid);
     drivers->commandMapper.addMap(&leftSwitchUp);
 }
