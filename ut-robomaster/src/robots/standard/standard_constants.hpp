@@ -81,8 +81,8 @@ static constexpr float BELT_RATIO = 2.0f;
 static constexpr float YAW_INPUT_SCALE = 0.02f;
 static constexpr float PITCH_INPUT_SCALE = 0.01f;
 
-static constexpr float MOUSE_SENS_YAW = 0.01f;
-static constexpr float MOUSE_SENS_PITCH = 0.02f;
+static constexpr float MOUSE_SENS_YAW = 0.0002f;
+static constexpr float MOUSE_SENS_PITCH = 0.0002f;
 
 static constexpr tap::algorithms::SmoothPidConfig YAW_PID_CONFIG = {
     .kp = 65'000.0f,
