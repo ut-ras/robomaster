@@ -91,7 +91,8 @@ void MotorVelocityController::update(float target)
 void MotorVelocityController::applyPowerScalar(float powerLimitScalar)
 {
     if (!isActive) return;
-    motor.setDesiredOutput(motor.getOutputDesired() * powerLimitScalar);
+    float invertFactor = motor.isMotorInverted() ? -1.0f : 1.0f;
+    motor.setDesiredOutput(motor.getOutputDesired() * invertFactor * powerLimitScalar);
 }
 
 float MotorVelocityController::measure() { return measure_velocity(&motor, constants); }
