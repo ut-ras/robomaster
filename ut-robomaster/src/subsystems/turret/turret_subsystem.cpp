@@ -21,13 +21,15 @@ TurretSubsystem::TurretSubsystem(src::Drivers* drivers)
 {
 }
 
-void TurretSubsystem::initialize() {
+void TurretSubsystem::initialize()
+{
     yawTurret.initialize();
     pitchTurret.initialize();
     lastTime = tap::arch::clock::getTimeMilliseconds();
 }
 
-void TurretSubsystem::inputManualAngles(float yaw, float pitch) {
+void TurretSubsystem::inputManualAngles(float yaw, float pitch)
+{
     inputYaw = yaw;
     inputPitch = pitch;
 }
@@ -38,37 +40,43 @@ float TurretSubsystem::getTargetLocalYaw() { return targetWorldYaw - getChassisY
 
 float TurretSubsystem::getTargetLocalPitch() { return targetWorldPitch; }
 
-float TurretSubsystem::getCurrentLocalYaw() {
-    return !isCalibrated ? 0.0f : yawTurret.getAngle() / BELT_RATIO - baseYaw;
+float TurretSubsystem::getCurrentLocalYaw()
+{
+    return !isCalibrated ? 0.0f : yawTurret.getAngle() / YAW_REDUCTION - baseYaw;
 }
 
-float TurretSubsystem::getCurrentLocalPitch() {
-    return !isCalibrated ? 0.0f : pitchTurret.getAngle() - basePitch;
+float TurretSubsystem::getCurrentLocalPitch()
+{
+    return !isCalibrated ? 0.0f : pitchTurret.getAngle() / PITCH_REDUCTION - basePitch;
 }
 
-void TurretSubsystem::refresh() {
+void TurretSubsystem::refresh()
+{
     targetWorldYaw = inputYaw;
     targetWorldPitch = inputPitch;
 
     yawTurret.updateMotorAngle();
     pitchTurret.updateMotorAngle();
 
-    if (!isCalibrated && yawMotor.isMotorOnline() && pitchMotor.isMotorOnline()) {
-        baseYaw = yawTurret.getAngle() / BELT_RATIO;
-        basePitch = pitchTurret.getAngle() - PITCH_MIN;
+    if (!isCalibrated && yawMotor.isMotorOnline() && pitchMotor.isMotorOnline())
+    {
+        baseYaw = yawTurret.getAngle() / YAW_REDUCTION;
+        basePitch = pitchTurret.getAngle() / PITCH_REDUCTION - PITCH_MIN;
         isCalibrated = true;
     }
 
-    if (isCalibrated && !drivers->isKillSwitched()) {
+    if (isCalibrated && !drivers->isKillSwitched())
+    {
         uint32_t time = tap::arch::clock::getTimeMilliseconds();
         uint32_t dt = time - lastTime;
         lastTime = time;
 
-        yawTurret.setAngle((baseYaw + getTargetLocalYaw()) * BELT_RATIO, dt);
-        pitchTurret.setAngle(basePitch + getTargetLocalPitch(), dt);
+        yawTurret.setAngle((baseYaw + getTargetLocalYaw()) * YAW_REDUCTION, dt);
+        pitchTurret.setAngle((basePitch + getTargetLocalPitch()) * PITCH_REDUCTION, dt);
     }
-    
-    else {
+
+    else
+    {
         yawTurret.reset();
         pitchTurret.reset();
     }
