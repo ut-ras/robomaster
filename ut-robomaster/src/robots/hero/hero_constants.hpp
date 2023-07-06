@@ -1,8 +1,8 @@
 #pragma once
 
+#include "tap/algorithms/smooth_pid.hpp"
 #include "tap/communication/can/can_bus.hpp"
 #include "tap/motor/dji_motor.hpp"
-#include "tap/algorithms/smooth_pid.hpp"
 
 #include "modm/container/pair.hpp"
 #include "utils/motor_controller/pid.hpp"
@@ -23,7 +23,7 @@ constexpr MotorId ID_WHEEL_RB = MOTOR4;
 static constexpr int WHEELS = 4;
 static constexpr float WHEEL_DISTANCE_X = 0.525f;  // meters
 static constexpr float WHEEL_DISTANCE_Y = 0.400f;  // meters
-static constexpr float WHEEL_RADIUS = 0.1524f;  // meters
+static constexpr float WHEEL_RADIUS = 0.1524f;     // meters
 static constexpr float WHEEL_LXY = (WHEEL_DISTANCE_X + WHEEL_DISTANCE_Y) / 2.0f;
 static constexpr float WHEEL_MAX_VEL = 10.0f;                                       // rad/s
 static constexpr float MAX_LINEAR_VEL = WHEEL_MAX_VEL * WHEEL_RADIUS;               // m/s
@@ -90,7 +90,8 @@ static constexpr tap::algorithms::SmoothPidConfig PITCH_PID_CONFIG = {
     .errorDerivativeFloor = 0.0f,
 };
 
-static constexpr float BELT_RATIO = 2.0f;
+static constexpr float YAW_REDUCTION = 2.0f;
+static constexpr float PITCH_REDUCTION = 1.0f;
 
 static constexpr float YAW_INPUT_SCALE = 0.008f;
 static constexpr float PITCH_INPUT_SCALE = 0.01f;
