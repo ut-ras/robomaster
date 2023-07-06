@@ -33,7 +33,8 @@ void BeagleBoneCommunicator::messageReceiveCallback(const ReceivedSerialMessage&
 }
 
 void BeagleBoneCommunicator::sendMessage() {
-    sendOdometryData(); 
+    // sendOdometryData(); 
+    sendColorData();
 }
 
 void BeagleBoneCommunicator::sendOdometryData() {
@@ -41,6 +42,23 @@ void BeagleBoneCommunicator::sendOdometryData() {
     message.messageType = CV_MESSAGE_TYPE_ODOMETRY_DATA;
 
     // TODO: Implement sending of data once odometry module is finished
+
+    message.setCRC16();
+    drivers->uart.write(BEAGLEBONE_UART_PORT, reinterpret_cast<uint8_t*>(&message), sizeof(message));
+}
+
+void BeagleBoneCommunicator::sendColorData() {
+    DJISerial::SerialMessage<sizeof(ColorData)> message;
+    message.messageType = CV_MESSAGE_TYPE_COLOR_DATA;
+
+    ColorData* data = reinterpret_cast<ColorData*>(message.data);
+    if (drivers->refSerial.getRefSerialReceivingData()) {
+        data->color = drivers->refSerial.isBlueTeam(drivers->refSerial.getRobotData().robotId) ? COLOR_BLUE : COLOR_RED;
+    } 
+    
+    else {
+        data->color = COLOR_UNKNOWN;
+    }
 
     message.setCRC16();
     drivers->uart.write(BEAGLEBONE_UART_PORT, reinterpret_cast<uint8_t*>(&message), sizeof(message));

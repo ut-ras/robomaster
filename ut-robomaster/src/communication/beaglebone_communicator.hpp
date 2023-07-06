@@ -47,6 +47,11 @@ public:
     void sendOdometryData();
 
     /**
+     * Sends opposing team's color to the BeagleBone
+     */
+    void sendColorData();
+
+    /**
      * Decodes the turret aiming data received from the BeagleBone and stores it in lastTurretData
      * 
      * @param message The message received from the BeagleBone
@@ -72,7 +77,7 @@ private:
     TurretData lastTurretData;
     
     /** UART port to communicate with the BeagleBone on */
-    static constexpr tap::communication::serial::Uart::UartPort BEAGLEBONE_UART_PORT = tap::communication::serial::Uart::UartPort::Uart1;
+    static constexpr tap::communication::serial::Uart::UartPort BEAGLEBONE_UART_PORT = tap::communication::serial::Uart::UartPort::Uart6;
 
     /** Baud rate of the UART line */
     static constexpr uint32_t BEAGLEBONE_BAUD_RATE = 115200;
