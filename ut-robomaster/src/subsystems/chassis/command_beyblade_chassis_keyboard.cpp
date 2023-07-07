@@ -39,8 +39,6 @@ void CommandBeybladeChassisKeyboard::execute()
             }
         }
 
-        inputMove *= TRANSLATION_RATIO;
-
         float turretYaw = turret->getTargetLocalYaw();
         Vector2f turretRelativeMove = Vector2f(inputMove);
         turretRelativeMove.rotate(turretYaw);
