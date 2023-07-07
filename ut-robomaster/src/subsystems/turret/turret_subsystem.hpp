@@ -86,6 +86,8 @@ private:
 
     uint8_t lastTurretDataIndex = 0;
 
+    bool useBallistics = false;
+
 #ifdef TARGET_STANDARD
     static constexpr tap::algorithms::SmoothPidConfig YAW_PID_CONFIG = {
         .kp = 65'000.0f,
