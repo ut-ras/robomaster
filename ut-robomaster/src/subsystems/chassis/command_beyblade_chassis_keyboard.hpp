@@ -46,6 +46,7 @@ private:
     static constexpr float KEYBOARD_ACCEL = 5.0f;
     static constexpr float KEYBOARD_DECEL = 5.0f;
     static constexpr float SNAP_ANGLE = M_PI;
+    static constexpr float TRANSLATION_RATIO = 0.5f;
 
     src::Drivers *drivers;
     ChassisSubsystem *chassis;
