@@ -3,6 +3,7 @@
 namespace subsystems::agitator
 {
 using tap::arch::clock::getTimeMilliseconds;
+using tap::algorithms::compareFloatClose;
 
 #if defined(TARGET_STANDARD) || defined(TARGET_SENTRY)
 AgitatorSubsystem::AgitatorSubsystem(src::Drivers *drivers)
@@ -63,7 +64,7 @@ void AgitatorSubsystem::refresh() {
         agitator.setActive(!killSwitch);
         feeder.setActive(!killSwitch);
 
-        agitator.update(getShapedVelocity(time, 1.0f, 1.0f, float ballsPerSecondHero));
+        agitator.update(getShapedVelocity(time, 1.0f, 1.0f, ballsPerSecondHero));
         feeder.update(compareFloatClose(ballsPerSecondHero, 0.0f, 1E-6) ? 0.0f : FEEDER_SPEED);
     #endif
 }

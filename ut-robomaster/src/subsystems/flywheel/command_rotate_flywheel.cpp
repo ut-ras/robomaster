@@ -31,7 +31,7 @@ void CommandRotateFlywheel::execute() {
 
         #elif defined(TARGET_HERO)
             uint16_t refSystemLaunchSpeed = drivers->refSerial.getRobotData().turret.barrelSpeedLimit42;
-            launchSpeedHero = 0.0f;
+            float launchSpeedHero = 0.0f;
 
             for (int i = 0; i < 3; i++) {
                 if (FLYWHEEL_RPS_MAPPING[i].getFirst() == refSystemLaunchSpeed)
