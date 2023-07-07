@@ -16,6 +16,7 @@
 #include "subsystems/chassis/command_move_chassis_joystick.hpp"
 #include "subsystems/chassis/command_move_chassis_keyboard.hpp"
 #include "subsystems/chassis/command_move_chassis_turret_relative_joystick.hpp"
+#include "subsystems/chassis/command_sentry_position.hpp"
 
 // Agitator includes ----------------------------------------
 #include "subsystems/agitator/agitator_subsystem.hpp"
@@ -64,7 +65,7 @@ TurretSubsystem turret(drivers());
 OdometrySubsystem odometry(drivers(), &chassis, &turret);
 
 // Command definitions -----------------------------------------------------------
-CommandMoveTurretAimbot moveTurretCommandAimbot(drivers(), &turret);
+CommandSentryPosition sentryPositionCommand(drivers(), &chassis);
 
 // Register subsystems here -----------------------------------------------
 void registerStandardSubsystems(src::Drivers *drivers)
@@ -87,12 +88,7 @@ void initializeSubsystems()
 }
 
 // Set default commands here -----------------------------------------------
-void setDefaultCommands(src::Drivers *)
-{
-    chassis.setDefaultCommand(&moveChassisCommandKeyboard);
-    flywheel.setDefaultCommand(&flywheelOffCommand);
-    turret.setDefaultCommand(&moveTurretCommandMouse);
-}
+void setDefaultCommands(src::Drivers *) { chassis.setDefaultCommand(&sentryPositionCommand); }
 
 void runStartupCommands(src::Drivers *) {}
 
