@@ -106,10 +106,10 @@ void ChassisSubsystem::input(Vector2f move, float spin)
 void ChassisSubsystem::setMecanumWheelVelocities(Vector2f v, float wZ)
 {
     // our velocity is rotated 90 deg, so y is forward/back and x is left/right
-    targetWheelVels[0] = (-v.y - v.x - wZ * WHEEL_LXY) / WHEEL_RADIUS;  // rad/s
-    targetWheelVels[1] = (-v.y + v.x + wZ * WHEEL_LXY) / WHEEL_RADIUS;  // rad/s
-    targetWheelVels[2] = (-v.y + v.x - wZ * WHEEL_LXY) / WHEEL_RADIUS;  // rad/s
-    targetWheelVels[3] = (-v.y - v.x + wZ * WHEEL_LXY) / WHEEL_RADIUS;  // rad/s
+    targetWheelVels[0] = (-v.y - v.x + wZ * WHEEL_LXY) / WHEEL_RADIUS;  // rad/s
+    targetWheelVels[1] = (-v.y + v.x - wZ * WHEEL_LXY) / WHEEL_RADIUS;  // rad/s
+    targetWheelVels[2] = (-v.y + v.x + wZ * WHEEL_LXY) / WHEEL_RADIUS;  // rad/s
+    targetWheelVels[3] = (-v.y - v.x - wZ * WHEEL_LXY) / WHEEL_RADIUS;  // rad/s
 }
 
 Vector3f ChassisSubsystem::measureVelocity()

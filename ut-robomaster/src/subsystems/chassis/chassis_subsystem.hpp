@@ -56,7 +56,13 @@ private:
     void setMecanumWheelVelocities(Vector2f v, float wZ);
 
     static constexpr float ENERGY_BUFFER_LIMIT_THRESHOLD = 60.0f;
+#if defined(TARGET_STANDARD)
     static constexpr float ENERGY_BUFFER_CRIT_THRESHOLD = 10.0f;
+#elif defined(TARGET_HERO)
+    static constexpr float ENERGY_BUFFER_CRIT_THRESHOLD = 30.0f;
+#elif defined(TARGET_STANDARD)
+    static constexpr float ENERGY_BUFFER_CRIT_THRESHOLD = 30.0f;
+#endif
 };
 }  // namespace chassis
 }  // namespace subsystems
