@@ -22,16 +22,18 @@ void CommandSentryPosition::execute()
 
         float time = getTimeMilliseconds() / 1000.0f - startTime;
 
-        if (time < 2.0f)
-        {
-            float t = time / 2.0f;
-            float fac = 4.0f * (1.0f - t) * t;
-            move = Vector2f(0.0f, fac * 0.1f);
-        }
-        else if (time < 3.0f)
-        {
-            spin = 0.2f;
-        }
+        // if (time < 2.0f)
+        // {
+        //     float t = time / 2.0f;
+        //     float fac = 4.0f * (1.0f - t) * t;
+        //     move = Vector2f(0.0f, fac * 0.1f);
+        // }
+        // else if (time < 3.0f)
+        // {
+        //     spin = 0.2f;
+        // }
+
+        spin = 1.0f;
     }
 
     chassis->input(move, spin);
