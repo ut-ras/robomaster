@@ -12,27 +12,17 @@
 
 // Chassis includes ----------------------------------------
 #include "subsystems/chassis/chassis_subsystem.hpp"
-#include "subsystems/chassis/command_beyblade_chassis_keyboard.hpp"
-#include "subsystems/chassis/command_move_chassis_joystick.hpp"
-#include "subsystems/chassis/command_move_chassis_keyboard.hpp"
-#include "subsystems/chassis/command_move_chassis_turret_relative_joystick.hpp"
 #include "subsystems/chassis/command_sentry_position.hpp"
 
 // Agitator includes ----------------------------------------
 #include "subsystems/agitator/agitator_subsystem.hpp"
-#include "subsystems/agitator/command_rotate_agitator_continuous.hpp"
-#include "subsystems/agitator/command_unjam_agitator.hpp"
 
 // Flywheel includes ----------------------------------------
-#include "subsystems/flywheel/command_flywheel_off.hpp"
-#include "subsystems/flywheel/command_rotate_flywheel.hpp"
 #include "subsystems/flywheel/flywheel_subsystem.hpp"
 
 // Turret includes ------------------------------------------
 #include "subsystems/odometry/odometry_subsystem.hpp"
-#include "subsystems/turret/command_move_turret_aimbot.hpp"
-#include "subsystems/turret/command_move_turret_joystick.hpp"
-#include "subsystems/turret/command_move_turret_mouse.hpp"
+#include "subsystems/turret/command_sentry_aim.hpp"
 #include "subsystems/turret/turret_subsystem.hpp"
 
 using namespace tap::control;
@@ -66,6 +56,7 @@ OdometrySubsystem odometry(drivers(), &chassis, &turret);
 
 // Command definitions -----------------------------------------------------------
 CommandSentryPosition sentryPositionCommand(drivers(), &chassis);
+CommandSentryAim sentryAimCommand(drivers(), &turret);
 
 // Register subsystems here -----------------------------------------------
 void registerStandardSubsystems(src::Drivers *drivers)
@@ -88,7 +79,11 @@ void initializeSubsystems()
 }
 
 // Set default commands here -----------------------------------------------
-void setDefaultCommands(src::Drivers *) { chassis.setDefaultCommand(&sentryPositionCommand); }
+void setDefaultCommands(src::Drivers *)
+{
+    chassis.setDefaultCommand(&sentryPositionCommand);
+    turret.setDefaultCommand(&sentryAimCommand);
+}
 
 void runStartupCommands(src::Drivers *) {}
 
