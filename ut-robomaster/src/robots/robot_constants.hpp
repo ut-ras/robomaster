@@ -6,7 +6,7 @@
 #elif defined(TARGET_HERO)
 #include "robots/hero/hero_constants.hpp"
 
-#elif definted(TARGET_SENTRY)
+#elif defined(TARGET_SENTRY)
 #include "robots/sentry/sentry_constants.hpp"
 
 #endif

@@ -1,4 +1,4 @@
-#ifdef TARGET_STANDARD
+#ifdef TARGET_SENTRY
 
 #include "tap/communication/gpio/leds.hpp"
 #include "tap/control/command_mapper.hpp"
