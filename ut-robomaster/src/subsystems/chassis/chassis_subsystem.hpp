@@ -60,7 +60,7 @@ private:
     static constexpr float ENERGY_BUFFER_CRIT_THRESHOLD = 10.0f;
 #elif defined(TARGET_HERO)
     static constexpr float ENERGY_BUFFER_CRIT_THRESHOLD = 30.0f;
-#elif defined(TARGET_STANDARD)
+#elif defined(TARGET_SENTRY)
     static constexpr float ENERGY_BUFFER_CRIT_THRESHOLD = 30.0f;
 #endif
 };
