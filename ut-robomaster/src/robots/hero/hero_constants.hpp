@@ -96,5 +96,5 @@ static constexpr float PITCH_REDUCTION = 1.0f;
 static constexpr float YAW_INPUT_SCALE = 0.008f;
 static constexpr float PITCH_INPUT_SCALE = 0.01f;
 
-static constexpr float MOUSE_SENS_YAW = 0.002f;
-static constexpr float MOUSE_SENS_PITCH = 0.002f;
+static constexpr float MOUSE_SENS_YAW = 0.000009f;
+static constexpr float MOUSE_SENS_PITCH = 0.000004f;
