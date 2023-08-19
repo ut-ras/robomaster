@@ -49,13 +49,13 @@ constexpr PidConstants PID_FEEDER = PID_VELOCITY_DEFAULT;
 constexpr float PITCH_MIN = -0.3349f;
 constexpr float PITCH_MAX = 0.3534f;
 
-static constexpr modm::Pair<uint16_t, float> FLYWHEEL_RPS_MAPPING[] = {{10, 60.0f}, {16, 110.0f}};
+static constexpr modm::Pair<uint16_t, float> FLYWHEEL_RPS_MAPPING[] = {{10, 105.0f}, {16, 190.0f}};
 
 const float BALLS_PER_SEC = 4.0f;
 const float BALLS_PER_REV = 6.0f;
 const float FEEDER_SPEED = BALLS_PER_SEC / BALLS_PER_REV;
 
-const uint16_t BARREL_HEAT_BUFFER = 50.0f;
+const uint16_t BARREL_HEAT_BUFFER = 100.0f;
 
 const float UNJAM_SPEED = 0.4f;  // rev/s
 
@@ -96,5 +96,5 @@ static constexpr float PITCH_REDUCTION = 1.0f;
 static constexpr float YAW_INPUT_SCALE = 0.008f;
 static constexpr float PITCH_INPUT_SCALE = 0.01f;
 
-static constexpr float MOUSE_SENS_YAW = 0.002f;
-static constexpr float MOUSE_SENS_PITCH = 0.002f;
+static constexpr float MOUSE_SENS_YAW = 0.000009f;
+static constexpr float MOUSE_SENS_PITCH = 0.000004f;
