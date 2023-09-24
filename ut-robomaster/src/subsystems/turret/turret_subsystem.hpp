@@ -70,7 +70,7 @@ private:
     Vector3f targetVelocity = Vector3f(0.0f);
     Vector3f targetAcceleration = Vector3f(0.0f);
 
-    AimStrategy aimStrategy = AimStrategy::AutoAim;
+    AimStrategy aimStrategy = AimStrategy::Manual;
 
     DjiMotor yawMotor;
     DjiMotor pitchMotor;

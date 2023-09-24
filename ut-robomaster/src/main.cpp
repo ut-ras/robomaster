@@ -96,7 +96,7 @@ int main()
             PROFILE(drivers->profiler, drivers->bmi088.periodicIMUUpdate, ());
             PROFILE(drivers->profiler, drivers->commandScheduler.run, ());
             PROFILE(drivers->profiler, drivers->djiMotorTxHandler.encodeAndSendCanData, ());
-            // PROFILE(drivers->profiler, drivers->terminalSerial.update, ());
+            PROFILE(drivers->profiler, drivers->terminalSerial.update, ());
         }
         // led_test::ledOn();
         modm::delay_us(10);
@@ -114,9 +114,9 @@ static void initializeIo(src::Drivers *drivers)
     drivers->errorController.init();
     drivers->remote.initialize();
     // drivers->mpu6500.init();
-    // drivers->refSerial.initialize();
-    drivers->beaglebone.initialize();
-    // drivers->terminalSerial.initialize();
+    drivers->refSerial.initialize();
+    // drivers->beaglebone.initialize();
+    drivers->terminalSerial.initialize();
     drivers->schedulerTerminalHandler.init();
     drivers->djiMotorTerminalSerialHandler.init();
     drivers->bmi088.initialize(SAMPLE_FREQUENCY, MAHONY_KP, 0.0f);
@@ -130,8 +130,8 @@ static void updateIo(src::Drivers *drivers)
 #endif
 
     drivers->canRxHandler.pollCanData();
-    // drivers->refSerial.updateSerial();
-    drivers->beaglebone.updateSerial();
+    drivers->refSerial.updateSerial();
+    // drivers->beaglebone.updateSerial();
     drivers->remote.read();
     // drivers->mpu6500.read();
 }
