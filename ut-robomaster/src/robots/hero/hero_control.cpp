@@ -1,4 +1,4 @@
-#ifdef TARGET_STANDARD
+#ifdef TARGET_HERO
 
 #include "drivers.hpp"
 #include "drivers_singleton.hpp"
@@ -31,7 +31,6 @@
 #include "subsystems/turret/turret_subsystem.hpp"
 #include "subsystems/turret/command_move_turret_joystick.hpp"
 #include "subsystems/turret/command_move_turret_mouse.hpp"
-#include "subsystems/turret/command_move_turret_aimbot.hpp"
 
 #include "subsystems/odometry/odometry_subsystem.hpp"
 
@@ -54,7 +53,7 @@ using namespace commands;
  */
 src::driversFunc drivers = src::DoNotUse_getDrivers;
 
-namespace standard_control
+namespace hero_control
 {
 
 // Subsystem definitions ---------------------------------------------------------
@@ -81,7 +80,6 @@ CommandFlywheelOff flywheelOffCommand(drivers(), &flywheel);
 CommandMoveTurretJoystick moveTurretCommandJoystick(drivers(), &turret);
 CommandMoveTurretJoystick moveTurretWhenChassisIsTurretRelativeCommandJoystick(drivers(), &turret);
 CommandMoveTurretMouse moveTurretCommandMouse(drivers(), &turret);
-CommandMoveTurretAimbot moveTurretCommandAimbot(drivers(), &turret);
 
 // Keyboard mappings ------------------------------------------------------------
 ToggleCommandMapping keyRToggled(
@@ -98,11 +96,6 @@ HoldCommandMapping keyXHeld(
     drivers(), 
     {&unjamAgitatorCommand}, 
     RemoteMapState({Remote::Key::X}));
-
-HoldCommandMapping rightMouseDown(
-    drivers(),
-    {&moveTurretCommandAimbot},
-    RemoteMapState(RemoteMapState::MouseButton::RIGHT));
 
 // Joystick mappings ------------------------------------------------------------
 HoldCommandMapping rightSwitchUp(
@@ -168,7 +161,6 @@ void registerMappings(src::Drivers *drivers)
     drivers->commandMapper.addMap(&keyRToggled);
     drivers->commandMapper.addMap(&leftMouseDown);
     drivers->commandMapper.addMap(&keyXHeld);
-    drivers->commandMapper.addMap(&rightMouseDown);
 
     // Joystick mappings ------------------------------------------------------------
     drivers->commandMapper.addMap(&rightSwitchUp);    
@@ -183,11 +175,11 @@ namespace control
 {
 void initSubsystemCommands(src::Drivers *drivers)
 {
-    standard_control::initializeSubsystems();
-    standard_control::registerStandardSubsystems(drivers);
-    standard_control::setDefaultCommands(drivers);
-    standard_control::runStartupCommands(drivers);
-    standard_control::registerMappings(drivers);
+    hero_control::initializeSubsystems();
+    hero_control::registerStandardSubsystems(drivers);
+    hero_control::setDefaultCommands(drivers);
+    hero_control::runStartupCommands(drivers);
+    hero_control::registerMappings(drivers);
 }
 }  // namespace control
 #endif
