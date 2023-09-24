@@ -31,59 +31,8 @@ void TurretSubsystem::initialize()
     lastTime = tap::arch::clock::getTimeMilliseconds();
 }
 
-void TurretSubsystem::inputManualAngles(float yaw, float pitch)
-{
-    inputYaw = yaw;
-    inputPitch = pitch;
-}
-
-void TurretSubsystem::inputTargetData(Vector3f position, Vector3f velocity, Vector3f acceleration)
-{
-    targetPosition = position;
-    targetVelocity = velocity;
-    targetAcceleration = acceleration;
-}
-
-void TurretSubsystem::setTargetWorldAngles(float yaw, float pitch)
-{
-    targetWorldYaw = yaw;
-    targetWorldPitch = modm::min(modm::max(pitch, PITCH_MIN), PITCH_MAX);
-}
-
-void TurretSubsystem::setAimStrategy(AimStrategy aimStrategy) { this->aimStrategy = aimStrategy; }
-
-float TurretSubsystem::getChassisYaw() { return modm::toRadian(drivers->bmi088.getYaw() - 180.0f); }
-
-float TurretSubsystem::getTargetLocalYaw() { return targetWorldYaw - getChassisYaw(); }
-
-float TurretSubsystem::getTargetLocalPitch() { return targetWorldPitch; }
-
-float TurretSubsystem::getCurrentLocalYaw()
-{
-    return !isCalibrated ? 0.0f : yawTurret.getAngle() / YAW_REDUCTION - baseYaw;
-}
-
-float TurretSubsystem::getCurrentLocalPitch()
-{
-    return !isCalibrated ? 0.0f : pitchTurret.getAngle() / PITCH_REDUCTION - basePitch;
-}
-
 void TurretSubsystem::refresh()
 {
-    switch (aimStrategy)
-    {
-        case AimStrategy::Manual:
-            setTargetWorldAngles(inputYaw, inputPitch);
-            break;
-        case AimStrategy::AutoAim:
-        {
-            updateAutoAim();
-            break;
-        }
-        case AimStrategy::AimAssist:  // unimplemented
-            break;
-    }
-
     yawTurret.updateMotorAngle();
     pitchTurret.updateMotorAngle();
 
@@ -103,7 +52,6 @@ void TurretSubsystem::refresh()
         yawTurret.setAngle((baseYaw + getTargetLocalYaw()) * YAW_REDUCTION, dt);
         pitchTurret.setAngle((basePitch + getTargetLocalPitch()) * PITCH_REDUCTION, dt);
     }
-
     else
     {
         yawTurret.reset();
@@ -111,81 +59,38 @@ void TurretSubsystem::refresh()
     }
 }
 
+void TurretSubsystem::inputTargetData(Vector3f position, Vector3f velocity, Vector3f acceleration)
+{
+    targetPosition = position;
+    targetVelocity = velocity;
+    targetAcceleration = acceleration;
+}
+
+void TurretSubsystem::setTargetWorldAngles(float yaw, float pitch)
+{
+    targetWorldYaw = yaw;
+    targetWorldPitch = modm::min(modm::max(pitch, PITCH_MIN), PITCH_MAX);
+}
+
+float TurretSubsystem::getChassisYaw() { return modm::toRadian(drivers->bmi088.getYaw() - 180.0f); }
+
+float TurretSubsystem::getTargetLocalYaw() { return targetWorldYaw - getChassisYaw(); }
+
+float TurretSubsystem::getTargetLocalPitch() { return targetWorldPitch; }
+
+float TurretSubsystem::getCurrentLocalYaw()
+{
+    return !isCalibrated ? 0.0f : yawTurret.getAngle() / YAW_REDUCTION - baseYaw;
+}
+
+float TurretSubsystem::getCurrentLocalPitch()
+{
+    return !isCalibrated ? 0.0f : pitchTurret.getAngle() / PITCH_REDUCTION - basePitch;
+}
+
 void TurretSubsystem::runHardwareTests()
 {
     // TODO
-}
-
-void TurretSubsystem::updateAutoAim()
-{
-    // only run if the CV board is online
-    if (!drivers->cvBoard.isOnline()) return;
-
-    // only run when there's new data
-    if (lastTurretDataIndex == drivers->cvBoard.turretDataIndex) return;
-    lastTurretDataIndex = drivers->cvBoard.turretDataIndex;
-
-    // only run if we have a target
-    TurretData data = drivers->cvBoard.getTurretData();
-    if (!data.hasTarget) return;
-
-    float cameraToPitch = 0.13555f;
-    float nozzleToPitch = 0.18151f;
-    float cameraToBarrels = 0.0427f;
-    float cameraXOffset = -0.0335f;
-    float bulletSpeed = 15.0f;
-    int numIterations = 2;
-
-    // Pitch axis relative (y/z flipped)
-    Vector3f targetPos(
-        data.xPos + cameraXOffset,
-        data.zPos + cameraToPitch,
-        data.yPos + cameraToBarrels);
-    Vector3f targetVel(data.xVel, data.zVel, data.yVel);
-    Vector3f targetAcc(data.xAcc, data.zAcc, data.yAcc);
-
-    if (useBallistics)
-    {
-        // Rotate to world relative pitch
-        float a = getCurrentLocalPitch();
-        const float matData[9] = {1.0f, 0, 0, 0, cos(a), -sin(a), 0, sin(a), cos(a)};
-        modm::Matrix3f rotMat(matData);
-        targetPos = rotMat * targetPos;
-        targetVel = rotMat * targetVel;
-        targetAcc = rotMat * targetAcc;
-
-        MeasuredKinematicState kinState{targetPos, targetVel, targetAcc};
-
-        float turretPitch = 0.0f;
-        float turretYaw = 0.0f;
-        float travelTime = 0.0f;
-
-        bool validBallistcs = findTargetProjectileIntersection(
-            kinState,
-            bulletSpeed,
-            numIterations,
-            &turretPitch,
-            &turretYaw,
-            &travelTime,
-            -nozzleToPitch);
-
-        if (validBallistcs)
-        {
-            float currentWorldYaw = getCurrentLocalYaw() + getChassisYaw();
-            setTargetWorldAngles(currentWorldYaw + turretYaw, turretPitch);
-        }
-    }
-    else
-    {
-        float deltaYaw = -atan(targetPos.x / targetPos.y);  // yaw is opposite to camera X
-        float deltaPitch = atan(targetPos.z / targetPos.y);
-        float scale = 0.006f;
-        // float currentWorldYaw = getCurrentLocalYaw() + getChassisYaw();
-        // float currentWorldPitch = getCurrentLocalPitch();
-        setTargetWorldAngles(
-            targetWorldYaw + deltaYaw * scale,
-            targetWorldPitch + deltaPitch * scale);
-    }
 }
 }  // namespace turret
 }  // namespace subsystems

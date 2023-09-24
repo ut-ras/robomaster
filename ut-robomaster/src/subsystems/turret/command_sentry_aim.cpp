@@ -4,7 +4,7 @@ namespace commands
 {
 void CommandSentryAim::initialize() {}
 
-void CommandSentryAim::execute() { turret->inputManualAngles(turret->getChassisYaw(), 0.0f); }
+void CommandSentryAim::execute() { turret->setTargetWorldAngles(turret->getChassisYaw(), 0.0f); }
 
 void CommandSentryAim::end(bool) {}
 
