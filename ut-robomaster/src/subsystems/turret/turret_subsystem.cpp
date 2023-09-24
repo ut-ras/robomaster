@@ -68,10 +68,6 @@ float TurretSubsystem::getCurrentLocalPitch()
 
 void TurretSubsystem::refresh()
 {
-    float bulletVelocity = 1.0f;
-    float offset = 0.0f;
-    uint8_t numBallisticIterations = 1;
-
     switch (aimStrategy)
     {
         case AimStrategy::Manual:
@@ -170,17 +166,19 @@ void TurretSubsystem::updateAutoAim()
             &travelTime,
             -nozzleToPitch);
 
-        float currentWorldYaw = getCurrentLocalYaw() + getChassisYaw();
-
-        setTargetWorldAngles(currentWorldYaw + turretYaw, turretPitch);
+        if (validBallistcs)
+        {
+            float currentWorldYaw = getCurrentLocalYaw() + getChassisYaw();
+            setTargetWorldAngles(currentWorldYaw + turretYaw, turretPitch);
+        }
     }
     else
     {
         float deltaYaw = -atan(targetPos.x / targetPos.y);  // yaw is opposite to camera X
         float deltaPitch = atan(targetPos.z / targetPos.y);
         float scale = 0.006f;
-        float currentWorldYaw = getCurrentLocalYaw() + getChassisYaw();
-        float currentWorldPitch = getCurrentLocalPitch();
+        // float currentWorldYaw = getCurrentLocalYaw() + getChassisYaw();
+        // float currentWorldPitch = getCurrentLocalPitch();
         setTargetWorldAngles(
             targetWorldYaw + deltaYaw * scale,
             targetWorldPitch + deltaPitch * scale);
