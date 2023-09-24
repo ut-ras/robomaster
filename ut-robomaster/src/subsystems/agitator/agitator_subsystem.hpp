@@ -1,11 +1,11 @@
 #ifndef SUBSYSTEMS_SHOOTER_AGITATOR_SUBSYSTEM_HPP_
 #define SUBSYSTEMS_SHOOTER_AGITATOR_SUBSYSTEM_HPP_
 
+#include "tap/algorithms/math_user_utils.hpp"
 #include "tap/control/subsystem.hpp"
 
 #include "robots/robot_constants.hpp"
 #include "utils/motor_controller/motor_controller.hpp"
-#include "tap/algorithms/math_user_utils.hpp"
 
 #include "drivers.hpp"
 
@@ -37,24 +37,24 @@ public:
 private:
     src::Drivers *drivers;
 
-    #if defined(TARGET_STANDARD) || defined(TARGET_SENTRY)
-        MotorVelocityController leftAgitator;
-        MotorVelocityController rightAgitator;
-        
-        float ballsPerSecondLeft = 0.0f;
-        float ballsPerSecondRight = 0.0f;
+#if defined(TARGET_STANDARD) || defined(TARGET_SENTRY)
+    MotorVelocityController leftAgitator;
+    MotorVelocityController rightAgitator;
 
-    #elif defined(TARGET_HERO)
-        MotorVelocityController agitator;
-        MotorVelocityController feeder;
+    float ballsPerSecondLeft = 0.0f;
+    float ballsPerSecondRight = 0.0f;
 
-        float ballsPerSecondHero = 0.0f;
-    #endif
+#elif defined(TARGET_HERO)
+    MotorVelocityController agitator;
+    MotorVelocityController feeder;
+
+    float ballsPerSecondHero = 0.0f;
+#endif
 
     float startTime = 0.0f;
 };
 
-}  // namespace shooter
+}  // namespace agitator
 }  // namespace subsystems
 
 #endif  // SUBSYSTEMS_SHOOTER_AGITATOR_SUBSYSTEM_HPP_

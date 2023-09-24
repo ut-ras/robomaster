@@ -23,6 +23,7 @@ public:
     // private:
     float error[3] = {0.0f, 0.0f, 0.0f};
     float output = 0.0f;
+
 private:
     float lastError = 0.0f;
 };

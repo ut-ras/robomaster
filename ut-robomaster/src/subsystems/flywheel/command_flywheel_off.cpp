@@ -1,12 +1,11 @@
 #include "command_flywheel_off.hpp"
 
-namespace commands {
+namespace commands
+{
 
 void CommandFlywheelOff::initialize() {}
 
-void CommandFlywheelOff::execute() {
-    flywheel->setLaunchSpeed(0.0f);
-}
+void CommandFlywheelOff::execute() { flywheel->setLaunchSpeed(0.0f); }
 
 void CommandFlywheelOff::end(bool) {}
 

@@ -2,9 +2,11 @@
 
 #include "drivers.hpp"
 
-namespace power_limiter {
+namespace power_limiter
+{
 
-class PowerLimiter {
+class PowerLimiter
+{
 public:
     PowerLimiter(
         const tap::Drivers *drivers,
@@ -19,4 +21,4 @@ private:
     const float ENERGY_BUFFER_CRIT_THRESHOLD;
     float energyBuffer = 0;
 };
-}
+}  // namespace power_limiter

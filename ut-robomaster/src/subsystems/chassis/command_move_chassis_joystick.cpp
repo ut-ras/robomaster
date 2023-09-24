@@ -21,15 +21,18 @@ void CommandMoveChassisJoystick::execute()
         inputSpin = static_cast<float>(remote->getWheel()) / 660.0f;  // 660 is the max
 
         float inputMoveLen = inputMove.getLength();
-        if (inputMoveLen < ANALOG_DEAD_ZONE) {
+        if (inputMoveLen < ANALOG_DEAD_ZONE)
+        {
             inputMove = Vector2f(0.0f);
         }
 
-        else {
+        else
+        {
             inputMove /= max(1.0f, inputMove.getLength());  // clamp length
         }
 
-        if (abs(inputSpin) < ANALOG_DEAD_ZONE) {
+        if (abs(inputSpin) < ANALOG_DEAD_ZONE)
+        {
             inputSpin = 0.0f;
         }
 

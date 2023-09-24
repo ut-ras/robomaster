@@ -3,12 +3,14 @@
 namespace comms
 {
 RobotComms::RobotComms(tap::Drivers *drivers, const char *header)
-    : HEADER(header), device(drivers), stream(device)
+    : HEADER(header),
+      device(drivers),
+      stream(device)
 {
     drivers->terminalSerial.addHeader(HEADER, this);
 }
 
-void RobotComms::terminalSerialStreamCallback(modm::IOStream& outputStream)
+void RobotComms::terminalSerialStreamCallback(modm::IOStream &outputStream)
 {
     outputStream << robotStream << modm::endl;
     outputStream.flush();
@@ -17,8 +19,8 @@ void RobotComms::terminalSerialStreamCallback(modm::IOStream& outputStream)
 }
 
 bool RobotComms::terminalSerialCallback(
-    char* inputLine,
-    modm::IOStream& outputStream,
+    char *inputLine,
+    modm::IOStream &outputStream,
     bool streamingEnabled)
 {
     // remove everything from robotStream and write to outputStream

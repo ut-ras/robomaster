@@ -1,8 +1,5 @@
 #ifdef TARGET_HERO
 
-#include "drivers.hpp"
-#include "drivers_singleton.hpp"
-
 #include "tap/communication/gpio/leds.hpp"
 #include "tap/control/command_mapper.hpp"
 #include "tap/control/hold_command_mapping.hpp"
@@ -10,12 +7,15 @@
 #include "tap/control/press_command_mapping.hpp"
 #include "tap/control/toggle_command_mapping.hpp"
 
+#include "drivers.hpp"
+#include "drivers_singleton.hpp"
+
 // Chassis includes ----------------------------------------
 #include "subsystems/chassis/chassis_subsystem.hpp"
-#include "subsystems/chassis/command_move_chassis_joystick.hpp"
-#include "subsystems/chassis/command_move_chassis_turret_relative_joystick.hpp"
-#include "subsystems/chassis/command_move_chassis_keyboard.hpp"
 #include "subsystems/chassis/command_beyblade_chassis_keyboard.hpp"
+#include "subsystems/chassis/command_move_chassis_joystick.hpp"
+#include "subsystems/chassis/command_move_chassis_keyboard.hpp"
+#include "subsystems/chassis/command_move_chassis_turret_relative_joystick.hpp"
 
 // Agitator includes ----------------------------------------
 #include "subsystems/agitator/agitator_subsystem.hpp"
@@ -23,16 +23,15 @@
 #include "subsystems/agitator/command_unjam_agitator.hpp"
 
 // Flywheel includes ----------------------------------------
-#include "subsystems/flywheel/flywheel_subsystem.hpp"
-#include "subsystems/flywheel/command_rotate_flywheel.hpp"
 #include "subsystems/flywheel/command_flywheel_off.hpp"
+#include "subsystems/flywheel/command_rotate_flywheel.hpp"
+#include "subsystems/flywheel/flywheel_subsystem.hpp"
 
 // Turret includes ------------------------------------------
-#include "subsystems/turret/turret_subsystem.hpp"
+#include "subsystems/odometry/odometry_subsystem.hpp"
 #include "subsystems/turret/command_move_turret_joystick.hpp"
 #include "subsystems/turret/command_move_turret_mouse.hpp"
-
-#include "subsystems/odometry/odometry_subsystem.hpp"
+#include "subsystems/turret/turret_subsystem.hpp"
 
 using namespace tap::control;
 using namespace tap::communication::serial;
@@ -65,7 +64,10 @@ OdometrySubsystem odometry(drivers(), &chassis, &turret);
 
 // Command definitions -----------------------------------------------------------
 CommandMoveChassisJoystick moveChassisCommandJoystick(drivers(), &chassis, &turret);
-CommandMoveChassisTurretRelativeJoystick moveChassisTurretRelativeCommandJoystick(drivers(), &chassis, &turret);
+CommandMoveChassisTurretRelativeJoystick moveChassisTurretRelativeCommandJoystick(
+    drivers(),
+    &chassis,
+    &turret);
 CommandMoveChassisKeyboard moveChassisCommandKeyboard(drivers(), &chassis, &turret);
 CommandBeybladeChassisKeyboard beybladeChassisCommandKeyboard(drivers(), &chassis, &turret);
 
@@ -92,15 +94,13 @@ HoldCommandMapping leftMouseDown(
     {&rotateAgitatorContinuousCommand},
     RemoteMapState(RemoteMapState::MouseButton::LEFT));
 
-HoldCommandMapping keyXHeld(
-    drivers(), 
-    {&unjamAgitatorCommand}, 
-    RemoteMapState({Remote::Key::X}));
+HoldCommandMapping keyXHeld(drivers(), {&unjamAgitatorCommand}, RemoteMapState({Remote::Key::X}));
 
 // Joystick mappings ------------------------------------------------------------
 HoldCommandMapping rightSwitchUp(
     drivers(),
-    {&moveChassisTurretRelativeCommandJoystick, &moveTurretWhenChassisIsTurretRelativeCommandJoystick},
+    {&moveChassisTurretRelativeCommandJoystick,
+     &moveTurretWhenChassisIsTurretRelativeCommandJoystick},
     RemoteMapState(Remote::Switch::RIGHT_SWITCH, Remote::SwitchState::UP));
 
 HoldCommandMapping rightSwitchMid(
@@ -122,7 +122,6 @@ HoldCommandMapping leftSwitchUp(
     drivers(),
     {&rotateAgitatorContinuousCommand, &rotateFlywheelWithAgitatorCommand},
     RemoteMapState(Remote::Switch::LEFT_SWITCH, Remote::SwitchState::UP));
-
 
 // Register subsystems here -----------------------------------------------
 void registerStandardSubsystems(src::Drivers *drivers)
@@ -163,13 +162,13 @@ void registerMappings(src::Drivers *drivers)
     drivers->commandMapper.addMap(&keyXHeld);
 
     // Joystick mappings ------------------------------------------------------------
-    drivers->commandMapper.addMap(&rightSwitchUp);    
+    drivers->commandMapper.addMap(&rightSwitchUp);
     drivers->commandMapper.addMap(&rightSwitchMid);
     drivers->commandMapper.addMap(&rightSwitchDown);
     drivers->commandMapper.addMap(&leftSwitchMid);
     drivers->commandMapper.addMap(&leftSwitchUp);
 }
-}  // namespace standard_control
+}  // namespace hero_control
 
 namespace control
 {

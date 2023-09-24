@@ -1,7 +1,8 @@
 #include "power_limiter.hpp"
 
-namespace power_limiter {
-    PowerLimiter::PowerLimiter(
+namespace power_limiter
+{
+PowerLimiter::PowerLimiter(
     const tap::Drivers *drivers,
     float energyBufferLimitThreshold,
     float energyBufferCritThreshold)
@@ -13,21 +14,33 @@ namespace power_limiter {
 
 float PowerLimiter::getPowerLimitRatio()
 {
-    if (!drivers->refSerial.getRefSerialReceivingData()) {
+    if (!drivers->refSerial.getRefSerialReceivingData())
+    {
         return 1.0f;
     }
 
     energyBuffer = drivers->refSerial.getRobotData().chassis.powerBuffer;
-    
-    if (energyBuffer < ENERGY_BUFFER_LIMIT_THRESHOLD) {
-        float returnVal = (energyBuffer - ENERGY_BUFFER_CRIT_THRESHOLD) / ENERGY_BUFFER_LIMIT_THRESHOLD;
-        if (returnVal < 0.0f) { return 0.0f; }
-        else if (returnVal > 1.0f) { return 1.0f; }
-        else { return returnVal; }
-    }
 
-    else {
+    if (energyBuffer < ENERGY_BUFFER_LIMIT_THRESHOLD)
+    {
+        float returnVal =
+            (energyBuffer - ENERGY_BUFFER_CRIT_THRESHOLD) / ENERGY_BUFFER_LIMIT_THRESHOLD;
+        if (returnVal < 0.0f)
+        {
+            return 0.0f;
+        }
+        else if (returnVal > 1.0f)
+        {
+            return 1.0f;
+        }
+        else
+        {
+            return returnVal;
+        }
+    }
+    else
+    {
         return 1.0f;
     }
 }
-}
+}  // namespace power_limiter

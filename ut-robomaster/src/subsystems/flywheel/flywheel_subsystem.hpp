@@ -35,16 +35,16 @@ private:
     src::Drivers* drivers;
     MotorVelocityController motors[FLYWHEELS];
 
-    #if defined(TARGET_STANDARD) || defined(TARGET_SENTRY)
-        float launchSpeedLeft = 0.0f;
-        float launchSpeedRight = 0.0f;
+#if defined(TARGET_STANDARD) || defined(TARGET_SENTRY)
+    float launchSpeedLeft = 0.0f;
+    float launchSpeedRight = 0.0f;
 
-    #elif defined(TARGET_HERO)
-        float launchSpeedHero = 0.0f;
-    #endif
+#elif defined(TARGET_HERO)
+    float launchSpeedHero = 0.0f;
+#endif
 };
 
-}  // namespace shooter
+}  // namespace flywheel
 }  // namespace subsystems
 
 #endif  // SUBSYSTEMS_SHOOTER_FLYWHEEL_SUBSYSTEM_HPP_

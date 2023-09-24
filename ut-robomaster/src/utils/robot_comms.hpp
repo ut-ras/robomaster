@@ -18,14 +18,14 @@ public:
     RobotComms(tap::Drivers *drivers, const char *header);
 
     bool terminalSerialCallback(
-        char* inputLine,
-        modm::IOStream& outputStream,
+        char *inputLine,
+        modm::IOStream &outputStream,
         bool streamingEnabled) override;
 
-    void terminalSerialStreamCallback(modm::IOStream& outputStream) override;
+    void terminalSerialStreamCallback(modm::IOStream &outputStream) override;
 
     // Print format like printf, triggered by "startcomm -S" or similar
-    void printf(const char* format, ...)
+    void printf(const char *format, ...)
     {
         // concatenate the string to robotStream
         va_list args;
@@ -55,6 +55,5 @@ private:
 };
 
 }  // namespace comms
-
 
 #endif

@@ -27,7 +27,7 @@ public:
     void end(bool interrupted) override;
 
     bool isFinished() const override;
-    
+
     const char *getName() const override { return "rotate flywheel command"; }
 
 private:

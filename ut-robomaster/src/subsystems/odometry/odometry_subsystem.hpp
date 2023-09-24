@@ -5,11 +5,11 @@
 
 #include "modm/math/geometry.hpp"
 #include "modm/math/geometry/location_2d.hpp"
-#include "utils/robot_comms.hpp"
 #include "subsystems/chassis/chassis_subsystem.hpp"
 #include "subsystems/odometry/observer_displacement.hpp"
 #include "subsystems/odometry/observer_yaw_world.hpp"
 #include "subsystems/turret/turret_subsystem.hpp"
+#include "utils/robot_comms.hpp"
 
 #include "drivers.hpp"
 

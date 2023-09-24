@@ -1,21 +1,25 @@
 #pragma once
 #include <stdint.h>
 
-namespace communication {
+namespace communication
+{
 
-enum MessageTypes : uint8_t {
+enum MessageTypes : uint8_t
+{
     CV_MESSAGE_TYPE_ODOMETRY_DATA = 1,
     CV_MESSAGE_TYPE_TURRET_AIM = 2,
     CV_MESSAGE_TYPE_COLOR_DATA = 3,
 };
 
-enum ColorTypes : uint8_t {
+enum ColorTypes : uint8_t
+{
     COLOR_BLUE = 0,
     COLOR_RED = 1,
     COLOR_UNKNOWN = 2,
 };
 
-struct TurretData {
+struct TurretData
+{
     float xPos;
     float yPos;
     float zPos;
@@ -31,7 +35,8 @@ struct TurretData {
     bool hasTarget;
 } modm_packed;
 
-struct OdometryData {
+struct OdometryData
+{
     float xPos;
     float yPos;
     float zPos;
@@ -44,10 +49,9 @@ struct OdometryData {
     float turretYaw;
 } modm_packed;
 
-struct ColorData {
+struct ColorData
+{
     ColorTypes color;
 } modm_packed;
 
-}   // namespace communication
-
- 
+}  // namespace communication

@@ -21,15 +21,18 @@ void CommandMoveChassisTurretRelativeJoystick::execute()
         inputSpin = static_cast<float>(remote->getWheel()) / 660.0f;  // 660 is the max
 
         float inputMoveLen = inputMove.getLength();
-        if (inputMoveLen < ANALOG_DEAD_ZONE) {
+        if (inputMoveLen < ANALOG_DEAD_ZONE)
+        {
             inputMove = Vector2f(0.0f);
         }
 
-        else {
+        else
+        {
             inputMove /= max(1.0f, inputMove.getLength());  // clamp length
         }
 
-        if (abs(inputSpin) < ANALOG_DEAD_ZONE) {
+        if (abs(inputSpin) < ANALOG_DEAD_ZONE)
+        {
             inputSpin = 0.0f;
         }
 
@@ -42,12 +45,14 @@ void CommandMoveChassisTurretRelativeJoystick::execute()
         turretRelativeMove.rotate(turretYaw);
 
         // auto-align to turret when moving
-        if (inputMove.getLengthSquared() > 0.0f && inputSpin == 0.0f) {
-            float deltaAngle = turretYaw - roundf(turretYaw / SNAP_ANGLE) * SNAP_ANGLE;  // nearest side
+        if (inputMove.getLengthSquared() > 0.0f && inputSpin == 0.0f)
+        {
+            float deltaAngle =
+                turretYaw - roundf(turretYaw / SNAP_ANGLE) * SNAP_ANGLE;  // nearest side
             float correction = deltaAngle / SNAP_ANGLE * 4.0f;
             inputSpin = correction / max(1.0f, abs(correction)) * TURRET_ALIGN_FACTOR;
         }
-        
+
         chassis->input(turretRelativeMove, inputSpin);
     }
 }

@@ -2,9 +2,8 @@
 
 #include "tap/control/command.hpp"
 
-#include "subsystems/agitator/agitator_subsystem.hpp"
-
 #include "robots/robot_constants.hpp"
+#include "subsystems/agitator/agitator_subsystem.hpp"
 
 #include "drivers.hpp"
 
