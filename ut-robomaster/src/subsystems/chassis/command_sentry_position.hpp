@@ -37,8 +37,8 @@ public:
 private:
     src::Drivers *drivers;
     ChassisSubsystem *chassis;
-    bool isStarted = false;
-    float startTime = 0.0f;
+    // bool isStarted = false;
+    // float startTime = 0.0f;
 };
 }  // namespace chassis
 }  // namespace subsystems

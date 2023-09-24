@@ -18,17 +18,13 @@ void RobotComms::terminalSerialStreamCallback(modm::IOStream &outputStream)
     robotStreamIndex = 0;
 }
 
-bool RobotComms::terminalSerialCallback(
-    char *inputLine,
-    modm::IOStream &outputStream,
-    bool streamingEnabled)
+bool RobotComms::terminalSerialCallback(char *, modm::IOStream &outputStream, bool)
 {
     // remove everything from robotStream and write to outputStream
     outputStream << robotStream << modm::endl;
     outputStream.flush();
     memset(robotStream, 0, sizeof(robotStream));
     robotStreamIndex = 0;
-    streamingEnabled = true;
     return true;
 }
 

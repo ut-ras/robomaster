@@ -8,6 +8,7 @@ ChassisDisplacementObserver::ChassisDisplacementObserver(
     chassis::ChassisSubsystem* chassis)
     : ChassisDisplacementObserverInterface(),
       drivers(drivers),
+      chassis(chassis),
       lastAcc(0.0f),
       lastVel(0.0f),
       lastDisp(0.0f),

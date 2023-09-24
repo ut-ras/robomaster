@@ -14,13 +14,13 @@ void CommandSentryPosition::execute()
 
     if (drivers->remote.getSwitch(Remote::Switch::RIGHT_SWITCH) == Remote::SwitchState::UP)
     {
-        if (!isStarted)
-        {
-            isStarted = true;
-            startTime = getTimeMilliseconds() / 1000.0f;
-        }
+        // if (!isStarted)
+        // {
+        //     isStarted = true;
+        //     startTime = getTimeMilliseconds() / 1000.0f;
+        // }
 
-        float time = getTimeMilliseconds() / 1000.0f - startTime;
+        // float time = getTimeMilliseconds() / 1000.0f - startTime;
 
         // if (time < 2.0f)
         // {
