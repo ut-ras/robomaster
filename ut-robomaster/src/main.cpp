@@ -97,7 +97,6 @@ int main()
             PROFILE(drivers->profiler, drivers->commandScheduler.run, ());
             PROFILE(drivers->profiler, drivers->djiMotorTxHandler.encodeAndSendCanData, ());
             PROFILE(drivers->profiler, drivers->terminalSerial.update, ());
-            PROFILE(drivers->profiler, drivers->beagleboneCommunicator.sendMessage, ());
         }
         // led_test::ledOn();
         modm::delay_us(10);
@@ -116,6 +115,7 @@ static void initializeIo(src::Drivers *drivers)
     drivers->remote.initialize();
     // drivers->mpu6500.init();
     drivers->refSerial.initialize();
+    // drivers->cvBoard.initialize();
     drivers->terminalSerial.initialize();
     drivers->schedulerTerminalHandler.init();
     drivers->djiMotorTerminalSerialHandler.init();
@@ -131,6 +131,7 @@ static void updateIo(src::Drivers *drivers)
 
     drivers->canRxHandler.pollCanData();
     drivers->refSerial.updateSerial();
+    // drivers->cvBoard.updateSerial();
     drivers->remote.read();
     // drivers->mpu6500.read();
     drivers->mouseTracker.update();

@@ -22,9 +22,9 @@
 
 #include "tap/drivers.hpp"
 
-#include "communication/beaglebone_communicator.hpp"
-#include "utils/robot_comms.hpp"
+#include "communication/cv_board.hpp"
 #include "utils/mouse_tracker.hpp"
+#include "utils/robot_comms.hpp"
 
 namespace src
 {
@@ -35,21 +35,14 @@ class Drivers : public tap::Drivers
 #ifdef ENV_UNIT_TESTS
 public:
 #endif
-    Drivers() : tap::Drivers(), beagleboneCommunicator(this), terminal(this), mouseTracker(this) {}
+    Drivers() : tap::Drivers(), cvBoard(this), terminal(this), mouseTracker(this) {}
 
 public:
-    communication::BeagleBoneCommunicator beagleboneCommunicator;
+    communication::CVBoard cvBoard;
     comms::RobotComms terminal;
     mouse_tracker::MouseTracker mouseTracker;
 
-    bool isKillSwitched()
-    {
-#ifdef TARGET_SENTRY
-        return false;
-#else
-        return !remote.isConnected();
-#endif
-    }
+    bool isKillSwitched() { return !remote.isConnected(); }
 };  // class Drivers
 
 }  // namespace src

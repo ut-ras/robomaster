@@ -3,7 +3,6 @@
 #include "tap/communication/serial/remote.hpp"
 #include "tap/control/command.hpp"
 
-#include "robots/robot_constants.hpp"
 #include "subsystems/turret/turret_subsystem.hpp"
 
 #include "drivers.hpp"
@@ -13,10 +12,10 @@ namespace commands
 using subsystems::turret::TurretSubsystem;
 using tap::communication::serial::Remote;
 
-class CommandMoveTurretAimbot : public tap::control::Command
+class CommandSentryAim : public tap::control::Command
 {
 public:
-    CommandMoveTurretAimbot(src::Drivers* drivers, TurretSubsystem* turret)
+    CommandSentryAim(src::Drivers* drivers, TurretSubsystem* turret)
         : drivers(drivers),
           turret(turret)
     {
@@ -31,14 +30,10 @@ public:
 
     bool isFinished() const override;
 
-    const char* getName() const override { return "move turret aimbot command"; }
+    const char* getName() const override { return "aim sentry command"; }
 
 private:
-    float getBulletSpeed();
-
     src::Drivers* drivers;
     TurretSubsystem* turret;
-
-    uint8_t lastTurretDataIndex = 0;
 };
 }  // namespace commands

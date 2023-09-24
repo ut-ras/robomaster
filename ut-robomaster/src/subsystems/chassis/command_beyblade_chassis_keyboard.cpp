@@ -4,13 +4,15 @@ namespace commands
 {
 void CommandBeybladeChassisKeyboard::initialize() {}
 
-void CommandBeybladeChassisKeyboard::execute() {
-
-    if (drivers->bmi088.getImuState() == ImuInterface::ImuState::IMU_CALIBRATING) {
+void CommandBeybladeChassisKeyboard::execute()
+{
+    if (drivers->bmi088.getImuState() == ImuInterface::ImuState::IMU_CALIBRATING)
+    {
         chassis->input(Vector2f(0.0f), 0.0f);
     }
-    
-    else {
+
+    else
+    {
         Remote* remote = &drivers->remote;
         inputSpin = 1.0f;
 
@@ -20,16 +22,19 @@ void CommandBeybladeChassisKeyboard::execute() {
 
         float rawInputLen = rawMoveInput.getLength();
 
-        if (rawInputLen > 0.0f) {
+        if (rawInputLen > 0.0f)
+        {
             Vector2f moveDir = rawMoveInput / rawInputLen;       // normalize input
             inputMove += moveDir * KEYBOARD_ACCEL * DELTA_TIME;  // incorporate input
             inputMove /= max(1.0f, inputMove.getLength());       // clamp length
         }
 
-        else {
+        else
+        {
             // decelerate when input stops
             float len = inputMove.getLength();
-            if (len > 0.0f) {
+            if (len > 0.0f)
+            {
                 inputMove *= max(1.0f - KEYBOARD_DECEL * DELTA_TIME / len, 0.0f);
             }
         }
@@ -37,7 +42,7 @@ void CommandBeybladeChassisKeyboard::execute() {
         float turretYaw = turret->getTargetLocalYaw();
         Vector2f turretRelativeMove = Vector2f(inputMove);
         turretRelativeMove.rotate(turretYaw);
-        
+
         chassis->input(turretRelativeMove, inputSpin);
     }
 }

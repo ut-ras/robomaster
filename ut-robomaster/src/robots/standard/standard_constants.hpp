@@ -1,13 +1,11 @@
 #pragma once
 
+#include "tap/algorithms/smooth_pid.hpp"
 #include "tap/communication/can/can_bus.hpp"
 #include "tap/motor/dji_motor.hpp"
-#include "tap/algorithms/smooth_pid.hpp"
 
 #include "modm/container/pair.hpp"
-
 #include "utils/motor_controller/pid.hpp"
-
 
 using motor_controller::PidConstants;
 using tap::can::CanBus;
@@ -20,6 +18,9 @@ constexpr CanBus CAN_SHOOTER = CanBus::CAN_BUS2;
 
 constexpr PidConstants PID_VELOCITY_DEFAULT = {0.75f, 12.0f, 0.0f};
 
+constexpr bool USE_BALLISTICS = false;
+constexpr int BALLISTIC_ITERATIONS = 2;
+
 // Chassis constants ------------------------------------------------
 constexpr MotorId ID_WHEEL_LF = MOTOR2;
 constexpr MotorId ID_WHEEL_RF = MOTOR1;
@@ -29,9 +30,9 @@ constexpr MotorId ID_WHEEL_RB = MOTOR4;
 static constexpr int WHEELS = 4;
 static constexpr float WHEEL_DISTANCE_X = 0.391f;  // meters
 static constexpr float WHEEL_DISTANCE_Y = 0.315f;  // meters
-static constexpr float WHEEL_RADIUS = 0.1524f;  // meters
+static constexpr float WHEEL_RADIUS = 0.1524f;     // meters
 static constexpr float WHEEL_LXY = (WHEEL_DISTANCE_X + WHEEL_DISTANCE_Y) / 2.0f;
-static constexpr float WHEEL_MAX_VEL = 20.0f;                                       // rad/s
+static constexpr float WHEEL_MAX_VEL = 50.0f;                                       // rad/s
 static constexpr float MAX_LINEAR_VEL = WHEEL_MAX_VEL * WHEEL_RADIUS;               // m/s
 static constexpr float MAX_ANGULAR_VEL = WHEEL_MAX_VEL * WHEEL_RADIUS / WHEEL_LXY;  // rad/s
 
@@ -70,13 +71,18 @@ const float UNJAM_SPEED = 0.4f;  // rev/s
 constexpr MotorId ID_YAW = MOTOR6;
 constexpr MotorId ID_PITCH = MOTOR7;
 
-constexpr float PITCH_MIN = -0.2185f;
-constexpr float PITCH_MAX = 0.2299f;
+constexpr float PITCH_MIN = -0.2185f;         // rad
+constexpr float PITCH_MAX = 0.2299f;          // rad
+constexpr float CAMERA_TO_PITCH = 0.13555f;   // distance from main camera lens to pitch axis (m)
+constexpr float NOZZLE_TO_PITCH = 0.18151f;   // distance from barrel nozzle to pitch axis (m)
+constexpr float CAMERA_TO_BARRELS = 0.0427f;  // vertical ctc offset from camera lens to barrel (m)
+constexpr float CAMERA_X_OFFSET = -0.0335f;   // horizontal offset of main camera lens (m)
 
 constexpr PidConstants PID_TURRET_VELOCITY = PID_VELOCITY_DEFAULT;
 constexpr PidConstants PID_TURRET_POSITION = {0.1f, 0.1f, 0.0f};
 
-static constexpr float BELT_RATIO = 2.0f;
+static constexpr float YAW_REDUCTION = 2.0f;
+static constexpr float PITCH_REDUCTION = 4.0f;
 
 static constexpr float YAW_INPUT_SCALE = 0.02f;
 static constexpr float PITCH_INPUT_SCALE = 0.01f;
