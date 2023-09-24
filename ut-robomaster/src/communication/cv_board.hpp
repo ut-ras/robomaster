@@ -49,6 +49,11 @@ public:
     void sendOdometryData();
 
     /**
+     * Sends opposing team's color to the BeagleBone
+     */
+    void sendColorData();
+
+    /**
      * Decodes the turret aiming data received from the CV board and stores it in lastTurretData
      *
      * @param message The message received from the CV board

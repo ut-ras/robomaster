@@ -29,7 +29,11 @@ void CVBoard::messageReceiveCallback(const ReceivedSerialMessage& message)
     }
 }
 
-void CVBoard::sendMessage() { sendOdometryData(); }
+void CVBoard::sendMessage()
+{
+    sendOdometryData();
+    sendColorData();
+}
 
 void CVBoard::sendOdometryData()
 {
@@ -37,6 +41,26 @@ void CVBoard::sendOdometryData()
     message.messageType = CV_MESSAGE_TYPE_ODOMETRY_DATA;
 
     // TODO: Implement sending of data once odometry module is finished
+
+    message.setCRC16();
+    drivers->uart.write(UART_PORT, reinterpret_cast<uint8_t*>(&message), sizeof(message));
+}
+
+void CVBoard::sendColorData()
+{
+    DJISerial::SerialMessage<sizeof(ColorData)> message;
+    message.messageType = CV_MESSAGE_TYPE_COLOR_DATA;
+
+    ColorData* data = reinterpret_cast<ColorData*>(message.data);
+    if (drivers->refSerial.getRefSerialReceivingData())
+    {
+        bool isBlue = drivers->refSerial.isBlueTeam(drivers->refSerial.getRobotData().robotId);
+        data->color = isBlue ? COLOR_BLUE : COLOR_RED;
+    }
+    else
+    {
+        data->color = COLOR_UNKNOWN;
+    }
 
     message.setCRC16();
     drivers->uart.write(UART_PORT, reinterpret_cast<uint8_t*>(&message), sizeof(message));
