@@ -7,28 +7,34 @@
 #include "tap/control/press_command_mapping.hpp"
 #include "tap/control/toggle_command_mapping.hpp"
 
-#include "commands/command_aim_strategy.hpp"
-#include "commands/command_fire_continuous.hpp"
-#include "commands/command_fire_once.hpp"
-#include "commands/command_look_behind.hpp"
-#include "commands/command_move_chassis.hpp"
-#include "commands/command_move_turret.hpp"
-#include "commands/command_shooter_default.hpp"
-#include "commands/command_toggle_beyblade.hpp"
-#include "commands/command_unjam.hpp"
-#include "robots/robot_state.hpp"
-#include "subsystems/chassis/chassis_subsystem.hpp"
-#include "subsystems/odometry/odometry_subsystem.hpp"
-#include "subsystems/shooter/shooter_subsystem.hpp"
-#include "subsystems/turret/turret_subsystem.hpp"
-
 #include "drivers.hpp"
 #include "drivers_singleton.hpp"
 
+// Chassis includes ----------------------------------------
+#include "subsystems/chassis/chassis_subsystem.hpp"
+#include "subsystems/chassis/command_sentry_position.hpp"
+
+// Agitator includes ----------------------------------------
+#include "subsystems/agitator/agitator_subsystem.hpp"
+
+// Flywheel includes ----------------------------------------
+#include "subsystems/flywheel/flywheel_subsystem.hpp"
+
+// Turret includes ------------------------------------------
+#include "subsystems/odometry/odometry_subsystem.hpp"
+#include "subsystems/turret/command_sentry_aim.hpp"
+#include "subsystems/turret/turret_subsystem.hpp"
+
 using namespace tap::control;
 using namespace tap::communication::serial;
+
+using namespace subsystems::chassis;
+using namespace subsystems::agitator;
+using namespace subsystems::flywheel;
+using namespace subsystems::turret;
+using namespace subsystems::odometry;
+
 using namespace commands;
-using namespace subsystems;
 
 /*
  * NOTE: We are using the DoNotUse_getDrivers() function here
@@ -40,79 +46,49 @@ src::driversFunc drivers = src::DoNotUse_getDrivers;
 
 namespace sentry_control
 {
-RobotState state;
 
-// Subsystems
-chassis::ChassisSubsystem chassis(drivers());
-turret::TurretSubsystem turret(drivers());
-shooter::ShooterSubsystem shooter(drivers());
-odometry::OdometrySubsystem odometry(drivers(), &chassis, &turret);
+// Subsystem definitions ---------------------------------------------------------
+ChassisSubsystem chassis(drivers());
+AgitatorSubsystem agitator(drivers());
+FlywheelSubsystem flywheel(drivers());
+TurretSubsystem turret(drivers());
+OdometrySubsystem odometry(drivers(), &chassis, &turret);
 
-// Commands
-CommandMoveChassis moveChassisCommand(drivers(), &state, &chassis, &turret);
-CommandMoveTurret moveTurretCommand(drivers(), &state, &turret);
-CommandShooterDefault shooterDefaultCommand(drivers(), &shooter);
-CommandFireContinuous fireContinuousCommand(drivers(), &shooter);
-CommandFireOnce fireOnceCommand(drivers(), &shooter);
-CommandToggleBeyblade toggleBeybladeCommand(&chassis, &state);
-CommandLookBehind lookBehindCommand(&turret, &state);
-CommandAimStrategy aimStrategyCommand(drivers(), &turret);
-CommandUnjam unjamCommand(drivers(), &shooter);
+// Command definitions -----------------------------------------------------------
+CommandSentryPosition sentryPositionCommand(drivers(), &chassis);
+CommandSentryAim sentryAimCommand(drivers(), &turret);
 
-// Mappings
-HoldCommandMapping fire(
-    drivers(),
-    {&fireContinuousCommand},
-    RemoteMapState(RemoteMapState::MouseButton::LEFT));
-
-PressCommandMapping toggleBeyblade(
-    drivers(),
-    {&toggleBeybladeCommand},
-    RemoteMapState({Remote::Key::R}));
-
-PressCommandMapping lookBehind(drivers(), {&lookBehindCommand}, RemoteMapState({Remote::Key::B}));
-
-PressCommandMapping changeAimStrategy(
-    drivers(),
-    {&aimStrategyCommand},
-    RemoteMapState(RemoteMapState::MouseButton::RIGHT));
-
-HoldCommandMapping unjam(drivers(), {&unjamCommand}, RemoteMapState({Remote::Key::X}));
-
+// Register subsystems here -----------------------------------------------
 void registerStandardSubsystems(src::Drivers *drivers)
 {
     drivers->commandScheduler.registerSubsystem(&chassis);
+    drivers->commandScheduler.registerSubsystem(&agitator);
+    drivers->commandScheduler.registerSubsystem(&flywheel);
     drivers->commandScheduler.registerSubsystem(&turret);
-    drivers->commandScheduler.registerSubsystem(&shooter);
     drivers->commandScheduler.registerSubsystem(&odometry);
-    shooter.registerSubsystems();
 }
 
+// Initialize subsystems here ---------------------------------------------
 void initializeSubsystems()
 {
     chassis.initialize();
+    agitator.initialize();
+    flywheel.initialize();
     turret.initialize();
-    shooter.initialize();
     odometry.initialize();
 }
 
+// Set default commands here -----------------------------------------------
 void setDefaultCommands(src::Drivers *)
 {
-    chassis.setDefaultCommand(&moveChassisCommand);
-    turret.setDefaultCommand(&moveTurretCommand);
-    shooter.setDefaultCommand(&shooterDefaultCommand);
+    chassis.setDefaultCommand(&sentryPositionCommand);
+    turret.setDefaultCommand(&sentryAimCommand);
 }
 
 void runStartupCommands(src::Drivers *) {}
 
-void registerMappings(src::Drivers *drivers)
-{
-    drivers->commandMapper.addMap(&fire);
-    drivers->commandMapper.addMap(&toggleBeyblade);
-    drivers->commandMapper.addMap(&lookBehind);
-    drivers->commandMapper.addMap(&changeAimStrategy);
-    drivers->commandMapper.addMap(&unjam);
-}
+// Register IO mappings here -----------------------------------------------
+void registerMappings(src::Drivers *drivers) {}
 }  // namespace sentry_control
 
 namespace control

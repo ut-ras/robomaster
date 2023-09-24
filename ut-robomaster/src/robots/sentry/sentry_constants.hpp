@@ -25,7 +25,7 @@ static constexpr float WHEEL_DISTANCE_X = 0.391f;  // meters
 static constexpr float WHEEL_DISTANCE_Y = 0.315f;  // meters
 static constexpr float WHEEL_RADIUS = 0.1524f;     // meters
 static constexpr float WHEEL_LXY = (WHEEL_DISTANCE_X + WHEEL_DISTANCE_Y) / 2.0f;
-static constexpr float WHEEL_MAX_VEL = 10.0f;                                       // rad/s
+static constexpr float WHEEL_MAX_VEL = 50.0f;                                       // rad/s
 static constexpr float MAX_LINEAR_VEL = WHEEL_MAX_VEL * WHEEL_RADIUS;               // m/s
 static constexpr float MAX_ANGULAR_VEL = WHEEL_MAX_VEL * WHEEL_RADIUS / WHEEL_LXY;  // rad/s
 
@@ -99,5 +99,5 @@ static constexpr float PITCH_REDUCTION = 4.0f;
 static constexpr float YAW_INPUT_SCALE = 0.02f;
 static constexpr float PITCH_INPUT_SCALE = 0.01f;
 
-static constexpr float MOUSE_SENS_YAW = 0.01f;
-static constexpr float MOUSE_SENS_PITCH = 0.02f;
+static constexpr float MOUSE_SENS_YAW = 0.002f;
+static constexpr float MOUSE_SENS_PITCH = 0.002f;
