@@ -1,10 +1,10 @@
-#include "beaglebone_communicator.hpp"
+#include "cv_board.hpp"
 
 #include "drivers.hpp"
 
 namespace communication
 {
-BeagleBoneCommunicator::BeagleBoneCommunicator(src::Drivers* drivers)
+CVBoard::CVBoard(src::Drivers* drivers)
     : DJISerial(drivers, UART_PORT),
       drivers(drivers),
       lastTurretData(),
@@ -13,9 +13,9 @@ BeagleBoneCommunicator::BeagleBoneCommunicator(src::Drivers* drivers)
     lastTurretData.hasTarget = false;
 }
 
-void BeagleBoneCommunicator::initialize() { drivers->uart.init<UART_PORT, BAUD_RATE>(); }
+void CVBoard::initialize() { drivers->uart.init<UART_PORT, BAUD_RATE>(); }
 
-void BeagleBoneCommunicator::messageReceiveCallback(const ReceivedSerialMessage& message)
+void CVBoard::messageReceiveCallback(const ReceivedSerialMessage& message)
 {
     offlineTimeout.restart(OFFLINE_TIMEOUT_MS);
 
@@ -29,9 +29,9 @@ void BeagleBoneCommunicator::messageReceiveCallback(const ReceivedSerialMessage&
     }
 }
 
-void BeagleBoneCommunicator::sendMessage() { sendOdometryData(); }
+void CVBoard::sendMessage() { sendOdometryData(); }
 
-void BeagleBoneCommunicator::sendOdometryData()
+void CVBoard::sendOdometryData()
 {
     DJISerial::SerialMessage<sizeof(OdometryData)> message;
     message.messageType = CV_MESSAGE_TYPE_ODOMETRY_DATA;
@@ -42,7 +42,7 @@ void BeagleBoneCommunicator::sendOdometryData()
     drivers->uart.write(UART_PORT, reinterpret_cast<uint8_t*>(&message), sizeof(message));
 }
 
-bool BeagleBoneCommunicator::decodeTurretData(const ReceivedSerialMessage& message)
+bool CVBoard::decodeTurretData(const ReceivedSerialMessage& message)
 {
     if (message.header.dataLength == sizeof(lastTurretData))
     {
@@ -53,6 +53,6 @@ bool BeagleBoneCommunicator::decodeTurretData(const ReceivedSerialMessage& messa
     return false;
 }
 
-bool BeagleBoneCommunicator::isOnline() const { return !offlineTimeout.isExpired(); }
-const TurretData& BeagleBoneCommunicator::getTurretData() const { return lastTurretData; }
+bool CVBoard::isOnline() const { return !offlineTimeout.isExpired(); }
+const TurretData& CVBoard::getTurretData() const { return lastTurretData; }
 }  // namespace communication

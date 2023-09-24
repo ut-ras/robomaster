@@ -119,15 +119,15 @@ void TurretSubsystem::runHardwareTests()
 
 void TurretSubsystem::updateAutoAim()
 {
-    // only run if the BeagleBone is online
-    if (!drivers->beaglebone.isOnline()) return;
+    // only run if the CV board is online
+    if (!drivers->cvBoard.isOnline()) return;
 
     // only run when there's new data
-    if (lastTurretDataIndex == drivers->beaglebone.turretDataIndex) return;
-    lastTurretDataIndex = drivers->beaglebone.turretDataIndex;
+    if (lastTurretDataIndex == drivers->cvBoard.turretDataIndex) return;
+    lastTurretDataIndex = drivers->cvBoard.turretDataIndex;
 
     // only run if we have a target
-    TurretData data = drivers->beaglebone.getTurretData();
+    TurretData data = drivers->cvBoard.getTurretData();
     if (!data.hasTarget) return;
 
     float cameraToPitch = 0.13555f;

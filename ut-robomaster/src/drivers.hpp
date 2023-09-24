@@ -22,7 +22,7 @@
 
 #include "tap/drivers.hpp"
 
-#include "communication/beaglebone_communicator.hpp"
+#include "communication/cv_board.hpp"
 #include "robots/standard/robot_comms.hpp"
 
 namespace src
@@ -34,10 +34,10 @@ class Drivers : public tap::Drivers
 #ifdef ENV_UNIT_TESTS
 public:
 #endif
-    Drivers() : tap::Drivers(), beaglebone(this), terminal(this) {}
+    Drivers() : tap::Drivers(), cvBoard(this), terminal(this) {}
 
 public:
-    communication::BeagleBoneCommunicator beaglebone;
+    communication::CVBoard cvBoard;
     comms::RobotComms terminal;
 
     bool isKillSwitched()
