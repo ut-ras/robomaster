@@ -18,6 +18,9 @@ constexpr CanBus CAN_SHOOTER = CanBus::CAN_BUS2;
 
 constexpr PidConstants PID_VELOCITY_DEFAULT = {0.75f, 12.0f, 0.0f};
 
+constexpr bool USE_BALLISTICS = false;
+constexpr int BALLISTIC_ITERATIONS = 2;
+
 // Chassis constants ------------------------------------------------
 constexpr MotorId ID_WHEEL_LF = MOTOR2;
 constexpr MotorId ID_WHEEL_RF = MOTOR1;
@@ -68,8 +71,12 @@ const float UNJAM_SPEED = 0.4f;  // rev/s
 constexpr MotorId ID_YAW = MOTOR6;
 constexpr MotorId ID_PITCH = MOTOR7;
 
-constexpr float PITCH_MIN = -0.2185f;
-constexpr float PITCH_MAX = 0.2299f;
+constexpr float PITCH_MIN = -0.2185f;         // rad
+constexpr float PITCH_MAX = 0.2299f;          // rad
+constexpr float CAMERA_TO_PITCH = 0.13555f;   // distance from main camera lens to pitch axis (m)
+constexpr float NOZZLE_TO_PITCH = 0.18151f;   // distance from barrel nozzle to pitch axis (m)
+constexpr float CAMERA_TO_BARRELS = 0.0427f;  // vertical ctc offset from camera lens to barrel (m)
+constexpr float CAMERA_X_OFFSET = -0.0335f;   // horizontal offset of main camera lens (m)
 
 constexpr PidConstants PID_TURRET_VELOCITY = PID_VELOCITY_DEFAULT;
 constexpr PidConstants PID_TURRET_POSITION = {0.1f, 0.1f, 0.0f};

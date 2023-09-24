@@ -34,10 +34,11 @@ public:
     const char* getName() const override { return "move turret aimbot command"; }
 
 private:
+    float getBulletSpeed();
+
     src::Drivers* drivers;
     TurretSubsystem* turret;
 
-    float yaw = 0.0f;
-    float pitch = 0.0f;
+    uint8_t lastTurretDataIndex = 0;
 };
 }  // namespace commands

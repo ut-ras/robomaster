@@ -2,64 +2,89 @@
 
 #include "tap/algorithms/ballistics.hpp"
 
-using namespace tap::algorithms::ballistics;
-
 namespace commands
 {
-void CommandMoveTurretAimbot::initialize() {
-    yaw = turret->getInputYaw();
-    pitch = turret->getInputPitch();
-}
+using namespace tap::algorithms::ballistics;
+using communication::TurretData;
 
-void CommandMoveTurretAimbot::execute() {
-    if (drivers->beagleboneCommunicator.getTurretData().hasTarget) {
-        float bulletVelocity = 1.0f;
-        uint8_t numBallisticIterations = 1;
+void CommandMoveTurretAimbot::initialize() {}
+
+void CommandMoveTurretAimbot::execute()
+{
+    // only run if the CV board is online
+    if (!drivers->cvBoard.isOnline()) return;
+
+    // only run when there's new data
+    if (lastTurretDataIndex == drivers->cvBoard.turretDataIndex) return;
+    lastTurretDataIndex = drivers->cvBoard.turretDataIndex;
+
+    // only run if we have a target
+    TurretData data = drivers->cvBoard.getTurretData();
+    if (!data.hasTarget) return;
+
+    // Pitch axis relative (y/z flipped)
+    Vector3f targetPos(
+        data.xPos + CAMERA_X_OFFSET,
+        data.zPos + CAMERA_TO_PITCH,
+        data.yPos + CAMERA_TO_BARRELS);
+    Vector3f targetVel(data.xVel, data.zVel, data.yVel);
+    Vector3f targetAcc(data.xAcc, data.zAcc, data.yAcc);
+
+    if (USE_BALLISTICS)
+    {
+        // Rotate to world relative pitch
+        float a = turret->getCurrentLocalPitch();
+        const float matData[9] = {1.0f, 0, 0, 0, cos(a), -sin(a), 0, sin(a), cos(a)};
+        modm::Matrix3f rotMat(matData);
+        targetPos = rotMat * targetPos;
+        targetVel = rotMat * targetVel;
+        targetAcc = rotMat * targetAcc;
+
+        MeasuredKinematicState kinState{targetPos, targetVel, targetAcc};
 
         float turretPitch = 0.0f;
         float turretYaw = 0.0f;
-        float projectedTravelTime = 0.0f;
+        float travelTime = 0.0f;
 
-        Vector3f targetPosition = Vector3f(0.0f);
-        Vector3f targetVelocity = Vector3f(0.0f);
-        Vector3f targetAcceleration = Vector3f(0.0f);
-
-        findTargetProjectileIntersection(
-            {targetPosition, targetVelocity, targetAcceleration},
-            bulletVelocity,
-            numBallisticIterations,
+        bool validBallistcs = findTargetProjectileIntersection(
+            kinState,
+            getBulletSpeed(),
+            BALLISTIC_ITERATIONS,
             &turretPitch,
             &turretYaw,
-            &projectedTravelTime);
+            &travelTime,
+            -NOZZLE_TO_PITCH);
 
-        turret->inputManualAngles(turretYaw, turretPitch);      
+        if (validBallistcs)
+        {
+            float currentWorldYaw = turret->getCurrentLocalYaw() + turret->getChassisYaw();
+            turret->setTargetWorldAngles(currentWorldYaw + turretYaw, turretPitch);
+        }
     }
-
-    else {
-        Remote* remote = &drivers->remote;
-
-        if (drivers->isKillSwitched()) {
-            yaw = turret->getCurrentLocalYaw() + turret->getChassisYaw();
-            pitch = turret->getCurrentLocalPitch();
-        }
-        
-        else {
-            float yawInput = 0.0f;
-            float pitchInput = 0.0f;
-
-            yawInput = remote->getMouseX() * MOUSE_SENS_YAW;
-            pitchInput = -remote->getMouseY() * MOUSE_SENS_PITCH;
-
-            yaw -= yawInput;
-            pitch += pitchInput;
-            pitch = modm::min(modm::max(pitch, PITCH_MIN), PITCH_MAX);
-        }
-
-        turret->inputManualAngles(yaw, pitch);
+    else
+    {
+        float deltaYaw = -atan(targetPos.x / targetPos.y);  // yaw is opposite to camera X
+        float deltaPitch = atan(targetPos.z / targetPos.y);
+        float scale = 0.006f;
+        // float currentWorldYaw = getCurrentLocalYaw() + getChassisYaw();
+        // float currentWorldPitch = getCurrentLocalPitch();
+        turret->setTargetWorldAngles(
+            turret->getTargetWorldYaw() + deltaYaw * scale,
+            turret->getTargetWorldPitch() + deltaPitch * scale);
     }
 }
 
 void CommandMoveTurretAimbot::end(bool) {}
 
 bool CommandMoveTurretAimbot::isFinished(void) const { return false; }
+
+float CommandMoveTurretAimbot::getBulletSpeed()
+{
+    auto turretInfo = &drivers->refSerial.getRobotData().turret;
+#if defined(TARGET_STANDARD) || defined(TARGET_SENTRY)
+    return turretInfo->barrelSpeedLimit17ID1;
+#elif defined(TARGET_HERO)
+    return turretInfo->barrelSpeedLimit42;
+#endif
+}
 }  // namespace commands

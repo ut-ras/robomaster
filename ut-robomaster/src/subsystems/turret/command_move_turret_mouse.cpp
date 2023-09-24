@@ -2,20 +2,24 @@
 
 namespace commands
 {
-void CommandMoveTurretMouse::initialize() {
-    yaw = turret->getInputYaw();
-    pitch = turret->getInputPitch();
+void CommandMoveTurretMouse::initialize()
+{
+    yaw = turret->getTargetWorldYaw();
+    pitch = turret->getTargetWorldPitch();
 }
 
-void CommandMoveTurretMouse::execute() {
+void CommandMoveTurretMouse::execute()
+{
     Remote* remote = &drivers->remote;
 
-    if (drivers->isKillSwitched()) {
+    if (drivers->isKillSwitched())
+    {
         yaw = turret->getCurrentLocalYaw() + turret->getChassisYaw();
         pitch = turret->getCurrentLocalPitch();
     }
-    
-    else {
+
+    else
+    {
         float yawInput = 0.0f;
         float pitchInput = 0.0f;
 
@@ -27,7 +31,7 @@ void CommandMoveTurretMouse::execute() {
         pitch = modm::min(modm::max(pitch, PITCH_MIN), PITCH_MAX);
     }
 
-    turret->inputManualAngles(yaw, pitch);
+    turret->setTargetWorldAngles(yaw, pitch);
 }
 
 void CommandMoveTurretMouse::end(bool) {}

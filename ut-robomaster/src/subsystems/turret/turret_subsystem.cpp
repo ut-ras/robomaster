@@ -5,11 +5,14 @@
 #include "modm/math.hpp"
 #include "robots/robot_constants.hpp"
 
-using namespace tap::algorithms::ballistics;
 namespace subsystems
 {
 namespace turret
 {
+using namespace tap::algorithms::ballistics;
+using communication::TurretData;
+using modm::Vector2f;
+
 TurretSubsystem::TurretSubsystem(src::Drivers* drivers)
     : tap::control::Subsystem(drivers),
       drivers(drivers),
@@ -28,33 +31,8 @@ void TurretSubsystem::initialize()
     lastTime = tap::arch::clock::getTimeMilliseconds();
 }
 
-void TurretSubsystem::inputManualAngles(float yaw, float pitch)
-{
-    inputYaw = yaw;
-    inputPitch = pitch;
-}
-
-float TurretSubsystem::getChassisYaw() { return modm::toRadian(drivers->bmi088.getYaw() - 180.0f); }
-
-float TurretSubsystem::getTargetLocalYaw() { return targetWorldYaw - getChassisYaw(); }
-
-float TurretSubsystem::getTargetLocalPitch() { return targetWorldPitch; }
-
-float TurretSubsystem::getCurrentLocalYaw()
-{
-    return !isCalibrated ? 0.0f : yawTurret.getAngle() / YAW_REDUCTION - baseYaw;
-}
-
-float TurretSubsystem::getCurrentLocalPitch()
-{
-    return !isCalibrated ? 0.0f : pitchTurret.getAngle() / PITCH_REDUCTION - basePitch;
-}
-
 void TurretSubsystem::refresh()
 {
-    targetWorldYaw = inputYaw;
-    targetWorldPitch = inputPitch;
-
     yawTurret.updateMotorAngle();
     pitchTurret.updateMotorAngle();
 
@@ -74,7 +52,6 @@ void TurretSubsystem::refresh()
         yawTurret.setAngle((baseYaw + getTargetLocalYaw()) * YAW_REDUCTION, dt);
         pitchTurret.setAngle((basePitch + getTargetLocalPitch()) * PITCH_REDUCTION, dt);
     }
-
     else
     {
         yawTurret.reset();
@@ -82,10 +59,38 @@ void TurretSubsystem::refresh()
     }
 }
 
+void TurretSubsystem::inputTargetData(Vector3f position, Vector3f velocity, Vector3f acceleration)
+{
+    targetPosition = position;
+    targetVelocity = velocity;
+    targetAcceleration = acceleration;
+}
+
+void TurretSubsystem::setTargetWorldAngles(float yaw, float pitch)
+{
+    targetWorldYaw = yaw;
+    targetWorldPitch = modm::min(modm::max(pitch, PITCH_MIN), PITCH_MAX);
+}
+
+float TurretSubsystem::getChassisYaw() { return modm::toRadian(drivers->bmi088.getYaw() - 180.0f); }
+
+float TurretSubsystem::getTargetLocalYaw() { return targetWorldYaw - getChassisYaw(); }
+
+float TurretSubsystem::getTargetLocalPitch() { return targetWorldPitch; }
+
+float TurretSubsystem::getCurrentLocalYaw()
+{
+    return !isCalibrated ? 0.0f : yawTurret.getAngle() / YAW_REDUCTION - baseYaw;
+}
+
+float TurretSubsystem::getCurrentLocalPitch()
+{
+    return !isCalibrated ? 0.0f : pitchTurret.getAngle() / PITCH_REDUCTION - basePitch;
+}
+
 void TurretSubsystem::runHardwareTests()
 {
     // TODO
 }
-
 }  // namespace turret
 }  // namespace subsystems
