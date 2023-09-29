@@ -27,31 +27,12 @@ public:
 
     void refresh() override;
 
-    float getShapedVelocity(float time, float a, float phi, float ballsPerSecond);
-
-    void setBallsPerSecond(float bps);
-
-    // Overloaded method to allow independent control of left and right agitators
-    void setBallsPerSecond(float bpsLeft, float bpsRight);
+    void setSpeed(float newSpeed);
 
 private:
     src::Drivers *drivers;
-
-#if defined(TARGET_STANDARD) || defined(TARGET_SENTRY)
-    MotorVelocityController leftAgitator;
-    MotorVelocityController rightAgitator;
-
-    float ballsPerSecondLeft = 0.0f;
-    float ballsPerSecondRight = 0.0f;
-
-#elif defined(TARGET_HERO)
     MotorVelocityController agitator;
-    MotorVelocityController feeder;
-
-    float ballsPerSecondHero = 0.0f;
-#endif
-
-    float startTime = 0.0f;
+    float speed = 0.0f;
 };
 
 }  // namespace agitator

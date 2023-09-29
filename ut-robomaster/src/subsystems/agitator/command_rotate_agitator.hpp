@@ -11,10 +11,10 @@ namespace commands
 {
 using subsystems::agitator::AgitatorSubsystem;
 
-class CommandUnjamAgitator : public tap::control::Command
+class CommandRotateAgitator : public tap::control::Command
 {
 public:
-    CommandUnjamAgitator(src::Drivers *drivers, AgitatorSubsystem *agitator)
+    CommandRotateAgitator(src::Drivers *drivers, AgitatorSubsystem *agitator)
         : drivers(drivers),
           agitator(agitator)
     {
@@ -29,7 +29,7 @@ public:
 
     bool isFinished() const override;
 
-    const char *getName() const override { return "unjam agitator command"; }
+    const char *getName() const override { return "rotate agitator command"; }
 
 private:
     src::Drivers *drivers;
