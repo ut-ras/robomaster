@@ -93,7 +93,7 @@ ToggleCommandMapping keyRToggled(
 
 ToggleCommandMapping keySToggled(
     drivers(),
-    {&flywheelOffCommand},
+    {&rotateFlywheelKeyboardCommand},
     RemoteMapState({Remote::Key::S}));
 
 HoldCommandMapping leftMouseDown(
@@ -122,7 +122,7 @@ HoldCommandMapping rightSwitchMid(
 
 HoldCommandMapping rightSwitchDown(
     drivers(),
-    {&rotateFlywheelKeyboardCommand},
+    {&flywheelOffCommand},
     RemoteMapState(Remote::Switch::RIGHT_SWITCH, Remote::SwitchState::DOWN));
 
 HoldCommandMapping leftSwitchMid(
