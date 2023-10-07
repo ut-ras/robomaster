@@ -44,6 +44,9 @@ void AgitatorSubsystem::initialize()
     leftAgitator.initialize();
     rightAgitator.initialize();
 
+    leftAgitatorPosition.initialize();
+    rightAgitatorPosition.initialize();
+
 #elif defined(TARGET_HERO)
     agitator.initialize();
     feeder.initialize();
@@ -54,6 +57,12 @@ void AgitatorSubsystem::refresh()
 {
     float time = getTimeMilliseconds() / 1000.0f;  // MAY BREAK ON WRAPPING!
     bool killSwitch = drivers->isKillSwitched();
+
+    // int frequency = drivers->refSerial.getRobotData().turret.firingFreq;
+    int timeSinceFiring =
+        drivers->refSerial.getRobotData().turret.lastReceivedLaunchingInfoTimestamp;
+    float leftPosition = leftAgitatorPosition.measure();
+    float rightPosition = rightAgitatorPosition.measure();
 
 #if defined(TARGET_STANDARD) || defined(TARGET_SENTRY)
     leftAgitator.setActive(!killSwitch);

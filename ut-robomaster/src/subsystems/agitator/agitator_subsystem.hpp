@@ -41,6 +41,9 @@ private:
     MotorVelocityController leftAgitator;
     MotorVelocityController rightAgitator;
 
+    MotorPositionController leftAgitatorPosition;
+    MotorPositionController rightAgitatorPosition;
+
     float ballsPerSecondLeft = 0.0f;
     float ballsPerSecondRight = 0.0f;
 
