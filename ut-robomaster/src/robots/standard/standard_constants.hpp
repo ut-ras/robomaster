@@ -17,6 +17,7 @@ constexpr CanBus CAN_TURRET = CanBus::CAN_BUS1;
 constexpr CanBus CAN_SHOOTER = CanBus::CAN_BUS2;
 
 constexpr PidConstants PID_VELOCITY_DEFAULT = {0.75f, 12.0f, 0.0f};
+constexpr PidConstants PID_AGITATOR_POSITION = {0.1f, 0.1f, 0.0f};
 
 constexpr bool USE_BALLISTICS = false;
 constexpr int BALLISTIC_ITERATIONS = 2;
@@ -46,11 +47,9 @@ constexpr MotorId ID_FLYWHEEL_BR = MOTOR6;
 
 constexpr PidConstants PID_FLYWHEEL = {0.1f, 0.1f, 0.0f};
 
-static constexpr modm::Pair<uint16_t, float> FLYWHEEL_RPS_MAPPING[] = {
-    {15, 67.0f},
-    {18, 75.0f},
-    {30, 122.0f}};
+static constexpr modm::Pair<uint16_t, float>
 
+    FLYWHEEL_RPS_MAPPING[] = {{15, 67.0f}, {18, 75.0f}, {30, 122.0f}};
 static constexpr int FLYWHEELS = 4;
 static constexpr float DEFAULT_SPEED = 70.0f;
 

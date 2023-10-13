@@ -2,8 +2,18 @@
 
 namespace subsystems::agitator
 {
+
 using tap::algorithms::compareFloatClose;
 using tap::arch::clock::getTimeMilliseconds;
+
+// struct turretCooldownPercentage
+// {
+//     int currentHeat;
+//     int heatLimit;
+//     float percentage = currentHeat / static_cast<float>(heatLimit);
+// }
+
+// turretCooldownPercentage.currentHeat = drivers->
 
 #if defined(TARGET_STANDARD) || defined(TARGET_SENTRY)
 AgitatorSubsystem::AgitatorSubsystem(src::Drivers *drivers)
@@ -16,7 +26,8 @@ AgitatorSubsystem::AgitatorSubsystem(src::Drivers *drivers)
           CAN_SHOOTER,
           false,
           "agitator left",
-          PID_AGITATOR},
+          PID_AGITATOR,
+          PID_AGITATOR_POSITION},
       rightAgitator{
           drivers,
           M2006,
@@ -24,7 +35,8 @@ AgitatorSubsystem::AgitatorSubsystem(src::Drivers *drivers)
           CAN_SHOOTER,
           true,
           "agitator right",
-          PID_AGITATOR}
+          PID_AGITATOR,
+          PID_AGITATOR_POSITION}
 {
 }
 
@@ -33,9 +45,11 @@ AgitatorSubsystem::AgitatorSubsystem(src::Drivers *drivers)
     : Subsystem(drivers),
       drivers(drivers),
       agitator{drivers, M3508, ID_AGITATOR, CAN_SHOOTER, false, "agitator", PID_AGITATOR},
-      feeder{drivers, M2006, ID_FEEDER, CAN_SHOOTER, false, "feeder", PID_FEEDER}
+      feeder
 {
+    drivers, M2006, ID_FEEDER, CAN_SHOOTER, false, "feeder", PID_FEEDER
 }
+
 #endif
 
 void AgitatorSubsystem::initialize()
@@ -43,9 +57,6 @@ void AgitatorSubsystem::initialize()
 #if defined(TARGET_STANDARD) || defined(TARGET_SENTRY)
     leftAgitator.initialize();
     rightAgitator.initialize();
-
-    leftAgitatorPosition.initialize();
-    rightAgitatorPosition.initialize();
 
 #elif defined(TARGET_HERO)
     agitator.initialize();
@@ -61,8 +72,8 @@ void AgitatorSubsystem::refresh()
     // int frequency = drivers->refSerial.getRobotData().turret.firingFreq;
     int timeSinceFiring =
         drivers->refSerial.getRobotData().turret.lastReceivedLaunchingInfoTimestamp;
-    float leftPosition = leftAgitatorPosition.measure();
-    float rightPosition = rightAgitatorPosition.measure();
+    float leftPosition = leftAgitator.measure();
+    float rightPosition = leftAgitator.measure();
 
 #if defined(TARGET_STANDARD) || defined(TARGET_SENTRY)
     leftAgitator.setActive(!killSwitch);
