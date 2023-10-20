@@ -6,16 +6,11 @@ namespace subsystems::agitator
 using tap::algorithms::compareFloatClose;
 using tap::arch::clock::getTimeMilliseconds;
 
-// struct turretCooldownPercentage
-// {
-//     int currentHeat;
-//     int heatLimit;
-//     float percentage = currentHeat / static_cast<float>(heatLimit);
-// }
-
-// turretCooldownPercentage.currentHeat = drivers->
-
 #if defined(TARGET_STANDARD) || defined(TARGET_SENTRY)
+
+/**
+ * AgitatorSubsystem class instantiation
+ */
 AgitatorSubsystem::AgitatorSubsystem(src::Drivers *drivers)
     : Subsystem(drivers),
       drivers(drivers),
@@ -27,7 +22,7 @@ AgitatorSubsystem::AgitatorSubsystem(src::Drivers *drivers)
           false,
           "agitator left",
           PID_AGITATOR,
-          PID_AGITATOR_POSITION},
+          PID_AGITATOR_POSITION},  // error with PID_AGITATOR_POSITION as argument to constructor
       rightAgitator{
           drivers,
           M2006,
@@ -36,7 +31,7 @@ AgitatorSubsystem::AgitatorSubsystem(src::Drivers *drivers)
           true,
           "agitator right",
           PID_AGITATOR,
-          PID_AGITATOR_POSITION}
+          PID_AGITATOR_POSITION}  // error with PID_AGITATOR_POSITION as argument to constructor
 {
 }
 
@@ -52,6 +47,11 @@ AgitatorSubsystem::AgitatorSubsystem(src::Drivers *drivers)
 
 #endif
 
+/**
+ * AgitatorSubsystem initialization
+ *
+ * Contains all processes that need to be executed on start up
+ */
 void AgitatorSubsystem::initialize()
 {
 #if defined(TARGET_STANDARD) || defined(TARGET_SENTRY)
@@ -64,6 +64,11 @@ void AgitatorSubsystem::initialize()
 #endif
 }
 
+/**
+ * Called every clock cycle
+ * Operations within refresh are performed on repeat throughout the robot's operation
+ *
+ */
 void AgitatorSubsystem::refresh()
 {
     float time = getTimeMilliseconds() / 1000.0f;  // MAY BREAK ON WRAPPING!
@@ -78,6 +83,11 @@ void AgitatorSubsystem::refresh()
     // get positions of left and right agitators
     float leftPosition = leftAgitator.measure();
     float rightPosition = leftAgitator.measure();
+    cooldownMeter.heatLimit1 = drivers->refSerial.getRobotData().turret.heatLimit17ID1;
+    cooldownMeter.heatLimit2 = drivers->refSerial.getRobotData().turret.heatLimit17ID2;
+    cooldownMeter.currentHeat1 = drivers->refSerial.getRobotData().turret.heat17ID1;
+    cooldownMeter.currentHeat2 = drivers->refSerial.getRobotData().turret.heat17ID2;
+    bool isTurretOne = cooldownMeter.compare() >= 0 ? true : false;
 
 #if defined(TARGET_STANDARD) || defined(TARGET_SENTRY)
     leftAgitator.setActive(!killSwitch);
@@ -95,6 +105,10 @@ void AgitatorSubsystem::refresh()
 #endif
 }
 
+/**
+ * Returns the time-dependant velocity of the bullet(projectile) following a curved path?
+ *
+ */
 float AgitatorSubsystem::getShapedVelocity(float time, float a, float phi, float ballsPerSecond)
 {
     float t = time * ballsPerSecond;
@@ -102,6 +116,11 @@ float AgitatorSubsystem::getShapedVelocity(float time, float a, float phi, float
     return ((1.0f - a) * cos((2.0f * t + phi) * M_PI) + 1.0f) * maxVel;
 }
 
+/**
+ * Sets the firing rate for both barrels (number of balls per second fed into the barrels by the
+ * agitators)
+ *
+ */
 void AgitatorSubsystem::setBallsPerSecond(float bps)
 {
 #if defined(TARGET_STANDARD) || defined(TARGET_SENTRY)
@@ -113,6 +132,11 @@ void AgitatorSubsystem::setBallsPerSecond(float bps)
 #endif
 }
 
+/**
+ * Sets the firing rate individual for each of the two barrels (number of balls per second fed into
+ * each barrel by its respective agitator)
+ *
+ */
 void AgitatorSubsystem::setBallsPerSecond(float bpsLeft, float bpsRight)
 {
 #if defined(TARGET_STANDARD) || defined(TARGET_SENTRY)
