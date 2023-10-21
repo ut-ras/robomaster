@@ -15,25 +15,6 @@ namespace agitator
 {
 using namespace motor_controller;
 
-struct TurretCooldownPercentage
-{
-    int currentHeat1;
-    int currentHeat2;
-    int heatLimit1;
-    int heatLimit2;
-    int percentage1;
-    int percentage2;
-
-    bool compare()
-    {
-        percentage1 = currentHeat1 / heatLimit1;
-        percentage2 = currentHeat2 / heatLimit2;
-        return percentage1 - percentage2;  // if positive, turret one has a higher cooldown
-                                           // if zero, both turrets have equivalent cooldown
-                                           // if negative, percentage 2 has a higher cooldown
-    }
-};
-
 // Agitator uses DJI motors
 class AgitatorSubsystem : public tap::control::Subsystem
 {
@@ -59,7 +40,6 @@ private:
 #if defined(TARGET_STANDARD) || defined(TARGET_SENTRY)
     MotorVelocityController leftAgitator;
     MotorVelocityController rightAgitator;
-    TurretCooldownPercentage cooldownMeter;
 
     float ballsPerSecondLeft = 0.0f;
     float ballsPerSecondRight = 0.0f;

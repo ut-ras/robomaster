@@ -19,6 +19,7 @@
 
 // Agitator includes ----------------------------------------
 #include "subsystems/agitator/agitator_subsystem.hpp"
+#include "subsystems/agitator/command_burst_agitator.hpp"
 #include "subsystems/agitator/command_rotate_agitator_continuous.hpp"
 #include "subsystems/agitator/command_unjam_agitator.hpp"
 
@@ -73,6 +74,7 @@ CommandMoveChassisKeyboard moveChassisCommandKeyboard(drivers(), &chassis, &turr
 CommandBeybladeChassisKeyboard beybladeChassisCommandKeyboard(drivers(), &chassis, &turret);
 
 CommandRotateAgitatorContinuous rotateAgitatorContinuousCommand(drivers(), &agitator);
+CommandRotateAgitatorBurst rotateAgitatorBurstCommand(drivers(), &agitator);
 CommandUnjamAgitator unjamAgitatorCommand(drivers(), &agitator);
 
 CommandRotateFlywheel rotateFlywheelKeyboardCommand(drivers(), &flywheel);
@@ -125,9 +127,14 @@ HoldCommandMapping leftSwitchMid(
     {&rotateFlywheelNoAgitatorCommand},
     RemoteMapState(Remote::Switch::LEFT_SWITCH, Remote::SwitchState::MID));
 
+// HoldCommandMapping leftSwitchUp(
+//     drivers(),
+//     {&rotateAgitatorContinuousCommand, &rotateFlywheelWithAgitatorCommand},
+//     RemoteMapState(Remote::Switch::LEFT_SWITCH, Remote::SwitchState::UP));
+
 HoldCommandMapping leftSwitchUp(
     drivers(),
-    {&rotateAgitatorContinuousCommand, &rotateFlywheelWithAgitatorCommand},
+    {&rotateAgitatorBurstCommand, &rotateFlywheelWithAgitatorCommand},
     RemoteMapState(Remote::Switch::LEFT_SWITCH, Remote::SwitchState::UP));
 
 // Register subsystems here -----------------------------------------------

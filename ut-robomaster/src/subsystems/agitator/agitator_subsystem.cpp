@@ -6,11 +6,10 @@ namespace subsystems::agitator
 using tap::algorithms::compareFloatClose;
 using tap::arch::clock::getTimeMilliseconds;
 
-#if defined(TARGET_STANDARD) || defined(TARGET_SENTRY)
-
 /**
  * AgitatorSubsystem class instantiation
  */
+#if defined(TARGET_STANDARD) || defined(TARGET_SENTRY)
 AgitatorSubsystem::AgitatorSubsystem(src::Drivers *drivers)
     : Subsystem(drivers),
       drivers(drivers),
@@ -21,8 +20,7 @@ AgitatorSubsystem::AgitatorSubsystem(src::Drivers *drivers)
           CAN_SHOOTER,
           false,
           "agitator left",
-          PID_AGITATOR,
-          PID_AGITATOR_POSITION},  // error with PID_AGITATOR_POSITION as argument to constructor
+          PID_AGITATOR},
       rightAgitator{
           drivers,
           M2006,
@@ -30,8 +28,7 @@ AgitatorSubsystem::AgitatorSubsystem(src::Drivers *drivers)
           CAN_SHOOTER,
           true,
           "agitator right",
-          PID_AGITATOR,
-          PID_AGITATOR_POSITION}  // error with PID_AGITATOR_POSITION as argument to constructor
+          PID_AGITATOR}
 {
 }
 
@@ -83,11 +80,6 @@ void AgitatorSubsystem::refresh()
     // get positions of left and right agitators
     float leftPosition = leftAgitator.measure();
     float rightPosition = leftAgitator.measure();
-    cooldownMeter.heatLimit1 = drivers->refSerial.getRobotData().turret.heatLimit17ID1;
-    cooldownMeter.heatLimit2 = drivers->refSerial.getRobotData().turret.heatLimit17ID2;
-    cooldownMeter.currentHeat1 = drivers->refSerial.getRobotData().turret.heat17ID1;
-    cooldownMeter.currentHeat2 = drivers->refSerial.getRobotData().turret.heat17ID2;
-    bool isTurretOne = cooldownMeter.compare() >= 0 ? true : false;
 
 #if defined(TARGET_STANDARD) || defined(TARGET_SENTRY)
     leftAgitator.setActive(!killSwitch);
