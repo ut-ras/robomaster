@@ -31,7 +31,8 @@ public:
 
 private:
     src::Drivers *drivers;
-    MotorVelocityController agitator;
+    MotorVelocityController agitator1;
+    MotorVelocityController agitator2;
     float speed = 0.0f;
 };
 
