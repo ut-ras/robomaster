@@ -14,4 +14,4 @@ using namespace tap::motor;
 // General constants ------------------------------------------------
 constexpr CanBus CAN_AGITATOR = CanBus::CAN_BUS1;
 constexpr PidConstants PID_AGITATOR = {0.75f, 12.0f, 0.0f};
-const float MAX_SPEED = 140.0f / 60.0f;
+const float MAX_SPEED = 280.0f / 60.0f;
