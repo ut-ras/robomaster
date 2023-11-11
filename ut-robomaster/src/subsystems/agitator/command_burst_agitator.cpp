@@ -2,7 +2,11 @@
 
 namespace commands
 {
-void CommandRotateAgitatorBurst::initialize() { numToFire = 8; }
+void CommandRotateAgitatorBurst::initialize()
+{
+    numToFire = 8;
+    beginTime = tap::arch::clock::getTimeMilliseconds();
+}
 
 void CommandRotateAgitatorBurst::execute()
 {
@@ -12,44 +16,32 @@ void CommandRotateAgitatorBurst::execute()
 
     float ballsPerSecondLeft = 0.0f;
     float ballsPerSecondRight = 0.0f;
-    uint32_t beginTime = 0;
-    uint32_t deltaTime = -1;
-    uint32_t time = 0;
-    cooldownMeter.heatLimit1 = drivers->refSerial.getRobotData().turret.heatLimit17ID1;
-    cooldownMeter.heatLimit2 = drivers->refSerial.getRobotData().turret.heatLimit17ID2;
-    cooldownMeter.currentHeat1 = drivers->refSerial.getRobotData().turret.heat17ID1;
-    cooldownMeter.currentHeat2 = drivers->refSerial.getRobotData().turret.heat17ID2;
+    // cooldownMeter.heatLimit1 = drivers->refSerial.getRobotData().turret.heatLimit17ID1;
+    // cooldownMeter.heatLimit2 = drivers->refSerial.getRobotData().turret.heatLimit17ID2;
+    // cooldownMeter.currentHeat1 = drivers->refSerial.getRobotData().turret.heat17ID1;
+    // cooldownMeter.currentHeat2 = drivers->refSerial.getRobotData().turret.heat17ID2;
     bool isTurretOne = cooldownMeter.compare() >= 0 ? true : false;
 
     if (drivers->refSerial.getRefSerialReceivingData())
     {
-        if (isTurretOne)
-        {
-            ballsPerSecondLeft = ballsPerSecondLeftConst;
-            ballsPerSecondRight = 0;
-            time = 1000 * getNumToFire() /
-                   ballsPerSecondLeft;  // time in milliseconds that agitator must be run for
-        }
-        else
-        {
-            ballsPerSecondLeft = 0;
-            ballsPerSecondRight = ballsPerSecondRightConst;
-            time = 1000 * getNumToFire() /
-                   ballsPerSecondRight;  // time in milliseconds that agitator must be run for
-        }
+        // if (isTurretOne)
+        // {
+        ballsPerSecondLeft = ballsPerSecondLeftConst;
+        ballsPerSecondRight = 0;
+        time = 1000 * getNumToFire() /
+               ballsPerSecondLeft;  // time in milliseconds that agitator must be run for
+        // }
+        // else
+        // {
+        //     ballsPerSecondLeft = 0;
+        //     ballsPerSecondRight = ballsPerSecondRightConst;
+        //     time = 1000 * getNumToFire() /
+        //            ballsPerSecondRight;  // time in milliseconds that agitator must be run
+        //            for
+        // }
     }
 
-    beginTime = tap::arch::clock::getTimeMilliseconds();
-    agitator->setBallsPerSecond(ballsPerSecondLeftConst, ballsPerSecondRightConst);
-
-    // delay
-    while (deltaTime < time)
-    {
-        deltaTime = tap::arch::clock::getTimeMilliseconds() - beginTime;
-    }
-
-    agitator->setBallsPerSecond(0, 0);
-
+    agitator->setBallsPerSecond(ballsPerSecondLeft, ballsPerSecondRight);
 #elif defined(TARGET_HERO)
     float ballsPerSecond = BALLS_PER_SEC;
 
@@ -72,5 +64,14 @@ void CommandRotateAgitatorBurst::setNumToFire(int num) { numToFire = num; }
 
 void CommandRotateAgitatorBurst::end(bool) { agitator->setBallsPerSecond(0.0f); }
 
-bool CommandRotateAgitatorBurst::isFinished() const { return false; }
+bool CommandRotateAgitatorBurst::isFinished() const
+{
+    int deltaTime = deltaTime = tap::arch::clock::getTimeMilliseconds() - beginTime;
+    if (deltaTime >= time)
+    {
+        agitator->setBallsPerSecond(0, 0);
+        return true;
+    }
+    return false;
+}
 }  // namespace commands

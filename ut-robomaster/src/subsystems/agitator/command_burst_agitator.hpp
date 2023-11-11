@@ -58,6 +58,8 @@ private:
     src::Drivers *drivers;
     AgitatorSubsystem *agitator;
     int numToFire;
+    int beginTime;
+    int time;
 #if defined(TARGET_STANDARD) || defined(TARGET_SENTRY)
     TurretCooldownPercentage cooldownMeter;
 #endif

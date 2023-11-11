@@ -181,6 +181,7 @@ void registerMappings(src::Drivers *drivers)
     drivers->commandMapper.addMap(&rightSwitchMid);
     drivers->commandMapper.addMap(&rightSwitchDown);
     drivers->commandMapper.addMap(&leftSwitchMid);
+    drivers->commandMapper.addMap(&leftSwitchUp);
     drivers->commandMapper.addMap(&keyZToggled);
 }
 }  // namespace standard_control

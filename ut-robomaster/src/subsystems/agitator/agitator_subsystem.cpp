@@ -73,13 +73,13 @@ void AgitatorSubsystem::refresh()
 
     // int frequency = drivers->refSerial.getRobotData().turret.firingFreq;
 
-    // get time since last bullet fired
-    int timeSinceFiring =
-        drivers->refSerial.getRobotData().turret.lastReceivedLaunchingInfoTimestamp;
+    // // get time since last bullet fired
+    // int timeSinceFiring =
+    //     drivers->refSerial.getRobotData().turret.lastReceivedLaunchingInfoTimestamp;
 
-    // get positions of left and right agitators
-    float leftPosition = leftAgitator.measure();
-    float rightPosition = leftAgitator.measure();
+    // // get positions of left and right agitators
+    // float leftPosition = leftAgitator.measure();
+    // float rightPosition = leftAgitator.measure();
 
 #if defined(TARGET_STANDARD) || defined(TARGET_SENTRY)
     leftAgitator.setActive(!killSwitch);

@@ -47,9 +47,10 @@ constexpr MotorId ID_FLYWHEEL_BR = MOTOR6;
 
 constexpr PidConstants PID_FLYWHEEL = {0.1f, 0.1f, 0.0f};
 
-static constexpr modm::Pair<uint16_t, float>
-
-    FLYWHEEL_RPS_MAPPING[] = {{15, 67.0f}, {18, 75.0f}, {30, 122.0f}};
+static constexpr modm::Pair<uint16_t, float> FLYWHEEL_RPS_MAPPING[] = {
+    {15, 67.0f},
+    {18, 75.0f},
+    {30, 122.0f}};
 static constexpr int FLYWHEELS = 4;
 static constexpr float DEFAULT_SPEED = 70.0f;
 
