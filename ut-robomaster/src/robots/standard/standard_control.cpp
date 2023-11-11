@@ -127,15 +127,15 @@ HoldCommandMapping leftSwitchMid(
     {&rotateFlywheelNoAgitatorCommand},
     RemoteMapState(Remote::Switch::LEFT_SWITCH, Remote::SwitchState::MID));
 
-// HoldCommandMapping leftSwitchUp(
-//     drivers(),
-//     {&rotateAgitatorContinuousCommand, &rotateFlywheelWithAgitatorCommand},
-//     RemoteMapState(Remote::Switch::LEFT_SWITCH, Remote::SwitchState::UP));
-
 HoldCommandMapping leftSwitchUp(
     drivers(),
-    {&rotateAgitatorBurstCommand, &rotateFlywheelWithAgitatorCommand},
+    {&rotateAgitatorContinuousCommand, &rotateFlywheelWithAgitatorCommand},
     RemoteMapState(Remote::Switch::LEFT_SWITCH, Remote::SwitchState::UP));
+
+PressCommandMapping keyZToggled(
+    drivers(),
+    {&rotateAgitatorBurstCommand},
+    RemoteMapState({Remote::Key::Z}));
 
 // Register subsystems here -----------------------------------------------
 void registerStandardSubsystems(src::Drivers *drivers)
@@ -181,7 +181,7 @@ void registerMappings(src::Drivers *drivers)
     drivers->commandMapper.addMap(&rightSwitchMid);
     drivers->commandMapper.addMap(&rightSwitchDown);
     drivers->commandMapper.addMap(&leftSwitchMid);
-    drivers->commandMapper.addMap(&leftSwitchUp);
+    drivers->commandMapper.addMap(&keyZToggled);
 }
 }  // namespace standard_control
 
