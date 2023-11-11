@@ -89,6 +89,11 @@ ToggleCommandMapping keyRToggled(
     {&beybladeChassisCommandKeyboard},
     RemoteMapState({Remote::Key::R}));
 
+ToggleCommandMapping keySToggled(
+    drivers(),
+    {&rotateFlywheelKeyboardCommand},
+    RemoteMapState({Remote::Key::S}));
+
 HoldCommandMapping leftMouseDown(
     drivers(),
     {&rotateAgitatorContinuousCommand},
@@ -110,7 +115,7 @@ HoldCommandMapping rightSwitchMid(
 
 HoldCommandMapping rightSwitchDown(
     drivers(),
-    {&rotateFlywheelKeyboardCommand},
+    {&flywheelOffCommand},
     RemoteMapState(Remote::Switch::RIGHT_SWITCH, Remote::SwitchState::DOWN));
 
 HoldCommandMapping leftSwitchMid(
@@ -160,6 +165,7 @@ void registerMappings(src::Drivers *drivers)
     drivers->commandMapper.addMap(&keyRToggled);
     drivers->commandMapper.addMap(&leftMouseDown);
     drivers->commandMapper.addMap(&keyXHeld);
+    drivers->commandMapper.addMap(&keySToggled);
 
     // Joystick mappings ------------------------------------------------------------
     drivers->commandMapper.addMap(&rightSwitchUp);
