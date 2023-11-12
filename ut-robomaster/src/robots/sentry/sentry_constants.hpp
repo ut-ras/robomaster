@@ -84,11 +84,11 @@ constexpr PidConstants PID_TURRET_POSITION = {0.1f, 0.1f, 0.0f};
 static constexpr float YAW_REDUCTION = 2.0f;
 static constexpr float PITCH_REDUCTION = 4.0f;
 
-static constexpr float YAW_INPUT_SCALE = 0.02f;
-static constexpr float PITCH_INPUT_SCALE = 0.01f;
+static constexpr float YAW_INPUT_SCALE = 10.0f;
+static constexpr float PITCH_INPUT_SCALE = 5.0f;
 
-static constexpr float MOUSE_SENS_YAW = 0.0002f;
-static constexpr float MOUSE_SENS_PITCH = 0.0002f;
+static constexpr float MOUSE_SENS_YAW = 0.1f;
+static constexpr float MOUSE_SENS_PITCH = 0.1f;
 
 static constexpr tap::algorithms::SmoothPidConfig YAW_PID_CONFIG = {
     .kp = 65'000'000.0f,

@@ -23,8 +23,8 @@ void CommandMoveTurretMouse::execute()
         float yawInput = 0.0f;
         float pitchInput = 0.0f;
 
-        yawInput = remote->getMouseX() * MOUSE_SENS_YAW;
-        pitchInput = -remote->getMouseY() * MOUSE_SENS_PITCH;
+        yawInput = remote->getMouseX() * MOUSE_SENS_YAW * DT;
+        pitchInput = -remote->getMouseY() * MOUSE_SENS_PITCH * DT;
 
         yaw -= yawInput;
         pitch += pitchInput;
