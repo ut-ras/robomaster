@@ -39,7 +39,7 @@ void TurretMotor::updateMotorAngle()
     }
 }
 
-void TurretMotor::setAngle(float desiredAngle, uint32_t dt)
+void TurretMotor::setAngle(float desiredAngle, float dt)
 {
     setpoint.setValue(desiredAngle);
 

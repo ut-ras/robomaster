@@ -28,7 +28,6 @@ void TurretSubsystem::initialize()
 {
     yawTurret.initialize();
     pitchTurret.initialize();
-    lastTime = tap::arch::clock::getTimeMilliseconds();
 }
 
 void TurretSubsystem::refresh()
@@ -45,12 +44,8 @@ void TurretSubsystem::refresh()
 
     if (isCalibrated && !drivers->isKillSwitched())
     {
-        uint32_t time = tap::arch::clock::getTimeMilliseconds();
-        uint32_t dt = time - lastTime;
-        lastTime = time;
-
-        yawTurret.setAngle((baseYaw + getTargetLocalYaw()) * YAW_REDUCTION, dt);
-        pitchTurret.setAngle((basePitch + getTargetLocalPitch()) * PITCH_REDUCTION, dt);
+        yawTurret.setAngle((baseYaw + getTargetLocalYaw()) * YAW_REDUCTION, DT);
+        pitchTurret.setAngle((basePitch + getTargetLocalPitch()) * PITCH_REDUCTION, DT);
     }
     else
     {

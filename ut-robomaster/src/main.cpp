@@ -43,10 +43,11 @@
 /* control includes ---------------------------------------------------------*/
 #include "tap/architecture/clock.hpp"
 
+#include "robots/robot_constants.hpp"
 #include "robots/robot_control.hpp"
 
 /* define timers here -------------------------------------------------------*/
-tap::arch::PeriodicMilliTimer sendMotorTimeout(2);
+tap::arch::PeriodicMilliTimer refreshTimer(REFRESH_PERIOD);
 
 // Place any sort of input/output initialization here. For example, place
 // serial init stuff here.
@@ -56,9 +57,6 @@ static void initializeIo(src::Drivers *drivers);
 // very frequently. Use PeriodicMilliTimers if you don't want something to be
 // called as frequently.
 static void updateIo(src::Drivers *drivers);
-
-static constexpr float SAMPLE_FREQUENCY = 500.0f;
-static constexpr float MAHONY_KP = 0.1f;
 
 using namespace tap::gpio;
 
@@ -90,15 +88,14 @@ int main()
         // do this as fast as you can
         PROFILE(drivers->profiler, updateIo, (drivers));
 
-        if (sendMotorTimeout.execute())
+        if (refreshTimer.execute())
         {
-            // PROFILE(drivers->profiler, drivers->mpu6500.periodicIMUUpdate, ());
             PROFILE(drivers->profiler, drivers->bmi088.periodicIMUUpdate, ());
             PROFILE(drivers->profiler, drivers->commandScheduler.run, ());
             PROFILE(drivers->profiler, drivers->djiMotorTxHandler.encodeAndSendCanData, ());
             PROFILE(drivers->profiler, drivers->terminalSerial.update, ());
         }
-        // led_test::ledOn();
+
         modm::delay_us(10);
     }
     return 0;
@@ -113,13 +110,12 @@ static void initializeIo(src::Drivers *drivers)
     drivers->can.initialize();
     drivers->errorController.init();
     drivers->remote.initialize();
-    // drivers->mpu6500.init();
     drivers->refSerial.initialize();
     // drivers->cvBoard.initialize();
     drivers->terminalSerial.initialize();
     drivers->schedulerTerminalHandler.init();
     drivers->djiMotorTerminalSerialHandler.init();
-    drivers->bmi088.initialize(SAMPLE_FREQUENCY, MAHONY_KP, 0.0f);
+    drivers->bmi088.initialize(IMU_SAMPLE_FREQUENCY, IMU_KP, IMU_KI);
     drivers->bmi088.requestRecalibration();
 }
 
@@ -133,6 +129,4 @@ static void updateIo(src::Drivers *drivers)
     drivers->refSerial.updateSerial();
     // drivers->cvBoard.updateSerial();
     drivers->remote.read();
-    // drivers->mpu6500.read();
-    drivers->mouseTracker.update();
 }
