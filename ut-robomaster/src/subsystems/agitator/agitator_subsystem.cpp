@@ -78,8 +78,8 @@ void AgitatorSubsystem::refresh()
         drivers->refSerial.getRobotData().turret.lastReceivedLaunchingInfoTimestamp;
 
     // get positions of left and right agitators
-    float leftPosition = leftAgitator.measure();
-    float rightPosition = leftAgitator.measure();
+    float leftPosition = leftAgitator.measurePosition();
+    float rightPosition = leftAgitator.measurePosition();
 
 #if defined(TARGET_STANDARD) || defined(TARGET_SENTRY)
     leftAgitator.setActive(!killSwitch);
