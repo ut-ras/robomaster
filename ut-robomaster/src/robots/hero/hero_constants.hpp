@@ -46,8 +46,17 @@ constexpr PidConstants PID_FLYWHEEL = {0.1f, 0.1f, 0.0f};
 constexpr PidConstants PID_AGITATOR = PID_VELOCITY_DEFAULT;
 constexpr PidConstants PID_FEEDER = PID_VELOCITY_DEFAULT;
 
-constexpr float PITCH_MIN = -0.3349f;
-constexpr float PITCH_MAX = 0.3534f;
+constexpr bool USE_BALLISTICS = false;
+constexpr int BALLISTIC_ITERATIONS = 2;
+
+constexpr float PITCH_MIN = -0.3349f;  // rad
+constexpr float PITCH_MAX = 0.3534f;   // rad
+
+// NEED TO MEASURE (MAYBE ADD NEW CONSTANTS)
+constexpr float CAMERA_TO_PITCH = 0.0f;    // distance from main camera lens to pitch axis (m)
+constexpr float NOZZLE_TO_PITCH = 0.0f;    // distance from barrel nozzle to pitch axis (m)
+constexpr float CAMERA_TO_BARRELS = 0.0f;  // vertical ctc offset from camera lens to barrel (m)
+constexpr float CAMERA_X_OFFSET = 0.0f;    // horizontal offset of main camera lens (m)
 
 static constexpr modm::Pair<uint16_t, float> FLYWHEEL_RPS_MAPPING[] = {{10, 105.0f}, {16, 190.0f}};
 
