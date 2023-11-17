@@ -33,6 +33,7 @@ public:
 private:
     src::Drivers *drivers;
     FlywheelSubsystem *flywheel;
+    float speed;
 
 };  // class CommandRotateFlywheel
 }  // namespace commands

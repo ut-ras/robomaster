@@ -11,9 +11,9 @@ using motor_controller::PidConstants;
 using tap::can::CanBus;
 using namespace tap::motor;
 
-constexpr CanBus CAN_WHEELS = CanBus::CAN_BUS1;
+constexpr CanBus CAN_WHEELS = CanBus::CAN_BUS2;
 constexpr CanBus CAN_TURRET = CanBus::CAN_BUS1;
-constexpr CanBus CAN_SHOOTER = CanBus::CAN_BUS2;
+constexpr CanBus CAN_SHOOTER = CanBus::CAN_BUS1;
 
 constexpr MotorId ID_WHEEL_LF = MOTOR2;
 constexpr MotorId ID_WHEEL_RF = MOTOR1;
@@ -34,13 +34,13 @@ constexpr PidConstants PID_WHEELS = PID_VELOCITY_DEFAULT;
 constexpr PidConstants PID_TURRET_VELOCITY = PID_VELOCITY_DEFAULT;
 constexpr PidConstants PID_TURRET_POSITION = {0.1f, 0.1f, 0.0f};
 
-constexpr MotorId ID_FLYWHEEL_L = MOTOR3;
-constexpr MotorId ID_FLYWHEEL_R = MOTOR4;
-constexpr MotorId ID_AGITATOR = MOTOR1;
-constexpr MotorId ID_FEEDER = MOTOR2;
+constexpr MotorId ID_FLYWHEEL_L = MOTOR6;
+constexpr MotorId ID_FLYWHEEL_R = MOTOR1;
+constexpr MotorId ID_AGITATOR = MOTOR5;
+constexpr MotorId ID_FEEDER = MOTOR3;
 
-constexpr MotorId ID_YAW = MOTOR5;
-constexpr MotorId ID_PITCH = MOTOR6;
+constexpr MotorId ID_YAW = MOTOR2;
+constexpr MotorId ID_PITCH = MOTOR7;
 
 constexpr PidConstants PID_FLYWHEEL = {0.1f, 0.1f, 0.0f};
 constexpr PidConstants PID_AGITATOR = PID_VELOCITY_DEFAULT;

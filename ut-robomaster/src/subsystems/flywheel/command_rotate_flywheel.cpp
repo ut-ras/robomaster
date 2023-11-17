@@ -7,59 +7,63 @@ void CommandRotateFlywheel::initialize() {}
 
 void CommandRotateFlywheel::execute()
 {
-    if (drivers->refSerial.getRefSerialReceivingData())
-    {
-#if defined(TARGET_STANDARD) || defined(TARGET_SENTRY)
-        uint16_t refSystemLaunchSpeedLeft =
-            drivers->refSerial.getRobotData().turret.barrelSpeedLimit17ID1;
-        uint16_t refSystemLaunchSpeedRight =
-            drivers->refSerial.getRobotData().turret.barrelSpeedLimit17ID2;
+    //     if (drivers->refSerial.getRefSerialReceivingData())
+    //     {
+    // #if defined(TARGET_STANDARD) || defined(TARGET_SENTRY)
+    //         uint16_t refSystemLaunchSpeedLeft =
+    //             drivers->refSerial.getRobotData().turret.barrelSpeedLimit17ID1;
+    //         uint16_t refSystemLaunchSpeedRight =
+    //             drivers->refSerial.getRobotData().turret.barrelSpeedLimit17ID2;
 
-        float launchSpeedLeft = 0.0f;
-        float launchSpeedRight = 0.0f;
+    //         float launchSpeedLeft = 0.0f;
+    //         float launchSpeedRight = 0.0f;
 
-        for (int i = 0; i < 3; i++)
-        {
-            if (FLYWHEEL_RPS_MAPPING[i].getFirst() == refSystemLaunchSpeedLeft)
-            {
-                launchSpeedLeft = FLYWHEEL_RPS_MAPPING[i].getSecond();
-            }
+    //         for (int i = 0; i < 3; i++)
+    //         {
+    //             if (FLYWHEEL_RPS_MAPPING[i].getFirst() == refSystemLaunchSpeedLeft)
+    //             {
+    //                 launchSpeedLeft = FLYWHEEL_RPS_MAPPING[i].getSecond();
+    //             }
 
-            if (FLYWHEEL_RPS_MAPPING[i].getFirst() == refSystemLaunchSpeedRight)
-            {
-                launchSpeedRight = FLYWHEEL_RPS_MAPPING[i].getSecond();
-            }
+    //             if (FLYWHEEL_RPS_MAPPING[i].getFirst() == refSystemLaunchSpeedRight)
+    //             {
+    //                 launchSpeedRight = FLYWHEEL_RPS_MAPPING[i].getSecond();
+    //             }
 
-            if (launchSpeedLeft != 0.0f && launchSpeedRight != 0.0f)
-            {
-                break;
-            }
-        }
+    //             if (launchSpeedLeft != 0.0f && launchSpeedRight != 0.0f)
+    //             {
+    //                 break;
+    //             }
+    //         }
 
-        flywheel->setLaunchSpeed(launchSpeedLeft, launchSpeedRight);
+    //         flywheel->setLaunchSpeed(launchSpeedLeft, launchSpeedRight);
 
-#elif defined(TARGET_HERO)
-        uint16_t refSystemLaunchSpeed = drivers->refSerial.getRobotData().turret.barrelSpeedLimit42;
-        float launchSpeedHero = 0.0f;
+    // #elif defined(TARGET_HERO)
+    //         uint16_t refSystemLaunchSpeed =
+    //         drivers->refSerial.getRobotData().turret.barrelSpeedLimit42; float launchSpeedHero =
+    //         0.0f;
 
-        for (int i = 0; i < 3; i++)
-        {
-            if (FLYWHEEL_RPS_MAPPING[i].getFirst() == refSystemLaunchSpeed)
-            {
-                launchSpeedHero = FLYWHEEL_RPS_MAPPING[i].getSecond();
-                break;
-            }
-        }
+    //         for (int i = 0; i < 3; i++)
+    //         {
+    //             if (FLYWHEEL_RPS_MAPPING[i].getFirst() == refSystemLaunchSpeed)
+    //             {
+    //                 launchSpeedHero = FLYWHEEL_RPS_MAPPING[i].getSecond();
+    //                 break;
+    //             }
+    //         }
 
-        flywheel->setLaunchSpeed(launchSpeedHero);
-#endif
-    }
+    //         flywheel->setLaunchSpeed(launchSpeedHero);
+    // #endif
+    //     }
 
-    else
-    {
-        // NO REF SYSTEM DATA
-        flywheel->setLaunchSpeed(DEFAULT_SPEED);
-    }
+    //     else
+    //     {
+    //         // NO REF SYSTEM DATA
+    //         flywheel->setLaunchSpeed(DEFAULT_SPEED);
+    //     }
+    speed += static_cast<float>(-drivers->remote.getWheel()) / 660.0f * MAX_FLYWHEEL_ACCEL * 0.002f;
+    speed = modm::min(modm::max(speed, 0.0f), MAX_FLYWHEEL_SPEED);
+    flywheel->setLaunchSpeed(speed);
 }
 
 void CommandRotateFlywheel::end(bool) { flywheel->setLaunchSpeed(0.0f); }
