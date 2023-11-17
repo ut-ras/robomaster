@@ -33,10 +33,11 @@ struct TurretCooldownPercentage
 class CommandRotateAgitatorBurst : public tap::control::Command
 {
 public:
-    CommandRotateAgitatorBurst(src::Drivers *drivers, AgitatorSubsystem *agitator)
+    CommandRotateAgitatorBurst(src::Drivers *drivers, AgitatorSubsystem *agitator, int ballCount)
         : drivers(drivers),
           agitator(agitator)
     {
+        numToFire = ballCount;
         addSubsystemRequirement(agitator);
     }
 
@@ -49,10 +50,6 @@ public:
     bool isFinished() const override;
 
     const char *getName() const override { return "rotate agitator burst command"; }
-
-    int getNumToFire();
-
-    void setNumToFire(int num);
 
 private:
     src::Drivers *drivers;

@@ -4,7 +4,6 @@ namespace commands
 {
 void CommandRotateAgitatorBurst::initialize()
 {
-    numToFire = 8;
     beginTime = tap::arch::clock::getTimeMilliseconds();
 }
 
@@ -28,7 +27,7 @@ void CommandRotateAgitatorBurst::execute()
         // {
         ballsPerSecondLeft = ballsPerSecondLeftConst;
         ballsPerSecondRight = 0;
-        time = 1000 * getNumToFire() /
+        time = 1000 * numToFire /
                ballsPerSecondLeft;  // time in milliseconds that agitator must be run for
         // }
         // else
@@ -57,10 +56,6 @@ void CommandRotateAgitatorBurst::execute()
     agitator->setBallsPerSecond(ballsPerSecond);
 #endif
 }
-
-int CommandRotateAgitatorBurst::getNumToFire() { return numToFire; }
-
-void CommandRotateAgitatorBurst::setNumToFire(int num) { numToFire = num; }
 
 void CommandRotateAgitatorBurst::end(bool) { agitator->setBallsPerSecond(0.0f); }
 

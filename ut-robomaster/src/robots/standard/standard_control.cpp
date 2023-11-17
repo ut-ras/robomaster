@@ -74,7 +74,8 @@ CommandMoveChassisKeyboard moveChassisCommandKeyboard(drivers(), &chassis, &turr
 CommandBeybladeChassisKeyboard beybladeChassisCommandKeyboard(drivers(), &chassis, &turret);
 
 CommandRotateAgitatorContinuous rotateAgitatorContinuousCommand(drivers(), &agitator);
-CommandRotateAgitatorBurst rotateAgitatorBurstCommand(drivers(), &agitator);
+// Command to burst fire [8] balls
+CommandRotateAgitatorBurst rotate8AgitatorBurstCommand(drivers(), &agitator, 8);
 CommandUnjamAgitator unjamAgitatorCommand(drivers(), &agitator);
 
 CommandRotateFlywheel rotateFlywheelKeyboardCommand(drivers(), &flywheel);
@@ -134,7 +135,7 @@ HoldCommandMapping leftSwitchUp(
 
 PressCommandMapping keyZToggled(
     drivers(),
-    {&rotateAgitatorBurstCommand},
+    {&rotate8AgitatorBurstCommand},
     RemoteMapState({Remote::Key::Z}));
 
 // Register subsystems here -----------------------------------------------
