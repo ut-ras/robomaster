@@ -34,6 +34,9 @@ public:
     // Overloaded method to allow independent control of left and right agitators
     void setBallsPerSecond(float bpsLeft, float bpsRight);
 
+    float getLeftPosition();
+    float getRightPosition();
+
 private:
     src::Drivers *drivers;
 

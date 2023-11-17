@@ -38,7 +38,7 @@ void TestSubsystem::input(float a, float b)
 void TestSubsystem::refresh()
 {
     controller.update(terminalCallback.argument);  // velocity
-    terminalCallback.output = controller.measure();
+    terminalCallback.output = controller.measureVelocity();
 
     // float current = 0.5f;  // A
     // float torque_constant = 0.3f;               // N*m / A

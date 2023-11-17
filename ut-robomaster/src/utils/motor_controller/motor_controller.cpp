@@ -1,29 +1,7 @@
 #include "motor_controller.hpp"
 
-namespace
-{
-using namespace motor_controller;
-using namespace tap::algorithms;
-
-float measure_position(DjiMotor* motor, const MotorConstants& constants)
-{
-    int64_t encoderVal = motor->getEncoderUnwrapped();
-    float units = static_cast<float>(encoderVal) / DjiMotor::ENC_RESOLUTION;
-    float turns = units / constants.gearRatio;  // revs
-    return turns;
-}
-
-float measure_velocity(DjiMotor* motor, const MotorConstants& constants)
-{
-    int16_t rpm = motor->getShaftRPM() / constants.gearRatio;
-    float rps = rpm / 60.0f;  // revs / sec
-    return rps;
-}
-}  // namespace
-
 namespace motor_controller
 {
-
 void MotorController::initialize()
 {
     motor.initialize();
@@ -40,7 +18,22 @@ void MotorController::setActive(bool active)
     }
 }
 
-float MotorController::delta_time()
+float MotorController::measurePosition()
+{
+    int64_t encoderVal = motor.getEncoderUnwrapped();
+    float units = static_cast<float>(encoderVal) / DjiMotor::ENC_RESOLUTION;
+    float turns = units / constants.gearRatio;  // revs
+    return turns;
+}
+
+float MotorController::measureVelocity()
+{
+    int16_t rpm = motor.getShaftRPM() / constants.gearRatio;
+    float rps = rpm / 60.0f;  // revs / sec
+    return rps;
+}
+
+float MotorController::deltaTime()
 {
     uint32_t time = tap::arch::clock::getTimeMilliseconds();
     float dt = (time - lastTime) / 1000.0f;
@@ -53,21 +46,19 @@ void MotorPositionController::update(float target)
 {
     if (!isActive) return;
 
-    float dt = delta_time();
+    float dt = deltaTime();
 
     // position
-    float diff = target - this->measure();
+    float diff = target - measurePosition();
     float smallest_diff = diff - roundf(diff);
     float velocity = pid.update(smallest_diff, dt);
 
     // velocity
-    float vel_diff = velocity - measure_velocity(&motor, constants);
+    float vel_diff = velocity - measureVelocity();
     float output = velocityPid.update(vel_diff, dt);
 
     motor.setDesiredOutput(output * constants.maxOutput);
 }
-
-float MotorPositionController::measure() { return measure_position(&motor, constants); }
 
 void MotorPositionController::setActive(bool active)
 {
@@ -80,8 +71,8 @@ void MotorVelocityController::update(float target)
 {
     if (!isActive) return;
 
-    float diff = target - this->measure();
-    float output = pid.update(diff, delta_time());
+    float diff = target - measureVelocity();
+    float output = pid.update(diff, deltaTime());
     motor.setDesiredOutput(output * constants.maxOutput);
 }
 
@@ -94,6 +85,4 @@ void MotorVelocityController::applyPowerScalar(float powerLimitScalar)
     float invertFactor = motor.isMotorInverted() ? -1.0f : 1.0f;
     motor.setDesiredOutput(motor.getOutputDesired() * invertFactor * powerLimitScalar);
 }
-
-float MotorVelocityController::measure() { return measure_velocity(&motor, constants); }
 }  // namespace motor_controller

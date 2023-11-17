@@ -114,10 +114,10 @@ void ChassisSubsystem::setMecanumWheelVelocities(Vector2f v, float wZ)
 
 Vector3f ChassisSubsystem::measureVelocity()
 {
-    float w1 = wheels[0].measure();  // rev/s
-    float w2 = wheels[1].measure();  // rev/s
-    float w3 = wheels[2].measure();  // rev/s
-    float w4 = wheels[3].measure();  // rev/s
+    float w1 = wheels[0].measureVelocity();  // rev/s
+    float w2 = wheels[1].measureVelocity();  // rev/s
+    float w3 = wheels[2].measureVelocity();  // rev/s
+    float w4 = wheels[3].measureVelocity();  // rev/s
 
     float xa = (w1 + w2 + w3 + w4);
     float ya = (-w1 + w2 + w3 - w4);

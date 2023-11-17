@@ -77,9 +77,7 @@ void AgitatorSubsystem::refresh()
     // int timeSinceFiring =
     //     drivers->refSerial.getRobotData().turret.lastReceivedLaunchingInfoTimestamp;
 
-    // // get positions of left and right agitators
-    // float leftPosition = leftAgitator.measure();
-    // float rightPosition = leftAgitator.measure();
+    // get positions of left and right agitators
 
 #if defined(TARGET_STANDARD) || defined(TARGET_SENTRY)
     leftAgitator.setActive(!killSwitch);
@@ -139,5 +137,8 @@ void AgitatorSubsystem::setBallsPerSecond(float bpsLeft, float bpsRight)
     ballsPerSecondHero = bpsLeft;
 #endif
 }
+
+float AgitatorSubsystem::getLeftPosition() { return leftAgitator.measurePosition(); }
+float AgitatorSubsystem::getRightPosition() { return rightAgitator.measurePosition(); }
 
 }  // namespace subsystems::agitator
