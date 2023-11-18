@@ -75,7 +75,7 @@ CommandBeybladeChassisKeyboard beybladeChassisCommandKeyboard(drivers(), &chassi
 
 CommandRotateAgitatorContinuous rotateAgitatorContinuousCommand(drivers(), &agitator);
 // Command to burst fire [8] balls
-CommandRotateAgitatorBurst rotate8AgitatorBurstCommand(drivers(), &agitator, 8);
+CommandRotateAgitatorBurst rotate8AgitatorBurstCommand(drivers(), &agitator, 5);
 CommandUnjamAgitator unjamAgitatorCommand(drivers(), &agitator);
 
 CommandRotateFlywheel rotateFlywheelKeyboardCommand(drivers(), &flywheel);
@@ -123,15 +123,25 @@ HoldCommandMapping rightSwitchDown(
     {&rotateFlywheelKeyboardCommand},
     RemoteMapState(Remote::Switch::RIGHT_SWITCH, Remote::SwitchState::DOWN));
 
+// HoldCommandMapping leftSwitchMid(
+//     drivers(),
+//     {&rotateFlywheelNoAgitatorCommand},
+//     RemoteMapState(Remote::Switch::LEFT_SWITCH, Remote::SwitchState::MID));
+
+// HoldCommandMapping leftSwitchUp(
+//     drivers(),
+//     {&rotateAgitatorContinuousCommand, &rotateFlywheelWithAgitatorCommand},
+//     RemoteMapState(Remote::Switch::LEFT_SWITCH, Remote::SwitchState::UP));
+
 HoldCommandMapping leftSwitchMid(
     drivers(),
     {&rotateFlywheelNoAgitatorCommand},
-    RemoteMapState(Remote::Switch::LEFT_SWITCH, Remote::SwitchState::MID));
+    RemoteMapState({Remote::Key::Q}));
 
 HoldCommandMapping leftSwitchUp(
     drivers(),
     {&rotateAgitatorContinuousCommand, &rotateFlywheelWithAgitatorCommand},
-    RemoteMapState(Remote::Switch::LEFT_SWITCH, Remote::SwitchState::UP));
+    RemoteMapState({Remote::Key::R}));
 
 PressCommandMapping keyZToggled(
     drivers(),

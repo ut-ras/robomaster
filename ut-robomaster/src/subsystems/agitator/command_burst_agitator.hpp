@@ -11,24 +11,24 @@ namespace commands
 {
 using subsystems::agitator::AgitatorSubsystem;
 
-struct TurretCooldownPercentage
-{
-    int currentHeat1;
-    int currentHeat2;
-    int heatLimit1;
-    int heatLimit2;
-    int percentage1;
-    int percentage2;
+// struct TurretCooldownPercentage
+// {
+//     int currentHeat1;
+//     int currentHeat2;
+//     int heatLimit1;
+//     int heatLimit2;
+//     int percentage1;
+//     int percentage2;
 
-    float compare()
-    {
-        percentage1 = currentHeat1 * 1.0f / heatLimit1;
-        percentage2 = currentHeat2 * 1.0f / heatLimit2;
-        return percentage1 - percentage2;  // if positive, turret one has a higher cooldown
-                                           // if zero, both turrets have equivalent cooldown
-                                           // if negative, percentage 2 has a higher cooldown
-    }
-};
+//     float compare()
+//     {
+//         percentage1 = currentHeat1 * 1.0f / heatLimit1;
+//         percentage2 = currentHeat2 * 1.0f / heatLimit2;
+//         return percentage1 - percentage2;  // if positive, turret one has a higher cooldown
+//                                            // if zero, both turrets have equivalent cooldown
+//                                            // if negative, percentage 2 has a higher cooldown
+//     }
+// };
 
 class CommandRotateAgitatorBurst : public tap::control::Command
 {
@@ -58,9 +58,10 @@ private:
     float beginPosition;
     float initialPosition;
     float targetPosition;
-#if defined(TARGET_STANDARD) || defined(TARGET_SENTRY)
-    TurretCooldownPercentage cooldownMeter;
-#endif
+    bool isLeftTurret = false;
+    // #if defined(TARGET_STANDARD) || defined(TARGET_SENTRY)
+    //     // TurretCooldownPercentage cooldownMeter;
+    // #endif
 };  // class CommandFireContinuous
 
 }  // namespace commands

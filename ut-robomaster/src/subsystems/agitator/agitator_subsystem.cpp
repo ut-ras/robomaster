@@ -138,7 +138,12 @@ void AgitatorSubsystem::setBallsPerSecond(float bpsLeft, float bpsRight)
 #endif
 }
 
+#if defined(TARGET_STANDARD) || defined(TARGET_SENTRY)
 float AgitatorSubsystem::getLeftPosition() { return leftAgitator.measurePosition(); }
 float AgitatorSubsystem::getRightPosition() { return rightAgitator.measurePosition(); }
+
+#elif defined(TARGET_HERO)
+float AgitatorSubsystem::getPosition() { return Agitator.measurePosition(); }
+#endif
 
 }  // namespace subsystems::agitator
