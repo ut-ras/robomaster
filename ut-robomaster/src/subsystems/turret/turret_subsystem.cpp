@@ -26,19 +26,21 @@ TurretSubsystem::TurretSubsystem(src::Drivers* drivers)
 
 void TurretSubsystem::initialize()
 {
-    yawTurret.initialize();
+    // yawTurret.initialize();
     pitchTurret.initialize();
+    // pitchMotor.initialize();
     lastTime = tap::arch::clock::getTimeMilliseconds();
 }
 
 void TurretSubsystem::refresh()
 {
-    yawTurret.updateMotorAngle();
+    // yawTurret.updateMotorAngle();
     pitchTurret.updateMotorAngle();
+    // pitchMotor.setDesiredOutput(10000);
 
-    if (!isCalibrated && yawMotor.isMotorOnline() && pitchMotor.isMotorOnline())
+    if (!isCalibrated && /*yawMotor.isMotorOnline() && */ pitchMotor.isMotorOnline())
     {
-        baseYaw = yawTurret.getAngle() / YAW_REDUCTION;
+        // baseYaw = yawTurret.getAngle() / YAW_REDUCTION;
         basePitch = pitchTurret.getAngle() / PITCH_REDUCTION - PITCH_MIN;
         isCalibrated = true;
     }
@@ -49,12 +51,12 @@ void TurretSubsystem::refresh()
         uint32_t dt = time - lastTime;
         lastTime = time;
 
-        yawTurret.setAngle((baseYaw + getTargetLocalYaw()) * YAW_REDUCTION, dt);
+        // yawTurret.setAngle((baseYaw + getTargetLocalYaw()) * YAW_REDUCTION, dt);
         pitchTurret.setAngle((basePitch + getTargetLocalPitch()) * PITCH_REDUCTION, dt);
     }
     else
     {
-        yawTurret.reset();
+        // yawTurret.reset();
         pitchTurret.reset();
     }
 }

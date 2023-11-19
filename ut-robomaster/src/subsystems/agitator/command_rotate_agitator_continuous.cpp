@@ -44,7 +44,7 @@ void CommandRotateAgitatorContinuous::execute()
     //     agitator->setBallsPerSecond(ballsPerSecond);
     // #endif
 
-    float v = drivers->remote.getChannel(Remote::Channel::RIGHT_VERTICAL);
+    float v = drivers->remote.getChannel(Remote::Channel::RIGHT_HORIZONTAL);
     agitator->setBallsPerSecond(v * abs(v) * MAX_AGITATOR_SPEED);
 }
 

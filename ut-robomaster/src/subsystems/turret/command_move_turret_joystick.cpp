@@ -6,7 +6,7 @@ namespace commands
 {
 void CommandMoveTurretJoystick::initialize()
 {
-    yaw = turret->getTargetWorldYaw();
+    // yaw = turret->getTargetWorldYaw();
     pitch = turret->getTargetWorldPitch();
 }
 
@@ -16,17 +16,16 @@ void CommandMoveTurretJoystick::execute()
 
     if (drivers->isKillSwitched())
     {
-        yaw = turret->getCurrentLocalYaw() + turret->getChassisYaw();
+        // yaw = turret->getCurrentLocalYaw() + turret->getChassisYaw();
         pitch = turret->getCurrentLocalPitch();
     }
-
     else
     {
         float yawInput = 0.0f;
         float pitchInput = 0.0f;
 
         float h = remote->getChannel(Remote::Channel::LEFT_HORIZONTAL);
-        float v = remote->getChannel(Remote::Channel::LEFT_VERTICAL);
+        float v = remote->getChannel(Remote::Channel::RIGHT_VERTICAL);
 
         if (abs(h) < ANALOG_DEAD_ZONE) h = 0.0f;
         if (abs(v) < ANALOG_DEAD_ZONE) v = 0.0f;
