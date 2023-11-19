@@ -91,7 +91,7 @@ static constexpr float MOUSE_SENS_YAW = 0.1f;
 static constexpr float MOUSE_SENS_PITCH = 0.1f;
 
 static constexpr tap::algorithms::SmoothPidConfig YAW_PID_CONFIG = {
-    .kp = 65'000'000.0f,
+    .kp = 65'000.0f,
     .ki = 0.0f,
     .kd = 3'000.0f,
     .maxICumulative = 0.0f,
@@ -105,7 +105,7 @@ static constexpr tap::algorithms::SmoothPidConfig YAW_PID_CONFIG = {
 };
 
 static constexpr tap::algorithms::SmoothPidConfig PITCH_PID_CONFIG = {
-    .kp = 100'183'100.0f,
+    .kp = 100'183.1f,
     .ki = 0.0f,
     .kd = 1'000.0f,
     .maxICumulative = 0.0f,
