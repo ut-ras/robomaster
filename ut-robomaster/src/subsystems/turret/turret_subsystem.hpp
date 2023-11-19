@@ -57,7 +57,6 @@ private:
 
     float targetWorldYaw = 0.0f;
     float targetWorldPitch = 0.0f;
-    uint32_t lastTime;
 
     Vector3f targetPosition = Vector3f(0.0f);
     Vector3f targetVelocity = Vector3f(0.0f);

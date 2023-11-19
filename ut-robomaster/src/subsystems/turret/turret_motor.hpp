@@ -22,7 +22,7 @@ public:
     void initialize();
     void reset();
     void updateMotorAngle();
-    void setAngle(float desiredAngle, uint32_t dt);
+    void setAngle(float desiredAngle, float dt);
     float getAngle();
     float getSetpoint();
 
