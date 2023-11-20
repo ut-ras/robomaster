@@ -21,18 +21,18 @@ RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 90 --slave /u
 RUN pip3 install lbuild pyelftools modm
 
 # "install" the gcc ARM cross-compiler
-# RUN wget -q https://developer.arm.com/-/media/Files/downloads/gnu-rm/10.3-2021.10/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux.tar.bz2 -O gcc-arm.tar.bz2 \
-#     && tar -xjf /gcc-arm.tar.bz2 \
-#     && rm gcc-arm.tar.bz2
-# ENV PATH="/gcc-arm-none-eabi-10.3-2021.10/bin:$PATH"
+RUN wget -q https://developer.arm.com/-/media/Files/downloads/gnu-rm/10.3-2021.10/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux.tar.bz2 -O gcc-arm.tar.bz2 \
+    && tar -xjf /gcc-arm.tar.bz2 \
+    && rm gcc-arm.tar.bz2
+ENV PATH="/gcc-arm-none-eabi-10.3-2021.10/bin:$PATH"
 
-ARG USERNAME=koolkid
+ARG USERNAME=dev
 ARG USER_UID=1000
 ARG USER_GID=$USER_UID
 
 # Create non-root user
 RUN groupadd --gid $USER_GID $USERNAME \
-    && useradd --uid $USER_UID --gid $USER_GID -m $USERNAME \
+    && useradd --uid $USER_UID --gid $USER_GID -m $USERNAME -s /usr/bin/bash \
     && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
     && chmod 0440 /etc/sudoers.d/$USERNAME
 

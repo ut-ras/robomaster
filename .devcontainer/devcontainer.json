@@ -13,9 +13,10 @@
     "runArgs": [
         "--userns=keep-id"
     ],
-    "containerUser": "koolkid",
-    "containerEnv": {
-        "HOME": "/home/koolkid"
-    }
+    "containerUser": "dev"
+    // "postAttachCommand": "cd ut-robomaster"
+    // "containerEnv": {
+    //     "HOME": "/home/koolkid"
+    // }
     // "updateRemoteUserUID": true
 }
