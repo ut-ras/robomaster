@@ -1,0 +1,21 @@
+{
+    "build": {
+        "dockerfile": "Dockerfile"
+    },
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "marus25.cortex-debug",
+                "ms-vscode.cpptools"
+            ]
+        }
+    },
+    "runArgs": [
+        "--userns=keep-id"
+    ],
+    "containerUser": "koolkid",
+    "containerEnv": {
+        "HOME": "/home/koolkid"
+    }
+    // "updateRemoteUserUID": true
+}
