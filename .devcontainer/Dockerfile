@@ -4,8 +4,8 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update \
     && apt-get install -y \
-    gdb sudo openocd apt-utils dialog git wget curl vim gdb clang-format \
-    valgrind bash-completion python3 python3-pip scons doxygen \
+    gdb sudo openocd usbutils apt-utils dialog git wget curl vim gdb \
+    clang-format valgrind bash-completion python3 python3-pip scons doxygen \
     build-essential libboost-all-dev gcc g++ lcov gcovr gcc-arm-none-eabi \
     && rm -rf /var/lib/apt/lists/*
 

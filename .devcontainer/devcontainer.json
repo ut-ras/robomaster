@@ -11,12 +11,13 @@
         }
     },
     "runArgs": [
-        "--userns=keep-id"
+        "--userns=keep-id",
+        // Disable SELinux labeling (see https://docs.podman.io/en/latest/markdown/podman-run.1.html#volume-v-source-volume-host-dir-container-dir-options)
+        "--security-opt",
+        "label=disable"
     ],
-    "containerUser": "dev"
-    // "postAttachCommand": "cd ut-robomaster"
-    // "containerEnv": {
-    //     "HOME": "/home/koolkid"
-    // }
-    // "updateRemoteUserUID": true
+    "mounts": [
+        // Allow USB devices for flashing
+        "type=bind,source=/dev/bus/usb,target=/dev/bus/usb"
+    ]
 }
