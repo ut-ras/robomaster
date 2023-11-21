@@ -1,43 +1,6 @@
 {
     "configurations": [
         {
-            "name": "Test",
-            "defines": [
-                "${default}",
-                "ENV_UNIT_TESTS",
-                "PLATFORM_HOSTED",
-                "RUN_WITH_PROFILING"
-            ],
-            "includePath": [
-                "${default}",
-                "template-project/taproot/sim-modm/hosted-linux/modm/src",
-                "template-project/taproot/test",
-                "template-project/test"
-            ],
-            "compilerPath": "g++",
-            "intelliSenseMode": "gcc-x64",
-            "browse": {
-                "limitSymbolsToIncludedHeaders": true
-            }
-        },
-        {
-            "name": "Sim",
-            "defines": [
-                "${default}",
-                "PLATFORM_HOSTED",
-                "RUN_WITH_PROFILING"
-            ],
-            "includePath": [
-                "${default}",
-                "template-project/taproot/sim-modm/hosted-linux/modm/src"
-            ],
-            "compilerPath": "g++",
-            "intelliSenseMode": "gcc-x64",
-            "browse": {
-                "limitSymbolsToIncludedHeaders": true
-            }
-        },
-        {
             "name": "Hardware",
             "defines": [
                 "TARGET_STANDARD",
@@ -46,21 +9,13 @@
             ],
             "includePath": [
                 "${default}",
-                "${workspaceFolder}/ut-robomaster/taproot/src",
-                "${workspaceFolder}/taproot/modm/src",
-                "${workspaceFolder}/ut-robomaster/taproot/modm/src",
-                "${workspaceFolder}/taproot/modm/ext/st/stm32/stm32f4xx/Include",
-                "${workspaceFolder}/taproot/modm/ext/arm/cmsis/CMSIS/Core/Include",
-                "${workspaceFolder}/ut-robomaster/taproot/modm/src/modm/processing",
-                "${workspaceFolder}/ut-robomaster/src",
+                "ut-robomaster/taproot/modm/src",
+                "ut-robomaster/taproot/modm/ext/cmsis/core",
+                "ut-robomaster/taproot/modm/ext/cmsis/device",
+                "ut-robomaster/taproot/modm/ext/cmsis/dsp"
             ],
             "compilerPath": "arm-none-eabi-g++",
-            "intelliSenseMode": "gcc-arm",
-            "browse": {
-                "limitSymbolsToIncludedHeaders": true
-            },
-            "cStandard": "c17",
-            "cppStandard": "c++17"
+            "intelliSenseMode": "gcc-arm"
         }
     ],
     "version": 4
