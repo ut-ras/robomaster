@@ -6,7 +6,7 @@
         {
             "label": "Build - Debug",
             "type": "shell",
-            "command": "scons build profile=debug profiling=true robot=TARGET_${input:robot}",
+            "command": "scons build robot=${input:robot} profile=debug profiling=true",
             "group": {
                 "kind": "build",
                 "isDefault": true
@@ -18,7 +18,7 @@
         {
             "label": "Build - Release",
             "type": "shell",
-            "command": "scons build robot=TARGET_${input:robot}",
+            "command": "scons build robot=${input:robot} ",
             "group": "build",
             "options": {
                 "cwd": "${workspaceRoot}/ut-robomaster"
@@ -27,7 +27,7 @@
         {
             "label": "Flash - Debug",
             "type": "shell",
-            "command": "scons run profile=debug profiling=true robot=TARGET_${input:robot}",
+            "command": "scons run robot=${input:robot} profile=debug profiling=true",
             "group": "build",
             "options": {
                 "cwd": "${workspaceRoot}/ut-robomaster"
@@ -36,7 +36,7 @@
         {
             "label": "Flash - Release",
             "type": "shell",
-            "command": "scons run robot=TARGET_${input:robot}",
+            "command": "scons run robot=${input:robot}",
             "group": "build",
             "options": {
                 "cwd": "${workspaceRoot}/ut-robomaster"
@@ -49,11 +49,11 @@
             "description": "Robot type:",
             "type": "pickString",
             "options": [
-                "STANDARD",
-                "HERO",
-                "SENTRY"
+                "standard",
+                "hero",
+                "sentry"
             ],
-            "default": "STANDARD"
+            "default": "standard"
         },
     ]
 }

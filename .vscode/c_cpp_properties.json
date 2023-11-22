@@ -4,8 +4,8 @@
             "name": "Hardware",
             "defines": [
                 "TARGET_STANDARD",
-                "TARGET_SENTRY",
-                "TARGET_HERO"
+                "TARGET_HERO",
+                "TARGET_SENTRY"
             ],
             "includePath": [
                 "${default}",
