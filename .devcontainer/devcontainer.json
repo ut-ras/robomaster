@@ -11,11 +11,11 @@
         }
     },
     "runArgs": [
+        // Ensure our workspace gets mounted under the non-root user (podman)
+        "--userns=keep-id",
         // Disable SELinux labeling (see https://docs.podman.io/en/latest/markdown/podman-run.1.html#volume-v-source-volume-host-dir-container-dir-options)
         "--security-opt",
-        "label=disable",
-        // Whitelist USB devices with major number 189 (e.g. ST-Links, for flashing)
-        "--device-cgroup-rule=c 189:* rwm"
+        "label=disable"
     ],
     "mounts": [
         // Mount USB devices (for flashing)
