@@ -11,13 +11,14 @@
         }
     },
     "runArgs": [
-        "--userns=keep-id",
         // Disable SELinux labeling (see https://docs.podman.io/en/latest/markdown/podman-run.1.html#volume-v-source-volume-host-dir-container-dir-options)
         "--security-opt",
-        "label=disable"
+        "label=disable",
+        // Whitelist USB devices with major number 189 (e.g. ST-Links, for flashing)
+        "--device-cgroup-rule=c 189:* rwm"
     ],
     "mounts": [
-        // Allow USB devices for flashing
+        // Mount USB devices (for flashing)
         "type=bind,source=/dev/bus/usb,target=/dev/bus/usb"
     ]
 }

@@ -12,7 +12,8 @@ RUN apt-get update \
 RUN pip3 install lbuild pyelftools modm
 
 ARG ARM_GCC_VERSION=10.3-2021.10
-RUN wget -q https://developer.arm.com/-/media/Files/downloads/gnu-rm/${ARM_GCC_VERSION}/gcc-arm-none-eabi-${ARM_GCC_VERSION}-x86_64-linux.tar.bz2 -O gcc-arm.tar.bz2 \
+RUN ARCH=$(uname -m) \
+    && wget -q https://developer.arm.com/-/media/Files/downloads/gnu-rm/${ARM_GCC_VERSION}/gcc-arm-none-eabi-${ARM_GCC_VERSION}-${ARCH}-linux.tar.bz2 -O gcc-arm.tar.bz2 \
     && tar -xjf /gcc-arm.tar.bz2 \
     && rm gcc-arm.tar.bz2
 ENV PATH="/gcc-arm-none-eabi-${ARM_GCC_VERSION}/bin:$PATH"
