@@ -1,6 +1,7 @@
 {
     "editor.tabSize": 4,
     "editor.formatOnSave": true,
+    "terminal.integrated.cwd": "ut-robomaster",
     "files.associations": {
         "array": "cpp",
         "string": "cpp",
