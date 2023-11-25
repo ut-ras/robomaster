@@ -1,22 +1,4 @@
-# Copyright (c) 2020-2021 UT Robomaster
-#
-# This file is part of ut-robomaster.
-#
-# ut-robomaster is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# ut-robomaster is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with ut-robomaster.  If not, see <https://www.gnu.org/licenses/>.
-
 from SCons.Script import *
-from . import extract_robot_type
 
 
 CMD_LINE_ARGS                       = 1
@@ -25,8 +7,11 @@ SIM_BUILD_TARGET_ACCEPTED_ARGS      = ["build-sim", "run-sim"]
 HARDWARE_BUILD_TARGET_ACCEPTED_ARGS = ["build", "run", "size", "gdb", "all"]
 VALID_BUILD_PROFILES                = ["debug", "release", "fast"]
 VALID_PROFILING_TYPES               = ["true", "false"]
+ROBOT_TYPE_DEFINES                  = {"standard": "TARGET_STANDARD",
+                                       "hero": "TARGET_HERO",
+                                       "sentry": "TARGET_SENTRY"}
 
-USAGE = "Usage: scons <target> [profile=<debug|release|fast>] [robot=TARGET_<ROBOT_TYPE>] [profiling=<true|false>]\n\
+USAGE = "Usage: scons <target> robot=<standard|hero|sentry> [profile=<debug|release|fast>] [profiling=<true|false>]\n\
     \"<target>\" is one of:\n\
         - \"build\": build all code for the hardware platform.\n\
         - \"run\": build all code for the hardware platform, and deploy it to the board via a connected ST-Link.\n\
@@ -34,11 +19,12 @@ USAGE = "Usage: scons <target> [profile=<debug|release|fast>] [robot=TARGET_<ROB
         - \"run-tests\": build core code and tests for the current host platform, and execute them locally with the test runner.\n\
         - \"run-tests-gcov\": builds core code and tests, executes them locally, and captures and prints code coverage information\n\
         - \"build-sim\": build all code for the simulated environment, for the current host platform.\n\
-        - \"run-sim\": build all code for the simulated environment, for the current host platform, and execute the simulator locally.\n\
-    \"TARGET_<ROBOT_TYPE>\" is an optional argument that can override whatever robot type has been specified in robot_type.hpp.\n\
-        - <ROBOT_TYPE> must be one of the following:\n\
-            - STANDARD, DRONE, ENGINEER, SENTRY, HERO"
+        - \"run-sim\": build all code for the simulated environment, for the current host platform, and execute the simulator locally."
 
+def throw_error(msg):
+    print("Error:", msg)
+    print("See `scons help` for usage info.")
+    exit(1)
 
 def parse_args():
     args = {
@@ -48,7 +34,7 @@ def parse_args():
         "ROBOT_TYPE": "",
     }
     if len(COMMAND_LINE_TARGETS) > CMD_LINE_ARGS:
-        raise Exception("You did not enter the correct number of arguments.\n" + USAGE)
+        throw_error("You entered too many arguments.")
 
     # Extract the target environment from the first command line argument
     # and determine modm build path as well as add any extra files to ignore
@@ -64,20 +50,25 @@ def parse_args():
         elif build_target in HARDWARE_BUILD_TARGET_ACCEPTED_ARGS:
             args["TARGET_ENV"] = "hardware"
         else:
-            raise Exception("You did not select a valid target.\n" + USAGE)
+            throw_error("You did not select a valid target.")
     else:
-        raise Exception("You must select a valid robot target.\n" + USAGE)
+        throw_error("You must select a target.")
+
+    # Extract and validate the robot type (required option)
+    robot_type = ARGUMENTS.get("robot")
+    if robot_type == None:
+        throw_error("You must select a robot type.")
+    elif robot_type not in ROBOT_TYPE_DEFINES:
+        throw_error("You specified an invalid robot type.")
+    args["ROBOT_TYPE"] = ROBOT_TYPE_DEFINES[robot_type]
 
     # Extract and validate the build profile (either debug or release)
     args["BUILD_PROFILE"] = ARGUMENTS.get("profile", "release")
     if args["BUILD_PROFILE"] not in VALID_BUILD_PROFILES:
-        raise Exception("You specified an invalid build profile.\n" + USAGE)
+        throw_error("You specified an invalid build profile.")
 
     args["PROFILING"] = ARGUMENTS.get("profiling", "false")
     if args["PROFILING"] not in VALID_PROFILING_TYPES:
-        raise Exception("You specified an invalid profiling type.\n" + USAGE)
-
-    # Extract the robot type from either the command line or robot_type.hpp
-    args["ROBOT_TYPE"] = extract_robot_type.get_robot_type()
+        throw_error("You specified an invalid profiling type.")
 
     return args

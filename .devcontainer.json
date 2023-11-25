@@ -1,14 +1,24 @@
 {
-    "image": "aruw/mcb-dev:2021-06-02.3",
-    // TODO: consider supporting/promoting using WSL2 file system for perf?
-    //       Might make it harder to deploy to an MCB.
-    "extensions": [
-        "marus25.cortex-debug",
-        "ms-vscode.cpptools",
-        "aruwrobotchooser.robot-chooser"
+    "build": {
+        "dockerfile": "Dockerfile"
+    },
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "marus25.cortex-debug",
+                "ms-vscode.cpptools"
+            ]
+        }
+    },
+    "runArgs": [
+        // Ensure our workspace gets mounted under the non-root user (podman)
+        "--userns=keep-id",
+        // Disable SELinux labeling (see https://docs.podman.io/en/latest/markdown/podman-run.1.html#volume-v-source-volume-host-dir-container-dir-options)
+        "--security-opt",
+        "label=disable"
     ],
     "mounts": [
-        // Persist installed extensions across container rebuilds
-        "source=taproot-template-project-extensions,target=/root/.vscode-server/extensions,type=volume",
+        // Mount USB devices (for flashing)
+        "type=bind,source=/dev/bus/usb,target=/dev/bus/usb"
     ]
 }

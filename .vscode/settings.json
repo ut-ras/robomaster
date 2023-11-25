@@ -1,6 +1,7 @@
 {
     "editor.tabSize": 4,
     "editor.formatOnSave": true,
+    "terminal.integrated.cwd": "ut-robomaster",
     "files.associations": {
         "array": "cpp",
         "string": "cpp",
@@ -76,14 +77,11 @@
     },
     "C_Cpp.errorSquiggles": "enabled",
     "C_Cpp.default.includePath": [
-        "template-project/taproot/src",
-        "template-project/src",
+        "ut-robomaster/src",
+        "ut-robomaster/taproot/src",
     ],
     "C_Cpp.default.cppStandard": "c++20",
     "C_Cpp.default.cStandard": "c11",
-    "C_Cpp.default.forcedInclude": [
-        "template-project/robot-type/robot_type.hpp"
-    ],
     "[markdown]": {
         "editor.wordWrap": "off",
         "editor.quickSuggestions": {
@@ -94,5 +92,5 @@
         "editor.rulers": [
             100
         ]
-    },
+    }
 }

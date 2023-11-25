@@ -4,139 +4,56 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "Build - Release",
+            "label": "Build - Debug",
             "type": "shell",
-            "presentation": {
-                "panel": "new"
-            },
-            "command": "pipenv run scons build",
+            "command": "scons build robot=${input:robot} profile=debug profiling=true",
             "group": {
                 "kind": "build",
                 "isDefault": true
             },
-            "problemMatcher": [],
             "options": {
                 "cwd": "${workspaceRoot}/ut-robomaster"
             }
         },
         {
-            "label": "Program - Release",
+            "label": "Build - Release",
             "type": "shell",
-            "presentation": {
-                "panel": "new"
-            },
-            "command": "pipenv run scons run",
+            "command": "scons build robot=${input:robot} ",
             "group": "build",
-            "problemMatcher": [],
             "options": {
                 "cwd": "${workspaceRoot}/ut-robomaster"
             }
         },
         {
-            "label": "Build Sim - Debug",
+            "label": "Flash - Debug",
             "type": "shell",
-            "presentation": {
-                "panel": "new"
-            },
-            "command": "pipenv run scons build-sim profile=debug",
+            "command": "scons run robot=${input:robot} profile=debug profiling=true",
             "group": "build",
-            "problemMatcher": [],
             "options": {
                 "cwd": "${workspaceRoot}/ut-robomaster"
             }
         },
         {
-            "label": "Run Sim - Debug",
+            "label": "Flash - Release",
             "type": "shell",
-            "presentation": {
-                "panel": "new"
-            },
-            "command": "pipenv run scons run-sim profile=debug",
+            "command": "scons run robot=${input:robot}",
             "group": "build",
-            "problemMatcher": [],
             "options": {
                 "cwd": "${workspaceRoot}/ut-robomaster"
             }
         },
+    ],
+    "inputs": [
         {
-            "label": "Build Tests - Debug",
-            "type": "shell",
-            "presentation": {
-                "panel": "new"
-            },
-            "command": "pipenv run scons build-tests profile=debug",
-            "group": "build",
-            "problemMatcher": [],
-            "options": {
-                "cwd": "${workspaceRoot}/ut-robomaster"
-            }
+            "id": "robot",
+            "description": "Robot type:",
+            "type": "pickString",
+            "options": [
+                "standard",
+                "hero",
+                "sentry"
+            ],
+            "default": "standard"
         },
-        {
-            "label": "Run Tests - Debug",
-            "type": "shell",
-            "presentation": {
-                "panel": "new"
-            },
-            "command": "pipenv run scons run-tests profile=debug",
-            "group": "build",
-            "problemMatcher": [],
-            "options": {
-                "cwd": "${workspaceRoot}/ut-robomaster"
-            }
-        },
-        {
-            "label": "Build - Debug",
-            "type": "shell",
-            "presentation": {
-                "panel": "new"
-            },
-            "command": "pipenv run scons build profile=debug profiling=true",
-            "group": "build",
-            "problemMatcher": [],
-            "options": {
-                "cwd": "${workspaceRoot}/ut-robomaster"
-            }
-        },
-        {
-            "label": "Program - Debug",
-            "type": "shell",
-            "presentation": {
-                "panel": "new"
-            },
-            "command": "pipenv run scons run profile=debug",
-            "group": "build",
-            "problemMatcher": [],
-            "options": {
-                "cwd": "${workspaceRoot}/ut-robomaster"
-            }
-        },
-        {
-            "label": "lbuild build",
-            "type": "shell",
-            "presentation": {
-                "panel": "new"
-            },
-            "command": "pipenv run lbuild build",
-            "group": {
-                "kind": "build",
-            },
-            "problemMatcher": [],
-            "options": {
-                "cwd": "${workspaceRoot}/ut-robomaster"
-            }
-        },
-        {
-            "label": "Git - Remove pre-commit meta files",
-            "type": "shell",
-            "presentation": {
-                "panel": "new"
-            },
-            "command": "find | fgrep .orig | xargs rm && find | fgrep .rej | xargs rm",
-            "group": "none",
-            "problemMatcher": [],
-            "options": {
-                "cwd": "${workspaceRoot}/ut-robomaster"
-            }
-        }
     ]
 }

@@ -2,52 +2,12 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Debug Tests",
-            "type": "cppdbg",
-            "request": "launch",
-            "preLaunchTask": "Build Tests - Debug",
-            "program": "${workspaceFolder}/ut-robomaster/build/tests/scons-debug/ut-robomaster-tests.elf",
-            "args": [],
-            "stopAtEntry": false,
-            "cwd": "${workspaceFolder}",
-            "environment": [],
-            "externalConsole": false,
-            "MIMode": "gdb",
-            "setupCommands": [
-                {
-                    "description": "Enable pretty-printing for gdb",
-                    "text": "-enable-pretty-printing",
-                    "ignoreFailures": true
-                }
-            ]
-        },
-        {
-            "name": "Debug Sim",
-            "type": "cppdbg",
-            "request": "launch",
-            "preLaunchTask": "Build Sim - Debug",
-            "program": "${workspaceFolder}/ut-robomaster/build/sim/scons-debug/ut-robomaster.elf",
-            "args": [],
-            "stopAtEntry": false,
-            "cwd": "${workspaceFolder}",
-            "environment": [],
-            "externalConsole": false,
-            "MIMode": "gdb",
-            "setupCommands": [
-                {
-                    "description": "Enable pretty-printing for gdb",
-                    "text": "-enable-pretty-printing",
-                    "ignoreFailures": true
-                }
-            ]
-        },
-        {
             "name": "Debug Hardware",
             "type": "cortex-debug",
             "request": "launch",
             "servertype": "openocd",
             "cwd": "${workspaceRoot}",
-            "preLaunchTask": "Program - Debug",
+            "preLaunchTask": "Flash - Debug",
             "executable": "./ut-robomaster/build/hardware/scons-debug/ut-robomaster.elf",
             "device": "STM32F427II",
             "configFiles": [
