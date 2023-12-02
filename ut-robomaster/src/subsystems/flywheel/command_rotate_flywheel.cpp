@@ -36,7 +36,7 @@ void CommandRotateFlywheel::execute()
             }
         }
 
-        flywheel->setLaunchSpeed(launchSpeedLeft, launchSpeedRight);
+        flywheel->setLaunchSpeed(10.0f, 10.0f);
 
 #elif defined(TARGET_HERO)
         uint16_t refSystemLaunchSpeed = drivers->refSerial.getRobotData().turret.barrelSpeedLimit42;

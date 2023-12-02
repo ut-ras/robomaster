@@ -63,9 +63,11 @@ constexpr PidConstants PID_AGITATOR = PID_VELOCITY_DEFAULT;
 const float BALLS_PER_SEC = 10.0f;
 const float BALLS_PER_REV = 8.0f;
 
-const uint16_t BARREL_HEAT_BUFFER = 20.0f;
+const uint16_t BARREL_HEAT_BUFFER = 20.0f;  // out of 400 max cooldown
 
 const float UNJAM_SPEED = 0.4f;  // rev/s
+
+const int AGITATOR_CAPACITY = 8;
 
 // Turret constants ------------------------------------------------
 constexpr MotorId ID_YAW = MOTOR6;

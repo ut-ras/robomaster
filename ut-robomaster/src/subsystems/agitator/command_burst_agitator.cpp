@@ -16,6 +16,8 @@ void CommandRotateAgitatorBurst::execute()
 
     float ballsPerSecondLeft = 0.0f;
     float ballsPerSecondRight = 0.0f;
+
+    int agitatorCapacity = AGITATOR_CAPACITY;  // CONSTANT
     // cooldownMeter.heatLimit1 = drivers->refSerial.getRobotData().turret.heatLimit17ID1;
     // cooldownMeter.heatLimit2 = drivers->refSerial.getRobotData().turret.heatLimit17ID2;
     // cooldownMeter.currentHeat1 = drivers->refSerial.getRobotData().turret.heat17ID1;
@@ -31,7 +33,8 @@ void CommandRotateAgitatorBurst::execute()
         {
             ballsPerSecondRight = ballsPerSecondConst;
         }
-        targetPosition = numToFire / 8.0;  // calculate based on number of balls to fire
+        targetPosition =
+            (1.0 * numToFire) / agitatorCapacity;  // calculate based on number of balls to fire
     }
 
     agitator->setBallsPerSecond(ballsPerSecondLeft, ballsPerSecondRight);
@@ -65,11 +68,15 @@ bool CommandRotateAgitatorBurst::isFinished() const
     }
 
     // ID1 = Left, ID2 = Right
-    int heatLim = isLeftTurret ? drivers->refSerial.getRobotData().turret.heatLimit17ID1
-                               : drivers->refSerial.getRobotData().turret.heatLimit17ID2;
-    int currHeat = isLeftTurret ? drivers->refSerial.getRobotData().turret.heat17ID1
-                                : drivers->refSerial.getRobotData().turret.heat17ID2;
-    int buffer = 1;
+    // int heatLim = isLeftTurret ? drivers->refSerial.getRobotData().turret.heatLimit17ID1
+    //                            : drivers->refSerial.getRobotData().turret.heatLimit17ID2;
+    // int currHeat = isLeftTurret ? drivers->refSerial.getRobotData().turret.heat17ID1
+    //                             : drivers->refSerial.getRobotData().turret.heat17ID2;
+
+    int heatLim = isLeftTurret ? drivers->refSerial.getRobotData().turret.heatLimit17ID1 : 400;
+    int currHeat = isLeftTurret ? drivers->refSerial.getRobotData().turret.heat17ID1 : 200;
+
+    int buffer = BARREL_HEAT_BUFFER;
     if (currHeat >= heatLim - buffer)
     {
         return true;

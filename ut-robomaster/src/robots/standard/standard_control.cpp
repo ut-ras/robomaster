@@ -75,7 +75,7 @@ CommandBeybladeChassisKeyboard beybladeChassisCommandKeyboard(drivers(), &chassi
 
 CommandRotateAgitatorContinuous rotateAgitatorContinuousCommand(drivers(), &agitator);
 // Command to burst fire [8] balls
-CommandRotateAgitatorBurst rotate8AgitatorBurstCommand(drivers(), &agitator, 5);
+CommandRotateAgitatorBurst rotate8AgitatorBurstCommand(drivers(), &agitator, 8);
 CommandUnjamAgitator unjamAgitatorCommand(drivers(), &agitator);
 
 CommandRotateFlywheel rotateFlywheelKeyboardCommand(drivers(), &flywheel);
@@ -133,15 +133,15 @@ HoldCommandMapping rightSwitchDown(
 //     {&rotateAgitatorContinuousCommand, &rotateFlywheelWithAgitatorCommand},
 //     RemoteMapState(Remote::Switch::LEFT_SWITCH, Remote::SwitchState::UP));
 
-HoldCommandMapping leftSwitchMid(
+ToggleCommandMapping keyQToggled(
     drivers(),
     {&rotateFlywheelNoAgitatorCommand},
     RemoteMapState({Remote::Key::Q}));
 
-HoldCommandMapping leftSwitchUp(
+ToggleCommandMapping keyFToggled(
     drivers(),
     {&rotateAgitatorContinuousCommand, &rotateFlywheelWithAgitatorCommand},
-    RemoteMapState({Remote::Key::R}));
+    RemoteMapState({Remote::Key::F}));
 
 PressCommandMapping keyZToggled(
     drivers(),
@@ -191,8 +191,8 @@ void registerMappings(src::Drivers *drivers)
     drivers->commandMapper.addMap(&rightSwitchUp);
     drivers->commandMapper.addMap(&rightSwitchMid);
     drivers->commandMapper.addMap(&rightSwitchDown);
-    drivers->commandMapper.addMap(&leftSwitchMid);
-    drivers->commandMapper.addMap(&leftSwitchUp);
+    drivers->commandMapper.addMap(&keyQToggled);
+    drivers->commandMapper.addMap(&keyFToggled);
     drivers->commandMapper.addMap(&keyZToggled);
 }
 }  // namespace standard_control
