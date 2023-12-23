@@ -19,7 +19,6 @@
 
 // Agitator includes ----------------------------------------
 #include "subsystems/agitator/agitator_subsystem.hpp"
-#include "subsystems/agitator/command_burst_agitator.hpp"
 #include "subsystems/agitator/command_rotate_agitator_continuous.hpp"
 #include "subsystems/agitator/command_unjam_agitator.hpp"
 
@@ -74,8 +73,6 @@ CommandMoveChassisKeyboard moveChassisCommandKeyboard(drivers(), &chassis, &turr
 CommandBeybladeChassisKeyboard beybladeChassisCommandKeyboard(drivers(), &chassis, &turret);
 
 CommandRotateAgitatorContinuous rotateAgitatorContinuousCommand(drivers(), &agitator);
-// Command to burst fire [8] balls
-CommandFireBurst rotate8AgitatorBurstCommand(drivers(), &agitator, 8);
 CommandUnjamAgitator unjamAgitatorCommand(drivers(), &agitator);
 
 CommandRotateFlywheel rotateFlywheelKeyboardCommand(drivers(), &flywheel);
@@ -93,6 +90,11 @@ ToggleCommandMapping keyRToggled(
     drivers(),
     {&beybladeChassisCommandKeyboard},
     RemoteMapState({Remote::Key::R}));
+
+ToggleCommandMapping keyGToggled(
+    drivers(),
+    {&rotateFlywheelKeyboardCommand},
+    RemoteMapState({Remote::Key::G}));
 
 HoldCommandMapping leftMouseDown(
     drivers(),
@@ -120,33 +122,18 @@ HoldCommandMapping rightSwitchMid(
 
 HoldCommandMapping rightSwitchDown(
     drivers(),
-    {&rotateFlywheelKeyboardCommand},
+    {&flywheelOffCommand},
     RemoteMapState(Remote::Switch::RIGHT_SWITCH, Remote::SwitchState::DOWN));
 
-// HoldCommandMapping leftSwitchMid(
-//     drivers(),
-//     {&rotateFlywheelNoAgitatorCommand},
-//     RemoteMapState(Remote::Switch::LEFT_SWITCH, Remote::SwitchState::MID));
-
-// HoldCommandMapping leftSwitchUp(
-//     drivers(),
-//     {&rotateAgitatorContinuousCommand, &rotateFlywheelWithAgitatorCommand},
-//     RemoteMapState(Remote::Switch::LEFT_SWITCH, Remote::SwitchState::UP));
-
-ToggleCommandMapping keyQToggled(
+HoldCommandMapping leftSwitchMid(
     drivers(),
     {&rotateFlywheelNoAgitatorCommand},
-    RemoteMapState({Remote::Key::Q}));
+    RemoteMapState(Remote::Switch::LEFT_SWITCH, Remote::SwitchState::MID));
 
-ToggleCommandMapping keyFToggled(
+HoldCommandMapping leftSwitchUp(
     drivers(),
     {&rotateAgitatorContinuousCommand, &rotateFlywheelWithAgitatorCommand},
-    RemoteMapState({Remote::Key::F}));
-
-PressCommandMapping keyZToggled(
-    drivers(),
-    {&rotate8AgitatorBurstCommand},
-    RemoteMapState({Remote::Key::Z}));
+    RemoteMapState(Remote::Switch::LEFT_SWITCH, Remote::SwitchState::UP));
 
 // Register subsystems here -----------------------------------------------
 void registerStandardSubsystems(src::Drivers *drivers)
@@ -186,14 +173,14 @@ void registerMappings(src::Drivers *drivers)
     drivers->commandMapper.addMap(&leftMouseDown);
     drivers->commandMapper.addMap(&keyXHeld);
     drivers->commandMapper.addMap(&rightMouseDown);
+    drivers->commandMapper.addMap(&keyGToggled);
 
     // Joystick mappings ------------------------------------------------------------
     drivers->commandMapper.addMap(&rightSwitchUp);
     drivers->commandMapper.addMap(&rightSwitchMid);
     drivers->commandMapper.addMap(&rightSwitchDown);
-    drivers->commandMapper.addMap(&keyQToggled);
-    drivers->commandMapper.addMap(&keyFToggled);
-    drivers->commandMapper.addMap(&keyZToggled);
+    drivers->commandMapper.addMap(&leftSwitchMid);
+    drivers->commandMapper.addMap(&leftSwitchUp);
 }
 }  // namespace standard_control
 
