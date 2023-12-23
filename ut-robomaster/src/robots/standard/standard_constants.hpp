@@ -67,8 +67,6 @@ const uint16_t BARREL_HEAT_BUFFER = 20.0f;  // out of 400 max cooldown
 
 const float UNJAM_SPEED = 0.4f;  // rev/s
 
-const int AGITATOR_CAPACITY = 8;
-
 // Turret constants ------------------------------------------------
 constexpr MotorId ID_YAW = MOTOR6;
 constexpr MotorId ID_PITCH = MOTOR7;
@@ -81,7 +79,6 @@ constexpr float CAMERA_TO_BARRELS = 0.0427f;  // vertical ctc offset from camera
 constexpr float CAMERA_X_OFFSET = -0.0335f;   // horizontal offset of main camera lens (m)
 
 constexpr PidConstants PID_TURRET_VELOCITY = PID_VELOCITY_DEFAULT;
-constexpr PidConstants PID_TURRET_POSITION = {0.1f, 0.1f, 0.0f};
 
 static constexpr float YAW_REDUCTION = 2.0f;
 static constexpr float PITCH_REDUCTION = 4.0f;

@@ -75,7 +75,7 @@ CommandBeybladeChassisKeyboard beybladeChassisCommandKeyboard(drivers(), &chassi
 
 CommandRotateAgitatorContinuous rotateAgitatorContinuousCommand(drivers(), &agitator);
 // Command to burst fire [8] balls
-CommandRotateAgitatorBurst rotate8AgitatorBurstCommand(drivers(), &agitator, 8);
+CommandFireBurst rotate8AgitatorBurstCommand(drivers(), &agitator, 8);
 CommandUnjamAgitator unjamAgitatorCommand(drivers(), &agitator);
 
 CommandRotateFlywheel rotateFlywheelKeyboardCommand(drivers(), &flywheel);

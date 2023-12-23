@@ -2,13 +2,13 @@
 
 namespace commands
 {
-void CommandRotateAgitatorBurst::initialize()
+void CommandFireBurst::initialize()
 {
     isLeftTurret = !isLeftTurret;
     initialPosition = isLeftTurret ? agitator->getLeftPosition() : agitator->getRightPosition();
 }
 
-void CommandRotateAgitatorBurst::execute()
+void CommandFireBurst::execute()
 {
 #if defined(TARGET_STANDARD) || defined(TARGET_SENTRY)
 
@@ -17,11 +17,7 @@ void CommandRotateAgitatorBurst::execute()
     float ballsPerSecondLeft = 0.0f;
     float ballsPerSecondRight = 0.0f;
 
-    int agitatorCapacity = AGITATOR_CAPACITY;  // CONSTANT
-    // cooldownMeter.heatLimit1 = drivers->refSerial.getRobotData().turret.heatLimit17ID1;
-    // cooldownMeter.heatLimit2 = drivers->refSerial.getRobotData().turret.heatLimit17ID2;
-    // cooldownMeter.currentHeat1 = drivers->refSerial.getRobotData().turret.heat17ID1;
-    // cooldownMeter.currentHeat2 = drivers->refSerial.getRobotData().turret.heat17ID2;
+    float agitatorCapacity = BALLS_PER_REV;  // CONSTANT
 
     if (drivers->refSerial.getRefSerialReceivingData())
     {
@@ -34,7 +30,7 @@ void CommandRotateAgitatorBurst::execute()
             ballsPerSecondRight = ballsPerSecondConst;
         }
         targetPosition =
-            (1.0 * numToFire) / agitatorCapacity;  // calculate based on number of balls to fire
+            numToFire / agitatorCapacity;  // calculate based on number of balls to fire
     }
 
     agitator->setBallsPerSecond(ballsPerSecondLeft, ballsPerSecondRight);
@@ -55,9 +51,9 @@ void CommandRotateAgitatorBurst::execute()
 #endif
 }
 
-void CommandRotateAgitatorBurst::end(bool) { agitator->setBallsPerSecond(0.0f); }
+void CommandFireBurst::end(bool) { agitator->setBallsPerSecond(0.0f); }
 
-bool CommandRotateAgitatorBurst::isFinished() const
+bool CommandFireBurst::isFinished() const
 {
     float deltaPosition = isLeftTurret ? agitator->getLeftPosition() - initialPosition
                                        : agitator->getRightPosition() - initialPosition;
@@ -68,13 +64,11 @@ bool CommandRotateAgitatorBurst::isFinished() const
     }
 
     // ID1 = Left, ID2 = Right
-    // int heatLim = isLeftTurret ? drivers->refSerial.getRobotData().turret.heatLimit17ID1
-    //                            : drivers->refSerial.getRobotData().turret.heatLimit17ID2;
-    // int currHeat = isLeftTurret ? drivers->refSerial.getRobotData().turret.heat17ID1
-    //                             : drivers->refSerial.getRobotData().turret.heat17ID2;
 
-    int heatLim = isLeftTurret ? drivers->refSerial.getRobotData().turret.heatLimit17ID1 : 400;
-    int currHeat = isLeftTurret ? drivers->refSerial.getRobotData().turret.heat17ID1 : 200;
+    int heatLim = isLeftTurret ? drivers->refSerial.getRobotData().turret.heatLimit17ID1
+                               : drivers->refSerial.getRobotData().turret.heatLimit17ID2;
+    int currHeat = isLeftTurret ? drivers->refSerial.getRobotData().turret.heat17ID1
+                                : drivers->refSerial.getRobotData().turret.heat17ID2;
 
     int buffer = BARREL_HEAT_BUFFER;
     if (currHeat >= heatLim - buffer)
