@@ -7,6 +7,9 @@
 #include "tap/control/press_command_mapping.hpp"
 #include "tap/control/toggle_command_mapping.hpp"
 
+#include "robots/robot_constants.hpp"
+#include "utils/power_limiter/barrel_cooldown.hpp"
+
 #include "drivers.hpp"
 #include "drivers_singleton.hpp"
 
@@ -19,7 +22,7 @@
 
 // Agitator includes ----------------------------------------
 #include "subsystems/agitator/agitator_subsystem.hpp"
-#include "subsystems/agitator/command_rotate_agitator_continuous.hpp"
+#include "subsystems/agitator/command_agitator_continuous.hpp"
 #include "subsystems/agitator/command_unjam_agitator.hpp"
 
 // Flywheel includes ----------------------------------------
@@ -44,6 +47,8 @@ using namespace subsystems::odometry;
 
 using namespace commands;
 
+using power_limiter::BarrelId;
+
 /*
  * NOTE: We are using the DoNotUse_getDrivers() function here
  *      because this file defines all subsystems and command
@@ -57,7 +62,7 @@ namespace hero_control
 
 // Subsystem definitions ---------------------------------------------------------
 ChassisSubsystem chassis(drivers());
-AgitatorSubsystem agitator(drivers());
+AgitatorSubsystem agitator(drivers(), ID_AGITATOR);
 FlywheelSubsystem flywheel(drivers());
 TurretSubsystem turret(drivers());
 OdometrySubsystem odometry(drivers(), &chassis, &turret);
@@ -71,7 +76,7 @@ CommandMoveChassisTurretRelativeJoystick moveChassisTurretRelativeCommandJoystic
 CommandMoveChassisKeyboard moveChassisCommandKeyboard(drivers(), &chassis, &turret);
 CommandBeybladeChassisKeyboard beybladeChassisCommandKeyboard(drivers(), &chassis, &turret);
 
-CommandRotateAgitatorContinuous rotateAgitatorContinuousCommand(drivers(), &agitator);
+CommandAgitatorContinuous agitatorContinuousCommand(drivers(), &agitator, BarrelId::HERO);
 CommandUnjamAgitator unjamAgitatorCommand(drivers(), &agitator);
 
 CommandRotateFlywheel rotateFlywheelKeyboardCommand(drivers(), &flywheel);
@@ -91,7 +96,7 @@ ToggleCommandMapping keyRToggled(
 
 HoldCommandMapping leftMouseDown(
     drivers(),
-    {&rotateAgitatorContinuousCommand},
+    {&agitatorContinuousCommand},
     RemoteMapState(RemoteMapState::MouseButton::LEFT));
 
 HoldCommandMapping keyXHeld(drivers(), {&unjamAgitatorCommand}, RemoteMapState({Remote::Key::X}));
@@ -120,7 +125,7 @@ HoldCommandMapping leftSwitchMid(
 
 HoldCommandMapping leftSwitchUp(
     drivers(),
-    {&rotateAgitatorContinuousCommand, &rotateFlywheelWithAgitatorCommand},
+    {&agitatorContinuousCommand, &rotateFlywheelWithAgitatorCommand},
     RemoteMapState(Remote::Switch::LEFT_SWITCH, Remote::SwitchState::UP));
 
 // Register subsystems here -----------------------------------------------
