@@ -17,7 +17,6 @@ constexpr CanBus CAN_TURRET = CanBus::CAN_BUS1;
 constexpr CanBus CAN_SHOOTER = CanBus::CAN_BUS2;
 
 constexpr PidConstants PID_VELOCITY_DEFAULT = {0.75f, 12.0f, 0.0f};
-constexpr PidConstants PID_AGITATOR_POSITION = {0.1f, 0.1f, 0.0f};
 
 constexpr bool USE_BALLISTICS = false;
 constexpr int BALLISTIC_ITERATIONS = 2;
@@ -63,7 +62,7 @@ constexpr PidConstants PID_AGITATOR = PID_VELOCITY_DEFAULT;
 const float BALLS_PER_SEC = 10.0f;
 const float BALLS_PER_REV = 8.0f;
 
-const uint16_t BARREL_HEAT_BUFFER = 20.0f;  // out of 400 max cooldown
+const uint16_t BARREL_HEAT_BUFFER = 20.0f;
 
 const float UNJAM_SPEED = 0.4f;  // rev/s
 
@@ -79,6 +78,7 @@ constexpr float CAMERA_TO_BARRELS = 0.0427f;  // vertical ctc offset from camera
 constexpr float CAMERA_X_OFFSET = -0.0335f;   // horizontal offset of main camera lens (m)
 
 constexpr PidConstants PID_TURRET_VELOCITY = PID_VELOCITY_DEFAULT;
+constexpr PidConstants PID_TURRET_POSITION = {0.1f, 0.1f, 0.0f};
 
 static constexpr float YAW_REDUCTION = 2.0f;
 static constexpr float PITCH_REDUCTION = 4.0f;
