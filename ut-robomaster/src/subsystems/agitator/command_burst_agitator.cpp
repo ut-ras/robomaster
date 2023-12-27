@@ -2,13 +2,13 @@
 
 namespace commands
 {
-void CommandFireBurst::initialize()
+void CommandRotateAgitatorBurst::initialize()
 {
     isLeftTurret = !isLeftTurret;
     initialPosition = isLeftTurret ? agitator->getLeftPosition() : agitator->getRightPosition();
 }
 
-void CommandFireBurst::execute()
+void CommandRotateAgitatorBurst::execute()
 {
 #if defined(TARGET_STANDARD) || defined(TARGET_SENTRY)
 
@@ -51,9 +51,9 @@ void CommandFireBurst::execute()
 #endif
 }
 
-void CommandFireBurst::end(bool) { agitator->setBallsPerSecond(0.0f); }
+void CommandRotateAgitatorBurst::end(bool) { agitator->setBallsPerSecond(0.0f); }
 
-bool CommandFireBurst::isFinished() const
+bool CommandRotateAgitatorBurst::isFinished() const
 {
     float deltaPosition = isLeftTurret ? agitator->getLeftPosition() - initialPosition
                                        : agitator->getRightPosition() - initialPosition;

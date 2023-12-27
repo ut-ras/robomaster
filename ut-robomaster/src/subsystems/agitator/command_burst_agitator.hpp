@@ -11,10 +11,10 @@ namespace commands
 {
 using subsystems::agitator::AgitatorSubsystem;
 
-class CommandFireBurst : public tap::control::Command
+class CommandRotateAgitatorBurst : public tap::control::Command
 {
 public:
-    CommandFireBurst(src::Drivers *drivers, AgitatorSubsystem *agitator, int ballCount)
+    CommandRotateAgitatorBurst(src::Drivers *drivers, AgitatorSubsystem *agitator, int ballCount)
         : drivers(drivers),
           agitator(agitator)
     {
@@ -41,6 +41,6 @@ private:
     float targetPosition;
     bool isLeftTurret = false;
 
-};  // class CommandFireBurst
+};  // class CommandRotateAgitatorBurst
 
 }  // namespace commands
