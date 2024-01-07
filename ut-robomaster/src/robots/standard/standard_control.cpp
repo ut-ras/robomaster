@@ -7,6 +7,9 @@
 #include "tap/control/press_command_mapping.hpp"
 #include "tap/control/toggle_command_mapping.hpp"
 
+#include "robots/robot_constants.hpp"
+#include "utils/power_limiter/barrel_cooldown.hpp"
+
 #include "drivers.hpp"
 #include "drivers_singleton.hpp"
 
@@ -19,7 +22,7 @@
 
 // Agitator includes ----------------------------------------
 #include "subsystems/agitator/agitator_subsystem.hpp"
-#include "subsystems/agitator/command_rotate_agitator_continuous.hpp"
+#include "subsystems/agitator/command_agitator_continuous.hpp"
 #include "subsystems/agitator/command_unjam_agitator.hpp"
 
 // Flywheel includes ----------------------------------------
@@ -45,6 +48,8 @@ using namespace subsystems::odometry;
 
 using namespace commands;
 
+using power_limiter::BarrelId;
+
 /*
  * NOTE: We are using the DoNotUse_getDrivers() function here
  *      because this file defines all subsystems and command
@@ -58,7 +63,8 @@ namespace standard_control
 
 // Subsystem definitions ---------------------------------------------------------
 ChassisSubsystem chassis(drivers());
-AgitatorSubsystem agitator(drivers());
+AgitatorSubsystem agitator1(drivers(), ID_AGITATOR_L, false);
+AgitatorSubsystem agitator2(drivers(), ID_AGITATOR_R, true);
 FlywheelSubsystem flywheel(drivers());
 TurretSubsystem turret(drivers());
 OdometrySubsystem odometry(drivers(), &chassis, &turret);
@@ -72,8 +78,10 @@ CommandMoveChassisTurretRelativeJoystick moveChassisTurretRelativeCommandJoystic
 CommandMoveChassisKeyboard moveChassisCommandKeyboard(drivers(), &chassis, &turret);
 CommandBeybladeChassisKeyboard beybladeChassisCommandKeyboard(drivers(), &chassis, &turret);
 
-CommandRotateAgitatorContinuous rotateAgitatorContinuousCommand(drivers(), &agitator);
-CommandUnjamAgitator unjamAgitatorCommand(drivers(), &agitator);
+CommandAgitatorContinuous agitator1ContinuousCommand(drivers(), &agitator1, BarrelId::STANDARD1);
+CommandAgitatorContinuous agitator2ContinuousCommand(drivers(), &agitator2, BarrelId::STANDARD2);
+CommandUnjamAgitator unjamAgitator1Command(drivers(), &agitator1);
+CommandUnjamAgitator unjamAgitator2Command(drivers(), &agitator2);
 
 CommandRotateFlywheel rotateFlywheelKeyboardCommand(drivers(), &flywheel);
 CommandRotateFlywheel rotateFlywheelNoAgitatorCommand(drivers(), &flywheel);
@@ -98,10 +106,13 @@ ToggleCommandMapping keyGToggled(
 
 HoldCommandMapping leftMouseDown(
     drivers(),
-    {&rotateAgitatorContinuousCommand},
+    {&agitator1ContinuousCommand, &agitator2ContinuousCommand},
     RemoteMapState(RemoteMapState::MouseButton::LEFT));
 
-HoldCommandMapping keyXHeld(drivers(), {&unjamAgitatorCommand}, RemoteMapState({Remote::Key::X}));
+HoldCommandMapping keyXHeld(
+    drivers(),
+    {&unjamAgitator1Command, &unjamAgitator2Command},
+    RemoteMapState({Remote::Key::X}));
 
 HoldCommandMapping rightMouseDown(
     drivers(),
@@ -132,14 +143,15 @@ HoldCommandMapping leftSwitchMid(
 
 HoldCommandMapping leftSwitchUp(
     drivers(),
-    {&rotateAgitatorContinuousCommand, &rotateFlywheelWithAgitatorCommand},
+    {&agitator1ContinuousCommand, &agitator2ContinuousCommand, &rotateFlywheelWithAgitatorCommand},
     RemoteMapState(Remote::Switch::LEFT_SWITCH, Remote::SwitchState::UP));
 
 // Register subsystems here -----------------------------------------------
 void registerStandardSubsystems(src::Drivers *drivers)
 {
     drivers->commandScheduler.registerSubsystem(&chassis);
-    drivers->commandScheduler.registerSubsystem(&agitator);
+    drivers->commandScheduler.registerSubsystem(&agitator1);
+    drivers->commandScheduler.registerSubsystem(&agitator2);
     drivers->commandScheduler.registerSubsystem(&flywheel);
     drivers->commandScheduler.registerSubsystem(&turret);
     drivers->commandScheduler.registerSubsystem(&odometry);
@@ -149,7 +161,8 @@ void registerStandardSubsystems(src::Drivers *drivers)
 void initializeSubsystems()
 {
     chassis.initialize();
-    agitator.initialize();
+    agitator1.initialize();
+    agitator2.initialize();
     flywheel.initialize();
     turret.initialize();
     odometry.initialize();

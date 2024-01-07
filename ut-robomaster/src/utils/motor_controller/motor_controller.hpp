@@ -33,11 +33,18 @@ public:
     void initialize();
     virtual void setActive(bool active);
     virtual void update(float target) = 0;
-    virtual float measure() = 0;
     virtual Pid getPid() { return pid; }
 
+    /// @brief Get the current position of the motor.
+    /// @return Angle, measured in revolutions.
+    float measurePosition();
+
+    /// @brief Get the current velocity of the motor.
+    /// @return Angular velocity, measured in revolutions per second.
+    float measureVelocity();
+
 protected:
-    float delta_time();
+    float deltaTime();
     uint32_t lastTime = 0;
     bool isActive = false;
     const MotorConstants constants;
@@ -73,10 +80,6 @@ public:
     /// @return Target angle, measured in revolutions.
     void update(float target);
 
-    /// @brief Get the current position of the motor.
-    /// @return Motor angle, measured in revolutions.
-    float measure();
-
     void setActive(bool active) override;
 
 private:
@@ -93,10 +96,6 @@ public:
     void update(float target);
 
     void applyPowerScalar(float powerLimitScalar);
-
-    /// @brief Get the current velocity of the motor.
-    /// @return Motor velocity, measured in revolutions per second.
-    float measure();
 };
 }  // namespace motor_controller
 

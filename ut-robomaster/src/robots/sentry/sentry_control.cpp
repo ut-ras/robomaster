@@ -7,6 +7,8 @@
 #include "tap/control/press_command_mapping.hpp"
 #include "tap/control/toggle_command_mapping.hpp"
 
+#include "robots/robot_constants.hpp"
+
 #include "drivers.hpp"
 #include "drivers_singleton.hpp"
 
@@ -49,7 +51,8 @@ namespace sentry_control
 
 // Subsystem definitions ---------------------------------------------------------
 ChassisSubsystem chassis(drivers());
-AgitatorSubsystem agitator(drivers());
+AgitatorSubsystem agitator1(drivers(), ID_AGITATOR_L, false);
+AgitatorSubsystem agitator2(drivers(), ID_AGITATOR_R, true);
 FlywheelSubsystem flywheel(drivers());
 TurretSubsystem turret(drivers());
 OdometrySubsystem odometry(drivers(), &chassis, &turret);
@@ -62,7 +65,8 @@ CommandSentryAim sentryAimCommand(drivers(), &turret);
 void registerStandardSubsystems(src::Drivers *drivers)
 {
     drivers->commandScheduler.registerSubsystem(&chassis);
-    drivers->commandScheduler.registerSubsystem(&agitator);
+    drivers->commandScheduler.registerSubsystem(&agitator1);
+    drivers->commandScheduler.registerSubsystem(&agitator2);
     drivers->commandScheduler.registerSubsystem(&flywheel);
     drivers->commandScheduler.registerSubsystem(&turret);
     drivers->commandScheduler.registerSubsystem(&odometry);
@@ -72,7 +76,8 @@ void registerStandardSubsystems(src::Drivers *drivers)
 void initializeSubsystems()
 {
     chassis.initialize();
-    agitator.initialize();
+    agitator1.initialize();
+    agitator2.initialize();
     flywheel.initialize();
     turret.initialize();
     odometry.initialize();

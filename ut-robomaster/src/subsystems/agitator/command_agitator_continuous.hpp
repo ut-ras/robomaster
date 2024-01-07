@@ -4,19 +4,22 @@
 
 #include "robots/robot_constants.hpp"
 #include "subsystems/agitator/agitator_subsystem.hpp"
+#include "utils/power_limiter/barrel_cooldown.hpp"
 
 #include "drivers.hpp"
 
 namespace commands
 {
+using power_limiter::BarrelId;
 using subsystems::agitator::AgitatorSubsystem;
 
-class CommandRotateAgitatorContinuous : public tap::control::Command
+class CommandAgitatorContinuous : public tap::control::Command
 {
 public:
-    CommandRotateAgitatorContinuous(src::Drivers *drivers, AgitatorSubsystem *agitator)
+    CommandAgitatorContinuous(src::Drivers *drivers, AgitatorSubsystem *agitator, BarrelId barrelId)
         : drivers(drivers),
-          agitator(agitator)
+          agitator(agitator),
+          barrelId(barrelId)
     {
         addSubsystemRequirement(agitator);
     }
@@ -29,10 +32,11 @@ public:
 
     bool isFinished() const override;
 
-    const char *getName() const override { return "rotate agitator continuous command"; }
+    const char *getName() const override { return "agitator continuous command"; }
 
 private:
     src::Drivers *drivers;
     AgitatorSubsystem *agitator;
-};  // class CommandFireContinuous
+    BarrelId barrelId;
+};
 }  // namespace commands

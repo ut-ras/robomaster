@@ -62,7 +62,7 @@ static constexpr modm::Pair<uint16_t, float> FLYWHEEL_RPS_MAPPING[] = {{10, 105.
 
 const float BALLS_PER_SEC = 4.0f;
 const float BALLS_PER_REV = 6.0f;
-const float FEEDER_SPEED = BALLS_PER_SEC / BALLS_PER_REV;
+const float FEEDER_RATIO = 1.0f;  // feeder speed / agitator speed
 
 const uint16_t BARREL_HEAT_BUFFER = 100.0f;
 
