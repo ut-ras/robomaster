@@ -51,8 +51,8 @@ namespace sentry_control
 
 // Subsystem definitions ---------------------------------------------------------
 ChassisSubsystem chassis(drivers());
-AgitatorSubsystem agitator1(drivers(), ID_AGITATOR_L);
-AgitatorSubsystem agitator2(drivers(), ID_AGITATOR_R);
+AgitatorSubsystem agitator1(drivers(), ID_AGITATOR_L, false);
+AgitatorSubsystem agitator2(drivers(), ID_AGITATOR_R, true);
 FlywheelSubsystem flywheel(drivers());
 TurretSubsystem turret(drivers());
 OdometrySubsystem odometry(drivers(), &chassis, &turret);

@@ -62,7 +62,7 @@ namespace hero_control
 
 // Subsystem definitions ---------------------------------------------------------
 ChassisSubsystem chassis(drivers());
-AgitatorSubsystem agitator(drivers(), ID_AGITATOR);
+AgitatorSubsystem agitator(drivers(), ID_AGITATOR, false);
 FlywheelSubsystem flywheel(drivers());
 TurretSubsystem turret(drivers());
 OdometrySubsystem odometry(drivers(), &chassis, &turret);

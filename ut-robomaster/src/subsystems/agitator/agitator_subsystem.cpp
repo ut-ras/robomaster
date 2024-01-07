@@ -10,17 +10,30 @@ using tap::arch::clock::getTimeMilliseconds;
  * AgitatorSubsystem class instantiation
  */
 #if defined(TARGET_STANDARD) || defined(TARGET_SENTRY)
-AgitatorSubsystem::AgitatorSubsystem(src::Drivers *drivers, MotorId agitatorMotorId)
+AgitatorSubsystem::AgitatorSubsystem(
+    src::Drivers *drivers,
+    MotorId agitatorMotorId,
+    bool motorFlipped)
     : Subsystem(drivers),
       drivers(drivers),
-      agitator{drivers, M2006, agitatorMotorId, CAN_SHOOTER, false, "agitator", PID_AGITATOR}
+      agitator{drivers, M2006, agitatorMotorId, CAN_SHOOTER, motorFlipped, "agitator", PID_AGITATOR}
 {
 }
 #elif defined(TARGET_HERO)
-AgitatorSubsystem::AgitatorSubsystem(src::Drivers *drivers, MotorId agitatorMotorId)
+AgitatorSubsystem::AgitatorSubsystem(
+    src::Drivers *drivers,
+    MotorId agitatorMotorId,
+    bool motorFlipped)
     : Subsystem(drivers),
       drivers(drivers),
-      agitator{drivers, M3508, agitatorMotorId, CAN_SHOOTER, false, "agitator", PID_AGITATOR},
+      agitator{
+          drivers,
+          M3508,
+          agitatorMotorId,
+          CAN_SHOOTER,
+          motorFlipped,
+          "agitator",
+          PID_AGITATOR},
       feeder{drivers, M2006, ID_FEEDER, CAN_SHOOTER, false, "feeder", PID_FEEDER}
 {
 }
