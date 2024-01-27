@@ -29,6 +29,16 @@ Firmware for the Stampede RoboMaster team -- built on Taproot and modm
 * From the command palette (F1), run Dev Containers: Reopen in Container
 * Done! When opening the project in the future, be sure to use the Dev Container
 
+### macOS (slightly broken)
+* Install [Podman](https://podman.io/docs/installation#macos) and [git](https://git-scm.com/download/mac)
+* Run `podman machine init --now` to start the Podman VM
+* Install [VSCode](https://code.visualstudio.com/Download) (strongly recommended for ease of setup) and the [Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) extension
+* Change Dev Containers: Docker Path to "podman" in VS Code settings
+* Clone the repository `git clone --recurse-submodules https://github.com/ut-ras/robomaster`
+* Open the `robomaster` folder in VS Code
+* From the command palette (F1), run Dev Containers: Reopen in Container
+* Done! When opening the project in the future, be sure to start the Podman VM use the Dev Container
+
 ## Building
 To build the code, open the repository in its Dev Container and run
 `scons build robot=<standard|hero|sentry>`.
