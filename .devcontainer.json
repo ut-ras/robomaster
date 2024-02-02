@@ -1,11 +1,10 @@
 {
     "build": {
-        "dockerfile": "Dockerfile"
+        "dockerfile": "Containerfile"
     },
     "customizations": {
         "vscode": {
             "extensions": [
-                "marus25.cortex-debug",
                 "ms-vscode.cpptools"
             ]
         }
@@ -16,9 +15,5 @@
         // Disable SELinux labeling (see https://docs.podman.io/en/latest/markdown/podman-run.1.html#volume-v-source-volume-host-dir-container-dir-options)
         "--security-opt",
         "label=disable"
-    ],
-    "mounts": [
-        // Mount USB devices (for flashing)
-        "type=bind,source=/dev/bus/usb,target=/dev/bus/usb"
     ]
 }

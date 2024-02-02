@@ -29,7 +29,7 @@ Firmware for the Stampede RoboMaster team -- built on Taproot and modm
 * From the command palette (F1), run Dev Containers: Reopen in Container
 * Done! When opening the project in the future, be sure to use the Dev Container
 
-### macOS (slightly broken)
+### macOS
 * Install [Podman](https://podman.io/docs/installation#macos) and [git](https://git-scm.com/download/mac)
 * Run `podman machine init --now` to start the Podman VM
 * Install [VSCode](https://code.visualstudio.com/Download) (strongly recommended for ease of setup) and the [Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) extension
@@ -37,7 +37,7 @@ Firmware for the Stampede RoboMaster team -- built on Taproot and modm
 * Clone the repository `git clone --recurse-submodules https://github.com/ut-ras/robomaster`
 * Open the `robomaster` folder in VS Code
 * From the command palette (F1), run Dev Containers: Reopen in Container
-* Done! When opening the project in the future, be sure to start the Podman VM use the Dev Container
+* Done! When opening the project in the future, be sure to start the Podman VM and use the Dev Container
 
 ## Building
 To build the code, open the repository in its Dev Container and run
@@ -47,12 +47,13 @@ Alternatively, use Run Build Task (Ctrl+Shift+B) in VS Code and select the robot
 
 Note: Each robot has different hardware and requires variations in the code, so its important to ensure your final code builds on every robot.
 
-## Flashing
+## Flashing (Linux/Windows only)
 To flash the code to robot hardware:
 * Turn off power on the robot
 * Connect an ST-Link to the robot and your computer
 * If using Windows, [attach the USB device to WSL](https://learn.microsoft.com/en-us/windows/wsl/connect-usb#attach-a-usb-device)
-* Flash the code using `scons run robot=<standard|hero|sentry>` or with Run Task in VS Code
+* Open a terminal and navigate to the repository (not in the Dev Container)
+* Run `./flash.sh robot=<standard|hero|sentry>`
 * Once this is complete, the firmware is flashed and you can turn the robot back on
 
 Note: Make sure you select the correct robot when flashing. Each robot has different hardware and flashing the wrong code can cause significant malfunctions and potential safety concerns.
