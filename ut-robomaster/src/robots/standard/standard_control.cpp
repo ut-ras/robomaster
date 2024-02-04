@@ -37,6 +37,10 @@
 #include "subsystems/turret/command_move_turret_mouse.hpp"
 #include "subsystems/turret/turret_subsystem.hpp"
 
+// Startup includes -----------------------------------------
+#include "subsystems/startup/command_startup.hpp"
+#include "subsystems/startup/startup_subsystem.hpp"
+
 using namespace tap::control;
 using namespace tap::communication::serial;
 
@@ -45,6 +49,7 @@ using namespace subsystems::agitator;
 using namespace subsystems::flywheel;
 using namespace subsystems::turret;
 using namespace subsystems::odometry;
+using namespace subsystems::startup;
 
 using namespace commands;
 
@@ -68,6 +73,7 @@ AgitatorSubsystem agitator2(drivers(), ID_AGITATOR_R, true);
 FlywheelSubsystem flywheel(drivers());
 TurretSubsystem turret(drivers());
 OdometrySubsystem odometry(drivers(), &chassis, &turret);
+StartupSubsystem startup(drivers());
 
 // Command definitions -----------------------------------------------------------
 CommandMoveChassisJoystick moveChassisCommandJoystick(drivers(), &chassis, &turret);
@@ -92,6 +98,7 @@ CommandMoveTurretJoystick moveTurretCommandJoystick(drivers(), &turret);
 CommandMoveTurretJoystick moveTurretWhenChassisIsTurretRelativeCommandJoystick(drivers(), &turret);
 CommandMoveTurretMouse moveTurretCommandMouse(drivers(), &turret);
 CommandMoveTurretAimbot moveTurretCommandAimbot(drivers(), &turret);
+CommandStartup startupCommand(drivers(), &startup);
 
 // Keyboard mappings ------------------------------------------------------------
 ToggleCommandMapping keyRToggled(
@@ -155,6 +162,7 @@ void registerStandardSubsystems(src::Drivers *drivers)
     drivers->commandScheduler.registerSubsystem(&flywheel);
     drivers->commandScheduler.registerSubsystem(&turret);
     drivers->commandScheduler.registerSubsystem(&odometry);
+    drivers->commandScheduler.registerSubsystem(&startup);
 }
 
 // Initialize subsystems here ---------------------------------------------
@@ -166,6 +174,7 @@ void initializeSubsystems()
     flywheel.initialize();
     turret.initialize();
     odometry.initialize();
+    startup.initialize();
 }
 
 // Set default commands here -----------------------------------------------
@@ -174,6 +183,7 @@ void setDefaultCommands(src::Drivers *)
     chassis.setDefaultCommand(&moveChassisCommandKeyboard);
     flywheel.setDefaultCommand(&flywheelOffCommand);
     turret.setDefaultCommand(&moveTurretCommandMouse);
+    startup.setDefaultCommand(&startupCommand);
 }
 
 void runStartupCommands(src::Drivers *) {}
