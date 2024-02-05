@@ -9,6 +9,8 @@ StartupSubsystem::StartupSubsystem(src::Drivers* drivers)
 {
 }
 
+void StartupSubsystem::initialize() {}
+
 void StartupSubsystem::refresh() {}
 
 void StartupSubsystem::silence() { tap::buzzer::silenceBuzzer(&drivers->pwm); }
