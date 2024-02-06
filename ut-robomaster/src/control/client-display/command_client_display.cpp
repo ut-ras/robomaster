@@ -8,8 +8,12 @@
 #include "modm/processing/protothread.hpp"
 #include "modm/processing/resumable.hpp"
 
+#include "subsystems/chassis/chassis_subsystem.hpp"
+
 using namespace tap::control;
 using namespace tap::communication::serial;
+
+using subsystems::chassis::ChassisSubsystem;
 
 // TODO: Put this indicator in its own files
 // Always update the Resumable<T> to match number of functions returning a ResumableResult
@@ -79,12 +83,15 @@ private:
 
 public:
 	CommandClientDisplay(
-		tap::Drivers &drivers)
+		tap::Drivers &drivers,
+		ChassisSubsystem *chassis) // temporarily using this to start this command
 		: Command(),
 		drivers(drivers),
 		refSerialTransmitter(&drivers),
 		beybladeIndicator(refSerialTransmitter)
-	{}
+	{
+		addSubsystemRequirement(chassis);
+	}
 	
 	bool run()
 	{
