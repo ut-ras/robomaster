@@ -1,53 +1,28 @@
-// TODO: Make header file for this class
-// #include "client_display_command.hpp"
+#include "command_client_display.hpp"
 
-#include "tap/drivers.hpp"
-#include "tap/control/command.hpp"
-#include "tap/communication/serial/ref_serial_transmitter.hpp"
-#include "tap/communication/serial/ref_serial_data.hpp"
-#include "modm/processing/protothread.hpp"
-#include "modm/processing/resumable.hpp"
-
-#include "subsystems/chassis/chassis_subsystem.hpp"
-
-using namespace tap::control;
-using namespace tap::communication::serial;
-
-using subsystems::chassis::ChassisSubsystem;
 
 // TODO: Put this indicator in its own files
 // Always update the Resumable<T> to match number of functions returning a ResumableResult
-class BeybladeIndicator : protected modm::Resumable<2>
+
+modm::ResumableResult<bool> BeybladeIndicator::sendInitialGraphics()
 {
-private:
-	const uint8_t* graphicName = (uint8_t*)"\x00\x00\x01";
-protected:
-	RefSerialTransmitter &refSerialTransmitter;
-	RefSerialData::Tx::Graphic5Message msg;
+	// The number represents the index of the resumable function in this class
+	RF_BEGIN(0);
+	
+	RF_CALL(refSerialTransmitter.sendGraphic(&msg));
 
-public:
-	BeybladeIndicator(RefSerialTransmitter refSerialTransmitter)
-	: refSerialTransmitter(refSerialTransmitter)
-	{}
+	RF_END();
+}
 
-	modm::ResumableResult<bool> sendInitialGraphics()
-	{
-		// The number represents the index of the resumable function in this class
-		RF_BEGIN(0);
-		
-		RF_CALL(refSerialTransmitter.sendGraphic(&msg));
+modm::ResumableResult<bool> BeybladeIndicator::update()
+{
+	// This is the second resumable function so its index is 1
+	RF_BEGIN(1);
+	RF_END();
+}
 
-		RF_END();
-	}
-	modm::ResumableResult<bool> update()
-	{
-		// This is the second resumable function so its index is 1
-		RF_BEGIN(1);
-		RF_END();
-	}
-
-	void initialize()
-	{
+void BeybladeIndicator::initialize()
+{
 		RefSerialTransmitter::configGraphicGenerics(
 			&msg.graphicData[0],
 			graphicName,
@@ -64,65 +39,35 @@ public:
 			&msg.graphicData[0]
 			);
 	}
-};
 
-class CommandClientDisplay : Command, modm::pt::Protothread
+namespace commands
 {
-private:
-	tap::Drivers &drivers;
-	RefSerialTransmitter refSerialTransmitter;
-	BeybladeIndicator beybladeIndicator;
-	bool restarting = true;
 
-	void restartHud()
-	{
-		beybladeIndicator.initialize();
+void CommandClientDisplay::restartHud()
+{
+	beybladeIndicator.initialize();
 
-		this->restarting = false;
+	this->restarting = false;
+}
+
+bool CommandClientDisplay::run()
+{
+	if (!this->isRunning()) {
+		restart();
+		this->restartHud();
 	}
 
-public:
-	CommandClientDisplay(
-		tap::Drivers &drivers,
-		ChassisSubsystem *chassis) // temporarily using this to start this command
-		: Command(),
-		drivers(drivers),
-		refSerialTransmitter(&drivers),
-		beybladeIndicator(refSerialTransmitter)
-	{
-		addSubsystemRequirement(chassis);
-	}
+	PT_BEGIN();
 	
-	bool run()
-	{
-		if (!this->isRunning()) {
-			restart();
-			this->restartHud();
-		}
+	PT_WAIT_UNTIL(drivers.refSerial.getRefSerialReceivingData());
 
-		PT_BEGIN();
-		
-		PT_WAIT_UNTIL(drivers.refSerial.getRefSerialReceivingData());
+	PT_CALL(beybladeIndicator.sendInitialGraphics());
 
-		PT_CALL(beybladeIndicator.sendInitialGraphics());
-
-		while (!this->restarting) {
-			PT_CALL(beybladeIndicator.update());
-			PT_YIELD();
-		}
-
-		PT_END();
+	while (!this->restarting) {
+		PT_CALL(beybladeIndicator.update());
+		PT_YIELD();
 	}
 
-	const char *getName() const override { return "client display"; }
-	void initialize() override
-	{
-		this->restarting = true;
-	};
-	void execute() override
-	{
-		run();
-	}
-	void end(bool) override {}
-	bool isFinished() const override { return false; }
-};
+	PT_END();
+}
+}
