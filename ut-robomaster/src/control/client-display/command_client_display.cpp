@@ -1,9 +1,5 @@
 #include "command_client_display.hpp"
 
-
-// TODO: Put this indicator in its own files
-// Always update the Resumable<T> to match number of functions returning a ResumableResult
-
 modm::ResumableResult<bool> BeybladeIndicator::sendInitialGraphics()
 {
 	// The number represents the index of the resumable function in this class

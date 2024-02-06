@@ -1,18 +1,19 @@
 #pragma once
 
-#include "tap/drivers.hpp"
 #include "tap/control/command.hpp"
 #include "tap/communication/serial/ref_serial_transmitter.hpp"
 #include "tap/communication/serial/ref_serial_data.hpp"
 #include "modm/processing/protothread.hpp"
 #include "modm/processing/resumable.hpp"
 
-#include "subsystems/odometry/odometry_subsystem.hpp"
+#include "drivers.hpp"
+
+#include "control/client-display/client_display_subsystem.hpp"
 
 using namespace tap::control;
 using namespace tap::communication::serial;
 
-using subsystems::odometry::OdometrySubsystem;
+using subsystems::control::ClientDisplaySubsystem;
 
 class BeybladeIndicator : protected modm::Resumable<2>
 {
@@ -46,13 +47,13 @@ private:
 public:
 	CommandClientDisplay(
 		src::Drivers drivers,
-		OdometrySubsystem *odometry) // temporarily using this to start this command
+		ClientDisplaySubsystem *clientDisplay) // temporarily using this to start this command
 		: Command(),
 		drivers(drivers),
 		refSerialTransmitter(&drivers),
 		beybladeIndicator(refSerialTransmitter)
 	{
-		addSubsystemRequirement(odometry);
+		addSubsystemRequirement(clientDisplay);
 	}
 	
 	bool run();
