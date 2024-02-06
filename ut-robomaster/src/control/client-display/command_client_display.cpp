@@ -55,7 +55,7 @@ bool CommandClientDisplay::run()
 
 	PT_BEGIN();
 	
-	PT_WAIT_UNTIL(drivers.refSerial.getRefSerialReceivingData());
+	PT_WAIT_UNTIL(drivers->refSerial.getRefSerialReceivingData());
 
 	PT_CALL(beybladeIndicator.sendInitialGraphics());
 

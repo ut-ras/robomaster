@@ -35,10 +35,10 @@ public:
 
 namespace commands
 {
-class CommandClientDisplay : Command, modm::pt::Protothread
+class CommandClientDisplay : public Command, modm::pt::Protothread
 {
 private:
-	src::Drivers &drivers;
+	src::Drivers* drivers;
 	RefSerialTransmitter refSerialTransmitter;
 	BeybladeIndicator beybladeIndicator;
 	bool restarting = true;
@@ -46,12 +46,12 @@ private:
 	void restartHud();
 public:
 	CommandClientDisplay(
-		src::Drivers drivers,
-		ClientDisplaySubsystem *clientDisplay) // temporarily using this to start this command
-		: Command(),
-		drivers(drivers),
-		refSerialTransmitter(&drivers),
-		beybladeIndicator(refSerialTransmitter)
+		src::Drivers *drivers,
+		ClientDisplaySubsystem *clientDisplay)
+			: Command(),
+			drivers(drivers),
+			refSerialTransmitter(drivers),
+			beybladeIndicator(refSerialTransmitter)
 	{
 		addSubsystemRequirement(clientDisplay);
 	}

@@ -8,7 +8,7 @@ using namespace tap::control;
 
 namespace subsystems::control
 {
-class ClientDisplaySubsystem : public tap::control::Subsystem
+class ClientDisplaySubsystem : public Subsystem
 {
 public:
 	ClientDisplaySubsystem(tap::Drivers*);
