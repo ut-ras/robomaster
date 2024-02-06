@@ -62,7 +62,7 @@ public:
 	}
 };
 
-class ClientDisplayCommand : Command, modm::pt::Protothread
+class CommandClientDisplay : Command, modm::pt::Protothread
 {
 private:
 	tap::Drivers &drivers;
@@ -78,7 +78,7 @@ private:
 	}
 
 public:
-	ClientDisplayCommand(
+	CommandClientDisplay(
 		tap::Drivers &drivers)
 		: Command(),
 		drivers(drivers),
