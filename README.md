@@ -12,26 +12,9 @@ Firmware for the Stampede RoboMaster team -- built on Taproot and modm
 * From the command palette (F1), run Dev Containers: Reopen in Container
 * Done! When opening the project in the future, be sure to use the Dev Container
 
-### Windows 10/11
-* [Install WSL](https://learn.microsoft.com/en-us/windows/wsl/install) using `wsl --install`, and restart your PC
-* Open the WSL terminal and run the following commands (make sure you are working inside the Ubuntu home directory rather than the Windows mount to avoid permission issues):
-  ```
-  sudo apt update
-  sudo apt install podman stlink-tools
-  git clone --recurse-submodules https://github.com/ut-ras/robomaster
-  ```
-* Install [USBIPD-WIN](https://learn.microsoft.com/en-us/windows/wsl/connect-usb#install-the-usbipd-win-project) (required for flashing code to the robots)
-* Install [VSCode](https://code.visualstudio.com/Download) (strongly recommended for ease of setup) and open the IDE
-* Install the [WSL](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-wsl) and [Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) extensions
-* Change Dev Containers: Docker Path to "podman" in VS Code settings
-* From the command palette (F1), run WSL: Connect to WSL
-* Open the `robomaster` folder
-* From the command palette (F1), run Dev Containers: Reopen in Container
-* Done! When opening the project in the future, be sure to use the Dev Container
-
-### macOS
-* Install [Podman](https://podman.io/docs/installation#macos) and [git](https://git-scm.com/download/mac)
-* Run `podman machine init --now` to start the Podman VM
+### macOS and Windows (10/11)
+* Install [Podman](https://podman.io/) and [git](https://git-scm.com/downloads)
+* Start the Podman VM through Podman Desktop or by running `podman machine init --now`
 * Install [VSCode](https://code.visualstudio.com/Download) (strongly recommended for ease of setup) and the [Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) extension
 * Change Dev Containers: Docker Path to "podman" in VS Code settings
 * Clone the repository `git clone --recurse-submodules https://github.com/ut-ras/robomaster`
@@ -47,11 +30,10 @@ Alternatively, use Run Build Task (Ctrl+Shift+B) in VS Code and select the robot
 
 Note: Each robot has different hardware and requires variations in the code, so its important to ensure your final code builds on every robot.
 
-## Flashing (Linux/Windows only)
+## Flashing (Linux only)
 To flash the code to robot hardware:
 * Turn off power on the robot
 * Connect an ST-Link to the robot and your computer
-* If using Windows, [attach the USB device to WSL](https://learn.microsoft.com/en-us/windows/wsl/connect-usb#attach-a-usb-device)
 * Open a terminal and navigate to the repository (not in the Dev Container)
 * Run `./flash.sh robot=<standard|hero|sentry>`
 * Once this is complete, the firmware is flashed and you can turn the robot back on
