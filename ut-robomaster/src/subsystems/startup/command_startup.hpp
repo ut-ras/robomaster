@@ -1,7 +1,9 @@
 #pragma once
 
+
 #include "tap/communication/sensors/buzzer/buzzer.hpp"
 #include "tap/control/command.hpp"
+#include "tap/architecture/clock.hpp"
 
 #include "drivers.hpp"
 #include "startup_subsystem.hpp"
