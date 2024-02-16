@@ -18,7 +18,7 @@ void CommandStartup::initialize()
         }
     }
 
-    startup->silence();a
+    startup->silence();
 }
 
 void CommandStartup::execute() {}
