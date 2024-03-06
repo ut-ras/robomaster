@@ -12,7 +12,7 @@ void CommandStartup::initialize()
         uint32_t time = tap::arch::clock::getTimeMilliseconds();
         uint32_t timeDiff = 0;
         startup->setBuzzerFrequency(frequencies[i]);
-        while (timeDiff <= 1000)  // ms
+        while (timeDiff <= 500)  // ms
         {
             timeDiff = tap::arch::clock::getTimeMilliseconds() - time;
         }
