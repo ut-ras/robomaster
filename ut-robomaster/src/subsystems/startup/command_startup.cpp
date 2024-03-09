@@ -3,28 +3,31 @@
 namespace commands
 {
 
-void CommandStartup::initialize()
+void CommandStartup::initialize() { startTime = getTimeMilliseconds(); }
+
+void CommandStartup::execute()
 {
-    int frequencies[11] = {110, 131, 220, 189, 310, 273, 114, 238, 331, 440, 0};
+    uint32_t time = getTimeMilliseconds() - startTime;
+    int note = static_cast<int>(time * timestep);
 
-    for (int i = 0; i < 11; i++)
+    if (note >= NOTE_COUNT)
     {
-        uint32_t time = tap::arch::clock::getTimeMilliseconds();
-        uint32_t timeDiff = 0;
-        startup->setBuzzerFrequency(frequencies[i]);
-        while (timeDiff <= 1000)  // ms
-        {
-            timeDiff = tap::arch::clock::getTimeMilliseconds() - time;
-        }
+        startup->silence();
+        done = true;
     }
+    else if (note > lastNote)
+    {
+        lastNote = note;
 
-    startup->silence();
+        if (notes[note] == 0.0f)
+        {
+            startup->silence();
+        }
+        startup->setBuzzerFrequency(notes[note]);
+    }
 }
 
-void CommandStartup::execute() {}
-
 void CommandStartup::end(bool) {}
-
-bool CommandStartup::isFinished() const { return false; }
+bool CommandStartup::isFinished() const { return done; }
 
 }  // namespace commands
