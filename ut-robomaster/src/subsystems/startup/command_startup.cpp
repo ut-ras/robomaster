@@ -3,31 +3,28 @@
 namespace commands
 {
 
-void CommandStartup::initialize() { startTime = getTimeMilliseconds(); }
+void CommandStartup::initialize()
+{
+    timer.restart();
+    startup->setBuzzerFrequency(NOTES[0]);
+}
 
 void CommandStartup::execute()
 {
-    uint32_t time = getTimeMilliseconds() - startTime;
-    int note = static_cast<int>(time * timestep);
-
-    if (note >= NOTE_COUNT)
+    if (timer.execute())
     {
-        startup->silence();
-        done = true;
-    }
-    else if (note > lastNote)
-    {
-        lastNote = note;
-
-        if (notes[note] == 0.0f)
+        if (++note < NOTE_COUNT && NOTES[note] > 0.0f)
+        {
+            startup->setBuzzerFrequency(NOTES[note]);
+        }
+        else
         {
             startup->silence();
         }
-        startup->setBuzzerFrequency(notes[note]);
     }
 }
 
-void CommandStartup::end(bool) {}
-bool CommandStartup::isFinished() const { return done; }
+void CommandStartup::end(bool) { startup->silence(); }
+bool CommandStartup::isFinished() const { return note >= NOTE_COUNT; }
 
 }  // namespace commands
