@@ -1,0 +1,21 @@
+name: Try building for each robot
+
+on:
+  push:
+    branches: [ "develop" ]
+  pull_request:
+    branches: [ "develop" ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build the image
+      run: podman build --tag "ut-robomaster" .
+    - name: scons build standard
+      run: podman run -it -v .:/robomaster -w /robomaster/ut-robomaster ut-robomaster scons build "standard"
+      
