@@ -6,6 +6,7 @@ fi
 
 podman build --tag "ut-robomaster" .
 podman run -it --rm \
+    --userns=keep-id \
     --security-opt label=disable \
     -v /dev/bus/usb:/dev/bus/usb \
     -v .:/robomaster \
