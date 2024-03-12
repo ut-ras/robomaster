@@ -98,7 +98,8 @@ CommandMoveTurretJoystick moveTurretCommandJoystick(drivers(), &turret);
 CommandMoveTurretJoystick moveTurretWhenChassisIsTurretRelativeCommandJoystick(drivers(), &turret);
 CommandMoveTurretMouse moveTurretCommandMouse(drivers(), &turret);
 CommandMoveTurretAimbot moveTurretCommandAimbot(drivers(), &turret);
-CommandPlaySound playSoundCommand(drivers(), &sound, SOUND_STARTUP);
+
+CommandPlaySound playStartupSoundCommand(drivers(), &sound, SOUND_STARTUP);
 
 // Keyboard mappings ------------------------------------------------------------
 ToggleCommandMapping keyRToggled(
@@ -187,7 +188,7 @@ void setDefaultCommands(src::Drivers *)
 
 void runStartupCommands(src::Drivers *drivers)
 {
-    drivers->commandScheduler.addCommand(&playSoundCommand);
+    drivers->commandScheduler.addCommand(&playStartupSoundCommand);
 }
 
 // Register IO mappings here -----------------------------------------------
