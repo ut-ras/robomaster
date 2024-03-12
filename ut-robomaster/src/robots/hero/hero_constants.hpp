@@ -5,6 +5,7 @@
 #include "tap/motor/dji_motor.hpp"
 
 #include "modm/container/pair.hpp"
+#include "subsystems/sound/sounds/sound_smb_powerup.hpp"
 #include "utils/motor_controller/pid.hpp"
 
 using motor_controller::PidConstants;
@@ -107,3 +108,5 @@ static constexpr float PITCH_INPUT_SCALE = 5.0f;
 
 static constexpr float MOUSE_SENS_YAW = 0.0045f;
 static constexpr float MOUSE_SENS_PITCH = 0.002f;
+
+const Sound SOUND_STARTUP = SOUND_SMB_POWERUP;
