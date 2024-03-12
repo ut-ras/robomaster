@@ -183,10 +183,12 @@ void setDefaultCommands(src::Drivers *)
     chassis.setDefaultCommand(&moveChassisCommandKeyboard);
     flywheel.setDefaultCommand(&flywheelOffCommand);
     turret.setDefaultCommand(&moveTurretCommandMouse);
-    startup.setDefaultCommand(&startupCommand);
 }
 
-void runStartupCommands(src::Drivers *) {}
+void runStartupCommands(src::Drivers *drivers)
+{
+    drivers->commandScheduler.addCommand(&startupCommand);
+}
 
 // Register IO mappings here -----------------------------------------------
 void registerMappings(src::Drivers *drivers)

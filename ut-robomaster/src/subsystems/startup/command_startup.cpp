@@ -11,15 +11,20 @@ void CommandStartup::initialize()
 
 void CommandStartup::execute()
 {
-    if (timer.execute())
+    if (timer.execute() && ++note < NOTE_COUNT)
     {
-        if (++note < NOTE_COUNT && NOTES[note] > 0.0f)
+        uint16_t freq = NOTES[note];
+
+        if (freq != NOTES[note - 1])  // only update if the note changed
         {
-            startup->setBuzzerFrequency(NOTES[note]);
-        }
-        else
-        {
-            startup->silence();
+            if (freq > 0.0f)
+            {
+                startup->setBuzzerFrequency(freq);
+            }
+            else
+            {
+                startup->silence();  // silence also kills the duty cycle
+            }
         }
     }
 }
