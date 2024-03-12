@@ -37,9 +37,9 @@
 #include "subsystems/turret/command_move_turret_mouse.hpp"
 #include "subsystems/turret/turret_subsystem.hpp"
 
-// Startup includes -----------------------------------------
-#include "subsystems/startup/command_startup.hpp"
-#include "subsystems/startup/startup_subsystem.hpp"
+// Sound includes -----------------------------------------
+#include "subsystems/sound/command_play_sound.hpp"
+#include "subsystems/sound/sound_subsystem.hpp"
 
 using namespace tap::control;
 using namespace tap::communication::serial;
@@ -49,7 +49,7 @@ using namespace subsystems::agitator;
 using namespace subsystems::flywheel;
 using namespace subsystems::turret;
 using namespace subsystems::odometry;
-using namespace subsystems::startup;
+using namespace subsystems::sound;
 
 using namespace commands;
 
@@ -73,7 +73,7 @@ AgitatorSubsystem agitator2(drivers(), ID_AGITATOR_R, true);
 FlywheelSubsystem flywheel(drivers());
 TurretSubsystem turret(drivers());
 OdometrySubsystem odometry(drivers(), &chassis, &turret);
-StartupSubsystem startup(drivers());
+SoundSubsystem sound(drivers());
 
 // Command definitions -----------------------------------------------------------
 CommandMoveChassisJoystick moveChassisCommandJoystick(drivers(), &chassis, &turret);
@@ -98,7 +98,7 @@ CommandMoveTurretJoystick moveTurretCommandJoystick(drivers(), &turret);
 CommandMoveTurretJoystick moveTurretWhenChassisIsTurretRelativeCommandJoystick(drivers(), &turret);
 CommandMoveTurretMouse moveTurretCommandMouse(drivers(), &turret);
 CommandMoveTurretAimbot moveTurretCommandAimbot(drivers(), &turret);
-CommandStartup startupCommand(drivers(), &startup);
+CommandPlaySound playSoundCommand(drivers(), &sound);
 
 // Keyboard mappings ------------------------------------------------------------
 ToggleCommandMapping keyRToggled(
@@ -162,7 +162,7 @@ void registerStandardSubsystems(src::Drivers *drivers)
     drivers->commandScheduler.registerSubsystem(&flywheel);
     drivers->commandScheduler.registerSubsystem(&turret);
     drivers->commandScheduler.registerSubsystem(&odometry);
-    drivers->commandScheduler.registerSubsystem(&startup);
+    drivers->commandScheduler.registerSubsystem(&sound);
 }
 
 // Initialize subsystems here ---------------------------------------------
@@ -174,7 +174,7 @@ void initializeSubsystems()
     flywheel.initialize();
     turret.initialize();
     odometry.initialize();
-    startup.initialize();
+    sound.initialize();
 }
 
 // Set default commands here -----------------------------------------------
@@ -187,7 +187,7 @@ void setDefaultCommands(src::Drivers *)
 
 void runStartupCommands(src::Drivers *drivers)
 {
-    drivers->commandScheduler.addCommand(&startupCommand);
+    drivers->commandScheduler.addCommand(&playSoundCommand);
 }
 
 // Register IO mappings here -----------------------------------------------

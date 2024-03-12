@@ -7,7 +7,7 @@
 #include "sounds/sound_startup.hpp"
 
 #include "drivers.hpp"
-#include "startup_subsystem.hpp"
+#include "sound_subsystem.hpp"
 
 // #define S 0.0f
 // #define C5 523.25f
@@ -25,18 +25,18 @@
 namespace commands
 {
 
-using subsystems::startup::StartupSubsystem;
+using subsystems::sound::SoundSubsystem;
 using tap::arch::PeriodicMilliTimer;
 
-class CommandStartup : public tap::control::Command
+class CommandPlaySound : public tap::control::Command
 {
 public:
-    CommandStartup(src::Drivers *drivers, StartupSubsystem *startup)
+    CommandPlaySound(src::Drivers *drivers, SoundSubsystem *sound)
         : drivers(drivers),
-          startup(startup),
+          sound(sound),
           timer(NOTE_INTERVAL)
     {
-        addSubsystemRequirement(startup);
+        addSubsystemRequirement(sound);
     }
 
     void initialize() override;
@@ -47,13 +47,13 @@ public:
 
     bool isFinished() const override;
 
-    const char *getName() const override { return "startup command"; }
+    const char *getName() const override { return "play sound command"; }
 
 private:
     src::Drivers *drivers;
-    StartupSubsystem *startup;
+    SoundSubsystem *sound;
 
     uint16_t note = 0;
     PeriodicMilliTimer timer;
-};  // class CommandStartup
+};  // class CommandPlaySound
 }  // namespace commands
