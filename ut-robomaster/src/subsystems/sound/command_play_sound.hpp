@@ -1,6 +1,6 @@
 #pragma once
 
-#include "tap/architecture/periodic_timer.hpp"
+#include "tap/architecture/timeout.hpp"
 #include "tap/communication/sensors/buzzer/buzzer.hpp"
 #include "tap/control/command.hpp"
 
@@ -12,7 +12,7 @@ namespace commands
 {
 
 using subsystems::sound::SoundSubsystem;
-using tap::arch::PeriodicMilliTimer;
+using tap::arch::MilliTimeout;
 
 class CommandPlaySound : public tap::control::Command
 {
@@ -21,7 +21,7 @@ public:
         : drivers(drivers),
           subsystem(subsystem),
           sound(sound),
-          timer(sound.note_interval)
+          timer()
     {
         addSubsystemRequirement(subsystem);
     }
@@ -37,11 +37,13 @@ public:
     const char *getName() const override { return "play sound command"; }
 
 private:
+    void playNote(uint8_t note);
+
     src::Drivers *drivers;
     SoundSubsystem *subsystem;
     Sound sound;
 
-    uint16_t note = 0;
-    PeriodicMilliTimer timer;
+    int read_index = 0;
+    MilliTimeout timer;
 };  // class CommandPlaySound
 }  // namespace commands
