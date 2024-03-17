@@ -73,7 +73,17 @@
         "SConstruct": "python",
         "SConscript": "python",
         "stop_token": "cpp",
-        "cassert": "cpp"
+        "cassert": "cpp",
+        "string.h": "c",
+        "bit": "cpp",
+        "compare": "cpp",
+        "concepts": "cpp",
+        "numbers": "cpp",
+        "ranges": "cpp",
+        "span": "cpp",
+        "stdlib.h": "c",
+        "stdarg.h": "c",
+        "reent.h": "c"
     },
     "C_Cpp.errorSquiggles": "enabled",
     "C_Cpp.default.includePath": [
@@ -92,5 +102,7 @@
         "editor.rulers": [
             100
         ]
-    }
+    },
+    "remote.autoForwardPorts": false,
+    "cortex-debug.variableUseNaturalFormat": true,
 }

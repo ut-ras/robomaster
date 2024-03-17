@@ -1,9 +1,12 @@
 {
-    "image": "ghcr.io/ut-ras/robomaster-firmware",
+    "build": {
+        "dockerfile": "Containerfile"
+    },
     "customizations": {
         "vscode": {
             "extensions": [
-                "ms-vscode.cpptools"
+                "ms-vscode.cpptools",
+                "marus25.cortex-debug"
             ]
         }
     },
