@@ -24,7 +24,7 @@
 /* control includes ---------------------------------------------------------*/
 #include "tap/architecture/clock.hpp"
 
-#include "communication/rtt/SEGGER_RTT.h"
+#include "communication/rtt.hpp"
 #include "robots/robot_constants.hpp"
 #include "robots/robot_control.hpp"
 
@@ -48,6 +48,7 @@ int main()
 {
     SEGGER_RTT_WriteString(0, "test");
     SEGGER_RTT_printf(0, "test2");
+    printf_rtt("hello! (%f)", 4.123f);
 
 #ifdef PLATFORM_HOSTED
     std::cout << "Simulation starting..." << std::endl;
