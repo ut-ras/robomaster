@@ -17,10 +17,15 @@ using tap::arch::MilliTimeout;
 class CommandPlaySound : public tap::control::Command
 {
 public:
-    CommandPlaySound(src::Drivers *drivers, SoundSubsystem *subsystem, Sound sound)
+    CommandPlaySound(
+        src::Drivers *drivers,
+        SoundSubsystem *subsystem,
+        Sound sound,
+        bool loop = false)
         : drivers(drivers),
           subsystem(subsystem),
           sound(sound),
+          loop(loop),
           timer()
     {
         addSubsystemRequirement(subsystem);
@@ -44,6 +49,7 @@ private:
     Sound sound;
 
     int read_index = 0;
+    bool loop = false;
     MilliTimeout timer;
 };  // class CommandPlaySound
 }  // namespace commands

@@ -11,7 +11,11 @@ void CommandPlaySound::initialize()
 
 void CommandPlaySound::execute()
 {
-    if (read_index >= sound.data_length) return;
+    if (read_index >= sound.data_length)
+    {
+        if (!loop) return;
+        read_index -= sound.data_length;
+    }
 
     if (timer.execute())
     {
