@@ -47,7 +47,7 @@ class I2cDevice : protected modm::NestedResumable<NestingLevels + 1>
 {
 public:
     ///	@param	address	the slave address not yet shifted left (address < 128).
-    I2cDevice(uint8_t address = 0x00) : transaction(address), configuration(nullptr) {}
+    I2cDevice(uint8_t address) : transaction(address), configuration(nullptr) {}
 
     /// Sets a new address of the slave device.
     ///	@param	address	the slave address not yet shifted left (address < 128).
