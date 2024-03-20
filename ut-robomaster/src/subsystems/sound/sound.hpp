@@ -3,7 +3,7 @@
 
 struct Sound
 {
-    uint16_t note_count;
+    uint16_t data_length;
     uint16_t note_interval;
-    uint16_t* notes;
+    uint8_t* data;
 };
