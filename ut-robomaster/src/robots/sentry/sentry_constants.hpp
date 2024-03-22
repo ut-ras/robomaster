@@ -5,6 +5,7 @@
 #include "tap/motor/dji_motor.hpp"
 
 #include "modm/container/pair.hpp"
+#include "subsystems/sound/sounds/sound_smb_powerup.hpp"
 #include "utils/motor_controller/pid.hpp"
 
 using motor_controller::PidConstants;
@@ -117,3 +118,5 @@ static constexpr tap::algorithms::SmoothPidConfig PITCH_PID_CONFIG = {
     .errDeadzone = 0.0f,
     .errorDerivativeFloor = 0.0f,
 };
+
+const Sound SOUND_STARTUP = SOUND_SMB_POWERUP;

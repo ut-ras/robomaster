@@ -8,17 +8,17 @@
 
 namespace subsystems
 {
-namespace startup
+namespace sound
 {
 using tap::gpio::Pwm;
 
-class StartupSubsystem : public tap::control::Subsystem
+class SoundSubsystem : public tap::control::Subsystem
 {
 public:
-    StartupSubsystem(src::Drivers* drivers);
+    SoundSubsystem(src::Drivers* drivers);
     void initialize() override;
     void refresh() override;
-    const char* getName() override { return "Startup subsystem"; }
+    const char* getName() override { return "Sound subsystem"; }
 
     void setBuzzerFrequency(int frequency);
     void silence();
@@ -26,5 +26,5 @@ public:
 private:
     src::Drivers* drivers;
 };
-}  // namespace startup
+}  // namespace sound
 }  // namespace subsystems

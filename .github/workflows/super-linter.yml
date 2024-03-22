@@ -1,9 +1,3 @@
-# This workflow executes several linters on changed files based on languages used in your code base whenever
-# you push a code or open a pull request.
-#
-# You can adjust the behavior by modifying this file.
-# For more information, see:
-# https://github.com/github/super-linter
 name: Lint Code Base
 
 on:
@@ -11,20 +5,30 @@ on:
     branches: ["develop"]
   pull_request:
     branches: ["develop"]
+    
 jobs:
-  run-lint:
+  lint:
     runs-on: ubuntu-latest
+    
+    permissions:
+      contents: read
+      packages: read
+      # To report GitHub Actions status checks
+      statuses: write
+      
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
-          # Full git history is needed to get a proper list of changed files within `super-linter`
+          # super-linter needs the full git history to get the
+          # list of files that changed across commits
           fetch-depth: 0
-
-      - name: Lint Code Base
-        uses: github/super-linter@v4
+          
+      - name: Lint
+        uses: super-linter/super-linter/slim@v6.3.0
         env:
           VALIDATE_CLANG_FORMAT: true
           VALIDATE_ALL_CODEBASE: false
-          DEFAULT_BRANCH: "develop"
+          FILTER_REGEX_INCLUDE: ut-robomaster/src/.*
+          # To report GitHub Actions status checks
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

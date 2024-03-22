@@ -1,7 +1,5 @@
 {
-    "build": {
-        "dockerfile": "Containerfile"
-    },
+    "image": "ghcr.io/ut-ras/robomaster-firmware",
     "customizations": {
         "vscode": {
             "extensions": [
@@ -11,7 +9,7 @@
     },
     "runArgs": [
         // Ensure our workspace gets mounted under the non-root user (podman)
-        "--userns=keep-id",
+        "--userns=keep-id:uid=1000,gid=1000",
         // Disable SELinux labeling (see https://docs.podman.io/en/latest/markdown/podman-run.1.html#volume-v-source-volume-host-dir-container-dir-options)
         "--security-opt",
         "label=disable"

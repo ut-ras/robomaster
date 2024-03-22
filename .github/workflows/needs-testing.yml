@@ -1,0 +1,18 @@
+name: Tested on hardware
+on:
+  pull_request:
+    types: [opened, labeled, unlabeled, synchronize]
+jobs:
+  label:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      pull-requests: write
+    steps:
+      - uses: mheap/github-action-required-labels@v5
+        with:
+          mode: exactly
+          count: 0
+          labels: "needs-testing"
+          add_comment: true
+          message: "This code needs to be tested on robot hardware before it can be merged.\nOnce everything is confirmed to be working, please remove the `{{ provided }}` label."
