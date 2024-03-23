@@ -1,18 +1,37 @@
 {
-    "version": "0.2.0",
-    "configurations": [
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug Hardware",
+      "type": "cortex-debug",
+      "request": "launch",
+      "servertype": "openocd",
+      "cwd": "${workspaceRoot}",
+      "preLaunchTask": "Flash - Debug",
+      "executable": "./ut-robomaster/build/hardware/scons-debug/ut-robomaster.elf",
+      "device": "STM32F427II",
+      "configFiles": [
+        "./ut-robomaster/openocd.cfg"
+      ]
+    },
+    {
+      "name": "C/C++ Runner: Debug Session",
+      "type": "cppdbg",
+      "request": "launch",
+      "args": [],
+      "stopAtEntry": false,
+      "externalConsole": false,
+      "cwd": "/workspaces/robomaster",
+      "program": "/workspaces/robomaster/build/Debug/outDebug",
+      "MIMode": "gdb",
+      "miDebuggerPath": "gdb",
+      "setupCommands": [
         {
-            "name": "Debug Hardware",
-            "type": "cortex-debug",
-            "request": "launch",
-            "servertype": "openocd",
-            "cwd": "${workspaceRoot}",
-            "preLaunchTask": "Flash - Debug",
-            "executable": "./ut-robomaster/build/hardware/scons-debug/ut-robomaster.elf",
-            "device": "STM32F427II",
-            "configFiles": [
-                "./ut-robomaster/openocd.cfg"
-            ]
+          "description": "Enable pretty-printing for gdb",
+          "text": "-enable-pretty-printing",
+          "ignoreFailures": true
         }
-    ]
+      ]
+    }
+  ]
 }

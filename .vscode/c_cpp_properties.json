@@ -1,7 +1,7 @@
 {
     "configurations": [
         {
-            "name": "Hardware",
+            "name": "linux-gcc-x64",
             "defines": [
                 "TARGET_STANDARD",
                 "TARGET_HERO",
@@ -15,7 +15,9 @@
                 "ut-robomaster/taproot/modm/ext/cmsis/dsp"
             ],
             "compilerPath": "arm-none-eabi-g++",
-            "intelliSenseMode": "gcc-arm"
+            "intelliSenseMode": "gcc-arm",
+            "cStandard": "${default}",
+            "cppStandard": "${default}"
         }
     ],
     "version": 4
