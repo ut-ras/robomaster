@@ -1,5 +1,6 @@
 #pragma once
 
+#include "tap/architecture/timeout.hpp"
 #include "tap/control/command.hpp"
 
 #include "robots/robot_constants.hpp"
@@ -7,6 +8,8 @@
 #include "utils/power_limiter/barrel_cooldown.hpp"
 
 #include "drivers.hpp"
+
+using tap::arch::MilliTimeout;
 
 namespace commands
 {
@@ -19,7 +22,8 @@ public:
     CommandAgitatorContinuous(src::Drivers *drivers, AgitatorSubsystem *agitator, BarrelId barrelId)
         : drivers(drivers),
           agitator(agitator),
-          barrelId(barrelId)
+          barrelId(barrelId),
+          timeout()
     {
         addSubsystemRequirement(agitator);
     }
@@ -38,5 +42,7 @@ private:
     src::Drivers *drivers;
     AgitatorSubsystem *agitator;
     BarrelId barrelId;
+    MilliTimeout timeout;
+    MilliTimeout timeout2;
 };
 }  // namespace commands
