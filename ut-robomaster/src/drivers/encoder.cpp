@@ -1,50 +1,62 @@
-#include "encoder.hpp"
+// the low-level commands of I2c
 
+#include "encoder.hpp"
 using namespace encoder;
+using std::end;
+using std::fill;
 using namespace modm;
+
 uint16_t calculate_Angle(uint16_t angle);
 // write to the start angle (ZPOS)
 // input: angle from 0 to max_angle
-
-void Encoder::set_startAngle(uint16_t angle)
+template <class I2cMaster>
+void Encoder<I2cMaster>::set_startAngle(uint16_t angle)
 {
     Encoder::Encoder_R address = Encoder::Encoder_R::ZPOS;
-    uint8_t data[3] = {0};
-    data[0] = (uint8_t)address;
+    std::fill(std::begin(dataBuffer), std::end(dataBuffer), 0);
+    dataBuffer[0] = (uint8_t)address;
 
     uint16_t N = calculate_Angle(angle);
-    data[1] = N & 0x0F00;  // bits [11:8]
-    data[0] = N & 0x00FF;  // bits [7:0]
+    dataBuffer[1] = N & 0x0F00;  // bits [11:8]
+    dataBuffer[2] = N & 0x00FF;  // bits [7:0]
 
-    startWrite(data, sizeof(data));
+    startWrite(dataBuffer, sizeof(dataBuffer));
 }
 
 // write to the stop angle (MPOS)
 // input: angle from 0 to max_angle, must be greater than start
-void Encoder::set_stopAngle(uint16_t angle)
+template <class I2cMaster>
+void Encoder<I2cMaster>::set_stopAngle(uint16_t angle)
 {
     Encoder::Encoder_R address = Encoder::Encoder_R::MPOS;
-    uint8_t data[3] = {0};
-    data[0] = (uint8_t)address;
+    std::fill(std::begin(dataBuffer), std::end(dataBuffer), 0);
+
+    dataBuffer[0] = (uint8_t)address;
     uint16_t N = calculate_Angle(angle);
-    data[1] = N & 0x0F00;  // bits [11:8]
-    data[2] = N & 0x00FF;  // bits [7:0]
-    startWrite(data, sizeof(data));
+    dataBuffer[1] = N & 0x0F00;  // bits [11:8]
+    dataBuffer[2] = N & 0x00FF;  // bits [7:0]
+
+    startWrite(dataBuffer, sizeof(dataBuffer));
 }
 
 // read_Angle
 // input: none
-// output: reads the
-uint16_t Encoder::read_Angle()
+// output: reads the curr_angle in degrees
+template <class I2cMaster>
+uint16_t Encoder<I2cMaster>::read_Angle()
 {
     Encoder::Encoder_R address = Encoder::Encoder_R::ANGLE;
-    uint8_t data[3] = {0};
-    data[0] = (uint8_t)address;
-    startRead(data, sizeof(data));
+    std::fill(std::begin(dataBuffer), std::end(dataBuffer), 0);
+    dataBuffer[0] = (uint8_t)address;
 
-    curr_angle = (data[1] << 2) | data[2];
+    
+    startRead(dataBuffer, sizeof(dataBuffer));
+
+    // returns two bytes from MSB [1] to LSB [2],  always return MSB first.
+    curr_angle = (dataBuffer[1] << 8) | dataBuffer[2];
     return curr_angle;
 }
+
 // convert angle to 1.5 bytes
 //(angle / 360) * 4096 = N
 // value written = N
