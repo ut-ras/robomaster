@@ -70,4 +70,5 @@ float AgitatorSubsystem::getShapedVelocity(float time, float a, float phi, float
 
 void AgitatorSubsystem::setBallsPerSecond(float bps) { ballsPerSecond = bps; }
 float AgitatorSubsystem::getPosition() { return agitator.measurePosition(); }
+float AgitatorSubsystem::getVelocity() { return agitator.measureVelocity(); }
 }  // namespace subsystems::agitator

@@ -30,6 +30,7 @@ public:
     void setBallsPerSecond(float bps);
 
     float getPosition();
+    float getVelocity();
 
 private:
     src::Drivers *drivers;
