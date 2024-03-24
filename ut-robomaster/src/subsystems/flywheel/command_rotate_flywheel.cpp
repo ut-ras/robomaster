@@ -1,9 +1,13 @@
 #include "command_rotate_flywheel.hpp"
 
+#include "tap/communication/sensors/buzzer/buzzer.hpp"
+
 namespace commands
 {
 
-void CommandRotateFlywheel::initialize() {}
+void CommandRotateFlywheel::initialize() {
+	tap::buzzer::playNote(&drivers->pwm, 440);
+}
 
 void CommandRotateFlywheel::execute()
 {

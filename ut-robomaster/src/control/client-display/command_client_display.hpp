@@ -6,14 +6,19 @@
 #include "modm/processing/protothread.hpp"
 #include "modm/processing/resumable.hpp"
 
+#include "tap/communication/sensors/buzzer/buzzer.hpp"
+
 #include "drivers.hpp"
 
 #include "control/client-display/client_display_subsystem.hpp"
+
+#include "subsystems/chassis/chassis_subsystem.hpp"
 
 using namespace tap::control;
 using namespace tap::communication::serial;
 
 using subsystems::control::ClientDisplaySubsystem;
+using subsystems::chassis::ChassisSubsystem;
 
 class BeybladeIndicator : protected modm::Resumable<2>
 {
@@ -47,13 +52,13 @@ private:
 public:
 	CommandClientDisplay(
 		src::Drivers *drivers,
-		ClientDisplaySubsystem *clientDisplay)
+		ChassisSubsystem *chassis)
 			: Command(),
 			drivers(drivers),
 			refSerialTransmitter(drivers),
 			beybladeIndicator(refSerialTransmitter)
 	{
-		addSubsystemRequirement(clientDisplay);
+		addSubsystemRequirement(chassis);
 	}
 	
 	bool run();
@@ -61,6 +66,7 @@ public:
 	const char *getName() const override { return "client display"; }
 	void initialize() override
 	{
+		tap::buzzer::playNote(&drivers->pwm, 440);
 		this->restarting = true;
 	};
 

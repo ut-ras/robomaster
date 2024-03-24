@@ -97,7 +97,7 @@ CommandMoveTurretJoystick moveTurretWhenChassisIsTurretRelativeCommandJoystick(d
 CommandMoveTurretMouse moveTurretCommandMouse(drivers(), &turret);
 CommandMoveTurretAimbot moveTurretCommandAimbot(drivers(), &turret);
 
-CommandClientDisplay clientDisplayCommand(drivers(), &clientDisplay);
+CommandClientDisplay clientDisplayCommand(drivers(), &chassis);
 
 // Keyboard mappings ------------------------------------------------------------
 ToggleCommandMapping keyRToggled(
@@ -125,7 +125,7 @@ HoldCommandMapping rightMouseDown(
     {&moveTurretCommandAimbot},
     RemoteMapState(RemoteMapState::MouseButton::RIGHT));
 
-HoldCommandMapping keyZHeld(
+ToggleCommandMapping keyZHeld(
     drivers(),
     {&clientDisplayCommand},
     RemoteMapState({Remote::Key::Z}));

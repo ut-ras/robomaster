@@ -1,5 +1,6 @@
 #include "command_client_display.hpp"
 
+
 modm::ResumableResult<bool> BeybladeIndicator::sendInitialGraphics()
 {
 	// The number represents the index of the resumable function in this class
@@ -14,6 +15,9 @@ modm::ResumableResult<bool> BeybladeIndicator::update()
 {
 	// This is the second resumable function so its index is 1
 	RF_BEGIN(1);
+
+	RF_CALL(refSerialTransmitter.sendGraphic(&msg));
+
 	RF_END();
 }
 
@@ -26,12 +30,11 @@ void BeybladeIndicator::initialize()
 			1, // Graphic layer can be 0-9
 			RefSerialData::Tx::GraphicColor::PINK
 			);
-		RefSerialTransmitter::configRectangle(
-			100,
-			0,
-			0,
-			100,
-			100,
+		RefSerialTransmitter::configCircle(
+			50,
+			1920/2,
+		    1080/2,
+            200,
 			&msg.graphicData[0]
 			);
 	}
