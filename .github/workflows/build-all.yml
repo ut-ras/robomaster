@@ -1,0 +1,23 @@
+name: Build All
+on:
+  push:
+    branches: [ "develop" ]
+  pull_request:
+    branches: [ "develop" ]
+env:
+  IMAGE_URL: "ghcr.io/${{ github.repository_owner }}/robomaster-firmware"
+  UID_MAPS: "--uidmap 1000:0:1 --uidmap 0:1:1000 --uidmap 1001:1001:64536"
+  RUN_ARGS: "-t --rm -v .:/code -w /code/ut-robomaster $UID_MAPS $IMAGE_URL"
+jobs:
+  build:
+    strategy:
+        matrix:
+          robot: [standard, hero, sentry]
+        fail-fast: false
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+    - name: Build code
+      run: podman run ${{ env.RUN_ARGS }} scons build robot=${{ matrix.robot }}
+      

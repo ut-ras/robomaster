@@ -40,6 +40,9 @@
 #include "control/client-display/client_display_subsystem.hpp"
 #include "control/client-display/command_client_display.hpp"
 
+#include "subsystems/sound/command_play_sound.hpp"
+#include "subsystems/sound/sound_subsystem.hpp"
+
 using namespace tap::control;
 using namespace tap::communication::serial;
 
@@ -48,6 +51,7 @@ using namespace subsystems::agitator;
 using namespace subsystems::flywheel;
 using namespace subsystems::turret;
 using namespace subsystems::odometry;
+using namespace subsystems::sound;
 
 using namespace commands;
 
@@ -72,6 +76,7 @@ FlywheelSubsystem flywheel(drivers());
 TurretSubsystem turret(drivers());
 OdometrySubsystem odometry(drivers(), &chassis, &turret);
 ClientDisplaySubsystem clientDisplay(drivers());
+SoundSubsystem sound(drivers());
 
 // Command definitions -----------------------------------------------------------
 CommandMoveChassisJoystick moveChassisCommandJoystick(drivers(), &chassis, &turret);
@@ -98,6 +103,7 @@ CommandMoveTurretMouse moveTurretCommandMouse(drivers(), &turret);
 CommandMoveTurretAimbot moveTurretCommandAimbot(drivers(), &turret);
 
 CommandClientDisplay clientDisplayCommand(drivers(), &chassis);
+CommandPlaySound playStartupSoundCommand(drivers(), &sound, SOUND_STARTUP);
 
 // Keyboard mappings ------------------------------------------------------------
 ToggleCommandMapping keyRToggled(
@@ -166,6 +172,7 @@ void registerStandardSubsystems(src::Drivers *drivers)
     drivers->commandScheduler.registerSubsystem(&flywheel);
     drivers->commandScheduler.registerSubsystem(&turret);
     drivers->commandScheduler.registerSubsystem(&odometry);
+    drivers->commandScheduler.registerSubsystem(&sound);
 }
 
 // Initialize subsystems here ---------------------------------------------
@@ -177,6 +184,7 @@ void initializeSubsystems()
     flywheel.initialize();
     turret.initialize();
     odometry.initialize();
+    sound.initialize();
 }
 
 // Set default commands here -----------------------------------------------
@@ -187,7 +195,10 @@ void setDefaultCommands(src::Drivers *)
     turret.setDefaultCommand(&moveTurretCommandMouse);
 }
 
-void runStartupCommands(src::Drivers *) {}
+void runStartupCommands(src::Drivers *drivers)
+{
+    drivers->commandScheduler.addCommand(&playStartupSoundCommand);
+}
 
 // Register IO mappings here -----------------------------------------------
 void registerMappings(src::Drivers *drivers)
