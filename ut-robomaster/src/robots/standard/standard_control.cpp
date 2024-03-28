@@ -37,7 +37,9 @@
 #include "subsystems/turret/command_move_turret_mouse.hpp"
 #include "subsystems/turret/turret_subsystem.hpp"
 
-// Sound includes -----------------------------------------
+#include "control/client-display/client_display_subsystem.hpp"
+#include "control/client-display/command_client_display.hpp"
+
 #include "subsystems/sound/command_play_sound.hpp"
 #include "subsystems/sound/sound_subsystem.hpp"
 
@@ -73,6 +75,7 @@ AgitatorSubsystem agitator2(drivers(), ID_AGITATOR_R, true);
 FlywheelSubsystem flywheel(drivers());
 TurretSubsystem turret(drivers());
 OdometrySubsystem odometry(drivers(), &chassis, &turret);
+ClientDisplaySubsystem clientDisplay(drivers());
 SoundSubsystem sound(drivers());
 
 // Command definitions -----------------------------------------------------------
@@ -99,6 +102,7 @@ CommandMoveTurretJoystick moveTurretWhenChassisIsTurretRelativeCommandJoystick(d
 CommandMoveTurretMouse moveTurretCommandMouse(drivers(), &turret);
 CommandMoveTurretAimbot moveTurretCommandAimbot(drivers(), &turret);
 
+CommandClientDisplay clientDisplayCommand(drivers(), &chassis);
 CommandPlaySound playStartupSoundCommand(drivers(), &sound, SOUND_STARTUP);
 
 // Keyboard mappings ------------------------------------------------------------
@@ -126,6 +130,11 @@ HoldCommandMapping rightMouseDown(
     drivers(),
     {&moveTurretCommandAimbot},
     RemoteMapState(RemoteMapState::MouseButton::RIGHT));
+
+ToggleCommandMapping keyZHeld(
+    drivers(),
+    {&clientDisplayCommand},
+    RemoteMapState({Remote::Key::Z}));
 
 // Joystick mappings ------------------------------------------------------------
 HoldCommandMapping rightSwitchUp(
@@ -199,6 +208,7 @@ void registerMappings(src::Drivers *drivers)
     drivers->commandMapper.addMap(&leftMouseDown);
     drivers->commandMapper.addMap(&keyXHeld);
     drivers->commandMapper.addMap(&rightMouseDown);
+    drivers->commandMapper.addMap(&keyZHeld);
     drivers->commandMapper.addMap(&keyGToggled);
 
     // Joystick mappings ------------------------------------------------------------
