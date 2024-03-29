@@ -44,5 +44,6 @@ private:
     BarrelId barrelId;
     MilliTimeout timeout;
     MilliTimeout timeout2;
+    bool unjam;
 };
 }  // namespace commands
