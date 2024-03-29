@@ -66,7 +66,7 @@ public:
 	const char *getName() const override { return "client display"; }
 	void initialize() override
 	{
-		tap::buzzer::playNote(&drivers->pwm, 440);
+		tap::buzzer::playNote(&drivers->pwm, 880);
 		this->restarting = true;
 	};
 

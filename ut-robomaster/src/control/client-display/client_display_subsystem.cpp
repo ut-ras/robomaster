@@ -8,6 +8,5 @@ namespace subsystems::control
 		tap::Drivers *drivers
 		) : Subsystem(drivers)
 	{
-        tap::buzzer::playNote(&drivers->pwm, 440);
     }
 }

@@ -167,6 +167,7 @@ HoldCommandMapping leftSwitchUp(
 void registerStandardSubsystems(src::Drivers *drivers)
 {
     drivers->commandScheduler.registerSubsystem(&chassis);
+    drivers->commandScheduler.registerSubsystem(&clientDisplay);
     drivers->commandScheduler.registerSubsystem(&agitator1);
     drivers->commandScheduler.registerSubsystem(&agitator2);
     drivers->commandScheduler.registerSubsystem(&flywheel);
@@ -179,6 +180,7 @@ void registerStandardSubsystems(src::Drivers *drivers)
 void initializeSubsystems()
 {
     chassis.initialize();
+    clientDisplay.initialize();
     agitator1.initialize();
     agitator2.initialize();
     flywheel.initialize();
