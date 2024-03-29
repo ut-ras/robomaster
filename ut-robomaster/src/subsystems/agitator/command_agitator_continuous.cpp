@@ -5,7 +5,7 @@ namespace commands
 
 void CommandAgitatorContinuous::initialize()
 {
-    timeout.restart(1000E-10);
+    timeout.restart(1000);
     unjam = false;
 }
 
@@ -19,17 +19,17 @@ void CommandAgitatorContinuous::execute()
         bps = 0.0f;
     }
 
-    if (agitator->getVelocity() < (.5 * BALLS_PER_SEC / BALLS_PER_REV) && !unjam)
+    if (abs(agitator->getVelocity()) < (.5 * BALLS_PER_SEC / BALLS_PER_REV) && !unjam)
     {
         if (timeout.isExpired())
         {
-            timeout2.restart(1000E-10);
+            timeout2.restart(1000);
             unjam = true;
         }
     }
     else
     {
-        timeout.restart(1000E-10);
+        timeout.restart(1000);
     }
 
     if (timeout2.isExpired())
