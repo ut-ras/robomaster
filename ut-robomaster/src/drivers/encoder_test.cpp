@@ -1,34 +1,48 @@
 #include "encoder.hpp"
 
-// typedef GpioB9 Sda;
-// typedef GpioB8 Scl;
-// typedef I2cMaster1 MyI2cMaster;
-// modm::Ssd1306<MyI2cMaster> display;
+#include "tap/architecture/periodic_timer.hpp"
 
-// int func()
-// {
-// 	Board::initialize();
+#include "encoder_test.hpp"
 
-// 	MyI2cMaster::connect<Scl::Scl, Sda::Sda>();
-// 	MyI2cMaster::initialize<Board::SystemClock, 420_kHz>();
+using tap::arch::PeriodicMilliTimer;
 
-// 	display.initializeBlocking();
-// 	display.setFont(modm::font::Assertion);
-// 	display << "Hello World!";
-// 	display.update();
+typedef modm::platform::I2cMaster2 Master;
 
-// 	modm::ShortPeriodicTimer timer(1s);
-// 	uint16_t counter(0);
+uint16_t frequencies[360];
+typedef GpioF0 Sda;
+typedef GpioF1 Scl;
 
-// 	while (true)
-// 	{
-// 		if (timer.execute())
-// 		{
-// 			display.setCursor(0,20);
-// 			display << counter++;
-// 			display.update();
-// 		}
-// 	}
+void populate_frequencies(void);
 
-// 	return 0;
-// }
+int func()
+{
+    Board::initialize();
+    encoder::Encoder<> encoder;
+    Master::connect<Scl::Scl, Sda::Sda>();
+    Master::initialize<Board::SystemClock>();
+    populate_frequencies();
+
+    // encoder.initializeBlocking();
+    encoder.set_startAngle(10);
+
+    PeriodicMilliTimer timer(1000);  // 1 second
+
+    while (true)
+    {
+        if (timer.execute())
+        {
+            // uint16_t angle = encoder.read_Angle();
+        }
+    }
+
+    return 0;
+}
+
+void populate_frequencies()
+{
+    frequencies[0] = 220;
+    for (uint16_t i = 1; i < 360; i++)
+    {
+        frequencies[i] = frequencies[i - 1] + 5;
+    }
+}

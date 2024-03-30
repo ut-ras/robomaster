@@ -1,21 +1,17 @@
 {
     "configurations": [
         {
-            "name": "linux-gcc-x64",
+            "name": "windows-cygwin-gcc-x64",
             "defines": [
                 "TARGET_STANDARD",
                 "TARGET_HERO",
                 "TARGET_SENTRY"
             ],
             "includePath": [
-                "${default}",
-                "ut-robomaster/taproot/modm/src",
-                "ut-robomaster/taproot/modm/ext/cmsis/core",
-                "ut-robomaster/taproot/modm/ext/cmsis/device",
-                "ut-robomaster/taproot/modm/ext/cmsis/dsp"
+                "${workspaceFolder}/**"
             ],
-            "compilerPath": "arm-none-eabi-g++",
-            "intelliSenseMode": "gcc-arm",
+            "compilerPath": "/gcc-arm/bin/arm-none-eabi-gcc",
+            "intelliSenseMode": "windows-clang-x86",
             "cStandard": "${default}",
             "cppStandard": "${default}"
         }

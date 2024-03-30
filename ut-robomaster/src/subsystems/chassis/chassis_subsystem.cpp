@@ -38,6 +38,9 @@ void ChassisSubsystem::refresh()
     }
 
     limitChassisPower();
+
+    // ENCODER_DEBUG
+    drivers->encoder.read_Angle();
 }
 
 void ChassisSubsystem::limitChassisPower()
