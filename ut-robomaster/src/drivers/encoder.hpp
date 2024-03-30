@@ -1,9 +1,9 @@
 #pragma once
-#include <stdint.h>
 
 #include "tap/board/board.hpp"  //clock_src
 
 #include "modm/architecture/interface/i2c_device.hpp"  //i2c implementation
+#include "modm/platform/i2c/i2c_master_2.hpp"          //i2c master
 
 namespace encoder
 {
@@ -12,23 +12,31 @@ namespace encoder
 struct Encoder_I2cWriteReadTransaction : public modm::I2cWriteReadTransaction
 {
 public:
-    Encoder_I2cWriteReadTransaction(uint8_t address);
+    Encoder_I2cWriteReadTransaction(uint8_t address) : modm::I2cWriteReadTransaction(address){};
 };
 
 template <class I2cMaster = modm::platform::I2cMaster2>
-class Encoder
-    : protected modm::
-          I2cDevice<modm::platform::I2cMaster2, 10, encoder::Encoder_I2cWriteReadTransaction>
+class Encoder : public modm::I2cDevice<I2cMaster, 10, encoder::Encoder_I2cWriteReadTransaction>
 {
 public:
     // init a i2c device from modm
-    Encoder(uint8_t address = slave_address);
+    Encoder(uint8_t address = slave_address)
+        : modm::I2cDevice<I2cMaster, 10, encoder::Encoder_I2cWriteReadTransaction>(address){};
 
     void set_startAngle(uint16_t angle);
 
     void set_stopAngle(uint16_t angle);
 
     uint16_t read_Angle();
+
+
+    /// Pings the display
+    // bool inline pingBlocking()
+    // { return RF_CALL_BLOCKING(this->ping()); }
+
+    // /// initializes for 3V3 with charge-pump
+    // bool inline initializeBlocking()
+    // { return RF_CALL_BLOCKING(initialize()); }
 
     ~Encoder(){};
 
@@ -57,19 +65,10 @@ protected:
         READ = 0x01
     };
 
-private : 
+private:
     uint16_t curr_angle;
     const uint16_t max_angle = 360;  // specific to our application
     uint8_t dataBuffer[4];
 };
-
-// definition of the constructer to initalize I2cDevice
-template <class I2cMaster>
-encoder::Encoder<I2cMaster>::Encoder(uint8_t address)
-    : I2cDevice<I2cMaster, 3, encoder::Encoder_I2cWriteReadTransaction>(address)
-{
-    // put into encoder_test (master)
-    // modm::platform::I2cMaster2::initialize<Board::SystemClock>();
-}
 
 };  // namespace encoder

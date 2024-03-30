@@ -97,9 +97,10 @@
       100
     ]
   },
-  "C_Cpp.default.compilerPath": "/gcc-arm/bin/arm-none-eabi-gcc",
-  "C_Cpp.intelliSenseEngineFallback": "disabled",
-  "C_Cpp_Runner.msvcBatchPath": "",
+  "C_Cpp.default.compilerPath": "/gcc-arm/bin/arm-none-eabi-g++",
+  "C_Cpp.intelliSenseEngine": "default",
+  "C_Cpp.intelliSenseEngineFallback": "enabled",
+  "C_Cpp_Runner.msvcBatchPath": "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Auxiliary/Build/vcvarsall.bat",
   "C_Cpp_Runner.cCompilerPath": "gcc",
   "C_Cpp_Runner.cppCompilerPath": "g++",
   "C_Cpp_Runner.debuggerPath": "gdb",
