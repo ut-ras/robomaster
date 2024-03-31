@@ -67,7 +67,10 @@ const float FEEDER_RATIO = 1.0f;  // feeder speed / agitator speed
 
 const uint16_t BARREL_HEAT_BUFFER = 100.0f;
 
-const float UNJAM_SPEED = 0.4f;  // rev/s
+const float JAM_TRIGGER_RATIO = 0.5;      // measured speed to driven speed ratio
+const float JAM_TRIGGER_DURATION = 0.1f;  // s
+const float UNJAM_DURATION = 0.1f;        // s
+const float UNJAM_SPEED = 12.0f;          // rev/s
 
 static constexpr int FLYWHEELS = 2;
 static constexpr float DEFAULT_SPEED = 60.0f;
