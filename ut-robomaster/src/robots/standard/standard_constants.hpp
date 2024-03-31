@@ -65,7 +65,10 @@ const float BALLS_PER_REV = 8.0f;
 
 const uint16_t BARREL_HEAT_BUFFER = 20.0f;
 
-const float UNJAM_SPEED = 0.4f;  // rev/s
+const float JAM_TRIGGER_RATIO = 0.5;      // measured speed to driven speed ratio
+const float JAM_TRIGGER_DURATION = 1.0f;  // s
+const float UNJAM_DURATION = 1.0f;        // s
+const float UNJAM_SPEED = 0.4f;           // rev/s
 
 // Turret constants ------------------------------------------------
 constexpr MotorId ID_YAW = MOTOR6;

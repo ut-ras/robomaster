@@ -22,8 +22,7 @@ public:
     CommandAgitatorContinuous(src::Drivers *drivers, AgitatorSubsystem *agitator, BarrelId barrelId)
         : drivers(drivers),
           agitator(agitator),
-          barrelId(barrelId),
-          timeout()
+          barrelId(barrelId)
     {
         addSubsystemRequirement(agitator);
     }
@@ -42,8 +41,8 @@ private:
     src::Drivers *drivers;
     AgitatorSubsystem *agitator;
     BarrelId barrelId;
-    MilliTimeout timeout;
-    MilliTimeout timeout2;
-    bool unjam;
+    MilliTimeout jamTriggerTimeout;
+    MilliTimeout unjammingTimeout;
+    bool isJammed = false;
 };
 }  // namespace commands

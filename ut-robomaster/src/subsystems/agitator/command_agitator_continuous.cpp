@@ -5,43 +5,44 @@ namespace commands
 
 void CommandAgitatorContinuous::initialize()
 {
-    timeout.restart(1000);
-    unjam = false;
+    jamTriggerTimeout.restart(JAM_TRIGGER_DURATION * 1000);
+    isJammed = false;
 }
 
 void CommandAgitatorContinuous::execute()
 {
-    float bps = BALLS_PER_SEC;
+    if (isJammed)
+    {
+        if (unjammingTimeout.isExpired())
+        {
+            jamTriggerTimeout.restart(JAM_TRIGGER_DURATION * 1000);
+            isJammed = false;
+        }
 
-    if (drivers->refSerial.getRefSerialReceivingData() &&
+        agitator->setBallsPerSecond(-UNJAM_SPEED);
+    }
+    else if (  // barrel overheat
+        drivers->refSerial.getRefSerialReceivingData() &&
         power_limiter::getRemainingCooldown(drivers, barrelId) <= BARREL_HEAT_BUFFER)
     {
-        bps = 0.0f;
+        agitator->setBallsPerSecond(0.0f);
     }
-
-    if (abs(agitator->getVelocity()) < (.5 * BALLS_PER_SEC / BALLS_PER_REV) && !unjam)
+    else  // heat remaining and no jams
     {
-        if (timeout.isExpired())
+        float speedRatio = abs(agitator->getVelocity()) / (BALLS_PER_SEC / BALLS_PER_REV);
+
+        if (speedRatio > JAM_TRIGGER_RATIO)  // no jam
         {
-            timeout2.restart(1000);
-            unjam = true;
+            jamTriggerTimeout.restart(JAM_TRIGGER_DURATION * 1000);
         }
-    }
-    else
-    {
-        timeout.restart(1000);
-    }
+        else if (jamTriggerTimeout.isExpired())  // jam detected
+        {
+            unjammingTimeout.restart(UNJAM_DURATION * 1000);
+            isJammed = true;
+        }
 
-    if (timeout2.isExpired())
-    {
-        unjam = false;
+        agitator->setBallsPerSecond(BALLS_PER_SEC);
     }
-
-    if (unjam)
-    {
-        bps = UNJAM_SPEED;
-    }
-    agitator->setBallsPerSecond(bps);
 }
 
 void CommandAgitatorContinuous::end(bool) { agitator->setBallsPerSecond(0.0f); }
