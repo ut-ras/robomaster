@@ -61,7 +61,7 @@ constexpr float CAMERA_X_OFFSET = 0.0f;    // horizontal offset of main camera l
 
 static constexpr modm::Pair<uint16_t, float> FLYWHEEL_RPS_MAPPING[] = {{10, 105.0f}, {16, 190.0f}};
 
-const float BALLS_PER_SEC = 2.0f;
+const float BALLS_PER_SEC = 4.0f;
 const float BALLS_PER_REV = 6.0f;
 const float FEEDER_RATIO = 1.0f;  // feeder speed / agitator speed
 
@@ -73,7 +73,7 @@ const float UNJAM_DURATION = 0.1f;        // s
 const float UNJAM_SPEED = 12.0f;          // rev/s
 
 static constexpr int FLYWHEELS = 2;
-static constexpr float DEFAULT_SPEED = 10.0f;
+static constexpr float DEFAULT_SPEED = 60.0f;
 
 static constexpr tap::algorithms::SmoothPidConfig YAW_PID_CONFIG = {
     .kp = 100'183.1f,
