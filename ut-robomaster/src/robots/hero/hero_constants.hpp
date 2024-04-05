@@ -26,7 +26,13 @@ static constexpr float WHEEL_DISTANCE_X = 0.525f;  // meters
 static constexpr float WHEEL_DISTANCE_Y = 0.400f;  // meters
 static constexpr float WHEEL_RADIUS = 0.1524f;     // meters
 static constexpr float WHEEL_LXY = (WHEEL_DISTANCE_X + WHEEL_DISTANCE_Y) / 2.0f;
-static constexpr float WHEEL_MAX_VEL = 120.0f;                                      // rad/s
+
+#ifdef MODE_DEMO
+    static constexpr float WHEEL_MAX_VEL = 10.0f;                                       // rad/s
+#else
+    static constexpr float WHEEL_MAX_VEL = 120.0f;                                       // rad/s
+#endif
+
 static constexpr float MAX_LINEAR_VEL = WHEEL_MAX_VEL * WHEEL_RADIUS;               // m/s
 static constexpr float MAX_ANGULAR_VEL = WHEEL_MAX_VEL * WHEEL_RADIUS / WHEEL_LXY;  // rad/s
 
@@ -39,7 +45,6 @@ constexpr MotorId ID_FLYWHEEL_L = MOTOR3;
 constexpr MotorId ID_FLYWHEEL_R = MOTOR4;
 constexpr MotorId ID_AGITATOR = MOTOR1;
 constexpr MotorId ID_FEEDER = MOTOR2;
-
 constexpr MotorId ID_YAW = MOTOR5;
 constexpr MotorId ID_PITCH = MOTOR6;
 
@@ -106,8 +111,13 @@ static constexpr tap::algorithms::SmoothPidConfig PITCH_PID_CONFIG = {
 static constexpr float YAW_REDUCTION = 2.0f;
 static constexpr float PITCH_REDUCTION = 1.0f;
 
-static constexpr float YAW_INPUT_SCALE = 4.0f;
-static constexpr float PITCH_INPUT_SCALE = 5.0f;
+#ifdef DEMO_MDOE
+    static constexpr float YAW_INPUT_SCALE = 1.0f;
+    static constexpr float PITCH_INPUT_SCALE = 1.0f;
+#else
+    static constexpr float YAW_INPUT_SCALE = 4.0f;
+    static constexpr float PITCH_INPUT_SCALE = 5.0f;
+#endif
 
 static constexpr float MOUSE_SENS_YAW = 0.0045f;
 static constexpr float MOUSE_SENS_PITCH = 0.002f;
