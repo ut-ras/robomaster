@@ -21,12 +21,12 @@ public:
 };
 
 template <class I2cMaster = modm::platform::I2cMaster2>
-class Encoder : public modm::I2cDevice<I2cMaster, 10, Encoder_I2cWriteReadTransaction>
+class Encoder : public modm::I2cDevice<I2cMaster, 10, modm::I2cWriteReadTransaction>
 {
 public:
     // init a i2c device from modm
     Encoder(uint8_t address = slave_address)
-        : modm::I2cDevice<I2cMaster, 10, Encoder_I2cWriteReadTransaction>(address){};
+        : modm::I2cDevice<I2cMaster, 10, modm::I2cWriteReadTransaction>(address){};
 
     void set_startAngle(uint16_t angle)
     {

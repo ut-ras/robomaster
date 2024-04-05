@@ -9,6 +9,7 @@
 #include "tap/board/board.hpp"
 
 #include "modm/architecture/interface/delay.hpp"
+#include "modm/platform.hpp"
 
 /* arch includes ------------------------------------------------------------*/
 #include "tap/architecture/periodic_timer.hpp"
@@ -24,6 +25,7 @@
 /* control includes ---------------------------------------------------------*/
 #include "tap/architecture/clock.hpp"
 
+#include "modm/platform/i2c/i2c_master_2.hpp"
 #include "robots/robot_constants.hpp"
 #include "robots/robot_control.hpp"
 
@@ -98,6 +100,9 @@ static void initializeIo(src::Drivers *drivers)
     drivers->djiMotorTerminalSerialHandler.init();
     drivers->bmi088.initialize(IMU_SAMPLE_FREQUENCY, IMU_KP, IMU_KI);
     drivers->bmi088.requestRecalibration();
+
+    modm::platform::I2cMaster2::connect<GpioF0::Sda, GpioF1::Scl>();
+    modm::platform::I2cMaster2::initialize<Board::SystemClock>();
 }
 
 static void updateIo(src::Drivers *drivers)
