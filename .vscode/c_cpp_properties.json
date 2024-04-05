@@ -1,19 +1,21 @@
 {
     "configurations": [
         {
-            "name": "windows-cygwin-gcc-x64",
+            "name": "Hardware",
             "defines": [
                 "TARGET_STANDARD",
                 "TARGET_HERO",
                 "TARGET_SENTRY"
             ],
             "includePath": [
-                "${workspaceFolder}/**"
+                "${default}",
+                "ut-robomaster/taproot/modm/src",
+                "ut-robomaster/taproot/modm/ext/cmsis/core",
+                "ut-robomaster/taproot/modm/ext/cmsis/device",
+                "ut-robomaster/taproot/modm/ext/cmsis/dsp"
             ],
-            "compilerPath": "/gcc-arm/bin/arm-none-eabi-gcc",
-            "intelliSenseMode": "windows-clang-x86",
-            "cStandard": "${default}",
-            "cppStandard": "${default}"
+            "compilerPath": "arm-none-eabi-g++",
+            "intelliSenseMode": "gcc-arm"
         }
     ],
     "version": 4

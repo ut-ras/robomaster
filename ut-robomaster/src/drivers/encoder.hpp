@@ -5,6 +5,11 @@
 #include "modm/architecture/interface/i2c_device.hpp"  //i2c implementation
 #include "modm/platform/i2c/i2c_master_2.hpp"          //i2c master
 
+// convert angle to 1.5 bytes
+//(angle / 360) * 4096 = N
+// value written = N
+inline uint16_t calculate_Angle(uint16_t angle) { return (((angle * 1000) / 360) * 4096) / 1000; }
+
 namespace encoder
 {
 
@@ -16,29 +21,51 @@ public:
 };
 
 template <class I2cMaster = modm::platform::I2cMaster2>
-class Encoder : public modm::I2cDevice<I2cMaster, 10, encoder::Encoder_I2cWriteReadTransaction>
+class Encoder : public modm::I2cDevice<I2cMaster, 10, modm::I2cWriteReadTransaction>
 {
 public:
     // init a i2c device from modm
     Encoder(uint8_t address = slave_address)
-        : modm::I2cDevice<I2cMaster, 10, encoder::Encoder_I2cWriteReadTransaction>(address){};
+        : modm::I2cDevice<I2cMaster, 10, modm::I2cWriteReadTransaction>(address){};
 
-    void set_startAngle(uint16_t angle);
+    void set_startAngle(uint16_t angle)
+    {
+        Encoder::Encoder_R address = Encoder::Encoder_R::ZPOS;
+        std::fill(std::begin(dataBuffer), std::end(dataBuffer), 0);
+        dataBuffer[0] = (uint8_t)address;
 
-    void set_stopAngle(uint16_t angle);
+        uint16_t N = calculate_Angle(angle);
+        dataBuffer[1] = N & 0x0F00;  // bits [11:8]
+        dataBuffer[2] = N & 0x00FF;  // bits [7:0]
 
-    uint16_t read_Angle();
+        this->startWrite(dataBuffer, sizeof(dataBuffer));
+    }
 
+    void set_stopAngle(uint16_t angle)
+    {
+        Encoder::Encoder_R address = Encoder::Encoder_R::MPOS;
+        std::fill(std::begin(dataBuffer), std::end(dataBuffer), 0);
 
-    /// Pings the display
-    // bool inline pingBlocking()
-    // { return RF_CALL_BLOCKING(this->ping()); }
+        dataBuffer[0] = (uint8_t)address;
+        uint16_t N = calculate_Angle(angle);
+        dataBuffer[1] = N & 0x0F00;  // bits [11:8]
+        dataBuffer[2] = N & 0x00FF;  // bits [7:0]
 
-    // /// initializes for 3V3 with charge-pump
-    // bool inline initializeBlocking()
-    // { return RF_CALL_BLOCKING(initialize()); }
+        this->startWrite(dataBuffer, sizeof(dataBuffer));
+    }
 
-    ~Encoder(){};
+    uint16_t read_Angle()
+    {
+        Encoder::Encoder_R address = Encoder::Encoder_R::ANGLE;
+        std::fill(std::begin(dataBuffer), std::end(dataBuffer), 0);
+        dataBuffer[0] = (uint8_t)address;
+
+        this->startRead(dataBuffer, sizeof(dataBuffer));
+
+        // returns two bytes from MSB [1] to LSB [2],  always return MSB first.
+        curr_angle = (dataBuffer[1] << 8) | dataBuffer[2];
+        return curr_angle;
+    }
 
 protected:
     static const uint8_t slave_address = 0x36;  // address of the AS6500
