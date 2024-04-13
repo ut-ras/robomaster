@@ -6,8 +6,7 @@
 #include "tap/motor/motorsim/sim_handler.hpp"
 #endif
 
-#include "tap/board/board.hpp"
-
+#include "drivers/board.hpp"
 #include "modm/architecture/interface/delay.hpp"
 #include "modm/platform.hpp"
 
@@ -57,6 +56,7 @@ int main()
     src::Drivers *drivers = src::DoNotUse_getDrivers();
 
     Board::initialize();
+    Board::initialize_i2c();
     initializeIo(drivers);
     control::initSubsystemCommands(drivers);
 
@@ -100,9 +100,6 @@ static void initializeIo(src::Drivers *drivers)
     drivers->djiMotorTerminalSerialHandler.init();
     drivers->bmi088.initialize(IMU_SAMPLE_FREQUENCY, IMU_KP, IMU_KI);
     drivers->bmi088.requestRecalibration();
-
-    modm::platform::I2cMaster2::connect<GpioF0::Sda, GpioF1::Scl>();
-    modm::platform::I2cMaster2::initialize<Board::SystemClock>();
 }
 
 static void updateIo(src::Drivers *drivers)
@@ -115,4 +112,5 @@ static void updateIo(src::Drivers *drivers)
     drivers->refSerial.updateSerial();
     // drivers->cvBoard.updateSerial();
     drivers->remote.read();
+    drivers->encoder.update();
 }

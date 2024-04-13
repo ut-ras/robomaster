@@ -4,6 +4,7 @@
 
 #include "modm/architecture/interface/i2c_device.hpp"  //i2c implementation
 #include "modm/platform/i2c/i2c_master_2.hpp"          //i2c master
+#include "modm/processing/protothread/protothread.hpp"
 
 // convert angle to 1.5 bytes
 //(angle / 360) * 4096 = N
@@ -21,54 +22,104 @@ public:
 };
 
 template <class I2cMaster = modm::platform::I2cMaster2>
-class Encoder : public modm::I2cDevice<I2cMaster, 10, modm::I2cWriteReadTransaction>
+class Encoder : public modm::I2cDevice<I2cMaster, 10, modm::I2cWriteReadTransaction>,
+                public modm::pt::Protothread
 {
 public:
     // init a i2c device from modm
     Encoder(uint8_t address = slave_address)
         : modm::I2cDevice<I2cMaster, 10, modm::I2cWriteReadTransaction>(address){};
 
-    void set_startAngle(uint16_t angle)
+    void update() { run(); }
+
+    bool run()
     {
-        Encoder::Encoder_R address = Encoder::Encoder_R::ZPOS;
-        std::fill(std::begin(dataBuffer), std::end(dataBuffer), 0);
-        dataBuffer[0] = (uint8_t)address;
+        PT_BEGIN();
+        // std::fill(std::begin(dataBuffer), std::end(dataBuffer), 0);
+        // dataBuffer[0] = (uint8_t)address;
 
-        uint16_t N = calculate_Angle(angle);
-        dataBuffer[1] = N & 0x0F00;  // bits [11:8]
-        dataBuffer[2] = N & 0x00FF;  // bits [7:0]
+        i++;
+        while (true)
+        {
+            buffer[0] = static_cast<uint8_t>(Encoder::Encoder_R::ANGLE);
+            PT_WAIT_UNTIL(this->startWrite(buffer, 1));
+            PT_WAIT_WHILE(this->isTransactionRunning());
 
-        this->startWrite(dataBuffer, sizeof(dataBuffer));
+            if (this->wasTransactionSuccessful())
+            {
+                PT_WAIT_UNTIL(this->startRead(buffer, 2));
+                PT_WAIT_WHILE(this->isTransactionRunning());
+
+                if (this->wasTransactionSuccessful())
+                {
+                    angle = (buffer[0] << 8) | buffer[1];
+                }
+
+                // RF_RETURN(this->wasTransactionSuccessful());
+            }
+        }
+
+        PT_END();
     }
 
-    void set_stopAngle(uint16_t angle)
+    float getAngle()
     {
-        Encoder::Encoder_R address = Encoder::Encoder_R::MPOS;
-        std::fill(std::begin(dataBuffer), std::end(dataBuffer), 0);
-
-        dataBuffer[0] = (uint8_t)address;
-        uint16_t N = calculate_Angle(angle);
-        dataBuffer[1] = N & 0x0F00;  // bits [11:8]
-        dataBuffer[2] = N & 0x00FF;  // bits [7:0]
-
-        this->startWrite(dataBuffer, sizeof(dataBuffer));
+        // return static_cast<float>(angle) / (1 << 12);
+        return i / 1.0f;
     }
 
-    uint16_t read_Angle()
-    {
-        Encoder::Encoder_R address = Encoder::Encoder_R::ANGLE;
-        std::fill(std::begin(dataBuffer), std::end(dataBuffer), 0);
-        dataBuffer[0] = (uint8_t)address;
+    // void set_startAngle(uint16_t angle)
+    // {
+    //     Encoder::Encoder_R address = Encoder::Encoder_R::ZPOS;
+    //     std::fill(std::begin(dataBuffer), std::end(dataBuffer), 0);
+    //     dataBuffer[0] = (uint8_t)address;
 
-        this->startRead(dataBuffer, sizeof(dataBuffer));
+    //     uint16_t N = calculate_Angle(angle);
+    //     dataBuffer[1] = N & 0x0F00;  // bits [11:8]
+    //     dataBuffer[2] = N & 0x00FF;  // bits [7:0]
 
-        // returns two bytes from MSB [1] to LSB [2],  always return MSB first.
-        curr_angle = (dataBuffer[1] << 8) | dataBuffer[2];
-        return curr_angle;
-    }
+    //     this->startWrite(dataBuffer, sizeof(dataBuffer));
+
+    //     // Implementation on a low-level
+    //     RF_BEGIN();
+
+    //     RF_WAIT_UNTIL(
+    //         transaction.configureWrite((uint8_t*)(&this->dataBuffer), sizeof(this->dataBuffer))
+    //         and this->startTransaction());
+
+    //     RF_WAIT_WHILE(isTransactionRunning());
+
+    //     RF_END();
+    // }
+
+    // void set_stopAngle(uint16_t angle)
+    // {
+    //     Encoder::Encoder_R address = Encoder::Encoder_R::MPOS;
+    //     std::fill(std::begin(dataBuffer), std::end(dataBuffer), 0);
+
+    //     dataBuffer[0] = (uint8_t)address;
+    //     uint16_t N = calculate_Angle(angle);
+    //     dataBuffer[1] = N & 0x0F00;  // bits [11:8]
+    //     dataBuffer[2] = N & 0x00FF;  // bits [7:0]
+
+    //     this->startWrite(dataBuffer, sizeof(dataBuffer));
+    // }
+
+    // uint16_t read_Angle()
+    // {
+    //     Encoder::Encoder_R address = Encoder::Encoder_R::ANGLE;
+    //     std::fill(std::begin(dataBuffer), std::end(dataBuffer), 0);
+    //     dataBuffer[0] = (uint8_t)address;
+
+    //     this->startRead(dataBuffer, sizeof(dataBuffer));
+
+    //     // returns two bytes from MSB [1] to LSB [2],  always return MSB first.
+    //     curr_angle = (dataBuffer[1] << 8) | dataBuffer[2];
+    //     return curr_angle;
+    // }
 
 protected:
-    static const uint8_t slave_address = 0x36;  // address of the AS6500
+    static const uint8_t slave_address = 0x36;  // address of the AS5600
 
     // enum of the different register address
     enum class Encoder_R : uint8_t
@@ -93,9 +144,10 @@ protected:
     };
 
 private:
-    uint16_t curr_angle;
+    uint16_t angle;
+    uint8_t buffer[2];
+    int i = 0;
     const uint16_t max_angle = 360;  // specific to our application
-    uint8_t dataBuffer[4];
 };
 
 };  // namespace encoder
