@@ -4,9 +4,10 @@
 #include "tap/drivers.hpp"
 
 #include "communication/cv_board.hpp"
-#include "drivers/board.hpp"
-#include "drivers/encoder.hpp"
+#include "drivers/as5600.hpp"
 #include "utils/robot_comms.hpp"
+
+#include "board.hpp"
 
 namespace src
 {
@@ -22,7 +23,7 @@ public:
 public:
     communication::CVBoard cvBoard;
     comms::RobotComms terminal;
-    encoder::Encoder<Board::I2cMaster> encoder;
+    driver::As5600<Board::I2cMaster> encoder;
     bool isKillSwitched() { return !remote.isConnected(); }
 };  // class Drivers
 

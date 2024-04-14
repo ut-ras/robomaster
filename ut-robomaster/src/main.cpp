@@ -6,9 +6,10 @@
 #include "tap/motor/motorsim/sim_handler.hpp"
 #endif
 
-#include "drivers/board.hpp"
 #include "modm/architecture/interface/delay.hpp"
 #include "modm/platform.hpp"
+
+#include "board.hpp"
 
 /* arch includes ------------------------------------------------------------*/
 #include "tap/architecture/periodic_timer.hpp"
