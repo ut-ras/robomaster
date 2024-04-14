@@ -18,12 +18,11 @@ class Drivers : public tap::Drivers
 #ifdef ENV_UNIT_TESTS
 public:
 #endif
-    Drivers() : tap::Drivers(), cvBoard(this), terminal(this), encoder() {}
+    Drivers() : tap::Drivers(), cvBoard(this), terminal(this) {}
 
 public:
     communication::CVBoard cvBoard;
     comms::RobotComms terminal;
-    driver::As5600<Board::I2cMaster> encoder;
     bool isKillSwitched() { return !remote.isConnected(); }
 };  // class Drivers
 
