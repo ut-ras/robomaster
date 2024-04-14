@@ -49,7 +49,6 @@ private:
     power_limiter::PowerLimiter powerLimiter;
     MotorVelocityController wheels[WHEELS];
     float targetWheelVels[WHEELS] = {0.0f, 0.0f, 0.0f, 0.0f};
-    tap::arch::PeriodicMilliTimer encoderTimer;
 
     /// @brief Calculate and set wheel velocities for desired robot motion (based on
     /// https://research.ijcaonline.org/volume113/number3/pxc3901586.pdf).

@@ -10,7 +10,7 @@ using I2cMaster = I2cMaster2;
 
 inline void initialize_i2c()
 {
-    I2cMaster::connect<I2cSda::Sda, I2cScl::Scl>();
-    I2cMaster::initialize<Board::SystemClock>();
+    I2cMaster::connect<I2cSda::Sda, I2cScl::Scl>(I2cMaster::PullUps::Internal);
+    I2cMaster::initialize<SystemClock>();
 }
 }  // namespace Board

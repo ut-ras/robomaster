@@ -20,8 +20,7 @@ ChassisSubsystem::ChassisSubsystem(src::Drivers* drivers)
           {drivers, M3508, ID_WHEEL_RF, CAN_WHEELS, false, "right front", PID_WHEELS},
           {drivers, M3508, ID_WHEEL_LB, CAN_WHEELS, true, "left back", PID_WHEELS},
           {drivers, M3508, ID_WHEEL_RB, CAN_WHEELS, false, "right back", PID_WHEELS},
-      },
-      encoderTimer(100){};
+      } {};
 
 void ChassisSubsystem::initialize()
 {
@@ -29,8 +28,6 @@ void ChassisSubsystem::initialize()
     {
         wheels[i].initialize();
     }
-
-    encoderTimer.restart();
 }
 
 void ChassisSubsystem::refresh()
@@ -42,13 +39,6 @@ void ChassisSubsystem::refresh()
     }
 
     limitChassisPower();
-
-    // ENCODER_DEBUG
-    // drivers->encoder.read_Angle();
-    if (encoderTimer.execute())
-    {
-        // tap::buzzer::playNote(&drivers->pwm, drivers->encoder.getAngle());
-    }
 }
 
 void ChassisSubsystem::limitChassisPower()

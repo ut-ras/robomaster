@@ -56,8 +56,8 @@ int main()
     src::Drivers *drivers = src::DoNotUse_getDrivers();
 
     Board::initialize();
-    Board::initialize_i2c();
     initializeIo(drivers);
+    Board::initialize_i2c();
     control::initSubsystemCommands(drivers);
 
 #ifdef PLATFORM_HOSTED

@@ -4,6 +4,7 @@
 #include "tap/drivers.hpp"
 
 #include "communication/cv_board.hpp"
+#include "drivers/board.hpp"
 #include "drivers/encoder.hpp"
 #include "utils/robot_comms.hpp"
 
@@ -21,7 +22,7 @@ public:
 public:
     communication::CVBoard cvBoard;
     comms::RobotComms terminal;
-    encoder::Encoder<> encoder;
+    encoder::Encoder<Board::I2cMaster> encoder;
     bool isKillSwitched() { return !remote.isConnected(); }
 };  // class Drivers
 
