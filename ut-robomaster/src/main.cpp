@@ -113,5 +113,4 @@ static void updateIo(src::Drivers *drivers)
     drivers->refSerial.updateSerial();
     // drivers->cvBoard.updateSerial();
     drivers->remote.read();
-    drivers->encoder.update();
 }
