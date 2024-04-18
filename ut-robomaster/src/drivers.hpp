@@ -4,8 +4,10 @@
 #include "tap/drivers.hpp"
 
 #include "communication/cv_board.hpp"
-#include "drivers/encoder.hpp"
+#include "drivers/as5600.hpp"
 #include "utils/robot_comms.hpp"
+
+#include "board.hpp"
 
 namespace src
 {
@@ -16,12 +18,11 @@ class Drivers : public tap::Drivers
 #ifdef ENV_UNIT_TESTS
 public:
 #endif
-    Drivers() : tap::Drivers(), cvBoard(this), terminal(this), encoder() {}
+    Drivers() : tap::Drivers(), cvBoard(this), terminal(this) {}
 
 public:
     communication::CVBoard cvBoard;
     comms::RobotComms terminal;
-    encoder::Encoder<> encoder;
     bool isKillSwitched() { return !remote.isConnected(); }
 };  // class Drivers
 

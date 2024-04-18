@@ -1,6 +1,7 @@
 #ifndef CHASSIS_SUBSYSTEM_HPP_
 #define CHASSIS_SUBSYSTEM_HPP_
 
+#include "tap/architecture/periodic_timer.hpp"
 #include "tap/control/subsystem.hpp"
 
 #include "modm/math/geometry.hpp"

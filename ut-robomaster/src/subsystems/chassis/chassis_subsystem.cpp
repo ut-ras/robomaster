@@ -1,6 +1,7 @@
 #include "chassis_subsystem.hpp"
 
 #include "tap/algorithms/math_user_utils.hpp"
+#include "tap/communication/sensors/buzzer/buzzer.hpp"
 
 #include "robots/robot_constants.hpp"
 
@@ -38,9 +39,6 @@ void ChassisSubsystem::refresh()
     }
 
     limitChassisPower();
-
-    // ENCODER_DEBUG
-    drivers->encoder.read_Angle();
 }
 
 void ChassisSubsystem::limitChassisPower()

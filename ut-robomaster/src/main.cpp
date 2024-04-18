@@ -6,10 +6,10 @@
 #include "tap/motor/motorsim/sim_handler.hpp"
 #endif
 
-#include "tap/board/board.hpp"
-
 #include "modm/architecture/interface/delay.hpp"
 #include "modm/platform.hpp"
+
+#include "board.hpp"
 
 /* arch includes ------------------------------------------------------------*/
 #include "tap/architecture/periodic_timer.hpp"
@@ -58,6 +58,7 @@ int main()
 
     Board::initialize();
     initializeIo(drivers);
+    Board::initialize_i2c();
     control::initSubsystemCommands(drivers);
 
 #ifdef PLATFORM_HOSTED
@@ -100,9 +101,6 @@ static void initializeIo(src::Drivers *drivers)
     drivers->djiMotorTerminalSerialHandler.init();
     drivers->bmi088.initialize(IMU_SAMPLE_FREQUENCY, IMU_KP, IMU_KI);
     drivers->bmi088.requestRecalibration();
-
-    modm::platform::I2cMaster2::connect<GpioF0::Sda, GpioF1::Scl>();
-    modm::platform::I2cMaster2::initialize<Board::SystemClock>();
 }
 
 static void updateIo(src::Drivers *drivers)
