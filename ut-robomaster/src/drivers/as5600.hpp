@@ -3,10 +3,12 @@
 #include "modm/architecture/interface/i2c_device.hpp"
 #include "modm/processing/protothread/protothread.hpp"
 
+#include "encoder.hpp"
+
 namespace driver
 {
 template <class I2cMaster>
-class As5600 : public modm::I2cDevice<I2cMaster, 1>, public modm::pt::Protothread
+class As5600 : public Encoder, public modm::I2cDevice<I2cMaster, 1>, public modm::pt::Protothread
 {
 public:
     As5600() : modm::I2cDevice<I2cMaster, 1>(ADDRESS){};
@@ -32,9 +34,7 @@ public:
         PT_END();
     }
 
-    /// @brief Get current measured angle of the encoder
-    /// @return Angle (revs)
-    float getAngle() { return angle / 4096.0f; }
+    float getAngle() override { return angle / 4096.0f; }
 
 protected:
     enum class Register : uint8_t
