@@ -15,10 +15,10 @@ ChassisSubsystem::ChassisSubsystem(src::Drivers* drivers)
       drivers(drivers),
       powerLimiter(drivers, ENERGY_BUFFER_LIMIT_THRESHOLD, ENERGY_BUFFER_CRIT_THRESHOLD),
       wheels{
-          {drivers, M3508, ID_WHEEL_LF, CAN_WHEELS, true, "left front", PID_WHEELS},
-          {drivers, M3508, ID_WHEEL_RF, CAN_WHEELS, false, "right front", PID_WHEELS},
-          {drivers, M3508, ID_WHEEL_LB, CAN_WHEELS, true, "left back", PID_WHEELS},
-          {drivers, M3508, ID_WHEEL_RB, CAN_WHEELS, false, "right back", PID_WHEELS},
+          {drivers, LF},
+          {drivers, RF},
+          {drivers, LB},
+          {drivers, RB},
       } {};
 
 void ChassisSubsystem::initialize()

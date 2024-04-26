@@ -6,35 +6,7 @@ namespace subsystems::flywheel
 FlywheelSubsystem::FlywheelSubsystem(src::Drivers* drivers)
     : Subsystem(drivers),
       drivers(drivers),
-      motors{
-          {drivers,
-           M3508_NOGEARBOX,
-           ID_FLYWHEEL_TL,
-           CAN_SHOOTER,
-           true,
-           "flywheel top left",
-           PID_FLYWHEEL},
-          {drivers,
-           M3508_NOGEARBOX,
-           ID_FLYWHEEL_TR,
-           CAN_SHOOTER,
-           false,
-           "flywheel top right",
-           PID_FLYWHEEL},
-          {drivers,
-           M3508_NOGEARBOX,
-           ID_FLYWHEEL_BL,
-           CAN_SHOOTER,
-           false,
-           "flywheel bottom left",
-           PID_FLYWHEEL},
-          {drivers,
-           M3508_NOGEARBOX,
-           ID_FLYWHEEL_BR,
-           CAN_SHOOTER,
-           true,
-           "flywheel bottom right",
-           PID_FLYWHEEL}}
+      motors{{drivers, TL}, {drivers, TR}, {drivers, BL}, {drivers, BR}}
 {
 }
 #elif defined(TARGET_HERO)

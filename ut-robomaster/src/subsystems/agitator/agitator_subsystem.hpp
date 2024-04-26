@@ -18,7 +18,7 @@ using tap::motor::MotorId;
 class AgitatorSubsystem : public tap::control::Subsystem
 {
 public:
-    AgitatorSubsystem(src::Drivers *drivers, MotorId agitatorMotorId, bool motorFlipped);
+    AgitatorSubsystem(src::Drivers *drivers, Motor motor);
 
     ~AgitatorSubsystem() = default;
 
