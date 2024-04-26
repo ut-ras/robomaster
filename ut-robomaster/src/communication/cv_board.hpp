@@ -61,6 +61,8 @@ public:
      */
     bool decodeTurretData(const ReceivedSerialMessage& message);
 
+    bool decodeTestData(const ReceivedSerialMessage& message);
+
     /**
      * @return true if a message has been received within the last OFFLINE_TIMEOUT_MS milliseconds,
      * false if otherwise
@@ -77,15 +79,18 @@ public:
      * Identifier for the last turret data packet received, so we can check for new data
      */
     uint32_t turretDataIndex = 0;
+    uint32_t testDataIndex = 0;
+    uint32_t received = 0;
 
 private:
     src::Drivers* drivers;
 
     /** Last turret aiming data received from the CV board */
     TurretData lastTurretData;
+    TestData lastTestData;
 
     /** UART port used to communicate with the CV board */
-    static constexpr Uart::UartPort UART_PORT = Uart::Uart1;
+    static constexpr Uart::UartPort UART_PORT = Uart::Uart6;
 
     /** Baud rate of the UART line */
     static constexpr uint32_t BAUD_RATE = 115200;

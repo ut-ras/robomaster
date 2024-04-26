@@ -12,6 +12,8 @@
         "--userns=keep-id:uid=1000,gid=1000",
         // Disable SELinux labeling (see https://docs.podman.io/en/latest/markdown/podman-run.1.html#volume-v-source-volume-host-dir-container-dir-options)
         "--security-opt",
-        "label=disable"
+        "label=disable",
+        "-v",
+        "/dev/bus/usb:/dev/bus/usb"
     ]
 }

@@ -17,12 +17,16 @@ void CVBoard::initialize() { drivers->uart.init<UART_PORT, BAUD_RATE>(); }
 
 void CVBoard::messageReceiveCallback(const ReceivedSerialMessage& message)
 {
+    received++;
     offlineTimeout.restart(OFFLINE_TIMEOUT_MS);
 
     switch (message.messageType)
     {
         case CV_MESSAGE_TYPE_TURRET_AIM:
             decodeTurretData(message);
+            break;
+        case 4:
+            decodeTestData(message);
             break;
         default:
             break;
@@ -72,6 +76,17 @@ bool CVBoard::decodeTurretData(const ReceivedSerialMessage& message)
     {
         memcpy(&lastTurretData, &message.data, sizeof(lastTurretData));
         turretDataIndex += 1;
+        return true;
+    }
+    return false;
+}
+
+bool CVBoard::decodeTestData(const ReceivedSerialMessage& message)
+{
+    if (message.header.dataLength == sizeof(lastTestData))
+    {
+        memcpy(&lastTestData, &message.data, sizeof(lastTestData));
+        testDataIndex += 1;
         return true;
     }
     return false;

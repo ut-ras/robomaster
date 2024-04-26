@@ -35,6 +35,13 @@ struct TurretData
     bool hasTarget;
 } modm_packed;
 
+struct TestData
+{
+    uint8_t a;
+    uint8_t b;
+    uint8_t c;
+} modm_packed;
+
 struct OdometryData
 {
     float xPos;

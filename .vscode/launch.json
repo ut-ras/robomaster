@@ -12,7 +12,11 @@
             "device": "STM32F427II",
             "configFiles": [
                 "./ut-robomaster/openocd.cfg"
-            ]
+            ],
+            "liveWatch": {
+                "enabled": true,
+                "samplesPerSecond": 4
+            }
         }
     ]
 }
