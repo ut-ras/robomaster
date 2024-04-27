@@ -92,7 +92,8 @@ static void initializeIo(src::Drivers *drivers)
     drivers->errorController.init();
     drivers->remote.initialize();
     // drivers->refSerial.initialize();
-    drivers->cvBoard.initialize();
+    // drivers->cvBoard.initialize();
+    drivers->uartTest.initialize();
     drivers->terminalSerial.initialize();
     drivers->schedulerTerminalHandler.init();
     drivers->djiMotorTerminalSerialHandler.init();
@@ -108,6 +109,7 @@ static void updateIo(src::Drivers *drivers)
 
     drivers->canRxHandler.pollCanData();
     // drivers->refSerial.updateSerial();
-    drivers->cvBoard.updateSerial();
+    // drivers->cvBoard.updateSerial();
+    drivers->uartTest.update();
     drivers->remote.read();
 }
