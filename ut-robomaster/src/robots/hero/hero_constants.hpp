@@ -143,10 +143,14 @@ constexpr MotorId ID_FEEDER = MOTOR2;
 
 const Motor AGITATOR{M3508, ID_AGITATOR, CAN_SHOOTER, false, "agitator", PID_AGITATOR};
 const Motor FEEDER{M2006, ID_FEEDER, CAN_SHOOTER, false, "feeder", PID_FEEDER};
-// turret (to be done)
+
+// turret
 
 constexpr MotorId ID_YAW = MOTOR5;
 constexpr MotorId ID_PITCH = MOTOR6;
+
+const Motor YAW{GM6020, ID_YAW, CAN_TURRET, false, "yaw", PID_VELOCITY_DEFAULT};
+const Motor PITCH{GM6020, ID_PITCH, CAN_TURRET, false, "pitch", PID_VELOCITY_DEFAULT};
 
 // Velocities ----------------------------
 

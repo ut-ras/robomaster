@@ -183,6 +183,9 @@ const bool PITCH_INVERTED = false;
 const char* const YAW_NAME = "yaw";
 const char* const PITCH_NAME = "pitch";
 
+const Motor YAW{GM6020, ID_YAW, CAN_TURRET, YAW_INVERTED, YAW_NAME, PID_VELOCITY_DEFAULT};
+const Motor PITCH{GM6020, ID_PITCH, CAN_TURRET, PITCH_INVERTED, PITCH_NAME, PID_VELOCITY_DEFAULT};
+
 // Velocities -------------------------------------
 
 #ifdef MODE_DEMO
