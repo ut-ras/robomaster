@@ -25,7 +25,7 @@ void CVBoard::messageReceiveCallback(const ReceivedSerialMessage& message)
         case CV_MESSAGE_TYPE_TURRET_AIM:
             decodeTurretData(message);
             break;
-        case 4:
+        case 0x0F:
             decodeTestData(message);
             break;
         default:
