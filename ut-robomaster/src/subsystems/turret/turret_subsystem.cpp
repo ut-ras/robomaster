@@ -20,7 +20,13 @@ TurretSubsystem::TurretSubsystem(src::Drivers* drivers)
       pitchMotor(drivers, ID_PITCH, CAN_TURRET, false, "pitch"),
       yawTurret(drivers, &yawMotor, YAW_PID_CONFIG),
       pitchTurret(drivers, &pitchMotor, PITCH_PID_CONFIG),
-      turretOffset(0.0f, 0.0f, M_TWOPI)
+      turretOffset(0.0f, 0.0f, M_TWOPI),
+      // placeholder motors
+      #if defined(TARGET_STANDARD) || defined(TARGET_HERO)
+        //placeholder motors, PID_Config
+        doubleYawTurret(drivers, &yawMotor, &pitchMotor, &encoder, YAW_PID_CONFIG)
+      #endif
+
 {
 }
 
