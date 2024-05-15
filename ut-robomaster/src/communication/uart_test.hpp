@@ -26,6 +26,7 @@ public:
 
     uint8_t buffer[100];
     uint32_t received = 0;
+    uint32_t updates = 0;
 
 private:
     src::Drivers* drivers;
