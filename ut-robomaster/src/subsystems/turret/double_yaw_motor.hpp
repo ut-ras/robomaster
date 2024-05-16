@@ -13,8 +13,8 @@ namespace subsystems::turret
 {
 using namespace tap::algorithms;
 using namespace tap::motor;
+using namespace motors;
 using driver::Encoder;
-using motors::MotorConfig;
 
 class DoubleYawMotor
 {
@@ -42,7 +42,5 @@ private:
     SmoothPid pid;
     ContiguousFloat setpoint;
     ContiguousFloat currentAngle;
-
-    static constexpr float GM6020_MAX_OUTPUT = 30000.0f;
 };
 }  // namespace subsystems::turret
