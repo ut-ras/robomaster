@@ -29,6 +29,12 @@ public:
           pid(pidConstants)
     {
     }
+    MotorController(src::Drivers* drivers, const Motor motor)
+        : constants(motor.constants),
+          motor(drivers, motor.id, motor.canBus, motor.inverted, motor.name),
+          pid(motor.pidConstants)
+    {
+    }
 
     void initialize();
     virtual void setActive(bool active);

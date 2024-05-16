@@ -1,9 +1,26 @@
+#pragma once
+
+#include "tap/communication/can/can_bus.hpp"
+#include "tap/motor/dji_motor.hpp"
+
+#include "pid.hpp"
+
 namespace motor_controller
 {
 struct MotorConstants
 {
     uint16_t maxOutput;
     float gearRatio;
+};
+
+struct Motor
+{
+    MotorConstants constants;
+    tap::motor::MotorId id;
+    tap::can::CanBus canBus;
+    bool inverted;
+    const char* const name;
+    PidConstants pidConstants;
 };
 
 // C620 controller (16384 = 20A)
