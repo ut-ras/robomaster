@@ -10,31 +10,18 @@ using tap::arch::clock::getTimeMilliseconds;
  * AgitatorSubsystem class instantiation
  */
 #if defined(TARGET_STANDARD) || defined(TARGET_SENTRY)
-AgitatorSubsystem::AgitatorSubsystem(
-    src::Drivers *drivers,
-    MotorId agitatorMotorId,
-    bool motorFlipped)
+AgitatorSubsystem::AgitatorSubsystem(src::Drivers *drivers, Motor motor)
     : Subsystem(drivers),
       drivers(drivers),
-      agitator{drivers, M2006, agitatorMotorId, CAN_SHOOTER, motorFlipped, "agitator", PID_AGITATOR}
+      agitator{drivers, motor}
 {
 }
 #elif defined(TARGET_HERO)
-AgitatorSubsystem::AgitatorSubsystem(
-    src::Drivers *drivers,
-    MotorId agitatorMotorId,
-    bool motorFlipped)
+AgitatorSubsystem::AgitatorSubsystem(src::Drivers *drivers, Motor motor)
     : Subsystem(drivers),
       drivers(drivers),
-      agitator{
-          drivers,
-          M3508,
-          agitatorMotorId,
-          CAN_SHOOTER,
-          motorFlipped,
-          "agitator",
-          PID_AGITATOR},
-      feeder{drivers, M2006, ID_FEEDER, CAN_SHOOTER, false, "feeder", PID_FEEDER}
+      agitator{drivers, motor},
+      feeder{drivers, FEEDER}
 {
 }
 #endif
@@ -70,4 +57,5 @@ float AgitatorSubsystem::getShapedVelocity(float time, float a, float phi, float
 
 void AgitatorSubsystem::setBallsPerSecond(float bps) { ballsPerSecond = bps; }
 float AgitatorSubsystem::getPosition() { return agitator.measurePosition(); }
+float AgitatorSubsystem::getVelocity() { return agitator.measureVelocity(); }
 }  // namespace subsystems::agitator

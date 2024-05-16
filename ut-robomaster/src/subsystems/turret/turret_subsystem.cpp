@@ -16,8 +16,8 @@ using modm::Vector2f;
 TurretSubsystem::TurretSubsystem(src::Drivers* drivers)
     : tap::control::Subsystem(drivers),
       drivers(drivers),
-      yawMotor(drivers, ID_YAW, CAN_TURRET, false, "yaw"),
-      pitchMotor(drivers, ID_PITCH, CAN_TURRET, false, "pitch"),
+      yawMotor(drivers, YAW.id, YAW.canBus, YAW.inverted, YAW.name),
+      pitchMotor(drivers, PITCH.id, PITCH.canBus, PITCH.inverted, PITCH.name),
       yawTurret(drivers, &yawMotor, YAW_PID_CONFIG),
       pitchTurret(drivers, &pitchMotor, PITCH_PID_CONFIG),
       turretOffset(0.0f, 0.0f, M_TWOPI)
