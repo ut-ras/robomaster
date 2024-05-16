@@ -92,8 +92,8 @@ static constexpr tap::algorithms::SmoothPidConfig PITCH_PID_CONFIG = {
 // Input constants ----------------------------
 
 #ifdef DEMO_MODE
-static constexpr float YAW_INPUT_SCALE = 1.0f;
-static constexpr float PITCH_INPUT_SCALE = 1.0f;
+static constexpr float YAW_INPUT_SCALE = 4.0f;
+static constexpr float PITCH_INPUT_SCALE = 2.0f;
 #else
 static constexpr float YAW_INPUT_SCALE = 10.0f;
 static constexpr float PITCH_INPUT_SCALE = 5.0f;
