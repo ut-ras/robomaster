@@ -105,22 +105,24 @@ constexpr CanBus CAN_TURRET = CanBus::CAN_BUS1;
 constexpr CanBus CAN_SHOOTER = CanBus::CAN_BUS2;
 
 // chassis
-const Motor WHEEL_LF{M3508, MOTOR2, CAN_WHEELS, true, "left front wheel", PID_WHEELS};
-const Motor WHEEL_RF{M3508, MOTOR1, CAN_WHEELS, false, "right front wheel", PID_WHEELS};
-const Motor WHEEL_LB{M3508, MOTOR3, CAN_WHEELS, true, "left back wheel", PID_WHEELS};
-const Motor WHEEL_RB{M3508, MOTOR4, CAN_WHEELS, false, "right back wheel", PID_WHEELS};
+const MotorConfig WHEEL_LF{M3508, MOTOR2, CAN_WHEELS, true, "left front wheel", PID_WHEELS};
+const MotorConfig WHEEL_RF{M3508, MOTOR1, CAN_WHEELS, false, "right front wheel", PID_WHEELS};
+const MotorConfig WHEEL_LB{M3508, MOTOR3, CAN_WHEELS, true, "left back wheel", PID_WHEELS};
+const MotorConfig WHEEL_RB{M3508, MOTOR4, CAN_WHEELS, false, "right back wheel", PID_WHEELS};
 
 // flywheels
-const Motor FLYWHEEL_L{M3508_NOGEARBOX, MOTOR3, CAN_SHOOTER, true, "flywheel left", PID_FLYWHEEL};
-const Motor FLYWHEEL_R{M3508_NOGEARBOX, MOTOR4, CAN_SHOOTER, false, "flywheel right", PID_FLYWHEEL};
+const MotorConfig
+    FLYWHEEL_L{M3508_NOGEARBOX, MOTOR3, CAN_SHOOTER, true, "flywheel left", PID_FLYWHEEL};
+const MotorConfig
+    FLYWHEEL_R{M3508_NOGEARBOX, MOTOR4, CAN_SHOOTER, false, "flywheel right", PID_FLYWHEEL};
 
 // agitator
-const Motor AGITATOR{M3508, MOTOR1, CAN_SHOOTER, false, "agitator", PID_AGITATOR};
-const Motor FEEDER{M2006, MOTOR2, CAN_SHOOTER, false, "feeder", PID_FEEDER};
+const MotorConfig AGITATOR{M3508, MOTOR1, CAN_SHOOTER, false, "agitator", PID_AGITATOR};
+const MotorConfig FEEDER{M2006, MOTOR2, CAN_SHOOTER, false, "feeder", PID_FEEDER};
 
 // turret
-const Motor YAW{GM6020, MOTOR5, CAN_TURRET, false, "yaw", PID_VELOCITY_DEFAULT};
-const Motor PITCH{GM6020, MOTOR6, CAN_TURRET, false, "pitch", PID_VELOCITY_DEFAULT};
+const MotorConfig YAW{GM6020, MOTOR5, CAN_TURRET, false, "yaw", PID_VELOCITY_DEFAULT};
+const MotorConfig PITCH{GM6020, MOTOR6, CAN_TURRET, false, "pitch", PID_VELOCITY_DEFAULT};
 
 // Velocities ----------------------------
 

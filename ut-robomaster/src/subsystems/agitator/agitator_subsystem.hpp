@@ -18,7 +18,7 @@ using tap::motor::MotorId;
 class AgitatorSubsystem : public tap::control::Subsystem
 {
 public:
-    AgitatorSubsystem(src::Drivers *drivers, Motor motor);
+    AgitatorSubsystem(src::Drivers *drivers, MotorConfig motor);
 
     ~AgitatorSubsystem() = default;
 
