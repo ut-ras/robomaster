@@ -7,7 +7,6 @@
 #endif
 
 #include "modm/architecture/interface/delay.hpp"
-#include "modm/platform.hpp"
 
 #include "board.hpp"
 
@@ -25,7 +24,6 @@
 /* control includes ---------------------------------------------------------*/
 #include "tap/architecture/clock.hpp"
 
-#include "modm/platform/i2c/i2c_master_2.hpp"
 #include "robots/robot_constants.hpp"
 #include "robots/robot_control.hpp"
 

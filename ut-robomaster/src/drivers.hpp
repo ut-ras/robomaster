@@ -4,10 +4,7 @@
 #include "tap/drivers.hpp"
 
 #include "communication/cv_board.hpp"
-#include "drivers/as5600.hpp"
 #include "utils/robot_comms.hpp"
-
-#include "board.hpp"
 
 namespace src
 {
