@@ -1,5 +1,4 @@
-#ifndef TURRET_SUBSYSTEM_HPP_
-#define TURRET_SUBSYSTEM_HPP_
+#pragma once
 
 #include "tap/algorithms/contiguous_float.hpp"
 #include "tap/control/subsystem.hpp"
@@ -24,7 +23,6 @@ class TurretSubsystem : public tap::control::Subsystem
 {
 public:
     TurretSubsystem(src::Drivers* drivers);
-
     void initialize() override;
 
     /// @brief Input target data from CV (relative to camera)
@@ -64,7 +62,6 @@ private:
 
     DjiMotor yawMotor;
     DjiMotor pitchMotor;
-
     TurretMotor yawTurret;
     TurretMotor pitchTurret;
 
@@ -77,5 +74,3 @@ private:
 
 }  // namespace turret
 }  // namespace subsystems
-
-#endif

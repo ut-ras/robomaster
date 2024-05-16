@@ -20,7 +20,6 @@ public:
 public:
     communication::CVBoard cvBoard;
     comms::RobotComms terminal;
-
     bool isKillSwitched() { return !remote.isConnected(); }
 };  // class Drivers
 
