@@ -16,7 +16,12 @@ using modm::Vector2f;
 TurretSubsystem::TurretSubsystem(src::Drivers* drivers)
     : tap::control::Subsystem(drivers),
       drivers(drivers),
+#if defined(TARGET_STANDARD) || defined(TARGET_HERO)
+      yawEncoder(),
+      yaw(drivers, YAW_L, YAW_R, &yawEncoder, YAW_PID_CONFIG),
+#else
       yaw(drivers, YAW, YAW_PID_CONFIG),
+#endif
       pitch(drivers, PITCH, PITCH_PID_CONFIG),
       turretOffset(0.0f, 0.0f, M_TWOPI)
 {
@@ -30,6 +35,10 @@ void TurretSubsystem::initialize()
 
 void TurretSubsystem::refresh()
 {
+#if defined(TARGET_STANDARD) || defined(TARGET_HERO)
+    yawEncoder.update();
+#endif
+
     yaw.updateMotorAngle();
     pitch.updateMotorAngle();
 

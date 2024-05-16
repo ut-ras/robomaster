@@ -121,7 +121,8 @@ const MotorConfig AGITATOR_L{M2006, MOTOR1, CAN_SHOOTER, false, "agitator left",
 const MotorConfig AGITATOR_R{M2006, MOTOR2, CAN_SHOOTER, true, "agitator right", PID_AGITATOR};
 
 // turret
-const MotorConfig YAW{GM6020, MOTOR6, CAN_TURRET, false, "yaw", PID_VELOCITY_DEFAULT};
+const MotorConfig YAW_L{M3508, MOTOR5, CAN_TURRET, false, "yaw left", PID_VELOCITY_DEFAULT};
+const MotorConfig YAW_R{M3508, MOTOR6, CAN_TURRET, false, "yaw right", PID_VELOCITY_DEFAULT};
 const MotorConfig PITCH{GM6020, MOTOR7, CAN_TURRET, false, "pitch", PID_VELOCITY_DEFAULT};
 
 // Velocities -------------------------------------
