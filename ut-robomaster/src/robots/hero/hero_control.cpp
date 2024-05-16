@@ -158,7 +158,7 @@ void initializeSubsystems()
     chassis.initialize();
     agitator.initialize();
     flywheel.initialize();
-    turret.initialize();    
+    turret.initialize();
     odometry.initialize();
     sound.initialize();
 }
