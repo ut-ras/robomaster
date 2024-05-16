@@ -15,6 +15,7 @@ using namespace tap::motor;
 using namespace motor_controller;
 
 // General constants ------------------------------------------------
+
 constexpr CanBus CAN_WHEELS = CanBus::CAN_BUS1;
 constexpr CanBus CAN_TURRET = CanBus::CAN_BUS1;
 constexpr CanBus CAN_SHOOTER = CanBus::CAN_BUS2;
@@ -27,7 +28,6 @@ const Sound SOUND_STARTUP = SOUND_SMB_POWERUP;
 // Kinematics ------------------------------------------------------
 
 // chassis
-
 static constexpr int WHEELS = 4;
 static constexpr float WHEEL_DISTANCE_X = 0.525f;  // meters
 static constexpr float WHEEL_DISTANCE_Y = 0.400f;  // meters
@@ -107,50 +107,22 @@ static constexpr float MOUSE_SENS_PITCH = 0.002f;
 // Motor Constants -------------------------------------
 
 // chassis
-
-constexpr MotorId ID_WHEEL_LF = MOTOR2;
-constexpr MotorId ID_WHEEL_RF = MOTOR1;
-constexpr MotorId ID_WHEEL_LB = MOTOR3;
-constexpr MotorId ID_WHEEL_RB = MOTOR4;
-
-const bool LF_INVERTED = true;
-const bool RF_INVERTED = false;
-const bool LB_INVERTED = true;
-const bool RB_INVERTED = false;
-
-const char* const LF_NAME = "left front";
-const char* const RF_NAME = "right front";
-const char* const LB_NAME = "left back";
-const char* const RB_NAME = "right back";
-
-const Motor LF{M3508, ID_WHEEL_LF, CAN_WHEELS, LF_INVERTED, LF_NAME, PID_WHEELS};
-const Motor RF{M3508, ID_WHEEL_RF, CAN_WHEELS, RF_INVERTED, RF_NAME, PID_WHEELS};
-const Motor LB{M3508, ID_WHEEL_LB, CAN_WHEELS, LB_INVERTED, LB_NAME, PID_WHEELS};
-const Motor RB{M3508, ID_WHEEL_RB, CAN_WHEELS, RB_INVERTED, RB_NAME, PID_WHEELS};
+const Motor WHEEL_LF{M3508, MOTOR2, CAN_WHEELS, true, "left front wheel", PID_WHEELS};
+const Motor WHEEL_RF{M3508, MOTOR1, CAN_WHEELS, false, "right front wheel", PID_WHEELS};
+const Motor WHEEL_LB{M3508, MOTOR3, CAN_WHEELS, true, "left back wheel", PID_WHEELS};
+const Motor WHEEL_RB{M3508, MOTOR4, CAN_WHEELS, false, "right back wheel", PID_WHEELS};
 
 // flywheels
-
-constexpr MotorId ID_FLYWHEEL_L = MOTOR3;
-constexpr MotorId ID_FLYWHEEL_R = MOTOR4;
-
-const Motor FL{M3508_NOGEARBOX, ID_FLYWHEEL_L, CAN_SHOOTER, true, "flywheel left", PID_FLYWHEEL};
-const Motor FR{M3508_NOGEARBOX, ID_FLYWHEEL_R, CAN_SHOOTER, false, "flywheel right", PID_FLYWHEEL};
+const Motor FLYWHEEL_L{M3508_NOGEARBOX, MOTOR3, CAN_SHOOTER, true, "flywheel left", PID_FLYWHEEL};
+const Motor FLYWHEEL_R{M3508_NOGEARBOX, MOTOR4, CAN_SHOOTER, false, "flywheel right", PID_FLYWHEEL};
 
 // agitator
-
-constexpr MotorId ID_AGITATOR = MOTOR1;
-constexpr MotorId ID_FEEDER = MOTOR2;
-
-const Motor AGITATOR{M3508, ID_AGITATOR, CAN_SHOOTER, false, "agitator", PID_AGITATOR};
-const Motor FEEDER{M2006, ID_FEEDER, CAN_SHOOTER, false, "feeder", PID_FEEDER};
+const Motor AGITATOR{M3508, MOTOR1, CAN_SHOOTER, false, "agitator", PID_AGITATOR};
+const Motor FEEDER{M2006, MOTOR2, CAN_SHOOTER, false, "feeder", PID_FEEDER};
 
 // turret
-
-constexpr MotorId ID_YAW = MOTOR5;
-constexpr MotorId ID_PITCH = MOTOR6;
-
-const Motor YAW{GM6020, ID_YAW, CAN_TURRET, false, "yaw", PID_VELOCITY_DEFAULT};
-const Motor PITCH{GM6020, ID_PITCH, CAN_TURRET, false, "pitch", PID_VELOCITY_DEFAULT};
+const Motor YAW{GM6020, MOTOR5, CAN_TURRET, false, "yaw", PID_VELOCITY_DEFAULT};
+const Motor PITCH{GM6020, MOTOR6, CAN_TURRET, false, "pitch", PID_VELOCITY_DEFAULT};
 
 // Velocities ----------------------------
 

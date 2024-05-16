@@ -15,10 +15,10 @@ ChassisSubsystem::ChassisSubsystem(src::Drivers* drivers)
       drivers(drivers),
       powerLimiter(drivers, ENERGY_BUFFER_LIMIT_THRESHOLD, ENERGY_BUFFER_CRIT_THRESHOLD),
       wheels{
-          {drivers, LF},
-          {drivers, RF},
-          {drivers, LB},
-          {drivers, RB},
+          {drivers, WHEEL_LF},
+          {drivers, WHEEL_RF},
+          {drivers, WHEEL_LB},
+          {drivers, WHEEL_RB},
       } {};
 
 void ChassisSubsystem::initialize()
