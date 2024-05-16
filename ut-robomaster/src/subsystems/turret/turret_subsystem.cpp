@@ -35,7 +35,7 @@ void TurretSubsystem::refresh()
     yawTurret.updateMotorAngle();
     pitchTurret.updateMotorAngle();
 
-    if (!isCalibrated && yawMotor.isMotorOnline() && pitchMotor.isMotorOnline())
+    if (!isCalibrated && yawTurret.isOnline() && pitchTurret.isOnline())
     {
         baseYaw = yawTurret.getAngle() / YAW_REDUCTION;
         basePitch = pitchTurret.getAngle() / PITCH_REDUCTION - PITCH_MIN;

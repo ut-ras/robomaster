@@ -55,4 +55,6 @@ void TurretMotor::setAngle(float desiredAngle, float dt)
 float TurretMotor::getAngle() { return currentAngle.getValue(); }
 
 float TurretMotor::getSetpoint() { return setpoint.getValue(); }
+
+bool TurretMotor::isOnline() { return motor->isMotorOnline(); }
 }  // namespace subsystems::turret

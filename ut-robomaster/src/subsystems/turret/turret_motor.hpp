@@ -25,6 +25,7 @@ public:
     void setAngle(float desiredAngle, float dt);
     float getAngle();
     float getSetpoint();
+    bool isOnline();
 
 private:
     src::Drivers *drivers;

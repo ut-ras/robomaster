@@ -60,4 +60,5 @@ void DoubleYawMotor::setAngle(float desiredAngle, float dt)
 float DoubleYawMotor::getAngle() { return currentAngle.getValue(); }
 
 float DoubleYawMotor::getSetpoint() { return setpoint.getValue(); }
+bool DoubleYawMotor::isOnline() { return motor1->isMotorOnline() && motor2->isMotorOnline(); }
 }  // namespace subsystems::turret
