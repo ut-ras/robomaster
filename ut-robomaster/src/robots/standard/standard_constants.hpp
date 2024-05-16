@@ -6,13 +6,13 @@
 
 #include "modm/container/pair.hpp"
 #include "subsystems/sound/sounds/sound_smb_powerup.hpp"
-#include "utils/motor_controller/motor_constants.hpp"
-#include "utils/motor_controller/pid.hpp"
+#include "utils/motors/motor_constants.hpp"
+#include "utils/motors/pid.hpp"
 
 using motor_controller::PidConstants;
 using tap::can::CanBus;
 using namespace tap::motor;
-using namespace motor_controller;
+using namespace motors;
 
 // General constants ------------------------------------------------
 

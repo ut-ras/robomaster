@@ -11,8 +11,11 @@ using tap::can::CanBus;
 using tap::motor::DjiMotor;
 using tap::motor::MotorId;
 
-namespace motor_controller
+namespace motors
 {
+using motor_controller::Pid;
+using motor_controller::PidConstants;
+
 class MotorController
 {
 public:
@@ -103,6 +106,6 @@ public:
 
     void applyPowerScalar(float powerLimitScalar);
 };
-}  // namespace motor_controller
+}  // namespace motors
 
 #endif

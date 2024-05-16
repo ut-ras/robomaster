@@ -5,8 +5,10 @@
 
 #include "pid.hpp"
 
-namespace motor_controller
+namespace motors
 {
+using motor_controller::PidConstants;
+
 struct MotorSpecs
 {
     uint16_t maxOutput;
@@ -37,4 +39,4 @@ constexpr MotorSpecs M2006_NOGEARBOX{M2006.maxOutput, 1.0f};
 // Motor is voltage-controlled (max 24V)
 constexpr MotorSpecs GM6020{30000, 1.0f};
 
-}  // namespace motor_controller
+}  // namespace motors

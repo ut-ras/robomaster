@@ -4,7 +4,7 @@
 #include "tap/control/subsystem.hpp"
 
 #include "robots/robot_constants.hpp"
-#include "utils/motor_controller/motor_controller.hpp"
+#include "utils/motors/motor_controller.hpp"
 
 #include "drivers.hpp"
 
@@ -13,7 +13,7 @@ namespace subsystems
 namespace flywheel
 {
 
-using namespace motor_controller;
+using namespace motors;
 
 class FlywheelSubsystem : public tap::control::Subsystem
 {

@@ -4,20 +4,20 @@
 #include "tap/algorithms/smooth_pid.hpp"
 #include "tap/motor/motor_interface.hpp"
 
-namespace src
-{
-class Drivers;
-}
+#include "utils/motors/motor_constants.hpp"
+
+#include "drivers.hpp"
 
 namespace subsystems::turret
 {
 using namespace tap::algorithms;
 using namespace tap::motor;
+using motors::MotorConfig;
 
 class TurretMotor
 {
 public:
-    TurretMotor(src::Drivers *drivers, MotorInterface *motor, const SmoothPidConfig &pidConfig);
+    TurretMotor(src::Drivers *drivers, MotorConfig motor, const SmoothPidConfig &pidConfig);
 
     void initialize();
     void reset();
@@ -29,7 +29,7 @@ public:
 
 private:
     src::Drivers *drivers;
-    MotorInterface *motor;
+    DjiMotor motor;
     SmoothPid pid;
     ContiguousFloat setpoint;
     float unwrappedAngle = 0;

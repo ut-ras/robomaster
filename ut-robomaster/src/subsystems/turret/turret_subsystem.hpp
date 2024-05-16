@@ -60,10 +60,8 @@ private:
     Vector3f targetVelocity = Vector3f(0.0f);
     Vector3f targetAcceleration = Vector3f(0.0f);
 
-    DjiMotor yawMotor;
-    DjiMotor pitchMotor;
-    TurretMotor yawTurret;
-    TurretMotor pitchTurret;
+    TurretMotor yaw;
+    TurretMotor pitch;
 
     float isCalibrated = false;
     float basePitch = 0.0f;
