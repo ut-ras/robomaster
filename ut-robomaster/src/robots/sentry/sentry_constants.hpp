@@ -16,10 +16,6 @@ using namespace motor_controller;
 
 // General constants ------------------------------------------------
 
-constexpr CanBus CAN_WHEELS = CanBus::CAN_BUS1;
-constexpr CanBus CAN_TURRET = CanBus::CAN_BUS1;
-constexpr CanBus CAN_SHOOTER = CanBus::CAN_BUS2;
-
 constexpr bool USE_BALLISTICS = false;
 constexpr int BALLISTIC_ITERATIONS = 2;
 
@@ -51,13 +47,9 @@ static constexpr float PITCH_REDUCTION = 4.0f;
 // Tuning constants -----------------------------------------------
 
 constexpr PidConstants PID_VELOCITY_DEFAULT = {0.75f, 12.0f, 0.0f};
-
 constexpr PidConstants PID_WHEELS = PID_VELOCITY_DEFAULT;
-
 constexpr PidConstants PID_FLYWHEEL = {0.1f, 0.1f, 0.0f};
-
 constexpr PidConstants PID_AGITATOR = PID_VELOCITY_DEFAULT;
-
 constexpr PidConstants PID_TURRET_VELOCITY = PID_VELOCITY_DEFAULT;
 constexpr PidConstants PID_TURRET_POSITION = {0.1f, 0.1f, 0.0f};
 
@@ -92,8 +84,8 @@ static constexpr tap::algorithms::SmoothPidConfig PITCH_PID_CONFIG = {
 // Input constants ----------------------------
 
 #ifdef DEMO_MODE
-static constexpr float YAW_INPUT_SCALE = 1.0f;
-static constexpr float PITCH_INPUT_SCALE = 1.0f;
+static constexpr float YAW_INPUT_SCALE = 4.0f;
+static constexpr float PITCH_INPUT_SCALE = 2.0f;
 #else
 static constexpr float YAW_INPUT_SCALE = 10.0f;
 static constexpr float PITCH_INPUT_SCALE = 5.0f;
@@ -103,6 +95,10 @@ static constexpr float MOUSE_SENS_YAW = 0.1f;
 static constexpr float MOUSE_SENS_PITCH = 0.1f;
 
 // Motor constants --------------------------------
+
+constexpr CanBus CAN_WHEELS = CanBus::CAN_BUS1;
+constexpr CanBus CAN_TURRET = CanBus::CAN_BUS1;
+constexpr CanBus CAN_SHOOTER = CanBus::CAN_BUS2;
 
 // chassis
 const Motor WHEEL_LF{M3508, MOTOR2, CAN_WHEELS, true, "left front wheel", PID_WHEELS};
