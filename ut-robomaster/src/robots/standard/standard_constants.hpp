@@ -31,7 +31,7 @@ static constexpr float WHEEL_RADIUS = 0.1524f;     // meters
 static constexpr float WHEEL_LXY = (WHEEL_DISTANCE_X + WHEEL_DISTANCE_Y) / 2.0f;
 
 // flywheels -----------
-static constexpr int FLYWHEELS = 4;
+static constexpr int FLYWHEELS = 2;
 
 // turret ------------
 constexpr float PITCH_MIN = -0.2185f;         // rad
