@@ -155,7 +155,7 @@ HoldCommandMapping leftSwitchUp(
     RemoteMapState(Remote::Switch::LEFT_SWITCH, Remote::SwitchState::UP));
 
 // Register subsystems here -----------------------------------------------
-void registerStandardSubsystems(src::Drivers *drivers)
+void registerSubsystems(src::Drivers *drivers)
 {
     drivers->commandScheduler.registerSubsystem(&chassis);
     drivers->commandScheduler.registerSubsystem(&agitator1);
@@ -215,7 +215,7 @@ namespace control
 void initSubsystemCommands(src::Drivers *drivers)
 {
     standard_control::initializeSubsystems();
-    standard_control::registerStandardSubsystems(drivers);
+    standard_control::registerSubsystems(drivers);
     standard_control::setDefaultCommands(drivers);
     standard_control::runStartupCommands(drivers);
     standard_control::registerMappings(drivers);

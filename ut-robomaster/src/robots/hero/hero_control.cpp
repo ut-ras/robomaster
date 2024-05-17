@@ -142,7 +142,7 @@ HoldCommandMapping leftSwitchUp(
     RemoteMapState(Remote::Switch::LEFT_SWITCH, Remote::SwitchState::UP));
 
 // Register subsystems here -----------------------------------------------
-void registerStandardSubsystems(src::Drivers *drivers)
+void registerSubsystems(src::Drivers *drivers)
 {
     drivers->commandScheduler.registerSubsystem(&chassis);
     drivers->commandScheduler.registerSubsystem(&agitator);
@@ -199,7 +199,7 @@ namespace control
 void initSubsystemCommands(src::Drivers *drivers)
 {
     hero_control::initializeSubsystems();
-    hero_control::registerStandardSubsystems(drivers);
+    hero_control::registerSubsystems(drivers);
     hero_control::setDefaultCommands(drivers);
     hero_control::runStartupCommands(drivers);
     hero_control::registerMappings(drivers);
