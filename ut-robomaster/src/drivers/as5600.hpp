@@ -3,11 +3,12 @@
 #include "modm/architecture/interface/i2c_device.hpp"
 #include "modm/processing/protothread/protothread.hpp"
 
+#include "board.hpp"
 #include "encoder.hpp"
 
 namespace driver
 {
-template <class I2cMaster>
+using Board::I2cMaster;
 class As5600 : public Encoder, public modm::I2cDevice<I2cMaster, 1>, public modm::pt::Protothread
 {
 public:

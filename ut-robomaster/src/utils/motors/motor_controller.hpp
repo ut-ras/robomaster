@@ -11,14 +11,17 @@ using tap::can::CanBus;
 using tap::motor::DjiMotor;
 using tap::motor::MotorId;
 
-namespace motor_controller
+namespace motors
 {
+using motor_controller::Pid;
+using motor_controller::PidConstants;
+
 class MotorController
 {
 public:
     MotorController(
         src::Drivers* drivers,
-        const MotorConstants& constants,
+        const MotorSpecs& constants,
         const MotorId motorId,
         const CanBus motorCanBus,
         const bool motorInverted,
@@ -29,7 +32,7 @@ public:
           pid(pidConstants)
     {
     }
-    MotorController(src::Drivers* drivers, const Motor motor)
+    MotorController(src::Drivers* drivers, const MotorConfig motor)
         : constants(motor.constants),
           motor(drivers, motor.id, motor.canBus, motor.inverted, motor.name),
           pid(motor.pidConstants)
@@ -53,7 +56,7 @@ protected:
     float deltaTime();
     uint32_t lastTime = 0;
     bool isActive = false;
-    const MotorConstants constants;
+    const MotorSpecs constants;
     DjiMotor motor;
     Pid pid;
 };
@@ -63,7 +66,7 @@ class MotorPositionController : public MotorController
 public:
     MotorPositionController(
         src::Drivers* drivers,
-        const MotorConstants& constants,
+        const MotorSpecs& constants,
         const MotorId motorId,
         const CanBus motorCanBus,
         const bool motorInverted,
@@ -103,6 +106,6 @@ public:
 
     void applyPowerScalar(float powerLimitScalar);
 };
-}  // namespace motor_controller
+}  // namespace motors
 
 #endif

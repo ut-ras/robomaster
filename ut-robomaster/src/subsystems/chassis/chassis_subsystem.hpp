@@ -5,14 +5,14 @@
 
 #include "modm/math/geometry.hpp"
 #include "robots/robot_constants.hpp"
-#include "utils/motor_controller/motor_controller.hpp"
+#include "utils/motors/motor_controller.hpp"
 #include "utils/power_limiter/power_limiter.hpp"
 
 #include "drivers.hpp"
 
 using namespace tap::communication::sensors::imu;
 using namespace modm;
-using namespace motor_controller;
+using namespace motors;
 
 namespace subsystems
 {

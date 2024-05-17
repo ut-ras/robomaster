@@ -10,14 +10,14 @@ using tap::arch::clock::getTimeMilliseconds;
  * AgitatorSubsystem class instantiation
  */
 #if defined(TARGET_STANDARD) || defined(TARGET_SENTRY)
-AgitatorSubsystem::AgitatorSubsystem(src::Drivers *drivers, Motor motor)
+AgitatorSubsystem::AgitatorSubsystem(src::Drivers *drivers, MotorConfig motor)
     : Subsystem(drivers),
       drivers(drivers),
       agitator{drivers, motor}
 {
 }
 #elif defined(TARGET_HERO)
-AgitatorSubsystem::AgitatorSubsystem(src::Drivers *drivers, Motor motor)
+AgitatorSubsystem::AgitatorSubsystem(src::Drivers *drivers, MotorConfig motor)
     : Subsystem(drivers),
       drivers(drivers),
       agitator{drivers, motor},

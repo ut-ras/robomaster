@@ -5,6 +5,7 @@
 #include "tap/motor/motor_interface.hpp"
 
 #include "drivers/encoder.hpp"
+#include "utils/motors/motor_constants.hpp"
 
 #include "drivers.hpp"
 
@@ -12,6 +13,7 @@ namespace subsystems::turret
 {
 using namespace tap::algorithms;
 using namespace tap::motor;
+using namespace motors;
 using driver::Encoder;
 
 class DoubleYawMotor
@@ -19,8 +21,8 @@ class DoubleYawMotor
 public:
     DoubleYawMotor(
         src::Drivers *drivers,
-        MotorInterface *motor1,
-        MotorInterface *motor2,
+        MotorConfig motor1,
+        MotorConfig motor2,
         Encoder *encoder,
         const SmoothPidConfig &pidConfig);
 
@@ -30,16 +32,15 @@ public:
     void setAngle(float desiredAngle, float dt);
     float getAngle();
     float getSetpoint();
+    bool isOnline();
 
 private:
     src::Drivers *drivers;
-    MotorInterface *motor1;
-    MotorInterface *motor2;
+    DjiMotor motor1;
+    DjiMotor motor2;
     Encoder *encoder;
     SmoothPid pid;
     ContiguousFloat setpoint;
     ContiguousFloat currentAngle;
-
-    static constexpr float GM6020_MAX_OUTPUT = 30000.0f;
 };
 }  // namespace subsystems::turret
