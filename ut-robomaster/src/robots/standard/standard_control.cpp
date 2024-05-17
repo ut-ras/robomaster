@@ -68,8 +68,7 @@ namespace standard_control
 
 // Subsystem definitions ---------------------------------------------------------
 ChassisSubsystem chassis(drivers());
-AgitatorSubsystem agitator1(drivers(), AGITATOR_L);
-AgitatorSubsystem agitator2(drivers(), AGITATOR_R);
+AgitatorSubsystem agitator(drivers(), AGITATOR);
 FlywheelSubsystem flywheel(drivers());
 TurretSubsystem turret(drivers());
 OdometrySubsystem odometry(drivers(), &chassis, &turret);
@@ -84,10 +83,8 @@ CommandMoveChassisTurretRelativeJoystick moveChassisTurretRelativeCommandJoystic
 CommandMoveChassisKeyboard moveChassisCommandKeyboard(drivers(), &chassis, &turret);
 CommandBeybladeChassisKeyboard beybladeChassisCommandKeyboard(drivers(), &chassis, &turret);
 
-CommandAgitatorContinuous agitator1ContinuousCommand(drivers(), &agitator1, BarrelId::STANDARD1);
-CommandAgitatorContinuous agitator2ContinuousCommand(drivers(), &agitator2, BarrelId::STANDARD2);
-CommandUnjamAgitator unjamAgitator1Command(drivers(), &agitator1);
-CommandUnjamAgitator unjamAgitator2Command(drivers(), &agitator2);
+CommandAgitatorContinuous agitatorContinuousCommand(drivers(), &agitator, BarrelId::STANDARD1);
+CommandUnjamAgitator unjamAgitatorCommand(drivers(), &agitator);
 
 CommandRotateFlywheel rotateFlywheelKeyboardCommand(drivers(), &flywheel);
 CommandRotateFlywheel rotateFlywheelNoAgitatorCommand(drivers(), &flywheel);
@@ -158,8 +155,7 @@ HoldCommandMapping leftSwitchUp(
 void registerSubsystems(src::Drivers *drivers)
 {
     drivers->commandScheduler.registerSubsystem(&chassis);
-    drivers->commandScheduler.registerSubsystem(&agitator1);
-    drivers->commandScheduler.registerSubsystem(&agitator2);
+    drivers->commandScheduler.registerSubsystem(&agitator);
     drivers->commandScheduler.registerSubsystem(&flywheel);
     drivers->commandScheduler.registerSubsystem(&turret);
     drivers->commandScheduler.registerSubsystem(&odometry);
@@ -170,8 +166,7 @@ void registerSubsystems(src::Drivers *drivers)
 void initializeSubsystems()
 {
     chassis.initialize();
-    agitator1.initialize();
-    agitator2.initialize();
+    agitator.initialize();
     flywheel.initialize();
     turret.initialize();
     odometry.initialize();
