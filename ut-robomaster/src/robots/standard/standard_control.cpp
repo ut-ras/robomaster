@@ -111,13 +111,10 @@ ToggleCommandMapping keyGToggled(
 
 HoldCommandMapping leftMouseDown(
     drivers(),
-    {&agitator1ContinuousCommand, &agitator2ContinuousCommand},
+    {&agitatorContinuousCommand},
     RemoteMapState(RemoteMapState::MouseButton::LEFT));
 
-HoldCommandMapping keyXHeld(
-    drivers(),
-    {&unjamAgitator1Command, &unjamAgitator2Command},
-    RemoteMapState({Remote::Key::X}));
+HoldCommandMapping keyXHeld(drivers(), {&unjamAgitatorCommand}, RemoteMapState({Remote::Key::X}));
 
 HoldCommandMapping rightMouseDown(
     drivers(),
@@ -148,7 +145,7 @@ HoldCommandMapping leftSwitchMid(
 
 HoldCommandMapping leftSwitchUp(
     drivers(),
-    {&agitator1ContinuousCommand, &agitator2ContinuousCommand, &rotateFlywheelWithAgitatorCommand},
+    {&agitatorContinuousCommand, &rotateFlywheelWithAgitatorCommand},
     RemoteMapState(Remote::Switch::LEFT_SWITCH, Remote::SwitchState::UP));
 
 // Register subsystems here -----------------------------------------------
