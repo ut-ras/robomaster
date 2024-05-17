@@ -16,41 +16,48 @@ using modm::Vector2f;
 TurretSubsystem::TurretSubsystem(src::Drivers* drivers)
     : tap::control::Subsystem(drivers),
       drivers(drivers),
-      yawMotor(drivers, ID_YAW, CAN_TURRET, false, "yaw"),
-      pitchMotor(drivers, ID_PITCH, CAN_TURRET, false, "pitch"),
-      yawTurret(drivers, &yawMotor, YAW_PID_CONFIG),
-      pitchTurret(drivers, &pitchMotor, PITCH_PID_CONFIG),
+#if defined(TARGET_STANDARD) || defined(TARGET_HERO)
+      yawEncoder(),
+      yaw(drivers, YAW_L, YAW_R, &yawEncoder, YAW_PID_CONFIG),
+#else
+      yaw(drivers, YAW, YAW_PID_CONFIG),
+#endif
+      pitch(drivers, PITCH, PITCH_PID_CONFIG),
       turretOffset(0.0f, 0.0f, M_TWOPI)
 {
 }
 
 void TurretSubsystem::initialize()
 {
-    yawTurret.initialize();
-    pitchTurret.initialize();
+    yaw.initialize();
+    pitch.initialize();
 }
 
 void TurretSubsystem::refresh()
 {
-    yawTurret.updateMotorAngle();
-    pitchTurret.updateMotorAngle();
+#if defined(TARGET_STANDARD) || defined(TARGET_HERO)
+    yawEncoder.update();
+#endif
 
-    if (!isCalibrated && yawMotor.isMotorOnline() && pitchMotor.isMotorOnline())
+    yaw.updateMotorAngle();
+    pitch.updateMotorAngle();
+
+    if (!isCalibrated && yaw.isOnline() && pitch.isOnline())
     {
-        baseYaw = yawTurret.getAngle() / YAW_REDUCTION;
-        basePitch = pitchTurret.getAngle() / PITCH_REDUCTION - PITCH_MIN;
+        baseYaw = yaw.getAngle() / YAW_REDUCTION;
+        basePitch = pitch.getAngle() / PITCH_REDUCTION - PITCH_MIN;
         isCalibrated = true;
     }
 
     if (isCalibrated && !drivers->isKillSwitched())
     {
-        yawTurret.setAngle((baseYaw + getTargetLocalYaw()) * YAW_REDUCTION, DT);
-        pitchTurret.setAngle((basePitch + getTargetLocalPitch()) * PITCH_REDUCTION, DT);
+        yaw.setAngle((baseYaw + getTargetLocalYaw()) * YAW_REDUCTION, DT);
+        pitch.setAngle((basePitch + getTargetLocalPitch()) * PITCH_REDUCTION, DT);
     }
     else
     {
-        yawTurret.reset();
-        pitchTurret.reset();
+        yaw.reset();
+        pitch.reset();
     }
 }
 
@@ -75,12 +82,12 @@ float TurretSubsystem::getTargetLocalPitch() { return targetWorldPitch; }
 
 float TurretSubsystem::getCurrentLocalYaw()
 {
-    return !isCalibrated ? 0.0f : yawTurret.getAngle() / YAW_REDUCTION - baseYaw;
+    return !isCalibrated ? 0.0f : yaw.getAngle() / YAW_REDUCTION - baseYaw;
 }
 
 float TurretSubsystem::getCurrentLocalPitch()
 {
-    return !isCalibrated ? 0.0f : pitchTurret.getAngle() / PITCH_REDUCTION - basePitch;
+    return !isCalibrated ? 0.0f : pitch.getAngle() / PITCH_REDUCTION - basePitch;
 }
 
 void TurretSubsystem::runHardwareTests()

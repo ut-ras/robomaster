@@ -2,19 +2,47 @@
 
 namespace commands
 {
-void CommandAgitatorContinuous::initialize() {}
+
+void CommandAgitatorContinuous::initialize()
+{
+    jamTriggerTimeout.restart(JAM_TRIGGER_DURATION * 1000);
+    isJammed = false;
+}
 
 void CommandAgitatorContinuous::execute()
 {
-    float bps = BALLS_PER_SEC;
+    if (isJammed)
+    {
+        if (unjammingTimeout.isExpired())
+        {
+            jamTriggerTimeout.restart(JAM_TRIGGER_DURATION * 1000);
+            isJammed = false;
+        }
 
-    if (drivers->refSerial.getRefSerialReceivingData() &&
+        agitator->setBallsPerSecond(-UNJAM_SPEED);
+    }
+    else if (  // barrel overheat
+        drivers->refSerial.getRefSerialReceivingData() &&
         power_limiter::getRemainingCooldown(drivers, barrelId) <= BARREL_HEAT_BUFFER)
     {
-        bps = 0.0f;
+        agitator->setBallsPerSecond(0.0f);
     }
+    else  // heat remaining and no jams
+    {
+        float speedRatio = abs(agitator->getVelocity()) / (BALLS_PER_SEC / BALLS_PER_REV);
 
-    agitator->setBallsPerSecond(bps);
+        if (speedRatio > JAM_TRIGGER_RATIO)  // no jam
+        {
+            jamTriggerTimeout.restart(JAM_TRIGGER_DURATION * 1000);
+        }
+        else if (jamTriggerTimeout.isExpired())  // jam detected
+        {
+            unjammingTimeout.restart(UNJAM_DURATION * 1000);
+            isJammed = true;
+        }
+
+        agitator->setBallsPerSecond(BALLS_PER_SEC);
+    }
 }
 
 void CommandAgitatorContinuous::end(bool) { agitator->setBallsPerSecond(0.0f); }

@@ -6,9 +6,9 @@
 #include "tap/motor/motorsim/sim_handler.hpp"
 #endif
 
-#include "tap/board/board.hpp"
-
 #include "modm/architecture/interface/delay.hpp"
+
+#include "board.hpp"
 
 /* arch includes ------------------------------------------------------------*/
 #include "tap/architecture/periodic_timer.hpp"
@@ -63,6 +63,7 @@ int main()
 
     Board::initialize();
     initializeIo(drivers);
+    Board::initialize_i2c();
     control::initSubsystemCommands(drivers);
 
 #ifdef PLATFORM_HOSTED

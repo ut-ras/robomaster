@@ -1,5 +1,6 @@
 #pragma once
 
+#include "tap/architecture/timeout.hpp"
 #include "tap/control/command.hpp"
 
 #include "robots/robot_constants.hpp"
@@ -7,6 +8,8 @@
 #include "utils/power_limiter/barrel_cooldown.hpp"
 
 #include "drivers.hpp"
+
+using tap::arch::MilliTimeout;
 
 namespace commands
 {
@@ -38,5 +41,8 @@ private:
     src::Drivers *drivers;
     AgitatorSubsystem *agitator;
     BarrelId barrelId;
+    MilliTimeout jamTriggerTimeout;
+    MilliTimeout unjammingTimeout;
+    bool isJammed = false;
 };
 }  // namespace commands

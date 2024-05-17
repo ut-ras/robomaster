@@ -1,13 +1,14 @@
-#ifndef TURRET_SUBSYSTEM_HPP_
-#define TURRET_SUBSYSTEM_HPP_
+#pragma once
 
 #include "tap/algorithms/contiguous_float.hpp"
 #include "tap/control/subsystem.hpp"
 
+#include "drivers/as5600.hpp"
 #include "modm/math/filter/moving_average.hpp"
 #include "modm/math/geometry.hpp"
 #include "robots/robot_constants.hpp"
 
+#include "double_yaw_motor.hpp"
 #include "drivers.hpp"
 #include "turret_motor.hpp"
 
@@ -17,14 +18,13 @@ namespace subsystems
 {
 namespace turret
 {
+using driver::As5600;
 using tap::algorithms::ContiguousFloat;
-using tap::motor::DjiMotor;
 
 class TurretSubsystem : public tap::control::Subsystem
 {
 public:
     TurretSubsystem(src::Drivers* drivers);
-
     void initialize() override;
 
     /// @brief Input target data from CV (relative to camera)
@@ -62,11 +62,13 @@ private:
     Vector3f targetVelocity = Vector3f(0.0f);
     Vector3f targetAcceleration = Vector3f(0.0f);
 
-    DjiMotor yawMotor;
-    DjiMotor pitchMotor;
-
-    TurretMotor yawTurret;
-    TurretMotor pitchTurret;
+#if defined(TARGET_STANDARD) || defined(TARGET_HERO)
+    As5600 yawEncoder;
+    DoubleYawMotor yaw;
+#else
+    TurretMotor yaw;
+#endif
+    TurretMotor pitch;
 
     float isCalibrated = false;
     float basePitch = 0.0f;
@@ -77,5 +79,3 @@ private:
 
 }  // namespace turret
 }  // namespace subsystems
-
-#endif
