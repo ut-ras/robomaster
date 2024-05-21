@@ -2,7 +2,37 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Debug Hardware",
+      "name": "Debug Hardware (OpenOCD)",
+      "type": "cortex-debug",
+      "request": "launch",
+      "servertype": "openocd",
+      "configFiles": [
+        "ut-robomaster/openocd.cfg"
+      ],
+      "cwd": "${workspaceRoot}",
+      "preLaunchTask": "Build - Debug",
+      "executable": "ut-robomaster/build/hardware/scons-debug/ut-robomaster.elf",
+      "device": "STM32F427II",
+      "liveWatch": {
+        "enabled": true,
+        "samplesPerSecond": 10
+      },
+      "rttConfig": {
+        "enabled": true,
+        "address": "auto",
+        "decoders": [
+          {
+            "port": 0,
+            "type": "console"
+          }
+        ]
+      },
+      "postResetCommands": [
+        "monitor rtt start"
+      ],
+    },
+    {
+      "name": "Debug Hardware (J-Link)",
       "type": "cortex-debug",
       "request": "launch",
       "servertype": "jlink",
