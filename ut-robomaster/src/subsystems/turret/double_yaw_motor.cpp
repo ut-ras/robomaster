@@ -36,7 +36,7 @@ void DoubleYawMotor::reset()
 
 void DoubleYawMotor::updateMotorAngle()
 {
-    float encoderAngle = -encoder->getAngle() * M_TWOPI;
+    float encoderAngle = encoder->getAngle() * M_TWOPI;
     currentAngle.setValue(encoderAngle);
 }
 
