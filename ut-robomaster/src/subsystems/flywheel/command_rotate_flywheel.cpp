@@ -9,52 +9,27 @@ void CommandRotateFlywheel::execute()
 {
     if (drivers->refSerial.getRefSerialReceivingData())
     {
+        auto turretData = drivers->refSerial.getRobotData().turret;
+
 #if defined(TARGET_STANDARD) || defined(TARGET_SENTRY)
-        uint16_t refSystemLaunchSpeedLeft =
-            drivers->refSerial.getRobotData().turret.barrelSpeedLimit17ID1;
-        uint16_t refSystemLaunchSpeedRight =
-            drivers->refSerial.getRobotData().turret.barrelSpeedLimit17ID2;
-
-        float launchSpeedLeft = 0.0f;
-        float launchSpeedRight = 0.0f;
-
-        for (int i = 0; i < 3; i++)
-        {
-            if (FLYWHEEL_RPS_MAPPING[i].getFirst() == refSystemLaunchSpeedLeft)
-            {
-                launchSpeedLeft = FLYWHEEL_RPS_MAPPING[i].getSecond();
-            }
-
-            if (FLYWHEEL_RPS_MAPPING[i].getFirst() == refSystemLaunchSpeedRight)
-            {
-                launchSpeedRight = FLYWHEEL_RPS_MAPPING[i].getSecond();
-            }
-
-            if (launchSpeedLeft != 0.0f && launchSpeedRight != 0.0f)
-            {
-                break;
-            }
-        }
-
-        flywheel->setLaunchSpeed(launchSpeedLeft, launchSpeedRight);
-
+        uint16_t speedLimit = turretData.barrelSpeedLimit17ID1;
 #elif defined(TARGET_HERO)
-        uint16_t refSystemLaunchSpeed = drivers->refSerial.getRobotData().turret.barrelSpeedLimit42;
-        float launchSpeedHero = 0.0f;
+        uint16_t speedLimit = turretData.barrelSpeedLimit42;
+#endif
+
+        float launchSpeed = 0.0f;
 
         for (int i = 0; i < 3; i++)
         {
-            if (FLYWHEEL_RPS_MAPPING[i].getFirst() == refSystemLaunchSpeed)
+            if (FLYWHEEL_RPS_MAPPING[i].getFirst() == speedLimit)
             {
-                launchSpeedHero = FLYWHEEL_RPS_MAPPING[i].getSecond();
+                launchSpeed = FLYWHEEL_RPS_MAPPING[i].getSecond();
                 break;
             }
         }
 
-        flywheel->setLaunchSpeed(launchSpeedHero);
-#endif
+        flywheel->setLaunchSpeed(launchSpeed);
     }
-
     else
     {
         // NO REF SYSTEM DATA

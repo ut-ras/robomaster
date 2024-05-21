@@ -44,7 +44,7 @@ constexpr float CAMERA_X_OFFSET = 0.0f;    // horizontal offset of main camera l
 constexpr float PITCH_MIN = -0.3349f;      // rad
 constexpr float PITCH_MAX = 0.3534f;       // rad
 
-static constexpr float YAW_REDUCTION = 2.0f;
+static constexpr float YAW_REDUCTION = 1.0f;
 static constexpr float PITCH_REDUCTION = 1.0f;
 
 // Tuning Constants -----------------------------------
