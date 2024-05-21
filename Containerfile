@@ -12,30 +12,14 @@ RUN apt-get update -qq \
 
 RUN ARCH=$(uname -m) \
     URL="https://developer.arm.com/-/media/Files/downloads/gnu-rm/${ARM_GCC_VERSION}/gcc-arm-none-eabi-${ARM_GCC_VERSION}-${ARCH}-linux.tar.bz2" \
-    && wget -qO- "$URL" | tar xj \
-    && mv gcc-arm-none-eabi-${ARM_GCC_VERSION} gcc-arm
-
-# Download J-Link Software
-FROM ubuntu:22.04 as jlink
-RUN apt-get update -qq \
-    && DEBIAN_FRONTEND=noninteractive apt-get install -qq --no-install-recommends \
-    ca-certificates \
-    wget \
-    && rm -rf /var/lib/apt/lists/*
-
-RUN POSTDATA="accept_license_agreement=accepted&submit=Download+software" \
-    URL="https://www.segger.com/downloads/jlink/JLink_Linux_x86_64.tgz" \
-    && wget -qO- --post-data "$POSTDATA" "$URL" | tar xz \
-    && mv JLink_Linux_* jlink
+    && mkdir gcc-arm \
+    && wget -qO- "$URL" | tar xj --strip-components=1 -C gcc-arm
 
 # Main stage
 FROM ubuntu:24.04
 
 COPY --from=gcc-arm /gcc-arm /gcc-arm
 ENV PATH="/gcc-arm/bin:$PATH"
-
-COPY --from=jlink /jlink /jlink
-ENV PATH="/jlink:$PATH"
 
 RUN apt-get update -qq \
     && DEBIAN_FRONTEND=noninteractive apt-get install -qq --no-install-recommends \
