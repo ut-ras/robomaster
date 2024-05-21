@@ -2,6 +2,7 @@ from os.path import abspath
 
 Import("env")
 Import("args")
+Import("c_flags")
 Import("sources")
 
 
@@ -9,8 +10,8 @@ if args["TARGET_ENV"] == "tests":
     print("etss")
     env_cpy = env.Clone()
 
-    # Append on the global robot target build flag
-    env_cpy.AppendUnique(CCFLAGS=["-D " + args["ROBOT_TYPE"]])
+    # Append global build flags
+    env_cpy.AppendUnique(CFLAGS=[f"-D {x}" for x in c_flags])
 
     rawSrcs = env_cpy.FindSourceFiles(".")
 
