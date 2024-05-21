@@ -45,7 +45,7 @@
         {
             "label": "Connect to Remote Debugger",
             "type": "shell",
-            "command": "ssh -L 19020:localhost:19020 ${input:debug_dest}",
+            "command": "ssh -L 7184:localhost:7184 ${input:debug_dest}",
             "problemMatcher": [],
             "isBackground": true,
             "presentation": {
