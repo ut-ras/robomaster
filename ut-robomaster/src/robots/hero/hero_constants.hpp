@@ -136,9 +136,7 @@ static constexpr float WHEEL_MAX_VEL = 120.0f;  // rad/s
 static constexpr float MAX_LINEAR_VEL = WHEEL_MAX_VEL * WHEEL_RADIUS;               // m/s
 static constexpr float MAX_ANGULAR_VEL = WHEEL_MAX_VEL * WHEEL_RADIUS / WHEEL_LXY;  // rad/s
 
-static constexpr float DEFAULT_SPEED = 60.0f;  // default speed for the flywheels
-
-static constexpr modm::Pair<uint16_t, float> FLYWHEEL_RPS_MAPPING[] = {{10, 105.0f}, {16, 190.0f}};
+static constexpr float FLYWHEEL_SPEED = 190.0f;  // 16 m/s
 
 const float BALLS_PER_SEC = 4.0f;
 const float BALLS_PER_REV = 6.0f;
