@@ -18,30 +18,26 @@
         {
             "label": "Build - Release",
             "type": "shell",
-            "command": "scons build robot=${input:robot} ",
+            "command": "scons build robot=${input:robot}",
             "group": "build",
             "options": {
                 "cwd": "${workspaceRoot}/ut-robomaster"
             }
         },
         {
-            "label": "Flash - Debug",
+            "label": "Connect to Remote Debugger",
             "type": "shell",
-            "command": "scons run robot=${input:robot} profile=debug profiling=true",
-            "group": "build",
-            "options": {
-                "cwd": "${workspaceRoot}/ut-robomaster"
+            "command": "ssh -L 7184:localhost:7184 ${input:debug_dest}",
+            "problemMatcher": [],
+            "isBackground": true,
+            "presentation": {
+                "echo": true,
+                "focus": true,
+                "panel": "dedicated",
+                "showReuseMessage": false,
+                "clear": false
             }
-        },
-        {
-            "label": "Flash - Release",
-            "type": "shell",
-            "command": "scons run robot=${input:robot}",
-            "group": "build",
-            "options": {
-                "cwd": "${workspaceRoot}/ut-robomaster"
-            }
-        },
+        }
     ],
     "inputs": [
         {
@@ -54,6 +50,12 @@
                 "sentry"
             ],
             "default": "standard"
+        },
+        {
+            "id": "debug_dest",
+            "description": "Remote destination (SSH):",
+            "type": "promptString",
+            "default": ""
         },
     ]
 }
