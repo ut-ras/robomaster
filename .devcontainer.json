@@ -1,7 +1,5 @@
 {
-    "build": {
-        "dockerfile": "Containerfile"
-    },
+    "image": "ghcr.io/ut-ras/robomaster-firmware",
     "customizations": {
         "vscode": {
             "extensions": [

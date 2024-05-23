@@ -25,24 +25,6 @@
             }
         },
         {
-            "label": "Flash - Debug",
-            "type": "shell",
-            "command": "scons run robot=${input:robot} profile=debug profiling=true",
-            "group": "build",
-            "options": {
-                "cwd": "${workspaceRoot}/ut-robomaster"
-            }
-        },
-        {
-            "label": "Flash - Release",
-            "type": "shell",
-            "command": "scons run robot=${input:robot}",
-            "group": "build",
-            "options": {
-                "cwd": "${workspaceRoot}/ut-robomaster"
-            }
-        },
-        {
             "label": "Connect to Remote Debugger",
             "type": "shell",
             "command": "ssh -L 7184:localhost:7184 ${input:debug_dest}",
