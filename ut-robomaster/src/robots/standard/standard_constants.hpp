@@ -31,7 +31,7 @@ static constexpr float WHEEL_RADIUS = 0.1524f;     // meters
 static constexpr float WHEEL_LXY = (WHEEL_DISTANCE_X + WHEEL_DISTANCE_Y) / 2.0f;
 
 // flywheels -----------
-static constexpr int FLYWHEELS = 4;
+static constexpr int FLYWHEELS = 2;
 
 // turret ------------
 constexpr float PITCH_MIN = -0.2185f;         // rad
@@ -41,8 +41,8 @@ constexpr float NOZZLE_TO_PITCH = 0.18151f;   // distance from barrel nozzle to 
 constexpr float CAMERA_TO_BARRELS = 0.0427f;  // vertical ctc offset from camera lens to barrel (m)
 constexpr float CAMERA_X_OFFSET = -0.0335f;   // horizontal offset of main camera lens (m)
 
-static constexpr float YAW_REDUCTION = 2.0f;
-static constexpr float PITCH_REDUCTION = 4.0f;
+static constexpr float YAW_REDUCTION = 1.0f;
+static constexpr float PITCH_REDUCTION = 1.0f;
 
 // Tuning constants -----------------------------------------------
 
@@ -108,17 +108,12 @@ const MotorConfig WHEEL_RB{M3508, MOTOR4, CAN_WHEELS, false, "right back wheel",
 
 // flywheels
 const MotorConfig
-    FLYWHEEL_TL{M3508_NOGEARBOX, MOTOR3, CAN_SHOOTER, true, "flywheel top left", PID_FLYWHEEL};
+    FLYWHEEL_L{M3508_NOGEARBOX, MOTOR3, CAN_SHOOTER, true, "flywheel left", PID_FLYWHEEL};
 const MotorConfig
-    FLYWHEEL_TR{M3508_NOGEARBOX, MOTOR4, CAN_SHOOTER, false, "flywheel top right", PID_FLYWHEEL};
-const MotorConfig
-    FLYWHEEL_BL{M3508_NOGEARBOX, MOTOR5, CAN_SHOOTER, false, "flywheel bottom left", PID_FLYWHEEL};
-const MotorConfig
-    FLYWHEEL_BR{M3508_NOGEARBOX, MOTOR6, CAN_SHOOTER, true, "flywheel bottom right", PID_FLYWHEEL};
+    FLYWHEEL_R{M3508_NOGEARBOX, MOTOR4, CAN_SHOOTER, false, "flywheel right", PID_FLYWHEEL};
 
 // agitator
-const MotorConfig AGITATOR_L{M2006, MOTOR1, CAN_SHOOTER, false, "agitator left", PID_AGITATOR};
-const MotorConfig AGITATOR_R{M2006, MOTOR2, CAN_SHOOTER, true, "agitator right", PID_AGITATOR};
+const MotorConfig AGITATOR{M2006, MOTOR1, CAN_SHOOTER, false, "agitator", PID_AGITATOR};
 
 // turret
 const MotorConfig YAW_L{M3508, MOTOR5, CAN_TURRET, false, "yaw left", PID_VELOCITY_DEFAULT};

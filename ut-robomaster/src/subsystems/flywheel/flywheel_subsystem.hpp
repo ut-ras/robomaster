@@ -28,20 +28,10 @@ public:
 
     void setLaunchSpeed(float speed);
 
-    // Overloaded method to allow independent control of left and right flywheels
-    void setLaunchSpeed(float leftSpeed, float rightSpeed);
-
 private:
     src::Drivers* drivers;
     MotorVelocityController motors[FLYWHEELS];
-
-#if defined(TARGET_STANDARD) || defined(TARGET_SENTRY)
-    float launchSpeedLeft = 0.0f;
-    float launchSpeedRight = 0.0f;
-
-#elif defined(TARGET_HERO)
-    float launchSpeedHero = 0.0f;
-#endif
+    float launchSpeed = 0.0f;
 };
 
 }  // namespace flywheel
