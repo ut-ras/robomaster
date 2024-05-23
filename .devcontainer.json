@@ -1,5 +1,5 @@
 {
-    "image": "ghcr.io/ut-ras/robomaster-firmware",
+    "image": "ghcr.io/ut-ras/robomaster-firmware:45e7eec2b18933ef7caa7a46087c2d9ce1c36081",
     "customizations": {
         "vscode": {
             "extensions": [
