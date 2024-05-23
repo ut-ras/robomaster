@@ -37,9 +37,9 @@ void FlywheelSubsystem::refresh()
     for (int i = 0; i < FLYWHEELS; i++)
     {
         motors[i].setActive(!killSwitch);
-        motors[i].update(launchSpeed);
+        motors[i].update(velocity);
     }
 }
 
-void FlywheelSubsystem::setLaunchSpeed(float speed) { launchSpeed = speed; }
+void FlywheelSubsystem::setVelocity(float newVelocity) { velocity = newVelocity; }
 }  // namespace subsystems::flywheel

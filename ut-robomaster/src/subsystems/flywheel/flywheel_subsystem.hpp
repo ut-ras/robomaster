@@ -26,12 +26,14 @@ public:
 
     void refresh() override;
 
-    void setLaunchSpeed(float speed);
+    /// @brief Change flywheel velocity.
+    /// @param velocity Velocity in rev/s.
+    void setVelocity(float velocity);
 
 private:
     src::Drivers* drivers;
     MotorVelocityController motors[FLYWHEELS];
-    float launchSpeed = 0.0f;
+    float velocity = 0.0f;
 };
 
 }  // namespace flywheel
