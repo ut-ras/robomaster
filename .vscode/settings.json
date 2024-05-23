@@ -105,4 +105,5 @@
   },
   "remote.autoForwardPorts": false,
   "cortex-debug.variableUseNaturalFormat": true,
+  "git.detectSubmodules": false,
 }
