@@ -63,9 +63,8 @@ using power_limiter::BarrelId;
  */
 src::driversFunc drivers = src::DoNotUse_getDrivers;
 
-namespace sentry_control
+namespace
 {
-
 // Subsystem definitions ---------------------------------------------------------
 ChassisSubsystem chassis(drivers());
 AgitatorSubsystem agitator1(drivers(), AGITATOR_L);
@@ -127,7 +126,7 @@ HoldCommandMapping rightMouseDown(
     {&moveTurretCommandAimbot},
     RemoteMapState(RemoteMapState::MouseButton::RIGHT));
 
-// Joystick mappings ------------------------------------------------------------
+// Controller mappings ------------------------------------------------------------
 HoldCommandMapping rightSwitchUp(
     drivers(),
     {&moveChassisTurretRelativeCommandJoystick,
@@ -154,19 +153,6 @@ HoldCommandMapping leftSwitchUp(
     {&agitator1ContinuousCommand, &agitator2ContinuousCommand, &rotateFlywheelWithAgitatorCommand},
     RemoteMapState(Remote::Switch::LEFT_SWITCH, Remote::SwitchState::UP));
 
-// Register subsystems here -----------------------------------------------
-void registerSubsystems(src::Drivers *drivers)
-{
-    drivers->commandScheduler.registerSubsystem(&chassis);
-    drivers->commandScheduler.registerSubsystem(&agitator1);
-    drivers->commandScheduler.registerSubsystem(&agitator2);
-    drivers->commandScheduler.registerSubsystem(&flywheel);
-    drivers->commandScheduler.registerSubsystem(&turret);
-    drivers->commandScheduler.registerSubsystem(&odometry);
-    drivers->commandScheduler.registerSubsystem(&sound);
-}
-
-// Initialize subsystems here ---------------------------------------------
 void initializeSubsystems()
 {
     chassis.initialize();
@@ -178,7 +164,17 @@ void initializeSubsystems()
     sound.initialize();
 }
 
-// Set default commands here -----------------------------------------------
+void registerSubsystems(src::Drivers *drivers)
+{
+    drivers->commandScheduler.registerSubsystem(&chassis);
+    drivers->commandScheduler.registerSubsystem(&agitator1);
+    drivers->commandScheduler.registerSubsystem(&agitator2);
+    drivers->commandScheduler.registerSubsystem(&flywheel);
+    drivers->commandScheduler.registerSubsystem(&turret);
+    drivers->commandScheduler.registerSubsystem(&odometry);
+    drivers->commandScheduler.registerSubsystem(&sound);
+}
+
 void setDefaultCommands(src::Drivers *)
 {
     chassis.setDefaultCommand(&moveChassisCommandKeyboard);
@@ -191,34 +187,33 @@ void runStartupCommands(src::Drivers *drivers)
     drivers->commandScheduler.addCommand(&playStartupSoundCommand);
 }
 
-// Register IO mappings here -----------------------------------------------
 void registerMappings(src::Drivers *drivers)
 {
-    // Keyboard mappings ------------------------------------------------------------
+    // Keyboard
     drivers->commandMapper.addMap(&keyRToggled);
     drivers->commandMapper.addMap(&leftMouseDown);
     drivers->commandMapper.addMap(&keyXHeld);
     drivers->commandMapper.addMap(&rightMouseDown);
     drivers->commandMapper.addMap(&keyGToggled);
 
-    // Joystick mappings ------------------------------------------------------------
+    // Controller
     drivers->commandMapper.addMap(&rightSwitchUp);
     drivers->commandMapper.addMap(&rightSwitchMid);
     drivers->commandMapper.addMap(&rightSwitchDown);
     drivers->commandMapper.addMap(&leftSwitchMid);
     drivers->commandMapper.addMap(&leftSwitchUp);
 }
-}  // namespace sentry_control
+}  // namespace
 
 namespace control
 {
-void initSubsystemCommands(src::Drivers *drivers)
+void initialize(src::Drivers *drivers)
 {
-    sentry_control::initializeSubsystems();
-    sentry_control::registerSubsystems(drivers);
-    sentry_control::setDefaultCommands(drivers);
-    sentry_control::runStartupCommands(drivers);
-    sentry_control::registerMappings(drivers);
+    initializeSubsystems();
+    registerSubsystems(drivers);
+    setDefaultCommands(drivers);
+    runStartupCommands(drivers);
+    registerMappings(drivers);
 }
 }  // namespace control
 #endif

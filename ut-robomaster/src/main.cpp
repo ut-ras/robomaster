@@ -6,28 +6,15 @@
 #include "tap/motor/motorsim/sim_handler.hpp"
 #endif
 
-#include "modm/architecture/interface/delay.hpp"
-
-#include "board.hpp"
-
-/* arch includes ------------------------------------------------------------*/
 #include "tap/architecture/periodic_timer.hpp"
 #include "tap/architecture/profiler.hpp"
 
-/* communication includes ---------------------------------------------------*/
+#include "robots/robot_constants.hpp"
+
+#include "board.hpp"
 #include "drivers.hpp"
 #include "drivers_singleton.hpp"
 
-/* error handling includes --------------------------------------------------*/
-#include "tap/errors/create_errors.hpp"
-
-/* control includes ---------------------------------------------------------*/
-#include "tap/architecture/clock.hpp"
-
-#include "robots/robot_constants.hpp"
-#include "robots/robot_control.hpp"
-
-/* define timers here -------------------------------------------------------*/
 tap::arch::PeriodicMilliTimer refreshTimer(REFRESH_PERIOD);
 
 // Place any sort of input/output initialization here. For example, place
@@ -39,7 +26,11 @@ static void initializeIo(src::Drivers *drivers);
 // called as frequently.
 static void updateIo(src::Drivers *drivers);
 
-using namespace tap::gpio;
+// Defined in [robot]_control.cpp files
+namespace control
+{
+void initialize(src::Drivers *drivers);
+}
 
 int main()
 {
@@ -57,7 +48,7 @@ int main()
     Board::initialize();
     initializeIo(drivers);
     Board::initialize_i2c();
-    control::initSubsystemCommands(drivers);
+    control::initialize(drivers);
 
 #ifdef PLATFORM_HOSTED
     tap::motorsim::SimHandler::resetMotorSims();
