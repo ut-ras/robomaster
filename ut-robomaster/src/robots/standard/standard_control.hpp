@@ -28,7 +28,6 @@
 #include "subsystems/flywheel/flywheel_subsystem.hpp"
 
 // Turret includes ------------------------------------------
-#include "subsystems/odometry/odometry_subsystem.hpp"
 #include "subsystems/turret/command_move_turret_aimbot.hpp"
 #include "subsystems/turret/command_move_turret_joystick.hpp"
 #include "subsystems/turret/command_move_turret_mouse.hpp"
@@ -45,7 +44,6 @@ using namespace subsystems::chassis;
 using namespace subsystems::agitator;
 using namespace subsystems::flywheel;
 using namespace subsystems::turret;
-using namespace subsystems::odometry;
 using namespace subsystems::sound;
 
 using namespace commands;
@@ -71,7 +69,6 @@ private:
     AgitatorSubsystem agitator{drivers, AGITATOR};
     FlywheelSubsystem flywheel{drivers};
     TurretSubsystem turret{drivers};
-    OdometrySubsystem odometry{drivers, &chassis, &turret};
     SoundSubsystem sound{drivers};
 
     // Command definitions -----------------------------------------------------------
@@ -156,7 +153,6 @@ private:
         agitator.initialize();
         flywheel.initialize();
         turret.initialize();
-        odometry.initialize();
         sound.initialize();
     }
 
@@ -166,7 +162,6 @@ private:
         drivers->commandScheduler.registerSubsystem(&agitator);
         drivers->commandScheduler.registerSubsystem(&flywheel);
         drivers->commandScheduler.registerSubsystem(&turret);
-        drivers->commandScheduler.registerSubsystem(&odometry);
         drivers->commandScheduler.registerSubsystem(&sound);
     }
 
