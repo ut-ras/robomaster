@@ -10,6 +10,12 @@
             ]
         }
     },
+    "features": {
+        "ghcr.io/devcontainers/features/common-utils:2": {
+            "configureZshAsDefaultShell": true
+        }
+    },
+    "postCreateCommand": "zsh -c '. ~/.oh-my-zsh/lib/cli.zsh && omz theme set frontcube'",
     "runArgs": [
         // Ensure our workspace gets mounted under the non-root user (podman)
         "--userns=keep-id:uid=1000,gid=1000",
