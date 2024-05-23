@@ -10,70 +10,13 @@
 #include "tap/architecture/profiler.hpp"
 
 #include "robots/robot_constants.hpp"
+#include "robots/robot_control.hpp"
 
 #include "board.hpp"
 #include "drivers.hpp"
-#include "drivers_singleton.hpp"
-
-tap::arch::PeriodicMilliTimer refreshTimer(REFRESH_PERIOD);
 
 // Place any sort of input/output initialization here. For example, place
 // serial init stuff here.
-static void initializeIo(src::Drivers *drivers);
-
-// Anything that you would like to be called place here. It will be called
-// very frequently. Use PeriodicMilliTimers if you don't want something to be
-// called as frequently.
-static void updateIo(src::Drivers *drivers);
-
-// Defined in [robot]_control.cpp files
-namespace control
-{
-void initialize(src::Drivers *drivers);
-}
-
-int main()
-{
-#ifdef PLATFORM_HOSTED
-    std::cout << "Simulation starting..." << std::endl;
-#endif
-
-    /*
-     * NOTE: We are using DoNotUse_getDrivers here because in the main
-     *      robot loop we must access the singleton drivers to update
-     *      IO states and run the scheduler.
-     */
-    src::Drivers *drivers = src::DoNotUse_getDrivers();
-
-    Board::initialize();
-    initializeIo(drivers);
-    Board::initialize_i2c();
-    control::initialize(drivers);
-
-#ifdef PLATFORM_HOSTED
-    tap::motorsim::SimHandler::resetMotorSims();
-    // Blocking call, waits until Windows Simulator connects.
-    tap::communication::TCPServer::MainServer()->getConnection();
-#endif
-
-    while (1)
-    {
-        // do this as fast as you can
-        PROFILE(drivers->profiler, updateIo, (drivers));
-
-        if (refreshTimer.execute())
-        {
-            PROFILE(drivers->profiler, drivers->bmi088.periodicIMUUpdate, ());
-            PROFILE(drivers->profiler, drivers->commandScheduler.run, ());
-            PROFILE(drivers->profiler, drivers->djiMotorTxHandler.encodeAndSendCanData, ());
-            PROFILE(drivers->profiler, drivers->terminalSerial.update, ());
-        }
-
-        modm::delay_us(10);
-    }
-    return 0;
-}
-
 static void initializeIo(src::Drivers *drivers)
 {
     drivers->analog.init();
@@ -92,6 +35,9 @@ static void initializeIo(src::Drivers *drivers)
     drivers->bmi088.requestRecalibration();
 }
 
+// Anything that you would like to be called place here. It will be called
+// very frequently. Use PeriodicMilliTimers if you don't want something to be
+// called as frequently.
 static void updateIo(src::Drivers *drivers)
 {
 #ifdef PLATFORM_HOSTED
@@ -102,4 +48,45 @@ static void updateIo(src::Drivers *drivers)
     drivers->refSerial.updateSerial();
     // drivers->cvBoard.updateSerial();
     drivers->remote.read();
+}
+
+int main()
+{
+#ifdef PLATFORM_HOSTED
+    std::cout << "Simulation starting..." << std::endl;
+#endif
+
+    src::Drivers drivers;
+
+    Board::initialize();
+    initializeIo(&drivers);
+    Board::initialize_i2c();
+
+    Control{&drivers};
+
+#ifdef PLATFORM_HOSTED
+    tap::motorsim::SimHandler::resetMotorSims();
+    // Blocking call, waits until Windows Simulator connects.
+    tap::communication::TCPServer::MainServer()->getConnection();
+#endif
+
+    tap::arch::PeriodicMilliTimer refreshTimer(REFRESH_PERIOD);
+
+    while (1)
+    {
+        // do this as fast as you can
+        PROFILE(drivers.profiler, updateIo, (&drivers));
+
+        if (refreshTimer.execute())
+        {
+            PROFILE(drivers.profiler, drivers.bmi088.periodicIMUUpdate, ());
+            PROFILE(drivers.profiler, drivers.commandScheduler.run, ());
+            PROFILE(drivers.profiler, drivers.djiMotorTxHandler.encodeAndSendCanData, ());
+            PROFILE(drivers.profiler, drivers.terminalSerial.update, ());
+        }
+
+        // prevent looping too fast
+        modm::delay_us(10);
+    }
+    return 0;
 }
