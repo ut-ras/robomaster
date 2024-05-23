@@ -4,6 +4,8 @@
         "vscode": {
             "extensions": [
                 "ms-vscode.cpptools",
+                "ms-vsliveshare.vsliveshare",
+                "GitHub.vscode-pull-request-github",
                 "marus25.cortex-debug"
             ]
         }

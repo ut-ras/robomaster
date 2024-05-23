@@ -1,8 +1,8 @@
 {
     "recommendations": [
-        "marus25.cortex-debug",
         "ms-vscode.cpptools",
-        "ms-vscode-remote.remote-containers",
-        "ms-vsliveshare.vsliveshare"
+        "ms-vsliveshare.vsliveshare",
+        "GitHub.vscode-pull-request-github",
+        "ms-vscode-remote.remote-containers"
     ]
 }
