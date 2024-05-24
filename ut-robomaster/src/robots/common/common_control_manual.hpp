@@ -24,10 +24,6 @@ protected:
     {
         CommonControl::initialize();
 
-        chassis.setDefaultCommand(&moveChassisCommandKeyboard);
-        turret.setDefaultCommand(&moveTurretCommandMouse);
-        flywheel.setDefaultCommand(&flywheelOffCommand);
-
         // Mouse and Keyboard
         drivers->commandMapper.addMap(&keyRToggled);
         drivers->commandMapper.addMap(&keyGToggled);
@@ -36,7 +32,9 @@ protected:
         // Controller
         drivers->commandMapper.addMap(&rightSwitchUp);
         drivers->commandMapper.addMap(&rightSwitchMid);
+        drivers->commandMapper.addMap(&rightSwitchDown);
         drivers->commandMapper.addMap(&leftSwitchMid);
+        drivers->commandMapper.addMap(&leftSwitchDown);
     }
 
     // Commands
@@ -88,8 +86,18 @@ protected:
         {&moveChassisCommandJoystick, &moveTurretCommandJoystick},
         RemoteMapState(Remote::Switch::RIGHT_SWITCH, Remote::SwitchState::MID)};
 
+    HoldCommandMapping rightSwitchDown{
+        drivers,
+        {&moveChassisCommandKeyboard, &moveTurretCommandMouse},
+        RemoteMapState(Remote::Switch::RIGHT_SWITCH, Remote::SwitchState::DOWN)};
+
     HoldCommandMapping leftSwitchMid{
         drivers,
         {&rotateFlywheelNoAgitatorCommand},
         RemoteMapState(Remote::Switch::LEFT_SWITCH, Remote::SwitchState::MID)};
+
+    HoldCommandMapping leftSwitchDown{
+        drivers,
+        {&flywheelOffCommand},
+        RemoteMapState(Remote::Switch::LEFT_SWITCH, Remote::SwitchState::DOWN)};
 };
