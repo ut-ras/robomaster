@@ -1,11 +1,3 @@
-#ifdef PLATFORM_HOSTED
-/* hosted environment (simulator) includes --------------------------------- */
-#include <iostream>
-
-#include "tap/communication/tcp-server/tcp_server.hpp"
-#include "tap/motor/motorsim/sim_handler.hpp"
-#endif
-
 #include "tap/architecture/periodic_timer.hpp"
 #include "tap/architecture/profiler.hpp"
 
@@ -50,25 +42,15 @@ static void updateIo(src::Drivers *drivers)
     drivers->remote.read();
 }
 
-src::Drivers drivers{};
+src::Drivers drivers;
 RobotControl control{&drivers};
 
 int main()
 {
-    // #ifdef PLATFORM_HOSTED
-    //     std::cout << "Simulation starting..." << std::endl;
-    // #endif
-
     Board::initialize();
     initializeIo(&drivers);
     Board::initialize_i2c();
     control.initialize();
-
-#ifdef PLATFORM_HOSTED
-    tap::motorsim::SimHandler::resetMotorSims();
-    // Blocking call, waits until Windows Simulator connects.
-    tap::communication::TCPServer::MainServer()->getConnection();
-#endif
 
     tap::arch::PeriodicMilliTimer refreshTimer(REFRESH_PERIOD);
 
