@@ -21,16 +21,16 @@ private:
     AgitatorSubsystem agitator{drivers, AGITATOR};
 
     // Commands
-    CommandAgitatorContinuous agitatorContinuousCommand{drivers, &agitator, BarrelId::STANDARD1};
+    CommandAgitatorContinuous rotateAgitator{drivers, &agitator, BarrelId::STANDARD1};
 
     // Mappings
     HoldCommandMapping leftMouseDown{
         drivers,
-        {&agitatorContinuousCommand},
+        {&rotateAgitator},
         RemoteMapState(RemoteMapState::MouseButton::LEFT)};
 
     HoldCommandMapping leftSwitchUp{
         drivers,
-        {&agitatorContinuousCommand, &rotateFlywheelWithAgitatorCommand},
+        {&rotateAgitator, &rotateFlywheel_SwitchMid},
         RemoteMapState(Remote::Switch::LEFT_SWITCH, Remote::SwitchState::UP)};
 };

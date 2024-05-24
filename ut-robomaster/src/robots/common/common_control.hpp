@@ -58,7 +58,7 @@ protected:
         drivers->commandScheduler.registerSubsystem(&sound);
 
         // Run startup commands
-        drivers->commandScheduler.addCommand(&playStartupSoundCommand);
+        drivers->commandScheduler.addCommand(&playStartupSound);
     }
 
     src::Drivers* drivers;
@@ -70,5 +70,5 @@ protected:
     SoundSubsystem sound{drivers};
 
     // Commands
-    CommandPlaySound playStartupSoundCommand{drivers, &sound, SOUND_STARTUP};
+    CommandPlaySound playStartupSound{drivers, &sound, SOUND_STARTUP};
 };

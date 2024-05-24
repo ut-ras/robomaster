@@ -34,39 +34,35 @@ protected:
         drivers->commandMapper.addMap(&rightSwitchMid);
         drivers->commandMapper.addMap(&rightSwitchDown);
         drivers->commandMapper.addMap(&leftSwitchMid);
-        drivers->commandMapper.addMap(&leftSwitchDown);
     }
 
     // Commands
-    CommandMoveChassisJoystick moveChassisCommandJoystick{drivers, &chassis, &turret};
-    CommandMoveChassisTurretRelativeJoystick moveChassisTurretRelativeCommandJoystick{
+    CommandMoveChassisJoystick moveChassisRelative_Joystick{drivers, &chassis, &turret};
+    CommandMoveChassisTurretRelativeJoystick moveTurretRelative_Joystick{
         drivers,
         &chassis,
         &turret};
-    CommandMoveChassisKeyboard moveChassisCommandKeyboard{drivers, &chassis, &turret};
-    CommandBeybladeChassisKeyboard beybladeChassisCommandKeyboard{drivers, &chassis, &turret};
+    CommandMoveChassisKeyboard moveTurretRelative_Keyboard{drivers, &chassis, &turret};
+    CommandBeybladeChassisKeyboard beyblade_Keyboard{drivers, &chassis, &turret};
 
-    CommandRotateFlywheel rotateFlywheelKeyboardCommand{drivers, &flywheel};
-    CommandRotateFlywheel rotateFlywheelNoAgitatorCommand{drivers, &flywheel};
-    CommandRotateFlywheel rotateFlywheelWithAgitatorCommand{drivers, &flywheel};
-    CommandFlywheelOff flywheelOffCommand{drivers, &flywheel};
+    CommandRotateFlywheel rotateFlywheel_Keyboard{drivers, &flywheel};
+    CommandRotateFlywheel rotateFlywheel_SwitchUp{drivers, &flywheel};
+    CommandRotateFlywheel rotateFlywheel_SwitchMid{drivers, &flywheel};
 
-    CommandMoveTurretJoystick moveTurretCommandJoystick{drivers, &turret};
-    CommandMoveTurretJoystick moveTurretWhenChassisIsTurretRelativeCommandJoystick{
-        drivers,
-        &turret};
+    CommandMoveTurretJoystick look_Joystick_SwitchMid{drivers, &turret};
+    CommandMoveTurretJoystick look_Joystick_SwitchUp{drivers, &turret};
     CommandMoveTurretMouse moveTurretCommandMouse{drivers, &turret};
     CommandMoveTurretAimbot moveTurretCommandAimbot{drivers, &turret};
 
     // Keyboard mappings
     ToggleCommandMapping keyRToggled{
         drivers,
-        {&beybladeChassisCommandKeyboard},
+        {&beyblade_Keyboard},
         RemoteMapState({Remote::Key::R})};
 
     ToggleCommandMapping keyGToggled{
         drivers,
-        {&rotateFlywheelKeyboardCommand},
+        {&rotateFlywheel_Keyboard},
         RemoteMapState({Remote::Key::G})};
 
     HoldCommandMapping rightMouseDown{
@@ -77,27 +73,21 @@ protected:
     // Controller mappings
     HoldCommandMapping rightSwitchUp{
         drivers,
-        {&moveChassisTurretRelativeCommandJoystick,
-         &moveTurretWhenChassisIsTurretRelativeCommandJoystick},
+        {&moveTurretRelative_Joystick, &look_Joystick_SwitchUp},
         RemoteMapState(Remote::Switch::RIGHT_SWITCH, Remote::SwitchState::UP)};
 
     HoldCommandMapping rightSwitchMid{
         drivers,
-        {&moveChassisCommandJoystick, &moveTurretCommandJoystick},
+        {&moveChassisRelative_Joystick, &look_Joystick_SwitchMid},
         RemoteMapState(Remote::Switch::RIGHT_SWITCH, Remote::SwitchState::MID)};
 
     HoldCommandMapping rightSwitchDown{
         drivers,
-        {&moveChassisCommandKeyboard, &moveTurretCommandMouse},
+        {&moveTurretRelative_Keyboard, &moveTurretCommandMouse},
         RemoteMapState(Remote::Switch::RIGHT_SWITCH, Remote::SwitchState::DOWN)};
 
     HoldCommandMapping leftSwitchMid{
         drivers,
-        {&rotateFlywheelNoAgitatorCommand},
+        {&rotateFlywheel_SwitchUp},
         RemoteMapState(Remote::Switch::LEFT_SWITCH, Remote::SwitchState::MID)};
-
-    HoldCommandMapping leftSwitchDown{
-        drivers,
-        {&flywheelOffCommand},
-        RemoteMapState(Remote::Switch::LEFT_SWITCH, Remote::SwitchState::DOWN)};
 };
