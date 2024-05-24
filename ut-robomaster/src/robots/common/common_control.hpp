@@ -37,3 +37,38 @@ using namespace subsystems::sound;
 
 using namespace commands;
 using power_limiter::BarrelId;
+
+class CommonControl
+{
+protected:
+    CommonControl(src::Drivers* drivers) : drivers(drivers) {}
+
+    void initialize()
+    {
+        // Initialize subsystems
+        chassis.initialize();
+        flywheel.initialize();
+        turret.initialize();
+        sound.initialize();
+
+        // Register subsystems
+        drivers->commandScheduler.registerSubsystem(&chassis);
+        drivers->commandScheduler.registerSubsystem(&flywheel);
+        drivers->commandScheduler.registerSubsystem(&turret);
+        drivers->commandScheduler.registerSubsystem(&sound);
+
+        // Run startup commands
+        drivers->commandScheduler.addCommand(&playStartupSoundCommand);
+    }
+
+    src::Drivers* drivers;
+
+    // Subsystems
+    ChassisSubsystem chassis{drivers};
+    FlywheelSubsystem flywheel{drivers};
+    TurretSubsystem turret{drivers};
+    SoundSubsystem sound{drivers};
+
+    // Commands
+    CommandPlaySound playStartupSoundCommand{drivers, &sound, SOUND_STARTUP};
+};

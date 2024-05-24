@@ -51,7 +51,7 @@ static void updateIo(src::Drivers *drivers)
 }
 
 src::Drivers drivers{};
-Control control{&drivers};
+RobotControl control{&drivers};
 
 int main()
 {
