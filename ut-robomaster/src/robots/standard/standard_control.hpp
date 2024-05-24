@@ -3,7 +3,9 @@
 class StandardControl
 {
 public:
-    StandardControl(src::Drivers *drivers) : drivers(drivers)
+    StandardControl(src::Drivers *drivers) : drivers(drivers) {}
+
+    void initialize()
     {
         initializeSubsystems();
         registerSubsystems();

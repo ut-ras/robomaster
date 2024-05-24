@@ -3,7 +3,9 @@
 class HeroControl
 {
 public:
-    HeroControl(src::Drivers *drivers) : drivers(drivers)
+    HeroControl(src::Drivers *drivers) : drivers(drivers) {}
+
+    void initialize()
     {
         initializeSubsystems();
         registerSubsystems();

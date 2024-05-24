@@ -3,7 +3,9 @@
 class SentryControl
 {
 public:
-    SentryControl(src::Drivers *drivers) : drivers(drivers)
+    SentryControl(src::Drivers *drivers) : drivers(drivers) {}
+
+    void initialize()
     {
         initializeSubsystems();
         registerSubsystems();

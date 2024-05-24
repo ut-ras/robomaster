@@ -50,19 +50,19 @@ static void updateIo(src::Drivers *drivers)
     drivers->remote.read();
 }
 
+src::Drivers drivers{};
+Control control{&drivers};
+
 int main()
 {
-#ifdef PLATFORM_HOSTED
-    std::cout << "Simulation starting..." << std::endl;
-#endif
-
-    src::Drivers drivers;
+    // #ifdef PLATFORM_HOSTED
+    //     std::cout << "Simulation starting..." << std::endl;
+    // #endif
 
     Board::initialize();
     initializeIo(&drivers);
     Board::initialize_i2c();
-
-    Control{&drivers};
+    control.initialize();
 
 #ifdef PLATFORM_HOSTED
     tap::motorsim::SimHandler::resetMotorSims();
