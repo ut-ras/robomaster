@@ -90,6 +90,8 @@ float TurretSubsystem::getCurrentLocalPitch()
     return !isCalibrated ? 0.0f : pitch.getAngle() / PITCH_REDUCTION - basePitch;
 }
 
+bool TurretSubsystem::getIsCalibrated() { return isCalibrated; }
+
 void TurretSubsystem::runHardwareTests()
 {
     // TODO
