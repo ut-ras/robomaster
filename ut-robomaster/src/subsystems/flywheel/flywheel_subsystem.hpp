@@ -4,7 +4,7 @@
 #include "tap/control/subsystem.hpp"
 
 #include "robots/robot_constants.hpp"
-#include "utils/motor_controller/motor_controller.hpp"
+#include "utils/motors/motor_controller.hpp"
 
 #include "drivers.hpp"
 
@@ -13,7 +13,7 @@ namespace subsystems
 namespace flywheel
 {
 
-using namespace motor_controller;
+using namespace motors;
 
 class FlywheelSubsystem : public tap::control::Subsystem
 {
@@ -26,22 +26,14 @@ public:
 
     void refresh() override;
 
-    void setLaunchSpeed(float speed);
-
-    // Overloaded method to allow independent control of left and right flywheels
-    void setLaunchSpeed(float leftSpeed, float rightSpeed);
+    /// @brief Change flywheel velocity.
+    /// @param velocity Velocity in rev/s.
+    void setVelocity(float velocity);
 
 private:
     src::Drivers* drivers;
     MotorVelocityController motors[FLYWHEELS];
-
-#if defined(TARGET_STANDARD) || defined(TARGET_SENTRY)
-    float launchSpeedLeft = 0.0f;
-    float launchSpeedRight = 0.0f;
-
-#elif defined(TARGET_HERO)
-    float launchSpeedHero = 0.0f;
-#endif
+    float velocity = 0.0f;
 };
 
 }  // namespace flywheel

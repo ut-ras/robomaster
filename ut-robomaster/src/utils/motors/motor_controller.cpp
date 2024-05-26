@@ -1,6 +1,6 @@
 #include "motor_controller.hpp"
 
-namespace motor_controller
+namespace motors
 {
 void MotorController::initialize()
 {
@@ -85,4 +85,4 @@ void MotorVelocityController::applyPowerScalar(float powerLimitScalar)
     float invertFactor = motor.isMotorInverted() ? -1.0f : 1.0f;
     motor.setDesiredOutput(motor.getOutputDesired() * invertFactor * powerLimitScalar);
 }
-}  // namespace motor_controller
+}  // namespace motors

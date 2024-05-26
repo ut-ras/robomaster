@@ -5,7 +5,7 @@ namespace commands
 
 void CommandFlywheelOff::initialize() {}
 
-void CommandFlywheelOff::execute() { flywheel->setLaunchSpeed(0.0f); }
+void CommandFlywheelOff::execute() { flywheel->setVelocity(0.0f); }
 
 void CommandFlywheelOff::end(bool) {}
 

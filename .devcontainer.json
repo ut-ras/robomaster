@@ -1,12 +1,21 @@
 {
-    "image": "ghcr.io/ut-ras/robomaster-firmware",
+    "image": "ghcr.io/ut-ras/robomaster-firmware:45e7eec2b18933ef7caa7a46087c2d9ce1c36081",
     "customizations": {
         "vscode": {
             "extensions": [
-                "ms-vscode.cpptools"
+                "ms-vscode.cpptools",
+                "ms-vsliveshare.vsliveshare",
+                "GitHub.vscode-pull-request-github",
+                "marus25.cortex-debug"
             ]
         }
     },
+    "features": {
+        "ghcr.io/devcontainers/features/common-utils:2": {
+            "configureZshAsDefaultShell": true
+        }
+    },
+    "postCreateCommand": "zsh -c '. ~/.oh-my-zsh/lib/cli.zsh && omz theme set frontcube'",
     "runArgs": [
         // Ensure our workspace gets mounted under the non-root user (podman)
         "--userns=keep-id:uid=1000,gid=1000",

@@ -19,5 +19,5 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
     - name: Build code
-      run: podman run ${{ env.RUN_ARGS }} scons build robot=${{ matrix.robot }}
+      run: podman run ${{ env.RUN_ARGS }} sh -c '~/.local/bin/scons build robot=${{ matrix.robot }}'
       

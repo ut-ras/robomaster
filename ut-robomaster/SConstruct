@@ -24,6 +24,10 @@ IGNORED_FILES_WHILE_TESTING = ["src/main.cpp"]
 
 # Parse and validate arguments
 args = parse_args.parse_args()
+c_flags = [args["ROBOT_TYPE"]]
+
+if args["DEMO_MODE"] == "true":
+    c_flags.append("DEMO_MODE")
 
 
 def _get_hosted_target_name_for_current_platform():
@@ -59,7 +63,7 @@ sources = []
 # Building all libraries (read from sconscript files located in provided dirs)
 # Ensure that modm is first, since Taproot depends on modm
 # Append include path to environment so both src/test environments have access to them
-env.SConscript(dirs=[TAPROOT_PATH, SRC_PATH, TEST_PATH], exports=["env", "args", "sources"])
+env.SConscript(dirs=[TAPROOT_PATH, SRC_PATH, TEST_PATH], exports=["env", "args", "c_flags", "sources"])
 
 
 # Tests must be included as sources (rather than built as a separate library) in order for
@@ -70,7 +74,7 @@ if args["TARGET_ENV"] == "tests":
 
 
 print("Configured {0} parallel build jobs (-j{0}), {1}"
-    .format(GetOption("num_jobs"), args["ROBOT_TYPE"]))
+    .format(GetOption("num_jobs"), c_flags))
 
 
 if args["TARGET_ENV"] == "hardware":

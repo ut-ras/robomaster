@@ -37,6 +37,8 @@ private:
     src::Drivers* drivers;
     TurretSubsystem* turret;
 
+    bool isCalibrated = false;
+
     float yaw = 0.0f;
     float pitch = 0.0f;
 };
