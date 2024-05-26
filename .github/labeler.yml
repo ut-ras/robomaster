@@ -1,0 +1,3 @@
+needs-testing:
+- changed-files:
+  - any-glob-to-any-file: 'ut-robomaster/src/**'
