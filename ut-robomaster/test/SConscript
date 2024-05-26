@@ -7,7 +7,6 @@ Import("sources")
 
 
 if args["TARGET_ENV"] == "tests":
-    print("etss")
     env_cpy = env.Clone()
 
     # Append global build flags
