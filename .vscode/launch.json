@@ -10,7 +10,7 @@
         "ut-robomaster/openocd.cfg"
       ],
       "cwd": "${workspaceRoot}",
-      "preLaunchTask": "Build - Debug",
+      "preLaunchTask": "${defaultBuildTask}",
       "executable": "ut-robomaster/build/hardware/scons-debug/ut-robomaster.elf",
       "device": "STM32F427II",
       "liveWatch": {
