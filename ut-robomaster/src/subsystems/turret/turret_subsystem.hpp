@@ -46,6 +46,8 @@ public:
 
     float getCurrentLocalPitch();
 
+    bool getIsCalibrated();
+
     void refresh() override;
 
     void runHardwareTests() override;

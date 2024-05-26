@@ -1,11 +1,13 @@
-#ifndef ROBOT_CONTROL_HPP_
-#define ROBOT_CONTROL_HPP_
+#if defined(TARGET_STANDARD)
+#include "robots/standard/standard_control.hpp"
+using RobotControl = StandardControl;
 
-#include "drivers.hpp"
+#elif defined(TARGET_HERO)
+#include "robots/hero/hero_control.hpp"
+using RobotControl = HeroControl;
 
-namespace control
-{
-void initSubsystemCommands(src::Drivers *drivers);
-}  // namespace control
+#elif defined(TARGET_SENTRY)
+#include "robots/sentry/sentry_control.hpp"
+using RobotControl = SentryControl;
 
-#endif  // ROBOT_CONTROL_HPP_
+#endif

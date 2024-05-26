@@ -89,9 +89,15 @@
   "C_Cpp.default.includePath": [
     "ut-robomaster/src",
     "ut-robomaster/taproot/src",
+    "ut-robomaster/taproot/modm/src",
+    "ut-robomaster/taproot/modm/ext/cmsis/core",
+    "ut-robomaster/taproot/modm/ext/cmsis/device",
+    "ut-robomaster/taproot/modm/ext/cmsis/dsp"
   ],
   "C_Cpp.default.cppStandard": "c++20",
   "C_Cpp.default.cStandard": "c11",
+  "C_Cpp.default.intelliSenseMode": "gcc-arm",
+  "C_Cpp.default.compilerPath": "arm-none-eabi-g++",
   "[markdown]": {
     "editor.wordWrap": "off",
     "editor.quickSuggestions": {

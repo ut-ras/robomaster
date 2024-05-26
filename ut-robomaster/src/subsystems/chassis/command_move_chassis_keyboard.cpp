@@ -2,58 +2,48 @@
 
 namespace commands
 {
-void CommandMoveChassisKeyboard::initialize() {}
+void CommandMoveChassisKeyboard::initialize() { inputMove = Vector2f(0.0f); }
 
 void CommandMoveChassisKeyboard::execute()
 {
-    if (drivers->bmi088.getImuState() == ImuInterface::ImuState::IMU_CALIBRATING)
-    {
-        chassis->input(Vector2f(0.0f), 0.0f);
-    }
+    Remote* remote = &drivers->remote;
 
+    Vector2f rawMoveInput = Vector2f(
+        remote->keyPressed(Remote::Key::D) - remote->keyPressed(Remote::Key::A),
+        remote->keyPressed(Remote::Key::W) - remote->keyPressed(Remote::Key::S));
+
+    float rawInputLen = rawMoveInput.getLength();
+
+    if (rawInputLen > 0.0f)
+    {
+        Vector2f moveDir = rawMoveInput / rawInputLen;  // normalize input
+        inputMove += moveDir * KEYBOARD_ACCEL * DT;     // incorporate input
+        inputMove /= max(1.0f, inputMove.getLength());  // clamp length
+    }
     else
     {
-        Remote* remote = &drivers->remote;
-        inputSpin = 0.0f;
-
-        Vector2f rawMoveInput = Vector2f(
-            remote->keyPressed(Remote::Key::D) - remote->keyPressed(Remote::Key::A),
-            remote->keyPressed(Remote::Key::W) - remote->keyPressed(Remote::Key::S));
-
-        float rawInputLen = rawMoveInput.getLength();
-
-        if (rawInputLen > 0.0f)
+        // decelerate when input stops
+        float len = inputMove.getLength();
+        if (len > 0.0f)
         {
-            Vector2f moveDir = rawMoveInput / rawInputLen;       // normalize input
-            inputMove += moveDir * KEYBOARD_ACCEL * DELTA_TIME;  // incorporate input
-            inputMove /= max(1.0f, inputMove.getLength());       // clamp length
+            inputMove *= max(1.0f - KEYBOARD_DECEL * DT / len, 0.0f);
         }
-
-        else
-        {
-            // decelerate when input stops
-            float len = inputMove.getLength();
-            if (len > 0.0f)
-            {
-                inputMove *= max(1.0f - KEYBOARD_DECEL * DELTA_TIME / len, 0.0f);
-            }
-        }
-
-        float turretYaw = turret->getTargetLocalYaw();
-        Vector2f turretRelativeMove = Vector2f(inputMove);
-        turretRelativeMove.rotate(turretYaw);
-
-        // auto-align to turret when moving
-        if (inputMove.getLengthSquared() > 0.0f)
-        {
-            float deltaAngle =
-                turretYaw - roundf(turretYaw / SNAP_ANGLE) * SNAP_ANGLE;  // nearest side
-            float correction = deltaAngle / SNAP_ANGLE * 4.0f;
-            inputSpin = correction / max(1.0f, abs(correction)) * TURRET_ALIGN_FACTOR;
-        }
-
-        chassis->input(turretRelativeMove, inputSpin);
     }
+
+    float yawAngle = turret->getTargetLocalYaw();
+    float inputSpin = 0.0f;
+
+    if (beyblade)
+    {
+        inputSpin = 1.0f;
+    }
+    else if (inputMove.getLengthSquared() > 0.0f)  // auto-align
+    {
+        inputSpin = calculateAutoAlignCorrection(yawAngle, CHASSIS_AUTOALIGN_ANGLE) *
+                    CHASSIS_AUTOALIGN_FACTOR;
+    }
+
+    chassis->input(Vector2f(inputMove).rotate(yawAngle), inputSpin);
 }
 
 void CommandMoveChassisKeyboard::end(bool) { chassis->input(Vector2f(0.0f), 0.0f); }
