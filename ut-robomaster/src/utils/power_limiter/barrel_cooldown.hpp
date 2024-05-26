@@ -11,5 +11,5 @@ enum BarrelId
     HERO        // 42
 };
 
-float getRemainingCooldown(src::Drivers *drivers, BarrelId id);
+float getRemainingHeat(src::Drivers *drivers, BarrelId id);
 }  // namespace power_limiter

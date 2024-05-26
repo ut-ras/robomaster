@@ -23,7 +23,7 @@ void CommandAgitatorContinuous::execute()
     }
     else if (  // barrel overheat
         drivers->refSerial.getRefSerialReceivingData() &&
-        power_limiter::getRemainingCooldown(drivers, barrelId) <= BARREL_HEAT_BUFFER)
+        power_limiter::getRemainingHeat(drivers, barrelId) <= BARREL_HEAT_BUFFER)
     {
         agitator->setBallsPerSecond(0.0f);
     }

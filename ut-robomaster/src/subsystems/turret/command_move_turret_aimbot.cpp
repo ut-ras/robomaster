@@ -48,7 +48,7 @@ void CommandMoveTurretAimbot::execute()
 
         bool validBallistcs = findTargetProjectileIntersection(
             kinState,
-            getBulletSpeed(),
+            TARGET_PROJECTILE_VELOCITY,
             BALLISTIC_ITERATIONS,
             &turretPitch,
             &turretYaw,
@@ -77,14 +77,4 @@ void CommandMoveTurretAimbot::execute()
 void CommandMoveTurretAimbot::end(bool) {}
 
 bool CommandMoveTurretAimbot::isFinished(void) const { return false; }
-
-float CommandMoveTurretAimbot::getBulletSpeed()
-{
-    auto turretInfo = &drivers->refSerial.getRobotData().turret;
-#if defined(TARGET_STANDARD) || defined(TARGET_SENTRY)
-    return turretInfo->barrelSpeedLimit17ID1;
-#elif defined(TARGET_HERO)
-    return turretInfo->barrelSpeedLimit42;
-#endif
-}
 }  // namespace commands
