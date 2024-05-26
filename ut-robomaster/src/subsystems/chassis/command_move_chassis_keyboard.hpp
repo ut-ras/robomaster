@@ -2,8 +2,10 @@
 
 #include "tap/control/command.hpp"
 
+#include "robots/robot_constants.hpp"
 #include "subsystems/chassis/chassis_subsystem.hpp"
 #include "subsystems/turret/turret_subsystem.hpp"
+#include "utils/chassis_auto_align.hpp"
 
 #include "drivers.hpp"
 
@@ -20,10 +22,12 @@ public:
     CommandMoveChassisKeyboard(
         src::Drivers *drivers,
         ChassisSubsystem *chassis,
-        TurretSubsystem *turret)
+        TurretSubsystem *turret,
+        bool beyblade = false)
         : drivers(drivers),
           chassis(chassis),
-          turret(turret)
+          turret(turret),
+          beyblade(beyblade)
     {
         addSubsystemRequirement(chassis);
     }
@@ -39,18 +43,11 @@ public:
     const char *getName() const override { return "move chassis command"; }
 
 private:
-    static constexpr float DELTA_TIME = 0.002f;
-    static constexpr float ANALOG_DEAD_ZONE = 0.1f;
-    static constexpr float TURRET_ALIGN_FACTOR = 0.5f;
-    static constexpr float KEYBOARD_ACCEL = 5.0f;
-    static constexpr float KEYBOARD_DECEL = 5.0f;
-    static constexpr float SNAP_ANGLE = M_PI;
-
     src::Drivers *drivers;
     ChassisSubsystem *chassis;
     TurretSubsystem *turret;
 
     Vector2f inputMove = Vector2f(0.0f);
-    float inputSpin = 0.0f;
+    const bool beyblade = false;
 };
 }  // namespace commands

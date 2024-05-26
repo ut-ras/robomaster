@@ -1,4 +1,5 @@
 #include "robots/common/common_control_manual.hpp"
+#include "subsystems/agitator/command_agitator_continuous.hpp"
 
 class StandardControl : CommonControlManual
 {

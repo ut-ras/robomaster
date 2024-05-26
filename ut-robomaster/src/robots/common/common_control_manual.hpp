@@ -5,10 +5,8 @@
 #include "tap/control/toggle_command_mapping.hpp"
 
 #include "robots/common/common_control.hpp"
-#include "subsystems/chassis/command_beyblade_chassis_keyboard.hpp"
 #include "subsystems/chassis/command_move_chassis_joystick.hpp"
 #include "subsystems/chassis/command_move_chassis_keyboard.hpp"
-#include "subsystems/chassis/command_move_chassis_turret_relative_joystick.hpp"
 #include "subsystems/flywheel/command_flywheel_off.hpp"
 #include "subsystems/flywheel/command_rotate_flywheel.hpp"
 #include "subsystems/turret/command_move_turret_aimbot.hpp"
@@ -38,12 +36,9 @@ protected:
 
     // Commands
     CommandMoveChassisJoystick moveChassisRelative_Joystick{drivers, &chassis, &turret};
-    CommandMoveChassisTurretRelativeJoystick moveTurretRelative_Joystick{
-        drivers,
-        &chassis,
-        &turret};
-    CommandMoveChassisKeyboard moveTurretRelative_Keyboard{drivers, &chassis, &turret};
-    CommandBeybladeChassisKeyboard beyblade_Keyboard{drivers, &chassis, &turret};
+    CommandMoveChassisJoystick moveTurretRelative_Joystick{drivers, &chassis, &turret, true};
+    CommandMoveChassisKeyboard move_Keyboard{drivers, &chassis, &turret};
+    CommandMoveChassisKeyboard moveAndBeyblade_Keyboard{drivers, &chassis, &turret, true};
 
     CommandRotateFlywheel rotateFlywheel_Keyboard{drivers, &flywheel};
     CommandRotateFlywheel rotateFlywheel_SwitchUp{drivers, &flywheel};
@@ -51,13 +46,13 @@ protected:
 
     CommandMoveTurretJoystick look_Joystick_SwitchMid{drivers, &turret};
     CommandMoveTurretJoystick look_Joystick_SwitchUp{drivers, &turret};
-    CommandMoveTurretMouse moveTurretCommandMouse{drivers, &turret};
-    CommandMoveTurretAimbot moveTurretCommandAimbot{drivers, &turret};
+    CommandMoveTurretMouse look_Mouse{drivers, &turret};
+    CommandMoveTurretAimbot look_Aimbot{drivers, &turret};
 
     // Keyboard mappings
     ToggleCommandMapping keyRToggled{
         drivers,
-        {&beyblade_Keyboard},
+        {&moveAndBeyblade_Keyboard},
         RemoteMapState({Remote::Key::R})};
 
     ToggleCommandMapping keyGToggled{
@@ -67,7 +62,7 @@ protected:
 
     HoldCommandMapping rightMouseDown{
         drivers,
-        {&moveTurretCommandAimbot},
+        {&look_Aimbot},
         RemoteMapState(RemoteMapState::MouseButton::RIGHT)};
 
     // Controller mappings
@@ -83,7 +78,7 @@ protected:
 
     HoldCommandMapping rightSwitchDown{
         drivers,
-        {&moveTurretRelative_Keyboard, &moveTurretCommandMouse},
+        {&move_Keyboard, &look_Mouse},
         RemoteMapState(Remote::Switch::RIGHT_SWITCH, Remote::SwitchState::DOWN)};
 
     HoldCommandMapping leftSwitchMid{
