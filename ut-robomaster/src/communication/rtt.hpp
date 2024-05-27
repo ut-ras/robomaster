@@ -1,17 +1,15 @@
-#include <stdio.h>
+#include "modm/io.hpp"
+#include "modm/platform/rtt/rtt.hpp"
 
-#include "rtt/SEGGER_RTT.h"
-
-int printf_rtt(const char* fmt, ...)
+namespace communication
 {
-    int r;
-    char data[64];
-    va_list params;
+class RttStream : public modm::IOStream
+{
+public:
+    RttStream() : rtt(0), device(rtt), IOStream(device) {}
 
-    va_start(params, fmt);
-    r = vsnprintf(data, 64, fmt, params);
-    va_end(params);
-
-    SEGGER_RTT_Write(0, data, r);
-    return r;
-}
+private:
+    modm::platform::Rtt rtt;
+    modm::IODeviceObjectWrapper<modm::platform::Rtt, modm::IOBuffer::DiscardIfFull> device;
+};
+}  // namespace communication
