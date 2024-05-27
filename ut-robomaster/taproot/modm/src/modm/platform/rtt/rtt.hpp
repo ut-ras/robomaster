@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Niklas Hauser
+ * Copyright (c) 2021, Niklas Hauser
  *
  * This file is part of the modm project.
  *
@@ -10,71 +10,73 @@
 // ----------------------------------------------------------------------------
 
 #pragma once
-
 #include <modm/architecture/interface/uart.hpp>
 
 namespace modm::platform
 {
 
+struct RttBuffer;
+
 /**
- * Instruction Trace Macrocell (ITM) Uart Interface
+ * Real Time Transfer (RTT) Uart Interface
  *
  * @author		Niklas Hauser
- * @ingroup		modm_platform_itm
+ * @ingroup		modm_platform_rtt
  */
-class Itm : public ::modm::Uart
+class Rtt : public ::modm::Uart
 {
-public:
-	static constexpr size_t RxBufferSize = 0;
-	static constexpr size_t TxBufferSize = 0;
+	RttBuffer& tx_buffer;
+	RttBuffer& rx_buffer;
 
 public:
-	static void
-	initialize();
+	Rtt(uint8_t channel);
 
-	static void
-	writeBlocking(uint8_t data);
+	inline void
+	writeBlocking(uint8_t data)
+	{ while(not write(data)) ; }
 
-	static inline void
+	inline void
 	writeBlocking(const uint8_t *data, std::size_t length)
 	{ while (length--) writeBlocking(*data++); }
 
-	static void
-	flushWriteBuffer();
+	inline void
+	flushWriteBuffer() {}
 
-	static bool
+	bool
 	write(uint8_t data);
 
-	static std::size_t
+	std::size_t
 	write(const uint8_t *data, std::size_t length);
 
-	static bool
+	bool
 	isWriteFinished();
 
-	static std::size_t
-	discardTransmitBuffer();
+	std::size_t
+	transmitBufferSize();
 
-	static inline bool
-	read(uint8_t&)
-	{ return false; }
-
-	static inline std::size_t
-	read(uint8_t*, std::size_t)
+	inline std::size_t
+	discardTransmitBuffer()
 	{ return 0; }
 
-	static inline std::size_t
+	bool
+	read(uint8_t &data);
+
+	std::size_t
+	read(uint8_t *data, std::size_t length);
+
+	std::size_t
+	receiveBufferSize();
+
+	inline std::size_t
 	discardReceiveBuffer()
 	{ return 0; }
 
-	static void
-	update();
+	inline bool
+	hasError()
+	{ return false; }
 
-protected:
-	static void
-	enable(uint8_t prescaler);
-
-	static bool
-	write_itm(uint32_t data, uint8_t size=1);
+	inline void
+	clearError() {}
 };
 
 }	// namespace modm::platform

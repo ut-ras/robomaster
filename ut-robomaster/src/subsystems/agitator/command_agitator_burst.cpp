@@ -16,7 +16,7 @@ bool CommandAgitatorBurst::isFinished() const
     }
 
     if (drivers->refSerial.getRefSerialReceivingData() &&
-        power_limiter::getRemainingCooldown(drivers, barrelId) <= BARREL_HEAT_BUFFER)
+        power_limiter::getRemainingHeat(drivers, barrelId) <= BARREL_HEAT_BUFFER)
     {
         return true;
     }

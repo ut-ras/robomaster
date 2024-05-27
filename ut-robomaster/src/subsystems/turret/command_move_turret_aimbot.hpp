@@ -34,8 +34,6 @@ public:
     const char* getName() const override { return "move turret aimbot command"; }
 
 private:
-    float getBulletSpeed();
-
     src::Drivers* drivers;
     TurretSubsystem* turret;
 

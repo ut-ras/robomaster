@@ -136,7 +136,8 @@ static constexpr float WHEEL_MAX_VEL = 120.0f;  // rad/s
 static constexpr float MAX_LINEAR_VEL = WHEEL_MAX_VEL * WHEEL_RADIUS;               // m/s
 static constexpr float MAX_ANGULAR_VEL = WHEEL_MAX_VEL * WHEEL_RADIUS / WHEEL_LXY;  // rad/s
 
-static constexpr float FLYWHEEL_SPEED = 190.0f;  // 16 m/s
+const float TARGET_PROJECTILE_VELOCITY = 16;  // m/s
+const float FLYWHEEL_SPEED = 190.0f;
 
 const float BALLS_PER_SEC = 4.0f;
 const float BALLS_PER_REV = 6.0f;

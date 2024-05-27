@@ -14,7 +14,7 @@ void CommandMoveChassisJoystick::execute()
         remote->getChannel(Remote::Channel::RIGHT_HORIZONTAL),
         remote->getChannel(Remote::Channel::RIGHT_VERTICAL));
 
-    float inputSpin = remote->getWheel() / 660.0f;  // 660 is the max
+    float inputSpin = remote->getChannel(Remote::Channel::WHEEL);
 
     float inputMoveLen = inputMove.getLength();
     if (inputMoveLen < ANALOG_DEAD_ZONE)
