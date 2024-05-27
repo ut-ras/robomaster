@@ -3,6 +3,7 @@
 ut-robomaster/build/
 ut-robomaster/Pipfile.lock
 project.xml.log
+rtt.log
 
 .vscode/.cortex-debug.peripherals.state.json
 .vscode/.cortex-debug.registers.state.json

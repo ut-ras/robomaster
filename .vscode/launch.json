@@ -19,17 +19,17 @@
       },
       "rttConfig": {
         "enabled": true,
-        "address": "auto",
+        "address": "0x20000000",
+        "searchSize": 131072,
+        "searchId": "modm.rtt.modm",
         "decoders": [
           {
             "port": 0,
-            "type": "console"
+            "type": "console",
+            "logfile": "${workspaceRoot}/ut-robomaster/rtt.log"
           }
-        ]
+        ],
       },
-      "postResetCommands": [
-        "monitor rtt start"
-      ],
     },
   ]
 }
