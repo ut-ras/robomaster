@@ -11,6 +11,8 @@
     <option name="modm:build:openocd.cfg">openocd.cfg</option>
     <option name="modm:build:scons:include_sconstruct">False</option>
     <option name="modm:target">stm32f407igh6</option>
+    <option name="modm:platform:rtt:buffer.rx">0</option>
+    <option name="modm:platform:rtt:buffer.tx">1024</option>
 
     <option name="modm:platform:uart:1:buffer.rx">256</option>
     <option name="modm:platform:uart:1:buffer.tx">256</option>

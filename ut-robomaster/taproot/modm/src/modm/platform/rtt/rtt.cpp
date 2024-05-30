@@ -53,7 +53,7 @@ struct RttBuffer
 	}
 } modm_packed;
 
-static uint8_t tx_data_buffer_0[512];
+static uint8_t tx_data_buffer_0[1024];
 
 struct RttControlBlock
 {
@@ -72,7 +72,7 @@ static constinit RttControlBlock rtt_control{
 	1,
 	1,
 	{
-		{"tx0", tx_data_buffer_0, 512, 0,0,0 },
+		{"tx0", tx_data_buffer_0, 1024, 0,0,0 },
 	},{
 		{"rx0", nullptr, 0, 0,0,0 },
 	}
