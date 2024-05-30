@@ -48,7 +48,7 @@ static constexpr float PITCH_REDUCTION = 1.0f;
 
 constexpr PidConstants PID_VELOCITY_DEFAULT = {0.75f, 12.0f, 0.0f};
 constexpr PidConstants PID_WHEELS = PID_VELOCITY_DEFAULT;
-constexpr PidConstants PID_FLYWHEEL = {0.1f, 0.1f, 0.0f};
+constexpr PidConstants PID_FLYWHEEL = {0.065f, 0.325f, 0.0f};
 constexpr PidConstants PID_AGITATOR = PID_VELOCITY_DEFAULT;
 constexpr PidConstants PID_TURRET_VELOCITY = PID_VELOCITY_DEFAULT;
 constexpr PidConstants PID_TURRET_POSITION = {0.1f, 0.1f, 0.0f};
