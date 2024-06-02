@@ -113,7 +113,7 @@ const MotorConfig
     FLYWHEEL_R{M3508_NOGEARBOX, MOTOR4, CAN_SHOOTER, false, "flywheel right", PID_FLYWHEEL};
 
 // agitator
-const MotorConfig AGITATOR{M2006, MOTOR1, CAN_SHOOTER, false, "agitator", PID_AGITATOR};
+const MotorConfig AGITATOR{M3508, MOTOR1, CAN_SHOOTER, false, "agitator", PID_AGITATOR};
 
 // turret
 const MotorConfig YAW_L{M3508, MOTOR5, CAN_TURRET, false, "yaw left", PID_VELOCITY_DEFAULT};
