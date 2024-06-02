@@ -37,6 +37,6 @@ constexpr MotorSpecs M2006_NOGEARBOX{M2006.maxOutput, 1.0f};
 
 // No external controller
 // Motor is voltage-controlled (max 24V)
-constexpr MotorSpecs GM6020{30000, 1.0f};
+constexpr MotorSpecs GM6020{25000, 1.0f};
 
 }  // namespace motors
