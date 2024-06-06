@@ -12,7 +12,7 @@ namespace subsystems
 {
 namespace agitator
 {
-using namespace motors;
+using motors::MotorController;
 
 class AgitatorSubsystem : public tap::control::Subsystem
 {
@@ -36,9 +36,9 @@ private:
 
     float ballsPerSecond = 0.0f;
 
-    MotorVelocityController agitator;
+    MotorController agitator;
 #ifdef TARGET_HERO
-    MotorVelocityController feeder;
+    MotorController feeder;
 #endif
 };
 

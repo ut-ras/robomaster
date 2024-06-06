@@ -12,7 +12,7 @@
 
 using namespace tap::communication::sensors::imu;
 using namespace modm;
-using namespace motors;
+using motors::MotorController;
 
 namespace subsystems
 {
@@ -46,7 +46,7 @@ public:
 private:
     src::Drivers* drivers;
     power_limiter::PowerLimiter powerLimiter;
-    MotorVelocityController wheels[WHEELS];
+    MotorController wheels[WHEELS];
     float targetWheelVels[WHEELS] = {0.0f, 0.0f, 0.0f, 0.0f};
 
     /// @brief Calculate and set wheel velocities for desired robot motion (based on

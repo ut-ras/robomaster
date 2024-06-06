@@ -13,7 +13,7 @@ namespace subsystems
 namespace flywheel
 {
 
-using namespace motors;
+using motors::MotorController;
 
 class FlywheelSubsystem : public tap::control::Subsystem
 {
@@ -32,7 +32,7 @@ public:
 
 private:
     src::Drivers* drivers;
-    MotorVelocityController motors[FLYWHEELS];
+    MotorController motors[FLYWHEELS];
     float velocity = 0.0f;
 };
 

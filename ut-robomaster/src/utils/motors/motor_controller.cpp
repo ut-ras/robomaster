@@ -1,5 +1,11 @@
 #include "motor_controller.hpp"
 
+#include "tap/algorithms/math_user_utils.hpp"
+
+#include "robots/robot_constants.hpp"
+
+using tap::algorithms::limitVal;
+
 namespace motors
 {
 void MotorController::initialize()
@@ -13,10 +19,38 @@ void MotorController::setActive(bool active)
     isActive = active;
     if (!active)
     {
-        pid.reset();
+        positionPid.reset();
+        velocityPid.reset();
         motor.setDesiredOutput(0);
     }
 }
+
+void MotorController::updatePosition(float target)
+{
+    if (!isActive) return;
+
+    float diff = target - measurePosition();
+    float smallest_diff = diff - roundf(diff);
+    float velocity = positionPid.update(smallest_diff, DT, false);
+    updateVelocity(velocity);
+}
+
+void MotorController::updateVelocity(float target)
+{
+    if (!isActive) return;
+
+    float diff = target - measureVelocity();
+    float output = velocityPid.update(diff, DT, true);
+    setOutput(output);
+}
+
+void MotorController::setOutput(float output)
+{
+    float clampedOutput = limitVal(output, -1.0f, 1.0f);
+    motor.setDesiredOutput(clampedOutput * constants.maxOutput);
+}
+
+bool MotorController::isOnline() { return motor.isMotorOnline(); }
 
 float MotorController::measurePosition()
 {
@@ -33,53 +67,7 @@ float MotorController::measureVelocity()
     return rps;
 }
 
-float MotorController::deltaTime()
-{
-    uint32_t time = tap::arch::clock::getTimeMilliseconds();
-    float dt = (time - lastTime) / 1000.0f;
-    lastTime = time;
-    return dt;
-}
-
-// Position
-void MotorPositionController::update(float target)
-{
-    if (!isActive) return;
-
-    float dt = deltaTime();
-
-    // position
-    float diff = target - measurePosition();
-    float smallest_diff = diff - roundf(diff);
-    float velocity = pid.update(smallest_diff, dt);
-
-    // velocity
-    float vel_diff = velocity - measureVelocity();
-    float output = velocityPid.update(vel_diff, dt);
-
-    motor.setDesiredOutput(output * constants.maxOutput);
-}
-
-void MotorPositionController::setActive(bool active)
-{
-    MotorController::setActive(active);
-    if (!active) velocityPid.reset();
-}
-
-// Velocity
-void MotorVelocityController::update(float target)
-{
-    if (!isActive) return;
-
-    float diff = target - measureVelocity();
-    float output = pid.update(diff, deltaTime());
-    motor.setDesiredOutput(output * constants.maxOutput);
-}
-
-// Overload method to allow for power limiting
-// Non-overloaded update method should be called first before this one, as this does not update the
-// pid
-void MotorVelocityController::applyPowerScalar(float powerLimitScalar)
+void MotorController::applyPowerScalar(float powerLimitScalar)
 {
     if (!isActive) return;
     float invertFactor = motor.isMotorInverted() ? -1.0f : 1.0f;
