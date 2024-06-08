@@ -47,7 +47,6 @@ void TurretMotor::setAngle(float desiredAngle, float dt)
     float output =
         pid.runController(positionControllerError, (M_TWOPI / 60.0f) * motor.getShaftRPM(), dt);
 
-    output = limitVal(output, -GM6020_MAX_OUTPUT, GM6020_MAX_OUTPUT);
     motor.setDesiredOutput(output);
 }
 

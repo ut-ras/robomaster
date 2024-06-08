@@ -35,7 +35,5 @@ private:
     float unwrappedAngle = 0;
     ContiguousFloat currentAngle;
     float lastUpdatedEncoderValue = 0;
-
-    static constexpr float GM6020_MAX_OUTPUT = 30000.0f;
 };
 }  // namespace subsystems::turret
