@@ -34,8 +34,8 @@ static constexpr float WHEEL_LXY = (WHEEL_DISTANCE_X + WHEEL_DISTANCE_Y) / 2.0f;
 static constexpr int FLYWHEELS = 2;
 
 // turret ------------
-constexpr float PITCH_MIN = -0.2185f;         // rad
-constexpr float PITCH_MAX = 0.2299f;          // rad
+constexpr float PITCH_MIN = 0.10f;            // rad
+constexpr float PITCH_MAX = 0.79f;            // rad
 constexpr float CAMERA_TO_PITCH = 0.13555f;   // distance from main camera lens to pitch axis (m)
 constexpr float NOZZLE_TO_PITCH = 0.18151f;   // distance from barrel nozzle to pitch axis (m)
 constexpr float CAMERA_TO_BARRELS = 0.0427f;  // vertical ctc offset from camera lens to barrel (m)
@@ -55,25 +55,25 @@ constexpr PidConstants PID_TURRET_VELOCITY = PID_VELOCITY_DEFAULT;
 constexpr PidConstants PID_TURRET_POSITION = {0.1f, 0.1f, 0.0f};
 
 static constexpr tap::algorithms::SmoothPidConfig YAW_PID_CONFIG = {
-    .kp = 65'000.0f,
+    .kp = 100'000.0f,
     .ki = 0.0f,
-    .kd = 3'000.0f,
+    .kd = 150.0f,
     .maxICumulative = 0.0f,
-    .maxOutput = 32'000.0f,
+    .maxOutput = M3508.maxOutput,
     .tQDerivativeKalman = 1.0f,
-    .tRDerivativeKalman = 30.0f,
+    .tRDerivativeKalman = 0.0f,
     .tQProportionalKalman = 1.0f,
     .tRProportionalKalman = 0.0f,
     .errDeadzone = 0.0f,
-    .errorDerivativeFloor = 10.0f,
+    .errorDerivativeFloor = 0.0f,
 };
 
 static constexpr tap::algorithms::SmoothPidConfig PITCH_PID_CONFIG = {
-    .kp = 100'183.1f,
-    .ki = 0.0f,
-    .kd = 1'000.0f,
+    .kp = 100'000.0f,
+    .ki = 100'000.0f,
+    .kd = 3'500.0f,
     .maxICumulative = 0.0f,
-    .maxOutput = 32'000.0f,
+    .maxOutput = GM6020.maxOutput,
     .tQDerivativeKalman = 1.0f,
     .tRDerivativeKalman = 30.0f,
     .tQProportionalKalman = 1.0f,
