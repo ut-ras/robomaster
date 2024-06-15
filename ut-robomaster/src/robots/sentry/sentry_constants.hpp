@@ -32,7 +32,6 @@ static constexpr float WHEEL_LXY = (WHEEL_DISTANCE_X + WHEEL_DISTANCE_Y) / 2.0f;
 
 // flywheels -----------
 static constexpr int FLYWHEELS = 4;
-
 // turret ------------
 constexpr float PITCH_MIN = -0.2185f;         // rad
 constexpr float PITCH_MAX = 0.2299f;          // rad
@@ -48,7 +47,7 @@ static constexpr float PITCH_REDUCTION = 4.0f;
 
 constexpr PidConstants PID_VELOCITY_DEFAULT = {0.75f, 12.0f, 0.0f};
 constexpr PidConstants PID_WHEELS = PID_VELOCITY_DEFAULT;
-constexpr PidConstants PID_FLYWHEEL = {0.1f, 0.1f, 0.0f};
+constexpr PidConstants PID_FLYWHEEL = {0.065f, 0.325f, 0.0f};
 constexpr PidConstants PID_AGITATOR = PID_VELOCITY_DEFAULT;
 constexpr PidConstants PID_TURRET_VELOCITY = PID_VELOCITY_DEFAULT;
 constexpr PidConstants PID_TURRET_POSITION = {0.1f, 0.1f, 0.0f};
@@ -154,7 +153,7 @@ static constexpr float MAX_LINEAR_VEL = WHEEL_MAX_VEL * WHEEL_RADIUS;           
 static constexpr float MAX_ANGULAR_VEL = WHEEL_MAX_VEL * WHEEL_RADIUS / WHEEL_LXY;  // rad/s
 
 const float TARGET_PROJECTILE_VELOCITY = 30;  // m/s
-const float FLYWHEEL_SPEED = 122.0f;
+const float FLYWHEEL_SPEED = 160.0f;
 
 const float BALLS_PER_SEC = 10.0f;
 const float BALLS_PER_REV = 8.0f;
