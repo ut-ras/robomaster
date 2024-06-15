@@ -13,7 +13,7 @@ const float ANALOG_DEAD_ZONE = 0.1f;
 const float KEYBOARD_ACCEL = 5.0f;
 const float KEYBOARD_DECEL = 5.0f;
 const float CHASSIS_AUTOALIGN_FACTOR = 0.5f;
-const float CHASSIS_AUTOALIGN_ANGLE = M_PI / 2.0f;
+const float CHASSIS_AUTOALIGN_ANGLE = M_PI;
 
 #if defined(TARGET_STANDARD)
 #include "robots/standard/standard_constants.hpp"
