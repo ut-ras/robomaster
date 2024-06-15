@@ -145,4 +145,4 @@ const float UNJAM_SPEED = 30.0f;          // rev/s
 
 // Heat Buffers -------------------------------------
 
-const uint16_t BARREL_HEAT_BUFFER = 20.0f;
+const uint16_t BARREL_HEAT_BUFFER = 40.0f;
