@@ -25,13 +25,15 @@ protected:
         // Mouse and Keyboard
         drivers->commandMapper.addMap(&keyRToggled);
         drivers->commandMapper.addMap(&keyGToggled);
-        drivers->commandMapper.addMap(&rightMouseDown);
 
         // Controller
         drivers->commandMapper.addMap(&rightSwitchUp);
         drivers->commandMapper.addMap(&rightSwitchMid);
-        drivers->commandMapper.addMap(&rightSwitchDown);
+        // drivers->commandMapper.addMap(&rightSwitchDown);
         drivers->commandMapper.addMap(&leftSwitchMid);
+
+        chassis.setDefaultCommand(&move_Keyboard);
+        turret.setDefaultCommand(&look_Mouse);
     }
 
     // Commands
@@ -47,7 +49,6 @@ protected:
     CommandMoveTurretJoystick look_Joystick_SwitchMid{drivers, &turret};
     CommandMoveTurretJoystick look_Joystick_SwitchUp{drivers, &turret};
     CommandMoveTurretMouse look_Mouse{drivers, &turret};
-    CommandMoveTurretAimbot look_Aimbot{drivers, &turret};
 
     // Keyboard mappings
     ToggleCommandMapping keyRToggled{
@@ -60,11 +61,6 @@ protected:
         {&rotateFlywheel_Keyboard},
         RemoteMapState({Remote::Key::G})};
 
-    HoldCommandMapping rightMouseDown{
-        drivers,
-        {&look_Aimbot},
-        RemoteMapState(RemoteMapState::MouseButton::RIGHT)};
-
     // Controller mappings
     HoldCommandMapping rightSwitchUp{
         drivers,
@@ -76,10 +72,10 @@ protected:
         {&moveChassisRelative_Joystick, &look_Joystick_SwitchMid},
         RemoteMapState(Remote::Switch::RIGHT_SWITCH, Remote::SwitchState::MID)};
 
-    HoldCommandMapping rightSwitchDown{
-        drivers,
-        {&move_Keyboard, &look_Mouse},
-        RemoteMapState(Remote::Switch::RIGHT_SWITCH, Remote::SwitchState::DOWN)};
+    // HoldCommandMapping rightSwitchDown{
+    //     drivers,
+    //     {&move_Keyboard, &look_Mouse},
+    //     RemoteMapState(Remote::Switch::RIGHT_SWITCH, Remote::SwitchState::DOWN)};
 
     HoldCommandMapping leftSwitchMid{
         drivers,
