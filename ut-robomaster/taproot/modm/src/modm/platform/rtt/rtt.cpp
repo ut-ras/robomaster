@@ -54,14 +54,17 @@ struct RttBuffer
 } modm_packed;
 
 static uint8_t tx_data_buffer_0[1024];
+static uint8_t tx_data_buffer_1[1024];
+static uint8_t tx_data_buffer_2[1024];
+static uint8_t tx_data_buffer_3[1024];
 
 struct RttControlBlock
 {
 	const char identifier[16];
 	const int32_t tx_buffer_count;
 	const int32_t rx_buffer_count;
-	RttBuffer tx_buffers[1];
-	RttBuffer rx_buffers[1];
+	RttBuffer tx_buffers[4];
+	RttBuffer rx_buffers[4];
 } modm_packed;
 
 // Explicitly constructed as constinit to force *only* copying via .data section.
@@ -69,19 +72,25 @@ struct RttControlBlock
 // found by OpenOCD accidentally instead of the real RTT control block.
 static constinit RttControlBlock rtt_control{
 	"modm.rtt.modm",
-	1,
-	1,
+	4,
+	4,
 	{
 		{"tx0", tx_data_buffer_0, 1024, 0,0,0 },
+		{"tx1", tx_data_buffer_1, 1024, 0,0,0 },
+		{"tx2", tx_data_buffer_2, 1024, 0,0,0 },
+		{"tx3", tx_data_buffer_3, 1024, 0,0,0 },
 	},{
 		{"rx0", nullptr, 0, 0,0,0 },
+		{"rx1", nullptr, 0, 0,0,0 },
+		{"rx2", nullptr, 0, 0,0,0 },
+		{"rx3", nullptr, 0, 0,0,0 },
 	}
 };
 
 
 Rtt::Rtt(uint8_t channel)
-:	tx_buffer(rtt_control.tx_buffers[std::min<uint8_t>(channel, 0)]),
-	rx_buffer(rtt_control.rx_buffers[std::min<uint8_t>(channel, 0)])
+:	tx_buffer(rtt_control.tx_buffers[std::min<uint8_t>(channel, 3)]),
+	rx_buffer(rtt_control.rx_buffers[std::min<uint8_t>(channel, 3)])
 {
 }
 

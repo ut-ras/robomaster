@@ -51,32 +51,32 @@ static constexpr float PITCH_REDUCTION = 1.0f;
 
 constexpr PidConstants PID_VELOCITY_DEFAULT = {0.75f, 12.0f, 0.0f};
 constexpr PidConstants PID_WHEELS = PID_VELOCITY_DEFAULT;
-constexpr PidConstants PID_FLYWHEEL = {0.1f, 0.1f, 0.0f};
+constexpr PidConstants PID_FLYWHEEL = {0.065f, 0.325f, 0.0f};
 constexpr PidConstants PID_AGITATOR = PID_VELOCITY_DEFAULT;
 constexpr PidConstants PID_FEEDER = PID_VELOCITY_DEFAULT;
 constexpr PidConstants PID_TURRET_VELOCITY = PID_VELOCITY_DEFAULT;
 constexpr PidConstants PID_TURRET_POSITION = {0.1f, 0.1f, 0.0f};
 
 static constexpr tap::algorithms::SmoothPidConfig YAW_PID_CONFIG = {
-    .kp = 100'183.1f,
+    .kp = 100'000.0f,
     .ki = 0.0f,
-    .kd = 2'500.0f,
+    .kd = 150.0f,
     .maxICumulative = 0.0f,
-    .maxOutput = 32'000.0f,
+    .maxOutput = M3508.maxOutput,
     .tQDerivativeKalman = 1.0f,
-    .tRDerivativeKalman = 30.0f,
+    .tRDerivativeKalman = 0.0f,
     .tQProportionalKalman = 1.0f,
     .tRProportionalKalman = 0.0f,
     .errDeadzone = 0.0f,
-    .errorDerivativeFloor = 10.0f,
+    .errorDerivativeFloor = 0.0f,
 };
 
 static constexpr tap::algorithms::SmoothPidConfig PITCH_PID_CONFIG = {
-    .kp = 100'183.1f,
-    .ki = 0.0f,
-    .kd = 1'000.0f,
+    .kp = 100'000.0f,
+    .ki = 100'000.0f,
+    .kd = 3'500.0f,
     .maxICumulative = 0.0f,
-    .maxOutput = 32'000.0f,
+    .maxOutput = GM6020.maxOutput,
     .tQDerivativeKalman = 1.0f,
     .tRDerivativeKalman = 30.0f,
     .tQProportionalKalman = 1.0f,
@@ -105,25 +105,25 @@ constexpr CanBus CAN_TURRET = CanBus::CAN_BUS1;
 constexpr CanBus CAN_SHOOTER = CanBus::CAN_BUS2;
 
 // chassis
-const MotorConfig WHEEL_LF{M3508, MOTOR2, CAN_WHEELS, true, "left front wheel", PID_WHEELS};
-const MotorConfig WHEEL_RF{M3508, MOTOR1, CAN_WHEELS, false, "right front wheel", PID_WHEELS};
-const MotorConfig WHEEL_LB{M3508, MOTOR3, CAN_WHEELS, true, "left back wheel", PID_WHEELS};
-const MotorConfig WHEEL_RB{M3508, MOTOR4, CAN_WHEELS, false, "right back wheel", PID_WHEELS};
+const MotorConfig WHEEL_LF{M3508, MOTOR2, CAN_WHEELS, true, "left front wheel", PID_WHEELS, {}};
+const MotorConfig WHEEL_RF{M3508, MOTOR1, CAN_WHEELS, false, "right front wheel", PID_WHEELS, {}};
+const MotorConfig WHEEL_LB{M3508, MOTOR3, CAN_WHEELS, true, "left back wheel", PID_WHEELS, {}};
+const MotorConfig WHEEL_RB{M3508, MOTOR4, CAN_WHEELS, false, "right back wheel", PID_WHEELS, {}};
 
 // flywheels
 const MotorConfig
-    FLYWHEEL_L{M3508_NOGEARBOX, MOTOR3, CAN_SHOOTER, true, "flywheel left", PID_FLYWHEEL};
+    FLYWHEEL_L{M3508_NOGEARBOX, MOTOR3, CAN_SHOOTER, true, "flywheel left", PID_FLYWHEEL, {}};
 const MotorConfig
-    FLYWHEEL_R{M3508_NOGEARBOX, MOTOR4, CAN_SHOOTER, false, "flywheel right", PID_FLYWHEEL};
+    FLYWHEEL_R{M3508_NOGEARBOX, MOTOR4, CAN_SHOOTER, false, "flywheel right", PID_FLYWHEEL, {}};
 
 // agitator
-const MotorConfig AGITATOR{M3508, MOTOR1, CAN_SHOOTER, false, "agitator", PID_AGITATOR};
-const MotorConfig FEEDER{M2006, MOTOR2, CAN_SHOOTER, false, "feeder", PID_FEEDER};
+const MotorConfig AGITATOR{M3508, MOTOR1, CAN_SHOOTER, false, "agitator", PID_AGITATOR, {}};
+const MotorConfig FEEDER{M2006, MOTOR2, CAN_SHOOTER, true, "feeder", PID_FEEDER, {}};
 
 // turret
-const MotorConfig YAW_L{M3508, MOTOR5, CAN_TURRET, false, "yaw left", PID_VELOCITY_DEFAULT};
-const MotorConfig YAW_R{M3508, MOTOR6, CAN_TURRET, false, "yaw right", PID_VELOCITY_DEFAULT};
-const MotorConfig PITCH{GM6020, MOTOR7, CAN_TURRET, false, "pitch", PID_VELOCITY_DEFAULT};
+const MotorConfig YAW_L{M3508, MOTOR5, CAN_TURRET, false, "yaw left", PID_VELOCITY_DEFAULT, {}};
+const MotorConfig YAW_R{M3508, MOTOR6, CAN_TURRET, false, "yaw right", PID_VELOCITY_DEFAULT, {}};
+const MotorConfig PITCH{GM6020, MOTOR7, CAN_TURRET, false, "pitch", PID_VELOCITY_DEFAULT, {}};
 
 // Velocities ----------------------------
 

@@ -19,30 +19,20 @@ using motor_controller::PidConstants;
 class MotorController
 {
 public:
-    MotorController(
-        src::Drivers* drivers,
-        const MotorSpecs& constants,
-        const MotorId motorId,
-        const CanBus motorCanBus,
-        const bool motorInverted,
-        const char* motorName,
-        const PidConstants& pidConstants)
-        : constants(constants),
-          motor(drivers, motorId, motorCanBus, motorInverted, motorName),
-          pid(pidConstants)
-    {
-    }
     MotorController(src::Drivers* drivers, const MotorConfig motor)
         : constants(motor.constants),
           motor(drivers, motor.id, motor.canBus, motor.inverted, motor.name),
-          pid(motor.pidConstants)
+          velocityPid(motor.velocityPidConstants),
+          positionPid(motor.positionPidConstants)
     {
     }
 
     void initialize();
-    virtual void setActive(bool active);
-    virtual void update(float target) = 0;
-    virtual Pid getPid() { return pid; }
+    void setActive(bool active);
+    void updatePosition(float target);
+    void updateVelocity(float target);
+    void setOutput(float output);
+    bool isOnline();
 
     /// @brief Get the current position of the motor.
     /// @return Angle, measured in revolutions.
@@ -52,59 +42,15 @@ public:
     /// @return Angular velocity, measured in revolutions per second.
     float measureVelocity();
 
+    void applyPowerScalar(float powerLimitScalar);
+
 protected:
-    float deltaTime();
     uint32_t lastTime = 0;
     bool isActive = false;
     const MotorSpecs constants;
     DjiMotor motor;
-    Pid pid;
-};
-
-class MotorPositionController : public MotorController
-{
-public:
-    MotorPositionController(
-        src::Drivers* drivers,
-        const MotorSpecs& constants,
-        const MotorId motorId,
-        const CanBus motorCanBus,
-        const bool motorInverted,
-        const char* motorName,
-        const PidConstants& pidConstantsVel,
-        const PidConstants& pidConstantsPos)
-        : MotorController(
-              drivers,
-              constants,
-              motorId,
-              motorCanBus,
-              motorInverted,
-              motorName,
-              pidConstantsPos),
-          velocityPid(pidConstantsVel)
-    {
-    }
-
-    /// @brief Update the controller with the desired target position.
-    /// @return Target angle, measured in revolutions.
-    void update(float target);
-
-    void setActive(bool active) override;
-
-private:
     Pid velocityPid;
-};
-
-class MotorVelocityController : public MotorController
-{
-public:
-    using MotorController::MotorController;
-
-    /// @brief Update the controller with the desired target velocity.
-    /// @return Target velocity, measured in revolutions per second.
-    void update(float target);
-
-    void applyPowerScalar(float powerLimitScalar);
+    Pid positionPid;
 };
 }  // namespace motors
 

@@ -4,7 +4,7 @@ namespace motor_controller
 {
 Pid::Pid(const PidConstants& constants) : k(constants) {}
 
-float Pid::update(float err, float dt)
+float Pid::update(float err, float dt, bool limit)
 {
     error[2] = error[1];
     error[1] = error[0];
@@ -14,12 +14,14 @@ float Pid::update(float err, float dt)
     output -= (k.p + 2.0f * k.d / dt) * error[1];
     output += (k.d / dt) * error[2];
 
-    if (output > 1.0f)
-        output = 1.0f;
-    else if (output < -1.0f)
-        output = -1.0f;
+    if (limit)
+    {
+        if (output > 1.0f)
+            output = 1.0f;
+        else if (output < -1.0f)
+            output = -1.0f;
+    }
 
-    lastError = err;
     return output;
 }
 

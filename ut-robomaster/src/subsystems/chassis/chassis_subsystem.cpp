@@ -34,7 +34,7 @@ void ChassisSubsystem::refresh()
     for (int8_t i = 0; i < WHEELS; i++)
     {
         wheels[i].setActive(!drivers->isKillSwitched());
-        wheels[i].update(targetWheelVels[i] / M_TWOPI);  // rad/s to rev/s
+        wheels[i].updateVelocity(targetWheelVels[i] / M_TWOPI);  // rad/s to rev/s
     }
 
     limitChassisPower();
@@ -51,19 +51,17 @@ void ChassisSubsystem::limitChassisPower()
     float totalError = 0.0f;
     for (size_t i = 0; i < WHEELS; i++)
     {
-        totalError += abs(wheels[i].getPid().getLastError());
+        totalError += abs(targetWheelVels[i]);
     }
 
     for (int8_t i = 0; i < WHEELS; i++)
     {
         bool totalErrorZero = compareFloatClose(0.0f, totalError, 1E-3);
-        float velocityErrorScalar = totalErrorZero
-                                        ? (1.0f / WHEELS)
-                                        : (abs(wheels[i].getPid().getLastError()) / totalError);
+        float velocityErrorScalar =
+            totalErrorZero ? (1.0f / WHEELS) : (abs(targetWheelVels[i]) / totalError);
         float modifiedPowerScalar =
             limitVal(WHEELS * powerScalar * velocityErrorScalar, 0.0f, 1.0f);
 
-        wheels[i].setActive(!drivers->isKillSwitched());
         wheels[i].applyPowerScalar(modifiedPowerScalar);
     }
 }

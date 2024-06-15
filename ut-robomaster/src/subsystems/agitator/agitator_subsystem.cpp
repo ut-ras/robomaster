@@ -41,10 +41,10 @@ void AgitatorSubsystem::refresh()
     bool killSwitch = drivers->isKillSwitched();
 
     agitator.setActive(!killSwitch);
-    agitator.update(velocity);
+    agitator.updateVelocity(velocity);
 #ifdef TARGET_HERO
     feeder.setActive(!killSwitch);
-    feeder.update(velocity * FEEDER_RATIO);
+    feeder.updateVelocity(velocity * FEEDER_RATIO);
 #endif
 }
 

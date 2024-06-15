@@ -25,6 +25,7 @@ void CommandAgitatorContinuous::execute()
         drivers->refSerial.getRefSerialReceivingData() &&
         power_limiter::getRemainingHeat(drivers, barrelId) <= BARREL_HEAT_BUFFER)
     {
+        jamTriggerTimeout.restart(JAM_TRIGGER_DURATION * 1000);
         agitator->setBallsPerSecond(0.0f);
     }
     else  // heat remaining and no jams

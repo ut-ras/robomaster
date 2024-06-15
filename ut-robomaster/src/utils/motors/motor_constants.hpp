@@ -22,7 +22,8 @@ struct MotorConfig
     tap::can::CanBus canBus;
     bool inverted;
     const char* const name;
-    PidConstants pidConstants;
+    PidConstants velocityPidConstants;
+    PidConstants positionPidConstants;
 };
 
 // C620 controller (16384 = 20A)
@@ -36,7 +37,7 @@ constexpr MotorSpecs M2006{10000, 36.0f / 1.0f};
 constexpr MotorSpecs M2006_NOGEARBOX{M2006.maxOutput, 1.0f};
 
 // No external controller
-// Motor is voltage-controlled (max 24V)
-constexpr MotorSpecs GM6020{30000, 1.0f};
+// Motor is current-controlled (max 3A)
+constexpr MotorSpecs GM6020{16384, 1.0f};
 
 }  // namespace motors
