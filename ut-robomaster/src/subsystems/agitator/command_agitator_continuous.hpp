@@ -19,10 +19,15 @@ using subsystems::agitator::AgitatorSubsystem;
 class CommandAgitatorContinuous : public tap::control::Command
 {
 public:
-    CommandAgitatorContinuous(src::Drivers *drivers, AgitatorSubsystem *agitator, BarrelId barrelId)
+    CommandAgitatorContinuous(
+        src::Drivers *drivers,
+        AgitatorSubsystem *agitator,
+        BarrelId barrelId,
+        bool checkMode = false)
         : drivers(drivers),
           agitator(agitator),
-          barrelId(barrelId)
+          barrelId(barrelId),
+          checkMode(checkMode)
     {
         addSubsystemRequirement(agitator);
     }
@@ -44,5 +49,6 @@ private:
     MilliTimeout jamTriggerTimeout;
     MilliTimeout unjammingTimeout;
     bool isJammed = false;
+    bool checkMode = false;
 };
 }  // namespace commands

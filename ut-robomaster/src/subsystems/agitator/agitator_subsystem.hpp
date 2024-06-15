@@ -4,6 +4,7 @@
 #include "tap/control/subsystem.hpp"
 
 #include "robots/robot_constants.hpp"
+#include "subsystems/flywheel/flywheel_subsystem.hpp"
 #include "utils/motors/motor_controller.hpp"
 
 #include "drivers.hpp"
@@ -12,12 +13,13 @@ namespace subsystems
 {
 namespace agitator
 {
+using flywheel::FlywheelSubsystem;
 using motors::MotorController;
 
 class AgitatorSubsystem : public tap::control::Subsystem
 {
 public:
-    AgitatorSubsystem(src::Drivers *drivers, MotorConfig motor);
+    AgitatorSubsystem(src::Drivers *drivers, FlywheelSubsystem *flywheel, MotorConfig motor);
 
     ~AgitatorSubsystem() = default;
 
@@ -33,6 +35,7 @@ public:
 
 private:
     src::Drivers *drivers;
+    FlywheelSubsystem *flywheel;
 
     float ballsPerSecond = 0.0f;
 

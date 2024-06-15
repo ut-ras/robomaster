@@ -112,13 +112,13 @@ const MotorConfig WHEEL_RB{M3508, MOTOR4, CAN_WHEELS, false, "right back wheel",
 
 // flywheels
 const MotorConfig
-    FLYWHEEL_L{M3508_NOGEARBOX, MOTOR3, CAN_SHOOTER, true, "flywheel left", PID_FLYWHEEL, {}};
+    FLYWHEEL_L{M3508_NOGEARBOX, MOTOR3, CAN_SHOOTER, false, "flywheel left", PID_FLYWHEEL, {}};
 const MotorConfig
-    FLYWHEEL_R{M3508_NOGEARBOX, MOTOR4, CAN_SHOOTER, false, "flywheel right", PID_FLYWHEEL, {}};
+    FLYWHEEL_R{M3508_NOGEARBOX, MOTOR4, CAN_SHOOTER, true, "flywheel right", PID_FLYWHEEL, {}};
 
 // agitator
 const MotorConfig AGITATOR{M3508, MOTOR1, CAN_SHOOTER, false, "agitator", PID_AGITATOR, {}};
-const MotorConfig FEEDER{M2006, MOTOR2, CAN_SHOOTER, true, "feeder", PID_FEEDER, {}};
+const MotorConfig FEEDER{M2006, MOTOR2, CAN_SHOOTER, false, "feeder", PID_FEEDER, {}};
 
 // turret
 const MotorConfig YAW_L{M3508, MOTOR5, CAN_TURRET, false, "yaw left", PID_VELOCITY_DEFAULT, {}};
@@ -141,7 +141,7 @@ const float FLYWHEEL_SPEED = 190.0f;
 
 const float BALLS_PER_SEC = 4.0f;
 const float BALLS_PER_REV = 6.0f;
-const float FEEDER_RATIO = 1.0f;  // feeder speed / agitator speed
+const float FEEDER_RATIO = 4.0f;  // feeder speed / agitator speed
 
 const float JAM_TRIGGER_RATIO = 0.5;      // measured speed to driven speed ratio
 const float JAM_TRIGGER_DURATION = 0.1f;  // s

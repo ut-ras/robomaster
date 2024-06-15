@@ -19,19 +19,20 @@ public:
 
 private:
     // Subsystems
-    AgitatorSubsystem agitator{drivers, AGITATOR};
+    AgitatorSubsystem agitator{drivers, &flywheel, AGITATOR};
 
     // Commands
-    CommandAgitatorContinuous rotateAgitator{drivers, &agitator, BarrelId::HERO};
+    CommandAgitatorContinuous rotateAgitator_LeftMouse{drivers, &agitator, BarrelId::HERO};
+    CommandAgitatorContinuous rotateAgitator_SwitchUp{drivers, &agitator, BarrelId::HERO, true};
 
     // Mappings
     HoldCommandMapping leftMouseDown{
         drivers,
-        {&rotateAgitator},
+        {&rotateAgitator_LeftMouse},
         RemoteMapState(RemoteMapState::MouseButton::LEFT)};
 
     HoldCommandMapping leftSwitchUp{
         drivers,
-        {&rotateAgitator, &rotateFlywheel_SwitchMid},
+        {&rotateAgitator_SwitchUp, &rotateFlywheel_SwitchMid},
         RemoteMapState(Remote::Switch::LEFT_SWITCH, Remote::SwitchState::UP)};
 };

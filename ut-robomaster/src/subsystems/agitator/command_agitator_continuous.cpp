@@ -2,6 +2,7 @@
 
 namespace commands
 {
+using tap::communication::serial::Remote;
 
 void CommandAgitatorContinuous::initialize()
 {
@@ -48,5 +49,13 @@ void CommandAgitatorContinuous::execute()
 
 void CommandAgitatorContinuous::end(bool) { agitator->setBallsPerSecond(0.0f); }
 
-bool CommandAgitatorContinuous::isFinished() const { return false; }
+bool CommandAgitatorContinuous::isFinished() const
+{
+    if (checkMode &&
+        drivers->remote.getSwitch(Remote::Switch::RIGHT_SWITCH) == Remote::SwitchState::DOWN)
+    {
+        return true;
+    }
+    return false;
+}
 }  // namespace commands

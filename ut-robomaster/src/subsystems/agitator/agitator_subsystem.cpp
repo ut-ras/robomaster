@@ -10,16 +10,24 @@ using tap::arch::clock::getTimeMilliseconds;
  * AgitatorSubsystem class instantiation
  */
 #if defined(TARGET_STANDARD) || defined(TARGET_SENTRY)
-AgitatorSubsystem::AgitatorSubsystem(src::Drivers *drivers, MotorConfig motor)
+AgitatorSubsystem::AgitatorSubsystem(
+    src::Drivers* drivers,
+    FlywheelSubsystem* flywheel,
+    MotorConfig motor)
     : Subsystem(drivers),
       drivers(drivers),
+      flywheel(flywheel),
       agitator{drivers, motor}
 {
 }
 #elif defined(TARGET_HERO)
-AgitatorSubsystem::AgitatorSubsystem(src::Drivers *drivers, MotorConfig motor)
+AgitatorSubsystem::AgitatorSubsystem(
+    src::Drivers* drivers,
+    FlywheelSubsystem* flywheel,
+    MotorConfig motor)
     : Subsystem(drivers),
       drivers(drivers),
+      flywheel(flywheel),
       agitator{drivers, motor},
       feeder{drivers, FEEDER}
 {
@@ -38,7 +46,7 @@ void AgitatorSubsystem::refresh()
 {
     float time = getTimeMilliseconds() / 1000.0f;
     float velocity = getShapedVelocity(time, 1.0f, 0.0f, ballsPerSecond);
-    bool killSwitch = drivers->isKillSwitched();
+    bool killSwitch = drivers->isKillSwitched() || !flywheel->isActive();
 
     agitator.setActive(!killSwitch);
     agitator.updateVelocity(velocity);

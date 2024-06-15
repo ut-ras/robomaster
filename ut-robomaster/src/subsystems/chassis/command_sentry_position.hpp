@@ -6,12 +6,11 @@
 #include "chassis_subsystem.hpp"
 #include "drivers.hpp"
 
-namespace subsystems
-{
-namespace chassis
+namespace commands
 {
 using namespace tap::communication::serial;
 using namespace modm;
+using subsystems::chassis::ChassisSubsystem;
 using tap::arch::clock::getTimeMilliseconds;
 
 class CommandSentryPosition : public tap::control::Command
@@ -40,7 +39,6 @@ private:
     // bool isStarted = false;
     // float startTime = 0.0f;
 };
-}  // namespace chassis
-}  // namespace subsystems
+}  // namespace commands
 
 #endif

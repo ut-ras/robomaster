@@ -30,6 +30,8 @@ public:
     /// @param velocity Velocity in rev/s.
     void setVelocity(float velocity);
 
+    bool isActive();
+
 private:
     src::Drivers* drivers;
     MotorController motors[FLYWHEELS];

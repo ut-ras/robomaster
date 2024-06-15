@@ -42,4 +42,6 @@ void FlywheelSubsystem::refresh()
 }
 
 void FlywheelSubsystem::setVelocity(float newVelocity) { velocity = newVelocity; }
+
+bool FlywheelSubsystem::isActive() { return velocity != 0.0f; }
 }  // namespace subsystems::flywheel
