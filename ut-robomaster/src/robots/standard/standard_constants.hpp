@@ -135,7 +135,7 @@ static constexpr float MAX_ANGULAR_VEL = WHEEL_MAX_VEL * WHEEL_RADIUS / WHEEL_LX
 const float TARGET_PROJECTILE_VELOCITY = 30;  // m/s
 const float FLYWHEEL_SPEED = 160.0f;
 
-const float BALLS_PER_SEC = 10.0f;
+const float BALLS_PER_SEC = 20.0f;
 const float BALLS_PER_REV = 18.0f;
 
 const float JAM_TRIGGER_RATIO = 0.2;      // measured speed to driven speed ratio
@@ -145,4 +145,4 @@ const float UNJAM_SPEED = 30.0f;          // rev/s
 
 // Heat Buffers -------------------------------------
 
-const uint16_t BARREL_HEAT_BUFFER = 40.0f;
+const uint16_t BARREL_HEAT_BUFFER = 50.0f;
