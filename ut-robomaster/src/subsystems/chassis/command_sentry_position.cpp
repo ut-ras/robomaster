@@ -3,7 +3,7 @@
 namespace commands
 {
 
-void CommandSentryPosition::initialize() {}
+void CommandSentryPosition::initialize() { startup_time = getTimeMilliseconds(); }
 
 void CommandSentryPosition::execute()
 {
@@ -39,11 +39,6 @@ void CommandSentryPosition::execute()
     // {
     //     spin = 0.2f;
     // }
-
-    if (startup_time == 0.0f)
-    {
-        startup_time = getTimeMilliseconds();
-    }
 
     spin = 1.0f;
 
