@@ -10,7 +10,7 @@ void CommandSentryPosition::execute()
     Vector2f move = Vector2f(0.0f);
     float spin = 0.0f;
 
-    if (prevTime == 0.0f)
+    if (prev_time == 0.0f)
     {
         prev_time = getTimeMilliseconds();
     }
