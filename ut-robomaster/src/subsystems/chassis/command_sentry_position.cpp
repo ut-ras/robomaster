@@ -10,16 +10,16 @@ void CommandSentryPosition::execute()
     Vector2f move = Vector2f(0.0f);
     float spin = 0.0f;
 
-    if (prevTime == 0.0f)
-    {
-        prev_time = getTimeMilliseconds();
-    }
+    // if (prevTime == 0.0f)
+    // {
+    //     prev_time = getTimeMilliseconds();
+    // }
 
-    if (getTimeMilliseconds() - prev_time > 5000.0f)
-    {
-        direction *= -1;
-        prev_time = getTimeMilliseconds();
-    }
+    // if (getTimeMilliseconds() - prev_time > 5000.0f)
+    // {
+    //     direction *= -1;
+    //     prev_time = getTimeMilliseconds();
+    // }
 
     // if (!isStarted)
     // {
@@ -40,9 +40,19 @@ void CommandSentryPosition::execute()
     //     spin = 0.2f;
     // }
 
+    if (startup_time == 0.0f)
+    {
+        startup_time = getTimeMilliseconds();
+    }
+
     spin = 1.0f;
 
-    chassis->input(move, spin * direction);
+    if (getTimeMilliseconds() - startup_time < 35000.0f)
+    {
+        spin = 0.0f;
+    }
+
+    chassis->input(move, spin);
 }
 
 void CommandSentryPosition::end(bool) { chassis->input(Vector2f(0.0f), 0.0f); }

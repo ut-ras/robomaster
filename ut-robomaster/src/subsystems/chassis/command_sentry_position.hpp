@@ -38,8 +38,7 @@ private:
     ChassisSubsystem *chassis;
     // bool isStarted = false;
     // float startTime = 0.0f;
-    float prev_time = 0.0f;
-    int direction = 1;
+    float startup_time = 0.0f;
 };
 }  // namespace commands
 
