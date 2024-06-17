@@ -6,6 +6,7 @@
 
 #include "drivers/encoder.hpp"
 #include "utils/motors/motor_constants.hpp"
+#include "utils/motors/pid.hpp"
 
 #include "drivers.hpp"
 
@@ -19,18 +20,17 @@ using driver::Encoder;
 class DoubleYawMotor
 {
 public:
-    DoubleYawMotor(
-        src::Drivers *drivers,
-        MotorConfig motor1,
-        MotorConfig motor2,
-        Encoder *encoder,
-        const SmoothPidConfig &pidConfig);
+    DoubleYawMotor(src::Drivers *drivers, MotorConfig motor1, MotorConfig motor2, Encoder *encoder);
 
     void initialize();
     void reset();
     void updateMotorAngle();
     void setAngle(float desiredAngle, float dt);
     float getAngle();
+    void setVelocity(float velocity, float dt);
+    float getCurrentVelocity();
+    void setOutput(float output);
+    float getOutput();
     float getSetpoint();
     bool isOnline();
 
@@ -39,7 +39,8 @@ private:
     DjiMotor motor1;
     DjiMotor motor2;
     Encoder *encoder;
-    SmoothPid pid;
+    motor_controller::Pid velocityPid;
+    motor_controller::Pid positionPid;
     ContiguousFloat setpoint;
     ContiguousFloat currentAngle;
 };

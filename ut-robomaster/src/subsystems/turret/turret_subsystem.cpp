@@ -18,7 +18,7 @@ TurretSubsystem::TurretSubsystem(src::Drivers* drivers)
       drivers(drivers),
 #if defined(TARGET_STANDARD) || defined(TARGET_HERO)
       yawEncoder(),
-      yaw(drivers, YAW_L, YAW_R, &yawEncoder, YAW_PID_CONFIG),
+      yaw(drivers, YAW_L, YAW_R, &yawEncoder),
 #else
       yaw(drivers, YAW, YAW_PID_CONFIG),
 #endif
