@@ -3,12 +3,23 @@
 namespace commands
 {
 
-void CommandSentryPosition::initialize() {}
+void CommandSentryPosition::initialize() { startup_time = getTimeMilliseconds(); }
 
 void CommandSentryPosition::execute()
 {
     Vector2f move = Vector2f(0.0f);
     float spin = 0.0f;
+
+    // if (prevTime == 0.0f)
+    // {
+    //     prev_time = getTimeMilliseconds();
+    // }
+
+    // if (getTimeMilliseconds() - prev_time > 5000.0f)
+    // {
+    //     direction *= -1;
+    //     prev_time = getTimeMilliseconds();
+    // }
 
     // if (!isStarted)
     // {
@@ -30,6 +41,11 @@ void CommandSentryPosition::execute()
     // }
 
     spin = 1.0f;
+
+    if (getTimeMilliseconds() - startup_time < 35000.0f)
+    {
+        spin = 0.0f;
+    }
 
     chassis->input(move, spin);
 }
