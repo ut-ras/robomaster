@@ -135,7 +135,7 @@ static constexpr float MAX_ANGULAR_VEL = WHEEL_MAX_VEL * WHEEL_RADIUS / WHEEL_LX
 const float TARGET_PROJECTILE_VELOCITY = 30;  // m/s
 const float FLYWHEEL_SPEED = 160.0f;
 
-const float BALLS_PER_SEC = 20.0f;
+const float BALLS_PER_SEC = 17.0f;
 const float BALLS_PER_REV = 18.0f;
 
 const float JAM_TRIGGER_RATIO = 0.2;      // measured speed to driven speed ratio
