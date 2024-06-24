@@ -8,11 +8,7 @@ using tap::algorithms::limitVal;
 
 namespace motors
 {
-void MotorController::initialize()
-{
-    motor.initialize();
-    setActive(true);
-}
+void MotorController::initialize() { motor.initialize(); }
 
 void MotorController::setActive(bool active)
 {
