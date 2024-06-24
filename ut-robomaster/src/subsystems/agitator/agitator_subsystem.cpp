@@ -44,6 +44,10 @@ void AgitatorSubsystem::initialize()
 
 void AgitatorSubsystem::refresh()
 {
+#ifdef DEMO_MODE
+    return;
+#endif
+
     float time = getTimeMilliseconds() / 1000.0f;
     float velocity = getShapedVelocity(time, 1.0f, 0.0f, ballsPerSecond);
     bool killSwitch = drivers->isKillSwitched() || !flywheel->isActive();

@@ -32,6 +32,10 @@ void FlywheelSubsystem::initialize()
 
 void FlywheelSubsystem::refresh()
 {
+#ifdef DEMO_MODE
+    return;
+#endif
+
     bool killSwitch = drivers->isKillSwitched();
 
     for (int i = 0; i < FLYWHEELS; i++)
