@@ -87,7 +87,7 @@ static constexpr tap::algorithms::SmoothPidConfig PITCH_PID_CONFIG = {
 
 // Input Constants ---------------------------------------
 
-#ifdef DEMO_MDOE
+#ifdef DEMO_MODE
 static constexpr float YAW_INPUT_SCALE = 1.0f;
 static constexpr float PITCH_INPUT_SCALE = 1.0f;
 #else
@@ -128,7 +128,7 @@ const MotorConfig PITCH{GM6020, MOTOR7, CAN_TURRET, false, "pitch", PID_VELOCITY
 
 // Velocities ----------------------------
 
-#ifdef MODE_DEMO
+#ifdef DEMO_MODE
 static constexpr float WHEEL_MAX_VEL = 10.0f;  // rad/s
 #else
 static constexpr float WHEEL_MAX_VEL = 120.0f;  // rad/s

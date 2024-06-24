@@ -126,7 +126,7 @@ const MotorConfig PITCH{GM6020, MOTOR7, CAN_TURRET, false, "pitch", PID_VELOCITY
 
 // Velocities -------------------------------------
 
-#ifdef MODE_DEMO
+#ifdef DEMO_MODE
 static constexpr float WHEEL_MAX_VEL = 10.0f;  // rad/s
 #else
 static constexpr float WHEEL_MAX_VEL = 50.0f;  // rad/s
