@@ -34,9 +34,9 @@
             }
         },
         {
-            "label": "Connect to Remote Debugger",
+            "label": "Connect to Robot",
             "type": "shell",
-            "command": "ssh -f -F ssh.config -L 7184:localhost:7184 ${input:robot} sleep 10",
+            "command": "ssh -fF ssh.config ${input:debug_dest} sleep 15",
             "presentation": {
                 "echo": true,
                 "focus": true,
@@ -49,20 +49,39 @@
     "inputs": [
         {
             "id": "robot",
-            "description": "Robot type:",
-            "type": "pickString",
-            "options": [
-                "standard",
-                "hero",
-                "sentry"
-            ],
-            "default": "standard"
+            "type": "command",
+            "command": "extension.commandvariable.pickStringRemember",
+            "args": {
+                "key": "robot",
+                "description": "Robot type:",
+                "addLabelToTop": "${remember:robot}",
+                "options": [
+                    "standard",
+                    "hero",
+                    "sentry"
+                ]
+            }
         },
         {
             "id": "debug_dest",
-            "description": "Remote destination (SSH):",
-            "type": "promptString",
-            "default": ""
+            "type": "command",
+            "command": "extension.commandvariable.pickStringRemember",
+            "args": {
+                "key": "debug_dest",
+                "addLabelToTop": "${remember:robot}",
+                "description": "Remote destination (SSH):",
+                "pattern": {
+                    "regexp": "host (\\S+).*?hostname (\\S+)",
+                    "flags": "gsi",
+                    "match": "find",
+                    "option": {
+                        "label": "$1",
+                        "value": "$1",
+                        "description": "$2"
+                    }
+                },
+                "fileName": "${workspaceFolder}/ssh.config"
+            }
         },
     ]
 }
