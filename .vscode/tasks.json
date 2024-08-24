@@ -37,6 +37,7 @@
             "label": "Connect to Robot",
             "type": "shell",
             "command": "ssh -fF ssh.config ${input:debug_dest} sleep 15",
+            "hide": true,
             "presentation": {
                 "echo": true,
                 "focus": true,
