@@ -3,10 +3,10 @@
     "customizations": {
         "vscode": {
             "extensions": [
-                "ms-vscode.cpptools",
-                "ms-vsliveshare.vsliveshare",
                 "GitHub.vscode-pull-request-github",
                 "marus25.cortex-debug",
+                "ms-vscode.cpptools",
+                "ms-vsliveshare.vsliveshare",
                 "rioj7.command-variable"
             ]
         }
