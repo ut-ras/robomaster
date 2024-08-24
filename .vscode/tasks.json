@@ -36,7 +36,7 @@
         {
             "label": "Connect to Robot",
             "type": "shell",
-            "command": "ssh -fF ssh.config ${input:debug_dest} sleep 15",
+            "command": "scripts/connect_to_robot.sh ${input:debug_dest}",
             "hide": true,
             "presentation": {
                 "echo": true,
