@@ -1,42 +1,51 @@
-#include "robots/common/common_control_manual.hpp"
-#include "subsystems/agitator/command_agitator_continuous.hpp"
+#include "tap/control/hold_command_mapping.hpp"
 
-class StandardControl : CommonControlManual
+#include "subsystems/flywheel/command_rotate_flywheel.hpp"
+#include "subsystems/flywheel/flywheel_subsystem.hpp"
+#include "subsystems/sound/command_play_sound.hpp"
+#include "subsystems/sound/sound_subsystem.hpp"
+
+#include "drivers.hpp"
+
+using namespace tap::control;
+using namespace tap::communication::serial;
+
+using namespace subsystems::flywheel;
+using namespace subsystems::sound;
+
+using namespace commands;
+
+class StandardControl
 {
 public:
-    StandardControl(src::Drivers *drivers) : CommonControlManual(drivers) {}
+    StandardControl(src::Drivers* drivers) : drivers{drivers} {}
 
     void initialize()
     {
-        CommonControlManual::initialize();
+        sound.initialize();
+        drivers->commandScheduler.registerSubsystem(&sound);
 
-        agitator.initialize();
-        drivers->commandScheduler.registerSubsystem(&agitator);
+        // Initialize and register the flywheel subsystem
+        // flywheel.initialize();
+        // drivers->commandScheduler.registerSubsystem(&flywheel);
 
-        drivers->commandMapper.addMap(&leftMouseDown);
-        drivers->commandMapper.addMap(&leftSwitchUp);
+        // Register the command mapping
+        // drivers->commandMapper.addMap(&leftSwitchUp);
     }
 
 private:
-    // Subsystems
-    AgitatorSubsystem agitator{drivers, &flywheel, AGITATOR};
+    src::Drivers* drivers;
+    SoundSubsystem sound{drivers};
+    CommandPlaySound playStartupSound{drivers, &sound, SOUND_STARTUP};
 
-    // Commands
-    CommandAgitatorContinuous rotateAgitator_LeftMouse{drivers, &agitator, BarrelId::STANDARD1};
-    CommandAgitatorContinuous rotateAgitator_SwitchUp{
-        drivers,
-        &agitator,
-        BarrelId::STANDARD1,
-        true};
+    // Define flywheel subsystem, command, and input mapping here
 
-    // Mappings
-    HoldCommandMapping leftMouseDown{
-        drivers,
-        {&rotateAgitator_LeftMouse},
-        RemoteMapState(RemoteMapState::MouseButton::LEFT)};
+    // FlywheelSubsystem flywheel{drivers};
 
-    HoldCommandMapping leftSwitchUp{
-        drivers,
-        {&rotateAgitator_SwitchUp, &rotateFlywheel_SwitchMid},
-        RemoteMapState(Remote::Switch::LEFT_SWITCH, Remote::SwitchState::UP)};
+    // CommandRotateFlywheel rotateFlywheels{drivers, &flywheel};
+
+    // HoldCommandMapping leftSwitchUp{
+    //     drivers,
+    //     {&rotateFlywheels},
+    //     RemoteMapState(Remote::Switch::LEFT_SWITCH, Remote::SwitchState::UP)};
 };

@@ -17,7 +17,7 @@ public:
         : drivers(drivers),
           flywheel(flywheel)
     {
-        addSubsystemRequirement(flywheel);
+        addSubsystemRequirement(flywheel);  // bind this command to the flywheel subsystem
     }
 
     void initialize() override;

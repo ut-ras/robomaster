@@ -2,47 +2,25 @@
 
 namespace subsystems::flywheel
 {
-#if defined(TARGET_STANDARD) || defined(TARGET_HERO)
 FlywheelSubsystem::FlywheelSubsystem(src::Drivers* drivers)
     : Subsystem(drivers),
       drivers(drivers),
-      motors{{drivers, FLYWHEEL_L}, {drivers, FLYWHEEL_R}}
+      motor_L{drivers, FLYWHEEL_L},
+      motor_R{drivers, FLYWHEEL_R}
 {
+    // Note: this subsystem needs to be registered inside `standard_control.hpp`
 }
-#elif defined(TARGET_SENTRY)
-FlywheelSubsystem::FlywheelSubsystem(src::Drivers* drivers)
-    : Subsystem(drivers),
-      drivers(drivers),
-      motors{
-          {drivers, FLYWHEEL_TL},
-          {drivers, FLYWHEEL_TR},
-          {drivers, FLYWHEEL_BL},
-          {drivers, FLYWHEEL_BR}}
-{
-}
-#endif
 
 void FlywheelSubsystem::initialize()
 {
-    for (int i = 0; i < FLYWHEELS; i++)
-    {
-        motors[i].initialize();
-    }
+    // Initialize motors here
 }
 
 void FlywheelSubsystem::refresh()
 {
-#ifdef DEMO_MODE
-    return;
-#endif
+    bool killSwitch = drivers->isKillSwitched();  // killSwitch is true when the controller is off
 
-    bool killSwitch = drivers->isKillSwitched();
-
-    for (int i = 0; i < FLYWHEELS; i++)
-    {
-        motors[i].setActive(!killSwitch);
-        motors[i].updateVelocity(velocity);
-    }
+    // Enable/disable motors and update their velocities here
 }
 
 void FlywheelSubsystem::setVelocity(float newVelocity) { velocity = newVelocity; }

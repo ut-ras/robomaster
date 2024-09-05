@@ -2,12 +2,20 @@
 
 namespace commands
 {
+void CommandRotateFlywheel::initialize()
+{
+    // Start the flywheels here
+}
 
-void CommandRotateFlywheel::initialize() { flywheel->setVelocity(FLYWHEEL_SPEED); }
+void CommandRotateFlywheel::execute()
+{
+    // not required for this command
+}
 
-void CommandRotateFlywheel::execute() {}
-
-void CommandRotateFlywheel::end(bool) { flywheel->setVelocity(0.0f); }
+void CommandRotateFlywheel::end(bool)
+{
+    // Stop the flywheels here
+}
 
 bool CommandRotateFlywheel::isFinished() const { return false; }
 }  // namespace commands

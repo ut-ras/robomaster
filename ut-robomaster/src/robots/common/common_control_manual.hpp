@@ -7,7 +7,6 @@
 #include "robots/common/common_control.hpp"
 #include "subsystems/chassis/command_move_chassis_joystick.hpp"
 #include "subsystems/chassis/command_move_chassis_keyboard.hpp"
-#include "subsystems/flywheel/command_flywheel_off.hpp"
 #include "subsystems/flywheel/command_rotate_flywheel.hpp"
 #include "subsystems/turret/command_move_turret_aimbot.hpp"
 #include "subsystems/turret/command_move_turret_joystick.hpp"

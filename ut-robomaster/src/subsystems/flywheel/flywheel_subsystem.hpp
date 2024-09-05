@@ -1,5 +1,4 @@
-#ifndef SUBSYSTEMS_SHOOTER_FLYWHEEL_SUBSYSTEM_HPP_
-#define SUBSYSTEMS_SHOOTER_FLYWHEEL_SUBSYSTEM_HPP_
+#pragma once
 
 #include "tap/control/subsystem.hpp"
 
@@ -8,19 +7,12 @@
 
 #include "drivers.hpp"
 
-namespace subsystems
+namespace subsystems::flywheel
 {
-namespace flywheel
-{
-
-using motors::MotorController;
-
 class FlywheelSubsystem : public tap::control::Subsystem
 {
 public:
     FlywheelSubsystem(src::Drivers* drivers);
-
-    ~FlywheelSubsystem() = default;
 
     void initialize() override;
 
@@ -34,11 +26,10 @@ public:
 
 private:
     src::Drivers* drivers;
-    MotorController motors[FLYWHEELS];
+
+    motors::MotorController motor_L;
+    motors::MotorController motor_R;
+
     float velocity = 0.0f;
 };
-
-}  // namespace flywheel
-}  // namespace subsystems
-
-#endif  // SUBSYSTEMS_SHOOTER_FLYWHEEL_SUBSYSTEM_HPP_
+}  // namespace subsystems::flywheel
