@@ -12,7 +12,7 @@ using Board::I2cMaster;
 class As5600 : public Encoder, public modm::I2cDevice<I2cMaster, 1>, public modm::pt::Protothread
 {
 public:
-    As5600() : modm::I2cDevice<I2cMaster, 1>(ADDRESS){};
+    As5600() : modm::I2cDevice<I2cMaster, 1>(ADDRESS) {};
 
     void update() { run(); }
 
