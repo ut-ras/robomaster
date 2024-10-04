@@ -18,8 +18,8 @@ public:
     bool isKillSwitched() { return !remote.isConnected(); }
     bool isGameActive()
     {
-        // gamestage 4 is IN_GAME
-        return this->refSerial.getGameData().gameStage == tap::communication::serial::RefSerialData::Rx::GameStage::IN_GAME;
+        return this->refSerial.getGameData().gameStage ==
+               tap::communication::serial::RefSerialData::Rx::GameStage::IN_GAME;
     }
 };  // class Drivers
 
