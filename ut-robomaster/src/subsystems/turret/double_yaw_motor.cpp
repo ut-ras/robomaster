@@ -25,6 +25,7 @@ void DoubleYawMotor::initialize()
 {
     motor1.initialize();
     motor2.initialize();
+    isCalibrated = false;
 }
 
 void DoubleYawMotor::reset()
@@ -37,7 +38,11 @@ void DoubleYawMotor::reset()
 
 void DoubleYawMotor::updateMotorAngle()
 {
-    // float encoderAngle = encoder->getAngle();
+    if (!isCalibrated && encoder->isOnline())
+    {
+        initialAngle = encoder->getAngle();
+        isCalibrated = true;
+    }
     float encoderAngle = static_cast<float>(motor1.getEncoderUnwrapped()) /
                          DjiMotor::ENC_RESOLUTION / M3508.gearRatio / 2.0f;
     currentAngle.setValue(encoderAngle);

@@ -12,7 +12,7 @@ using Board::I2cMaster;
 class As5600 : public Encoder, public modm::I2cDevice<I2cMaster, 1>, public modm::pt::Protothread
 {
 public:
-    As5600() : modm::I2cDevice<I2cMaster, 1>(ADDRESS){};
+    As5600() : modm::I2cDevice<I2cMaster, 1>(ADDRESS) {};
 
     void update() { run(); }
 
@@ -29,6 +29,7 @@ public:
             if (this->wasTransactionSuccessful())
             {
                 angle = (buffer[0] << 8) | buffer[1];
+                online = true;
             }
         }
 
@@ -36,6 +37,8 @@ public:
     }
 
     float getAngle() override { return angle / 4096.0f; }
+
+    bool isOnline() override { return online; }
 
 protected:
     enum class Register : uint8_t
@@ -56,6 +59,7 @@ private:
     static const uint8_t ADDRESS = 0x36;
     uint16_t angle = 0;
     uint8_t buffer[2];
+    bool online = false;
 };
 
 };  // namespace driver

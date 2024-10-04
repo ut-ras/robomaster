@@ -43,5 +43,7 @@ private:
     motor_controller::Pid positionPid;
     ContiguousFloat setpoint;
     ContiguousFloat currentAngle;
+    bool isCalibrated;
+    float initialAngle;
 };
 }  // namespace subsystems::turret

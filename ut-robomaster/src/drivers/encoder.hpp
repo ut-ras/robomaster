@@ -10,5 +10,7 @@ public:
     /// @brief Get current measured angle of the encoder
     /// @return Angle (revs)
     virtual float getAngle() = 0;
+
+    virtual bool isOnline() = 0;
 };
 }  // namespace driver
