@@ -15,6 +15,11 @@ public:
     communication::RttStream rtt;
 
     bool isKillSwitched() { return !remote.isConnected(); }
+    bool isGameActive()
+    {
+        // gamestage 4 is IN_GAME
+        return this->refSerial.getGameData().gameStage == 4
+    }
 };  // class Drivers
 
 }  // namespace src
