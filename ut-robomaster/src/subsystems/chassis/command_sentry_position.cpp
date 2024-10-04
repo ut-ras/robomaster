@@ -47,7 +47,15 @@ void CommandSentryPosition::execute()
         spin = 0.0f;
     }
 
-    chassis->input(move, spin);
+    if (drivers->isGameActive())
+    {
+        // TODO: make sure this is OK
+        chassis->input(move, spin);
+    }
+    else
+    {
+        chassis->input(Vector2f(0.0f), 0.0f);
+    }
 }
 
 void CommandSentryPosition::end(bool) { chassis->input(Vector2f(0.0f), 0.0f); }
