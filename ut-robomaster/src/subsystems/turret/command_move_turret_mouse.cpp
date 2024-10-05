@@ -27,6 +27,8 @@ void CommandMoveTurretMouse::execute()
         pitch = modm::min(modm::max(pitch, PITCH_MIN), PITCH_MAX);
 
         turret->setTargetWorldAngles(yaw, pitch);
+
+        // can figure out linear_interpolate in the future
     }
 }
 

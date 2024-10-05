@@ -92,8 +92,8 @@ static constexpr float YAW_INPUT_SCALE = 10.0f;
 static constexpr float PITCH_INPUT_SCALE = 5.0f;
 #endif
 
-static constexpr float MOUSE_SENS_YAW = 0.1f;
-static constexpr float MOUSE_SENS_PITCH = 0.1f;
+static constexpr float MOUSE_SENS_YAW = 0.03f;
+static constexpr float MOUSE_SENS_PITCH = 0.075f;
 
 // Motor constants --------------------------------
 
