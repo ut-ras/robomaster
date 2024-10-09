@@ -40,8 +40,19 @@ protected:
 
     // Commands
     CommandMoveChassis moveTurretRelative{drivers, &chassis, &turret, true, true};
-    CommandMoveChassis moveBeyblade{drivers, &chassis, &turret, true, true, true};  // Beyblade is always turret relative
-    CommandMoveChassis moveJoystickChassisKeyboardTurretRelative{drivers, &chassis, &turret, false, true};
+    CommandMoveChassis moveBeyblade{
+        drivers,
+        &chassis,
+        &turret,
+        true,
+        true,
+        true};  // Beyblade is always turret relative
+    CommandMoveChassis moveJoystickChassisKeyboardTurretRelative{
+        drivers,
+        &chassis,
+        &turret,
+        false,
+        true};
     CommandMoveChassis moveChassisRelative{drivers, &chassis, &turret, false, false};
 
     CommandRotateFlywheel rotateFlywheel_Keyboard{drivers, &flywheel};
