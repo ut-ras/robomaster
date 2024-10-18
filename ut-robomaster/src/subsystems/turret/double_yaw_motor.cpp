@@ -3,6 +3,8 @@
 #include "tap/algorithms/math_user_utils.hpp"
 #include "tap/motor/dji_motor.hpp"
 
+#include "robots/robot_constants.hpp"
+
 namespace subsystems::turret
 {
 DoubleYawMotor::DoubleYawMotor(
@@ -41,10 +43,12 @@ void DoubleYawMotor::updateMotorAngle()
     if (!isCalibrated && encoder->isOnline())
     {
         initialAngle = encoder->getAngle();
+        motor1.resetEncoderValue();
         isCalibrated = true;
     }
-    float encoderAngle = static_cast<float>(motor1.getEncoderUnwrapped()) /
-                         DjiMotor::ENC_RESOLUTION / M3508.gearRatio / 2.0f;
+    float encoderAngle = (static_cast<float>(motor1.getEncoderUnwrapped()) /
+                          DjiMotor::ENC_RESOLUTION / M3508.gearRatio / 2.0f) +
+                         YAW_OFFSET + initialAngle;
     currentAngle.setValue(encoderAngle);
 }
 

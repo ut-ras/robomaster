@@ -3,6 +3,8 @@
 #include "tap/algorithms/math_user_utils.hpp"
 #include "tap/motor/dji_motor.hpp"
 
+#include "robots/robot_constants.hpp"
+
 namespace subsystems::turret
 {
 TurretMotor::TurretMotor(
@@ -32,8 +34,9 @@ void TurretMotor::updateMotorAngle()
     {
         lastUpdatedEncoderValue = encoderValue;
 
-        unwrappedAngle = static_cast<float>(encoderValue) * M_TWOPI /
-                         static_cast<float>(DjiMotor::ENC_RESOLUTION);
+        unwrappedAngle = (static_cast<float>(encoderValue) * M_TWOPI /
+                          static_cast<float>(DjiMotor::ENC_RESOLUTION)) -
+                         PITCH_OFFSET;
         currentAngle.setValue(unwrappedAngle);
     }
 }

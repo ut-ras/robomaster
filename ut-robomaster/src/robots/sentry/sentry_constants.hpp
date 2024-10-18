@@ -140,6 +140,8 @@ const MotorConfig AGITATOR_R{M2006, MOTOR2, CAN_SHOOTER, true, "agitator right",
 // turret
 const MotorConfig YAW{GM6020, MOTOR6, CAN_TURRET, false, "yaw", PID_VELOCITY_DEFAULT, {}};
 const MotorConfig PITCH{GM6020, MOTOR7, CAN_TURRET, false, "pitch", PID_VELOCITY_DEFAULT, {}};
+const float YAW_OFFSET = 0;
+const float PITCH_OFFSET = 0;
 
 // Velocities -------------------------------------
 
