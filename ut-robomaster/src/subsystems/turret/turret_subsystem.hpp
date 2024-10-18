@@ -28,7 +28,7 @@ public:
     void initialize() override;
 
     /// @brief Input target data from CV (relative to camera)
-    void inputTargetData(Vector3f position, Vector3f velocity, Vector3f acceleration);
+    void inputTargetData(Vector3f position, Vector3f velocity, Vector3f acceleration, float centerDistance);
 
     void setTargetWorldAngles(float yaw, float pitch);
 
@@ -46,7 +46,7 @@ public:
 
     float getCurrentLocalPitch();
 
-    float getBulletDropReticle(float distance);
+    float getBulletDropReticle();
 
     bool getIsCalibrated();
 
@@ -65,6 +65,8 @@ private:
     Vector3f targetPosition = Vector3f(0.0f);
     Vector3f targetVelocity = Vector3f(0.0f);
     Vector3f targetAcceleration = Vector3f(0.0f);
+
+    float centerDistance = 0.0f;
 
 #if defined(TARGET_STANDARD) || defined(TARGET_HERO)
     As5600 yawEncoder;

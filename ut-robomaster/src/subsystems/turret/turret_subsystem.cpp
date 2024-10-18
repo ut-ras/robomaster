@@ -61,11 +61,13 @@ void TurretSubsystem::refresh()
     }
 }
 
-void TurretSubsystem::inputTargetData(Vector3f position, Vector3f velocity, Vector3f acceleration)
+void TurretSubsystem::inputTargetData(Vector3f position, Vector3f velocity, Vector3f acceleration, float distance)
 {
     targetPosition = position;
     targetVelocity = velocity;
     targetAcceleration = acceleration;
+    if(distance<5.0) centerDistance = distance;
+    else centerDistance = 0.0f;
 }
 
 void TurretSubsystem::setTargetWorldAngles(float yaw, float pitch)
@@ -91,6 +93,7 @@ float TurretSubsystem::getCurrentLocalPitch()
 }
 
 float TurretSubsystem::getBulletDropReticle(){
+    if (centerDistance <= 0.1f) return 0;
     /* bullet drop based on target position
     Vector3f targetPos(
         data.xPos + CAMERA_X_OFFSET,
@@ -125,10 +128,10 @@ float TurretSubsystem::getBulletDropReticle(){
 
         // physical distance  = 0.5*9.8*powf(travelTime, 2)
         // angle from turret = atan(hdrop/d)
-        float travelTime = distance/TARGET_PROJECTILE_VELOCITY;
+        float travelTime = centerDistance/TARGET_PROJECTILE_VELOCITY;
         float dropDistance = 0.5*9.8*powf(travelTime, 2);
         // float targetDistance = hypot(targetPos.x, targetPos.y) - NOZZLE_TO_PITCH;
-        float reticleDistance = atan(dropDistance/distance);
+        float reticleDistance = atan(dropDistance/centerDistance);
         // linear interpolation. simple, but it is less effective the more distorted the camera is
         // 80, guess for vertical angle range. 720, number of pixels in vertical direction
         float cameraAnglePixelScale = 80/720; // idk what the actual camera fov is, software didn't know and we can change it 
