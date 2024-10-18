@@ -30,7 +30,7 @@ void CommandMoveTurretAimbot::execute()
     Vector3f targetVel(data.xVel, data.zVel, data.yVel);
     Vector3f targetAcc(data.xAcc, data.zAcc, data.yAcc);
 
-    if (USE_BALLISTICS)
+    if (USE_BALLISTICS) // use ballistics to adjust turret pitch
     {
         // Rotate to world relative pitch
         float a = turret->getCurrentLocalPitch();
@@ -61,8 +61,9 @@ void CommandMoveTurretAimbot::execute()
             turret->setTargetWorldAngles(currentWorldYaw + turretYaw, turretPitch);
         }
     }
-    else
-    {
+    else // auto aim
+    { 
+        // find the angle error based on target position from vision
         float deltaYaw = -atan(targetPos.x / targetPos.y);  // yaw is opposite to camera X
         float deltaPitch = atan(targetPos.z / targetPos.y);
         float scale = 0.006f;

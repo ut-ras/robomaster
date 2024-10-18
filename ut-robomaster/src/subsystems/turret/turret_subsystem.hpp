@@ -46,6 +46,8 @@ public:
 
     float getCurrentLocalPitch();
 
+    float getBulletDropReticle(float distance);
+
     bool getIsCalibrated();
 
     void refresh() override;

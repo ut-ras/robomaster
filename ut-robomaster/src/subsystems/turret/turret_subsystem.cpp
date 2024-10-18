@@ -90,6 +90,57 @@ float TurretSubsystem::getCurrentLocalPitch()
     return !isCalibrated ? 0.0f : pitch.getAngle() / PITCH_REDUCTION - basePitch;
 }
 
+float TurretSubsystem::getBulletDropReticle(){
+    /* bullet drop based on target position
+    Vector3f targetPos(
+        data.xPos + CAMERA_X_OFFSET,
+        data.zPos + CAMERA_TO_PITCH,
+        data.yPos + CAMERA_TO_BARRELS);
+    Vector3f targetVel(data.xVel, data.zVel, data.yVel);
+    Vector3f targetAcc(data.xAcc, data.zAcc, data.yAcc);
+
+    // Rotate to world relative pitch
+        float a = turret->getCurrentLocalPitch();
+        const float matData[9] = {1.0f, 0, 0, 0, cos(a), -sin(a), 0, sin(a), cos(a)};
+        modm::Matrix3f rotMat(matData);
+        targetPos = rotMat * targetPos;
+        targetVel = rotMat * targetVel;
+        targetAcc = rotMat * targetAcc;
+
+        MeasuredKinematicState kinState{targetPos, targetVel, targetAcc};
+
+        float turretPitch = 0.0f;
+        float turretYaw = 0.0f;
+        float travelTime = 0.0f;
+
+        bool projectileTime = computeTravelTime(
+            kinState,
+            TARGET_PROJECTILE_VELOCITY,
+            BALLISTIC_ITERATIONS,
+            &turretPitch,
+            &turretYaw,
+            &travelTime,
+            -NOZZLE_TO_PITCH);
+        */
+
+        // physical distance  = 0.5*9.8*powf(travelTime, 2)
+        // angle from turret = atan(hdrop/d)
+        float travelTime = distance/TARGET_PROJECTILE_VELOCITY;
+        float dropDistance = 0.5*9.8*powf(travelTime, 2);
+        // float targetDistance = hypot(targetPos.x, targetPos.y) - NOZZLE_TO_PITCH;
+        float reticleDistance = atan(dropDistance/distance);
+        // linear interpolation. simple, but it is less effective the more distorted the camera is
+        // 80, guess for vertical angle range. 720, number of pixels in vertical direction
+        float cameraAnglePixelScale = 80/720; // idk what the actual camera fov is, software didn't know and we can change it 
+        
+        //number of pixels below current camera position
+        return reticleDistance*cameraAnglePixelScale+NOZZLE_TO_PITCH; // target pitch - current pitch = bullet drop over distance?
+        // } // i'm assuming that the camera is pointed above the turret
+
+        // return 0;
+}
+
+
 bool TurretSubsystem::getIsCalibrated() { return isCalibrated; }
 
 void TurretSubsystem::runHardwareTests()
