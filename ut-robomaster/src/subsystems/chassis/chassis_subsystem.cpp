@@ -3,6 +3,7 @@
 #include "tap/algorithms/math_user_utils.hpp"
 
 #include "robots/robot_constants.hpp"
+#include "subsystems/subsystem.hpp"
 
 using namespace tap::algorithms;
 
@@ -11,7 +12,7 @@ namespace subsystems
 namespace chassis
 {
 ChassisSubsystem::ChassisSubsystem(src::Drivers* drivers)
-    : tap::control::Subsystem(drivers),
+    : UTSubsystem(drivers),
       drivers(drivers),
       powerLimiter(drivers, ENERGY_BUFFER_LIMIT_THRESHOLD, ENERGY_BUFFER_CRIT_THRESHOLD),
       wheels{
@@ -31,7 +32,7 @@ void ChassisSubsystem::initialize()
 
 void ChassisSubsystem::refresh()
 {
-    setAmputated(hardwareOk());
+    setAmputated(!hardwareOk());
     for (int8_t i = 0; i < WHEELS; i++)
     {
         wheels[i].setActive(!drivers->isKillSwitched() && !isAmputated());

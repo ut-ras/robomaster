@@ -3,15 +3,9 @@
 namespace subsystems
 {
 UTSubsystem::UTSubsystem(src::Drivers* drivers) : Subsystem(drivers) {}
-UTSubsystem::hardwareOk() {
-    return true;
-}
+bool UTSubsystem::hardwareOk() { return true; }
 
-UTSubsystem::isAmputated() {
-    return amputated;
-}
+bool UTSubsystem::isAmputated() { return amputated; }
 
-UTSubsystem::setAmputated(bool newAmputatedValue) {
-    amputated = newAmputatedValue;
-}
+void UTSubsystem::setAmputated(bool newAmputatedValue) { amputated = newAmputatedValue; }
 }  // namespace subsystems

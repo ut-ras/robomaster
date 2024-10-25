@@ -1,4 +1,4 @@
-
+#pragma once
 #include "tap/control/subsystem.hpp"
 
 #include "drivers.hpp"
@@ -12,11 +12,13 @@ public:
 
     ~UTSubsystem() = default;
 
-    bool hardwareOk();
+    virtual bool hardwareOk();
     bool isAmputated();
-    bool setAmputated(bool newAmputatedValue);
+    void setAmputated(bool newAmputatedValue);
+
 protected:
     src::Drivers *drivers;
+
 private:
     bool amputated = false;
 };
