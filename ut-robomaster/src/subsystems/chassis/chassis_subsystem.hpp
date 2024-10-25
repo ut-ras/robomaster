@@ -5,6 +5,7 @@
 
 #include "modm/math/geometry.hpp"
 #include "robots/robot_constants.hpp"
+#include "subsystems/subsystem.hpp"
 #include "utils/motors/motor_controller.hpp"
 #include "utils/power_limiter/power_limiter.hpp"
 
@@ -18,7 +19,8 @@ namespace subsystems
 {
 namespace chassis
 {
-class ChassisSubsystem : public tap::control::Subsystem
+// class ChassisSubsystem : public tap::control::Subsystem
+class ChassisSubsystem : public UTSubsystem
 {
 public:
     ChassisSubsystem(src::Drivers* drivers);
@@ -30,6 +32,8 @@ public:
     void limitChassisPower();
 
     void runHardwareTests() override;
+
+    bool hardwareOk() override;
 
     /// @brief Update robot motion based on simple input controls. Inputs are scaled and corrected
     /// to avoid over-driving motors. This logic can be adjusted to create various input schemes.

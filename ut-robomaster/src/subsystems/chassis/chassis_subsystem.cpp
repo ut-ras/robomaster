@@ -31,9 +31,10 @@ void ChassisSubsystem::initialize()
 
 void ChassisSubsystem::refresh()
 {
+    setAmputated(hardwareOk());
     for (int8_t i = 0; i < WHEELS; i++)
     {
-        wheels[i].setActive(!drivers->isKillSwitched());
+        wheels[i].setActive(!drivers->isKillSwitched() && !isAmputated());
         wheels[i].updateVelocity(targetWheelVels[i] / M_TWOPI);  // rad/s to rev/s
     }
 
@@ -69,6 +70,19 @@ void ChassisSubsystem::limitChassisPower()
 void ChassisSubsystem::runHardwareTests()
 {
     // TODO
+}
+
+bool ChassisSubsystem::hardwareOk()
+{
+    for (int8_t i = 0; i < WHEELS; i++)
+    {
+        if (!wheels[i].isOnline())
+        {
+            return false;
+        }
+    }
+
+    return true;
 }
 
 void ChassisSubsystem::input(Vector2f move, float spin)
