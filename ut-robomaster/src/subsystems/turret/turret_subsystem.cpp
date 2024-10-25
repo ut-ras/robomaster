@@ -4,6 +4,7 @@
 
 #include "modm/math.hpp"
 #include "robots/robot_constants.hpp"
+#include "subsystems/subsystem.hpp"
 
 namespace subsystems
 {
@@ -14,7 +15,7 @@ using communication::TurretData;
 using modm::Vector2f;
 
 TurretSubsystem::TurretSubsystem(src::Drivers* drivers)
-    : tap::control::Subsystem(drivers),
+    : UTSubsystem(drivers),
       drivers(drivers),
 #if defined(TARGET_STANDARD) || defined(TARGET_HERO)
       yawEncoder(),
@@ -26,6 +27,8 @@ TurretSubsystem::TurretSubsystem(src::Drivers* drivers)
       turretOffset(0.0f, 0.0f, M_TWOPI)
 {
 }
+
+bool TurretSubsystem::hardwareOk() { return yaw.isOnline() || pitch.isOnline(); }
 
 void TurretSubsystem::initialize()
 {
@@ -39,17 +42,19 @@ void TurretSubsystem::refresh()
     yawEncoder.update();
 #endif
 
+    setAmputated(!hardwareOk());
+
     yaw.updateMotorAngle();
     pitch.updateMotorAngle();
 
-    if (!isCalibrated && yaw.isOnline() && pitch.isOnline())
+    if (!isCalibrated && !isAmputated())
     {
         baseYaw = yaw.getAngle() / YAW_REDUCTION;
         basePitch = pitch.getAngle() / PITCH_REDUCTION - PITCH_MIN;
         isCalibrated = true;
     }
 
-    if (isCalibrated && !drivers->isKillSwitched())
+    if (isCalibrated && !drivers->isKillSwitched() && !isAmputated())
     {
         yaw.setAngle((baseYaw + getTargetLocalYaw()) * YAW_REDUCTION, DT);
         pitch.setAngle((basePitch + getTargetLocalPitch()) * PITCH_REDUCTION, DT);

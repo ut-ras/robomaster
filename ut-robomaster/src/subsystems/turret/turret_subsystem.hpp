@@ -7,6 +7,7 @@
 #include "modm/math/filter/moving_average.hpp"
 #include "modm/math/geometry.hpp"
 #include "robots/robot_constants.hpp"
+#include "subsystems/subsystem.hpp"
 
 #include "double_yaw_motor.hpp"
 #include "drivers.hpp"
@@ -21,7 +22,7 @@ namespace turret
 using driver::As5600;
 using tap::algorithms::ContiguousFloat;
 
-class TurretSubsystem : public tap::control::Subsystem
+class TurretSubsystem : public UTSubsystem
 {
 public:
     TurretSubsystem(src::Drivers* drivers);
@@ -51,6 +52,8 @@ public:
     void refresh() override;
 
     void runHardwareTests() override;
+
+    bool hardwareOk() override;
 
     const char* getName() override { return "Turret subsystem"; }
 
