@@ -13,47 +13,36 @@ void CommandMoveChassis::execute()
         remote->keyPressed(Remote::Key::W) - remote->keyPressed(Remote::Key::S));
 
     float rawInputLen = rawMoveInput.getLength();
+    float inputSpin = 0.0f;
 
-    if (rawInputLen > 0.0f)
+    if (rawInputLen > 0.0f || beyblade)
     {
         Vector2f moveDir = rawMoveInput / rawInputLen;  // normalize input
         inputMove += moveDir * KEYBOARD_ACCEL * DT;     // incorporate input
         inputMove /= max(1.0f, inputMove.getLength());  // clamp length
+
+        if (keyboardTurretRelative)
+        {
+            float yawAngle = turret->getTargetLocalYaw();
+
+            if (beyblade)
+            {
+                inputSpin = 1.0f;
+            }
+            else if (inputMove.getLengthSquared() > 0.0f)  // auto-align
+            {
+                inputSpin = calculateAutoAlignCorrection(yawAngle, CHASSIS_AUTOALIGN_ANGLE) *
+                            CHASSIS_AUTOALIGN_FACTOR;
+            }
+            chassis->input(Vector2f(inputMove).rotate(yawAngle), inputSpin);
+        }
+        else
+        {
+            chassis->input(inputMove, inputSpin);
+        }
     }
     else
-    {
-        // decelerate when input stops
-        float len = inputMove.getLength();
-        if (len > 0.0f)
-        {
-            inputMove *= max(1.0f - KEYBOARD_DECEL * DT / len, 0.0f);
-        }
-    }
-
-    float inputSpin = 0.0f;
-    if (keyboardTurretRelative)
-    {
-        float yawAngle = turret->getTargetLocalYaw();
-
-        if (beyblade)
-        {
-            inputSpin = 1.0f;
-        }
-        else if (inputMove.getLengthSquared() > 0.0f)  // auto-align
-        {
-            inputSpin = calculateAutoAlignCorrection(yawAngle, CHASSIS_AUTOALIGN_ANGLE) *
-                        CHASSIS_AUTOALIGN_FACTOR;
-        }
-        chassis->input(Vector2f(inputMove).rotate(yawAngle), inputSpin);
-    }
-    else
-    {
-        chassis->input(inputMove, inputSpin);
-    }
-
-    // Only take joystick input when no keyboard input and not beyblading
-    if (inputMove.getLengthSquared() > 0.0f && inputSpin == 0.0f)
-    {
+    {  // Only take joystick input when no keyboard input and not beyblading
         inputMove = Vector2f(
             remote->getChannel(Remote::Channel::RIGHT_HORIZONTAL),
             remote->getChannel(Remote::Channel::RIGHT_VERTICAL));

@@ -29,7 +29,7 @@ protected:
         drivers->commandMapper.addMap(&keyGToggled);
 
         // Controller
-        drivers->commandMapper.addMap(&rightSwitchUp);
+        // drivers->commandMapper.addMap(&rightSwitchUp);
         drivers->commandMapper.addMap(&rightSwitchMid);
         drivers->commandMapper.addMap(&rightSwitchDown);
         drivers->commandMapper.addMap(&leftSwitchMid);
