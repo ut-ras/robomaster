@@ -49,6 +49,7 @@ private:
 };
 
 }  // namespace agitator
+// namespace agitator
 }  // namespace subsystems
 
 // flywheel.hardwareOk()

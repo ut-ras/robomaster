@@ -1,5 +1,7 @@
 #include "agitator_subsystem.hpp"
 
+#include "subsystems/subsystem.hpp"
+
 namespace subsystems::agitator
 {
 
@@ -14,7 +16,7 @@ AgitatorSubsystem::AgitatorSubsystem(
     src::Drivers* drivers,
     FlywheelSubsystem* flywheel,
     MotorConfig motor)
-    : Subsystem(drivers),
+    : UTSubsystem(drivers),
       drivers(drivers),
       flywheel(flywheel),
       agitator{drivers, motor}
@@ -25,7 +27,7 @@ AgitatorSubsystem::AgitatorSubsystem(
     src::Drivers* drivers,
     FlywheelSubsystem* flywheel,
     MotorConfig motor)
-    : Subsystem(drivers),
+    : UTSubsystem(drivers),
       drivers(drivers),
       flywheel(flywheel),
       agitator{drivers, motor},

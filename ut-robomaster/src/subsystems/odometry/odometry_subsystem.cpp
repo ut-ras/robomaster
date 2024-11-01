@@ -1,6 +1,7 @@
 #include "odometry_subsystem.hpp"
 
 #include "robots/robot_constants.hpp"
+#include "subsystems/subsystem.hpp"
 namespace subsystems
 {
 namespace odometry
@@ -9,7 +10,7 @@ OdometrySubsystem::OdometrySubsystem(
     src::Drivers* drivers,
     ChassisSubsystem* chassis,
     TurretSubsystem* turret)
-    : tap::control::Subsystem(drivers),
+    : UTSubsystem(drivers),
       drivers(drivers),
       chassis(chassis),
       turret(turret),

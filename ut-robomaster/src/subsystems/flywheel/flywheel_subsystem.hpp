@@ -4,6 +4,7 @@
 #include "tap/control/subsystem.hpp"
 
 #include "robots/robot_constants.hpp"
+#include "subsystems/subsystem.hpp"
 #include "utils/motors/motor_controller.hpp"
 
 #include "drivers.hpp"
@@ -15,7 +16,7 @@ namespace flywheel
 
 using motors::MotorController;
 
-class FlywheelSubsystem : public tap::control::Subsystem
+class FlywheelSubsystem : public UTSubsystem
 {
 public:
     FlywheelSubsystem(src::Drivers* drivers);
@@ -31,6 +32,8 @@ public:
     void setVelocity(float velocity);
 
     bool isActive();
+
+    bool hardwareOk() override;
 
 private:
     src::Drivers* drivers;
