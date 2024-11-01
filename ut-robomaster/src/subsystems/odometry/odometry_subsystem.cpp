@@ -15,10 +15,19 @@ OdometrySubsystem::OdometrySubsystem(
       turret(turret),
       chassisDisplacement(drivers, chassis),
       chassisYaw(drivers),
-      chassisTracker(&chassisYaw, &chassisDisplacement){};
+      chassisTracker(&chassisYaw, &chassisDisplacement) {};
 
-void OdometrySubsystem::initialize(){};
-void OdometrySubsystem::refresh() { chassisTracker.update(); }
+void OdometrySubsystem::initialize() {};
+void OdometrySubsystem::refresh()
+{
+    setAmputated(!hardwareOk());
+    if (!isAmputated())
+    {
+        chassisTracker.update();
+    }
+}
+
+bool OdometrySubsystem::hardwareOk() { return chassis.hardwareOk() && turret.hardwareOk(); }
 
 Vector2f OdometrySubsystem::getPosition()
 {

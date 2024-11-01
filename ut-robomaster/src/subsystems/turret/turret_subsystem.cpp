@@ -28,6 +28,7 @@ TurretSubsystem::TurretSubsystem(src::Drivers* drivers)
 {
 }
 
+// should this be an AND??
 bool TurretSubsystem::hardwareOk() { return yaw.isOnline() || pitch.isOnline(); }
 
 void TurretSubsystem::initialize()

@@ -5,6 +5,7 @@
 
 #include "robots/robot_constants.hpp"
 #include "subsystems/flywheel/flywheel_subsystem.hpp"
+#include "subsystems/subsystem.hpp"
 #include "utils/motors/motor_controller.hpp"
 
 #include "drivers.hpp"
@@ -16,7 +17,7 @@ namespace agitator
 using flywheel::FlywheelSubsystem;
 using motors::MotorController;
 
-class AgitatorSubsystem : public tap::control::Subsystem
+class AgitatorSubsystem : public UTSubsystem
 {
 public:
     AgitatorSubsystem(src::Drivers *drivers, FlywheelSubsystem *flywheel, MotorConfig motor);
@@ -33,6 +34,8 @@ public:
     float getPosition();
     float getVelocity();
 
+    bool hardwareOk() override;
+
 private:
     src::Drivers *drivers;
     FlywheelSubsystem *flywheel;
@@ -47,3 +50,17 @@ private:
 
 }  // namespace agitator
 }  // namespace subsystems
+
+// flywheel.hardwareOk()
+
+// agitator.isOnline() && feeder.isOnline()
+
+/*
+    #ifdef TARGET_HERO
+        return flywheel.hardwareOk() && agitator.isOnline() && feeder.isOnline()
+    #else
+        return flywheel.hardwareOk() && agitator.isOnline()
+    #endif
+
+
+*/
