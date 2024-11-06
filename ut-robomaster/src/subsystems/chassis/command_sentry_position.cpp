@@ -49,7 +49,6 @@ void CommandSentryPosition::execute()
 
     if (drivers->isGameActive())
     {
-        // TODO: make sure this is OK
         chassis->input(move, spin);
     }
     else
