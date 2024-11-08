@@ -23,17 +23,6 @@
     using tap::algorithms::odometry::Odometry2DTracker;
     using turret::TurretSubsystem;
 
-    /*
-        hardwareOK() {
-            return chassis.hardWareOk() && turret.hardwareOk()
-        }
-
-        refresh()
-        if (!isAmputated()) {
-            do update thing
-        }
-    */
-
     class OdometrySubsystem : public UTSubsystem
     {
     public:

@@ -54,12 +54,12 @@ void AgitatorSubsystem::refresh()
 
         float time = getTimeMilliseconds() / 1000.0f;
     float velocity = getShapedVelocity(time, 1.0f, 0.0f, ballsPerSecond);
-    bool killSwitch = drivers->isKillSwitched() || !flywheel->isActive();
+    bool killSwitch = drivers->isKillSwitched() || !flywheel->isActive() || isAmputated();
 
-    agitator.setActive(!killSwitch || !isAmputated());
+    agitator.setActive(!killSwitch);
     agitator.updateVelocity(velocity);
 #ifdef TARGET_HERO
-    feeder.setActive(!killSwitch || !isAmputated());
+    feeder.setActive(!killSwitch);
     feeder.updateVelocity(velocity * FEEDER_RATIO);
 #endif
 }
