@@ -4,9 +4,12 @@
 
 namespace subsystems::control
 {
-	ClientDisplaySubsystem::ClientDisplaySubsystem(
-		tap::Drivers *drivers
-		) : Subsystem(drivers)
-	{
-    }
-}
+ClientDisplaySubsystem::ClientDisplaySubsystem(tap::Drivers *drivers) : Subsystem(drivers) {}
+
+void ClientDisplaySubsystem::initialize() {}
+
+void ClientDisplaySubsystem::refresh() {}
+
+void ClientDisplaySubsystem::runHardwareTests() {}
+
+}  // namespace subsystems::control

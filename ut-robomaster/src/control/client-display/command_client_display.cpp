@@ -1,72 +1,59 @@
 #include "command_client_display.hpp"
 
-
-modm::ResumableResult<bool> BeybladeIndicator::sendInitialGraphics()
+modm::ResumableResult<bool> BeybladeIndicator::sendInitialGraphics(src::Drivers *drivers)
 {
-	// The number represents the index of the resumable function in this class
-	RF_BEGIN(0);
-	
-	RF_CALL(refSerialTransmitter.sendGraphic(&msg));
+    // The number represents the index of the resumable function in this class
+    RF_BEGIN(0);
 
-	RF_END();
+    tap::buzzer::playNote(&drivers->pwm, 880);
+    RF_CALL(refSerialTransmitter.sendGraphic(&msg));
+
+    RF_END();
 }
 
 modm::ResumableResult<bool> BeybladeIndicator::update()
 {
-	// This is the second resumable function so its index is 1
-	RF_BEGIN(1);
+    // This is the second resumable function so its index is 1
+    RF_BEGIN(1);
 
-	RF_CALL(refSerialTransmitter.sendGraphic(&msg));
+    RF_CALL(refSerialTransmitter.sendGraphic(&msg));
 
-	RF_END();
+    RF_END();
 }
 
 void BeybladeIndicator::initialize()
 {
-		RefSerialTransmitter::configGraphicGenerics(
-			&msg.graphicData[0],
-			graphicName,
-			RefSerialData::Tx::GRAPHIC_ADD,
-			1, // Graphic layer can be 0-9
-			RefSerialData::Tx::GraphicColor::PINK
-			);
-		RefSerialTransmitter::configCircle(
-			50,
-			1920/2,
-		    1080/2,
-            200,
-			&msg.graphicData[0]
-			);
-	}
+    RefSerialTransmitter::configGraphicGenerics(
+        &msg.graphicData[0],
+        graphicName,
+        RefSerialData::Tx::GRAPHIC_ADD,
+        1,  // Graphic layer can be 0-9
+        RefSerialData::Tx::GraphicColor::PINK);
+    RefSerialTransmitter::configCircle(10, 400, 400, 200, &msg.graphicData[0]);
+}
 
 namespace commands
 {
 
-void CommandClientDisplay::restartHud()
+void CommandClientDisplay::initialize()
 {
-	beybladeIndicator.initialize();
-
-	this->restarting = false;
+    beybladeIndicator.initialize();
+    restart();
 }
+
+void CommandClientDisplay::execute() { run(); }
+
+void CommandClientDisplay::end(bool) { tap::buzzer::silenceBuzzer(&drivers->pwm); }
+
+bool CommandClientDisplay::isFinished() const { return !isRunning(); }
 
 bool CommandClientDisplay::run()
 {
-	if (!this->isRunning()) {
-		restart();
-		this->restartHud();
-	}
+    PT_BEGIN();
 
-	PT_BEGIN();
-	
-	PT_WAIT_UNTIL(drivers->refSerial.getRefSerialReceivingData());
+    PT_WAIT_UNTIL(drivers->refSerial.getRefSerialReceivingData());
+    PT_CALL(beybladeIndicator.sendInitialGraphics(drivers));
 
-	PT_CALL(beybladeIndicator.sendInitialGraphics());
-
-	while (!this->restarting) {
-		PT_CALL(beybladeIndicator.update());
-		PT_YIELD();
-	}
-
-	PT_END();
+    PT_END();
 }
-}
+}  // namespace commands

@@ -1,41 +1,40 @@
 #pragma once
 
-#include "tap/control/command.hpp"
-#include "tap/communication/serial/ref_serial_transmitter.hpp"
-#include "tap/communication/serial/ref_serial_data.hpp"
-#include "modm/processing/protothread.hpp"
-#include "modm/processing/resumable.hpp"
-
 #include "tap/communication/sensors/buzzer/buzzer.hpp"
-
-#include "drivers.hpp"
+#include "tap/communication/serial/ref_serial_data.hpp"
+#include "tap/communication/serial/ref_serial_transmitter.hpp"
+#include "tap/control/command.hpp"
 
 #include "control/client-display/client_display_subsystem.hpp"
+#include "modm/processing/protothread.hpp"
+#include "modm/processing/resumable.hpp"
+#include "subsystems/flywheel/flywheel_subsystem.hpp"
 
-#include "subsystems/chassis/chassis_subsystem.hpp"
+#include "drivers.hpp"
 
 using namespace tap::control;
 using namespace tap::communication::serial;
 
 using subsystems::control::ClientDisplaySubsystem;
-using subsystems::chassis::ChassisSubsystem;
+using subsystems::flywheel::FlywheelSubsystem;
 
 class BeybladeIndicator : protected modm::Resumable<2>
 {
 private:
-	const uint8_t* graphicName = (uint8_t*)"\x00\x00\x01";
-	RefSerialTransmitter &refSerialTransmitter;
-	RefSerialData::Tx::Graphic5Message msg;
+    const uint8_t *graphicName = (uint8_t *)"\x00\x00\x01";
+    RefSerialTransmitter &refSerialTransmitter;
+    RefSerialData::Tx::Graphic5Message msg;
 
 public:
-	BeybladeIndicator(RefSerialTransmitter refSerialTransmitter)
-	: refSerialTransmitter(refSerialTransmitter)
-	{}
+    BeybladeIndicator(RefSerialTransmitter refSerialTransmitter)
+        : refSerialTransmitter(refSerialTransmitter)
+    {
+    }
 
-	modm::ResumableResult<bool> sendInitialGraphics();
-	modm::ResumableResult<bool> update();
-	
-	void initialize();
+    modm::ResumableResult<bool> sendInitialGraphics(src::Drivers *drivers);
+    modm::ResumableResult<bool> update();
+
+    void initialize();
 };
 
 namespace commands
@@ -43,38 +42,26 @@ namespace commands
 class CommandClientDisplay : public Command, modm::pt::Protothread
 {
 private:
-	src::Drivers* drivers;
-	RefSerialTransmitter refSerialTransmitter;
-	BeybladeIndicator beybladeIndicator;
-	bool restarting = true;
+    src::Drivers *drivers;
+    RefSerialTransmitter refSerialTransmitter;
+    BeybladeIndicator beybladeIndicator;
 
-	void restartHud();
 public:
-	CommandClientDisplay(
-		src::Drivers *drivers,
-		ChassisSubsystem *chassis)
-			: Command(),
-			drivers(drivers),
-			refSerialTransmitter(drivers),
-			beybladeIndicator(refSerialTransmitter)
-	{
-		addSubsystemRequirement(chassis);
-	}
-	
-	bool run();
-	
-	const char *getName() const override { return "client display"; }
-	void initialize() override
-	{
-		tap::buzzer::playNote(&drivers->pwm, 880);
-		this->restarting = true;
-	};
+    CommandClientDisplay(src::Drivers *drivers, FlywheelSubsystem *flywheel)
+        : Command(),
+          drivers(drivers),
+          refSerialTransmitter(drivers),
+          beybladeIndicator(refSerialTransmitter)
+    {
+        addSubsystemRequirement(flywheel);
+    }
 
-	void execute() override
-	{
-		run();
-	}
-	void end(bool) override {}
-	bool isFinished() const override { return false; }
+    bool run();
+
+    void initialize() override;
+    void execute() override;
+    void end(bool) override;
+    bool isFinished() const override;
+    const char *getName() const override { return "client display"; }
 };
-}
+}  // namespace commands
