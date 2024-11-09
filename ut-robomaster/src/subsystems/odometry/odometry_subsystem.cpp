@@ -28,7 +28,7 @@ void OdometrySubsystem::refresh()
     }
 }
 
-bool OdometrySubsystem::hardwareOk() { return chassis.hardwareOk() && turret.hardwareOk(); }
+bool OdometrySubsystem::hardwareOk() { return chassis->hardwareOk() && turret->hardwareOk(); }
 
 Vector2f OdometrySubsystem::getPosition()
 {

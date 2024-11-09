@@ -15,44 +15,42 @@
 #include "utils/robot_comms.hpp"
 
 #include "drivers.hpp"
+namespace subsystems
 {
-    namespace odometry
-    {
+namespace odometry
+{
 
-    using chassis::ChassisSubsystem;
-    using tap::algorithms::odometry::Odometry2DTracker;
-    using turret::TurretSubsystem;
+using chassis::ChassisSubsystem;
+using tap::algorithms::odometry::Odometry2DTracker;
+using turret::TurretSubsystem;
 
-    class OdometrySubsystem : public UTSubsystem
-    {
-    public:
-        OdometrySubsystem(
-            src::Drivers* drivers,
-            ChassisSubsystem* chassis,
-            TurretSubsystem* turret);
-        void initialize() override;
-        void refresh() override;
-        const char* getName() override { return "Odometry subsystem"; }
+class OdometrySubsystem : public UTSubsystem
+{
+public:
+    OdometrySubsystem(src::Drivers* drivers, ChassisSubsystem* chassis, TurretSubsystem* turret);
+    void initialize() override;
+    void refresh() override;
+    const char* getName() override { return "Odometry subsystem"; }
 
-        Vector2f getPosition();
-        Vector2f getLinearVelocity();
+    Vector2f getPosition();
+    Vector2f getLinearVelocity();
 
-        float getChassisYaw();
-        float getChassisAngularVelocity();
+    float getChassisYaw();
+    float getChassisAngularVelocity();
 
-        float getTurretLocalYaw();
-        float getTurretLocalPitch();
-        bool hardwareOk() override;
+    float getTurretLocalYaw();
+    float getTurretLocalPitch();
+    bool hardwareOk() override;
 
-    private:
-        src::Drivers* drivers;
-        ChassisSubsystem* chassis;
-        TurretSubsystem* turret;
+private:
+    src::Drivers* drivers;
+    ChassisSubsystem* chassis;
+    TurretSubsystem* turret;
 
-        ChassisDisplacementObserver chassisDisplacement;
-        ChassisWorldYawObserver chassisYaw;
-        Odometry2DTracker chassisTracker;
-    };
-    }  // namespace odometry
-}  // namespace subsyste
-}  // namespace subsystemsms
+    ChassisDisplacementObserver chassisDisplacement;
+    ChassisWorldYawObserver chassisYaw;
+    Odometry2DTracker chassisTracker;
+};
+}  // namespace odometry
+}  // namespace subsystems
+   // namespace subsystemsms

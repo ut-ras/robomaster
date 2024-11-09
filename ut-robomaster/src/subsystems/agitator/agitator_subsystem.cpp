@@ -50,9 +50,9 @@ void AgitatorSubsystem::refresh()
     return;
 #endif
 
-    setAmputated(!hardwareOk())
+    setAmputated(!hardwareOk());
 
-        float time = getTimeMilliseconds() / 1000.0f;
+    float time = getTimeMilliseconds() / 1000.0f;
     float velocity = getShapedVelocity(time, 1.0f, 0.0f, ballsPerSecond);
     bool killSwitch = drivers->isKillSwitched() || !flywheel->isActive() || isAmputated();
 
@@ -78,9 +78,9 @@ float AgitatorSubsystem::getVelocity() { return agitator.measureVelocity(); }
 bool AgitatorSubsystem::hardwareOk()
 {
 #ifdef TARGET_HERO
-    return flywheel.hardwareOk() && agitator.isOnline() && feeder.isOnline()
+    return flywheel->hardwareOk() && agitator.isOnline() && feeder.isOnline();
 #else
-    return flywheel.hardwareOk() && agitator.isOnline()
+    return flywheel->hardwareOk() && agitator.isOnline();
 #endif
 }
 
