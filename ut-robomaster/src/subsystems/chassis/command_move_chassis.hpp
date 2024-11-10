@@ -23,14 +23,12 @@ public:
         src::Drivers *drivers,
         ChassisSubsystem *chassis,
         TurretSubsystem *turret,
-        bool joystickTurretRelative = false,
-        bool keyboardTurretRelative = true,
+        bool turretRelative = false,
         bool beyblade = false)
         : drivers(drivers),
           chassis(chassis),
           turret(turret),
-          joystickTurretRelative(joystickTurretRelative),
-          keyboardTurretRelative(keyboardTurretRelative),
+          turretRelative(turretRelative),
           beyblade(beyblade)
     {
         addSubsystemRequirement(chassis);
@@ -51,9 +49,11 @@ private:
     ChassisSubsystem *chassis;
     TurretSubsystem *turret;
 
-    Vector2f inputMove = Vector2f(0.0f);
-    const bool joystickTurretRelative = false;
-    const bool keyboardTurretRelative = true;
+    Vector2f keyboardInputMove = Vector2f(0.0f);
+    const bool turretRelative = false;
     const bool beyblade = false;
+
+    bool applyKeyboardInput(Vector2f &moveOut, float &spinOut);
+    bool applyJoystickInput(Vector2f &moveOut, float &spinOut);
 };
 }  // namespace commands

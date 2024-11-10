@@ -29,31 +29,15 @@ protected:
         drivers->commandMapper.addMap(&keyGToggled);
 
         // Controller
-        // drivers->commandMapper.addMap(&rightSwitchUp);
-        drivers->commandMapper.addMap(&rightSwitchMid);
-        drivers->commandMapper.addMap(&rightSwitchDown);
         drivers->commandMapper.addMap(&leftSwitchMid);
 
-        chassis.setDefaultCommand(&moveTurretRelative);
+        chassis.setDefaultCommand(&move);
         turret.setDefaultCommand(&look);
     }
 
     // Commands
-    CommandMoveChassis moveTurretRelative{drivers, &chassis, &turret, true, true};
-    CommandMoveChassis moveBeyblade{
-        drivers,
-        &chassis,
-        &turret,
-        true,
-        true,
-        true};  // Beyblade is always turret relative
-    CommandMoveChassis moveJoystickChassisKeyboardTurretRelative{
-        drivers,
-        &chassis,
-        &turret,
-        false,
-        true};
-    CommandMoveChassis moveChassisRelative{drivers, &chassis, &turret, false, false};
+    CommandMoveChassis move{drivers, &chassis, &turret, true, false};
+    CommandMoveChassis moveBeyblade{drivers, &chassis, &turret, true, true};
 
     CommandRotateFlywheel rotateFlywheel_Keyboard{drivers, &flywheel};
     CommandRotateFlywheel rotateFlywheel_SwitchUp{drivers, &flywheel};
@@ -70,21 +54,6 @@ protected:
         RemoteMapState({Remote::Key::G})};
 
     // Controller mappings
-    HoldCommandMapping rightSwitchUp{
-        drivers,
-        {&moveTurretRelative},
-        RemoteMapState(Remote::Switch::RIGHT_SWITCH, Remote::SwitchState::UP)};
-
-    HoldCommandMapping rightSwitchMid{
-        drivers,
-        {&moveJoystickChassisKeyboardTurretRelative},
-        RemoteMapState(Remote::Switch::RIGHT_SWITCH, Remote::SwitchState::MID)};
-
-    HoldCommandMapping rightSwitchDown{
-        drivers,
-        {&moveChassisRelative},
-        RemoteMapState(Remote::Switch::RIGHT_SWITCH, Remote::SwitchState::DOWN)};
-
     HoldCommandMapping leftSwitchMid{
         drivers,
         {&rotateFlywheel_SwitchUp},
