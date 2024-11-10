@@ -1,58 +1,50 @@
 #include "command_client_display.hpp"
 
-modm::ResumableResult<bool> BeybladeIndicator::sendInitialGraphics(src::Drivers *drivers)
-{
-    // The number represents the index of the resumable function in this class
-    RF_BEGIN(0);
-
-    tap::buzzer::playNote(&drivers->pwm, 880);
-    RF_CALL(refSerialTransmitter.sendGraphic(&msg));
-
-    RF_END();
-}
-
-modm::ResumableResult<bool> BeybladeIndicator::update()
-{
-    // This is the second resumable function so its index is 1
-    RF_BEGIN(1);
-
-    RF_CALL(refSerialTransmitter.sendGraphic(&msg));
-
-    RF_END();
-}
-
-void BeybladeIndicator::initialize()
-{
-    RefSerialTransmitter::configGraphicGenerics(
-        &msg.graphicData[0],
-        graphicName,
-        RefSerialData::Tx::GRAPHIC_ADD,
-        1,  // Graphic layer can be 0-9
-        RefSerialData::Tx::GraphicColor::PINK);
-    RefSerialTransmitter::configCircle(10, 400, 400, 200, &msg.graphicData[0]);
-}
-
 namespace commands
 {
 
 void CommandClientDisplay::initialize()
 {
-    beybladeIndicator.initialize();
+    tap::buzzer::playNote(&drivers->pwm, 440);
     restart();
+
+    RefSerialTransmitter::configGraphicGenerics(
+        &msg.graphicData,
+        graphicId,
+        RefSerialData::Tx::GRAPHIC_ADD,
+        0,
+        RefSerialData::Tx::GraphicColor::PINK);
+
+    // RESOLUTION HAS TO BE 1920x1080 OR HUD WILL NOT WORK PROPERLY
+    RefSerialTransmitter::configCircle(10, 1920 / 2, 1080 / 2, 100, &msg.graphicData);
 }
 
 void CommandClientDisplay::execute() { run(); }
 
 void CommandClientDisplay::end(bool) { tap::buzzer::silenceBuzzer(&drivers->pwm); }
 
-bool CommandClientDisplay::isFinished() const { return !isRunning(); }
+bool CommandClientDisplay::isFinished() const { return false; }
 
 bool CommandClientDisplay::run()
 {
+    float t = sinf(tap::arch::clock::getTimeMilliseconds() / 1000.0f * 4.0f) * 0.5f + 0.5f;
+
     PT_BEGIN();
 
     PT_WAIT_UNTIL(drivers->refSerial.getRefSerialReceivingData());
-    PT_CALL(beybladeIndicator.sendInitialGraphics(drivers));
+
+    // setup new graphic (GRAPHIC_ADD operation)
+    PT_CALL(refSerialTransmitter.sendGraphic(&msg));
+
+    while (true)
+    {
+        msg.graphicData.operation = RefSerialData::Tx::GRAPHIC_MODIFY;
+        msg.graphicData.lineWidth = 5.0f + 25.0f * t;
+        msg.graphicData.radius = 100.0f + 300.0f * t;
+
+        // modify existing graphic based on the ID (GRAPHIC_MODIFY operation)
+        PT_CALL(refSerialTransmitter.sendGraphic(&msg));
+    }
 
     PT_END();
 }

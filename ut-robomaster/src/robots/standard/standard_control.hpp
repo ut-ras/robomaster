@@ -45,5 +45,5 @@ private:
         {&rotateAgitator_SwitchUp, &rotateFlywheel_SwitchMid},
         RemoteMapState(Remote::Switch::LEFT_SWITCH, Remote::SwitchState::UP)};
 
-    HoldCommandMapping hudTestKey{drivers, {&hudTest}, RemoteMapState({Remote::Key::Q})};
+    HoldCommandMapping hudTestKey{drivers, {&hudTest}, RemoteMapState({Remote::Key::Z})};
 };

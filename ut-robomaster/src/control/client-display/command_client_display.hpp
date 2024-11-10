@@ -18,40 +18,15 @@ using namespace tap::communication::serial;
 using subsystems::control::ClientDisplaySubsystem;
 using subsystems::flywheel::FlywheelSubsystem;
 
-class BeybladeIndicator : protected modm::Resumable<2>
-{
-private:
-    const uint8_t *graphicName = (uint8_t *)"\x00\x00\x01";
-    RefSerialTransmitter &refSerialTransmitter;
-    RefSerialData::Tx::Graphic5Message msg;
-
-public:
-    BeybladeIndicator(RefSerialTransmitter refSerialTransmitter)
-        : refSerialTransmitter(refSerialTransmitter)
-    {
-    }
-
-    modm::ResumableResult<bool> sendInitialGraphics(src::Drivers *drivers);
-    modm::ResumableResult<bool> update();
-
-    void initialize();
-};
-
 namespace commands
 {
 class CommandClientDisplay : public Command, modm::pt::Protothread
 {
-private:
-    src::Drivers *drivers;
-    RefSerialTransmitter refSerialTransmitter;
-    BeybladeIndicator beybladeIndicator;
-
 public:
     CommandClientDisplay(src::Drivers *drivers, FlywheelSubsystem *flywheel)
         : Command(),
           drivers(drivers),
-          refSerialTransmitter(drivers),
-          beybladeIndicator(refSerialTransmitter)
+          refSerialTransmitter(drivers)
     {
         addSubsystemRequirement(flywheel);
     }
@@ -63,5 +38,11 @@ public:
     void end(bool) override;
     bool isFinished() const override;
     const char *getName() const override { return "client display"; }
+
+private:
+    src::Drivers *drivers;
+    RefSerialTransmitter refSerialTransmitter;
+    const uint8_t graphicId[3] = {0, 0, 1};  // 3 byte identifier for this graphic element
+    RefSerialData::Tx::Graphic1Message msg;
 };
 }  // namespace commands
