@@ -41,7 +41,7 @@ void FlywheelSubsystem::refresh()
 
     for (int i = 0; i < FLYWHEELS; i++)
     {
-        motors[i].setActive(!killSwitch && !isAmputated());
+        motors[i].setActive(!killSwitch && !isAmputated() && velocity != 0.0f);
         motors[i].updateVelocity(velocity);
     }
 }
