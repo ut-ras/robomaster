@@ -17,7 +17,7 @@ namespace agitator
 using flywheel::FlywheelSubsystem;
 using motors::MotorController;
 
-class AgitatorSubsystem : public UTSubsystem
+class AgitatorSubsystem : public subsystems::Subsystem
 {
 public:
     AgitatorSubsystem(src::Drivers *drivers, FlywheelSubsystem *flywheel, MotorConfig motor);
@@ -49,19 +49,4 @@ private:
 };
 
 }  // namespace agitator
-// namespace agitator
 }  // namespace subsystems
-
-// flywheel.hardwareOk()
-
-// agitator.isOnline() && feeder.isOnline()
-
-/*
-    #ifdef TARGET_HERO
-        return flywheel.hardwareOk() && agitator.isOnline() && feeder.isOnline()
-    #else
-        return flywheel.hardwareOk() && agitator.isOnline()
-    #endif
-
-
-*/

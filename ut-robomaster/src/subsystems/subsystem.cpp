@@ -2,10 +2,10 @@
 
 namespace subsystems
 {
-UTSubsystem::UTSubsystem(src::Drivers* drivers) : Subsystem(drivers) {}
-bool UTSubsystem::hardwareOk() { return true; }
+Subsystem::Subsystem(src::Drivers* drivers) : tap::control::Subsystem(drivers) {}
+bool Subsystem::hardwareOk() { return true; }
 
-bool UTSubsystem::isAmputated() { return amputated; }
+bool Subsystem::isAmputated() { return amputated; }
 
-void UTSubsystem::setAmputated(bool newAmputatedValue) { amputated = newAmputatedValue; }
+void Subsystem::setAmputated(bool newAmputatedValue) { amputated = newAmputatedValue; }
 }  // namespace subsystems

@@ -10,7 +10,7 @@ OdometrySubsystem::OdometrySubsystem(
     src::Drivers* drivers,
     ChassisSubsystem* chassis,
     TurretSubsystem* turret)
-    : UTSubsystem(drivers),
+    : subsystems::Subsystem(drivers),
       drivers(drivers),
       chassis(chassis),
       turret(turret),

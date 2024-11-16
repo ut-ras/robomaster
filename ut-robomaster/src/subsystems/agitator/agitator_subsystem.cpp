@@ -16,7 +16,7 @@ AgitatorSubsystem::AgitatorSubsystem(
     src::Drivers* drivers,
     FlywheelSubsystem* flywheel,
     MotorConfig motor)
-    : UTSubsystem(drivers),
+    : subsystems::Subsystem(drivers),
       drivers(drivers),
       flywheel(flywheel),
       agitator{drivers, motor}
@@ -78,9 +78,9 @@ float AgitatorSubsystem::getVelocity() { return agitator.measureVelocity(); }
 bool AgitatorSubsystem::hardwareOk()
 {
 #ifdef TARGET_HERO
-    return flywheel->hardwareOk() && agitator.isOnline() && feeder.isOnline();
+    return agitator.isOnline() && feeder.isOnline();
 #else
-    return flywheel->hardwareOk() && agitator.isOnline();
+    return agitator.isOnline();
 #endif
 }
 

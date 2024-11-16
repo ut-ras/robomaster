@@ -16,7 +16,7 @@ namespace flywheel
 
 using motors::MotorController;
 
-class FlywheelSubsystem : public UTSubsystem
+class FlywheelSubsystem : public subsystems::Subsystem
 {
 public:
     FlywheelSubsystem(src::Drivers* drivers);

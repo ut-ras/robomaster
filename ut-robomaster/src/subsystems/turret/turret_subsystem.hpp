@@ -22,7 +22,7 @@ namespace turret
 using driver::As5600;
 using tap::algorithms::ContiguousFloat;
 
-class TurretSubsystem : public UTSubsystem
+class TurretSubsystem : public subsystems::Subsystem
 {
 public:
     TurretSubsystem(src::Drivers* drivers);

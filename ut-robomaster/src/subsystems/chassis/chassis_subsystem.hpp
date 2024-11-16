@@ -19,8 +19,7 @@ namespace subsystems
 {
 namespace chassis
 {
-// class ChassisSubsystem : public tap::control::Subsystem
-class ChassisSubsystem : public UTSubsystem
+class ChassisSubsystem : public subsystems::Subsystem
 {
 public:
     ChassisSubsystem(src::Drivers* drivers);

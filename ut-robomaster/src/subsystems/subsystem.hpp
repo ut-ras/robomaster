@@ -5,12 +5,12 @@
 
 namespace subsystems
 {
-class UTSubsystem : public tap::control::Subsystem
+class Subsystem : public tap::control::Subsystem
 {
 public:
-    UTSubsystem(src::Drivers *drivers);
+    Subsystem(src::Drivers *drivers);
 
-    ~UTSubsystem() = default;
+    ~Subsystem() = default;
 
     virtual bool hardwareOk();
     bool isAmputated();
