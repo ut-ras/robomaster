@@ -1,18 +1,10 @@
 #include "turret_subsystem.hpp"
 
-#include "tap/algorithms/ballistics.hpp"
-
 #include "modm/math.hpp"
 #include "robots/robot_constants.hpp"
 
-namespace subsystems
+namespace subsystems::turret
 {
-namespace turret
-{
-using namespace tap::algorithms::ballistics;
-using communication::TurretData;
-using modm::Vector2f;
-
 TurretSubsystem::TurretSubsystem(src::Drivers* drivers)
     : tap::control::Subsystem(drivers),
       drivers(drivers),
@@ -91,10 +83,4 @@ float TurretSubsystem::getCurrentLocalPitch()
 }
 
 bool TurretSubsystem::getIsCalibrated() { return isCalibrated; }
-
-void TurretSubsystem::runHardwareTests()
-{
-    // TODO
-}
-}  // namespace turret
-}  // namespace subsystems
+}  // namespace subsystems::turret

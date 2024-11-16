@@ -4,12 +4,10 @@
 
 #include "robots/robot_constants.hpp"
 
+namespace subsystems::chassis
+{
 using namespace tap::algorithms;
 
-namespace subsystems
-{
-namespace chassis
-{
 ChassisSubsystem::ChassisSubsystem(src::Drivers* drivers)
     : tap::control::Subsystem(drivers),
       drivers(drivers),
@@ -66,11 +64,6 @@ void ChassisSubsystem::limitChassisPower()
     }
 }
 
-void ChassisSubsystem::runHardwareTests()
-{
-    // TODO
-}
-
 void ChassisSubsystem::input(Vector2f move, float spin)
 {
     Vector2f v = move * MAX_LINEAR_VEL;
@@ -124,5 +117,4 @@ Vector3f ChassisSubsystem::measureVelocity()
     // Rotated -90 deg to match our reference frame
     return Vector3f(ya, -xa, wa) * WHEEL_RADIUS / 4.0f * M_TWOPI;
 }
-}  // namespace chassis
-}  // namespace subsystems
+}  // namespace subsystems::chassis
