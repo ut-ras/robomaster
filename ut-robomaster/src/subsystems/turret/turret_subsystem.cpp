@@ -66,7 +66,7 @@ void TurretSubsystem::setTargetWorldAngles(float yaw, float pitch)
     targetWorldPitch = modm::min(modm::max(pitch, PITCH_MIN), PITCH_MAX);
 }
 
-float TurretSubsystem::getChassisYaw() { return modm::toRadian(drivers->bmi088.getYaw() - 180.0f); }
+float TurretSubsystem::getChassisYaw() { return modm::toRadian(drivers->bmi088.getYaw()); }
 
 float TurretSubsystem::getTargetLocalYaw() { return targetWorldYaw - getChassisYaw(); }
 
