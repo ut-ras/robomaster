@@ -3,13 +3,14 @@
 #include "tap/algorithms/math_user_utils.hpp"
 
 #include "robots/robot_constants.hpp"
+#include "subsystems/subsystem.hpp"
 
 namespace subsystems::chassis
 {
 using namespace tap::algorithms;
 
 ChassisSubsystem::ChassisSubsystem(src::Drivers* drivers)
-    : tap::control::Subsystem(drivers),
+    : Subsystem(drivers),
       drivers(drivers),
       powerLimiter(drivers, ENERGY_BUFFER_LIMIT_THRESHOLD, ENERGY_BUFFER_CRIT_THRESHOLD),
       wheels{
@@ -29,9 +30,10 @@ void ChassisSubsystem::initialize()
 
 void ChassisSubsystem::refresh()
 {
+    setAmputated(!hardwareOk());
     for (int8_t i = 0; i < WHEELS; i++)
     {
-        wheels[i].setActive(!drivers->isKillSwitched());
+        wheels[i].setActive(!drivers->isKillSwitched() && !isAmputated());
         wheels[i].updateVelocity(targetWheelVels[i] / M_TWOPI);  // rad/s to rev/s
     }
 
@@ -62,6 +64,19 @@ void ChassisSubsystem::limitChassisPower()
 
         wheels[i].applyPowerScalar(modifiedPowerScalar);
     }
+}
+
+bool ChassisSubsystem::hardwareOk()
+{
+    for (int8_t i = 0; i < WHEELS; i++)
+    {
+        if (!wheels[i].isOnline())
+        {
+            return false;
+        }
+    }
+
+    return true;
 }
 
 void ChassisSubsystem::input(Vector2f move, float spin)

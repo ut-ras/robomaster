@@ -1,6 +1,7 @@
 #include "odometry_subsystem.hpp"
 
 #include "robots/robot_constants.hpp"
+#include "subsystems/subsystem.hpp"
 
 namespace subsystems::odometry
 {
@@ -8,7 +9,7 @@ OdometrySubsystem::OdometrySubsystem(
     src::Drivers* drivers,
     ChassisSubsystem* chassis,
     TurretSubsystem* turret)
-    : tap::control::Subsystem(drivers),
+    : Subsystem(drivers),
       drivers(drivers),
       chassis(chassis),
       turret(turret),
@@ -17,7 +18,17 @@ OdometrySubsystem::OdometrySubsystem(
       chassisTracker(&chassisYaw, &chassisDisplacement) {};
 
 void OdometrySubsystem::initialize() {};
-void OdometrySubsystem::refresh() { chassisTracker.update(); }
+
+void OdometrySubsystem::refresh()
+{
+    setAmputated(!hardwareOk());
+    if (!isAmputated())
+    {
+        chassisTracker.update();
+    }
+}
+
+bool OdometrySubsystem::hardwareOk() { return chassis->hardwareOk() && turret->hardwareOk(); }
 
 Vector2f OdometrySubsystem::getPosition()
 {

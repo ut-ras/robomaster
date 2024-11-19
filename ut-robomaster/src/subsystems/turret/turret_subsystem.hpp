@@ -6,6 +6,7 @@
 #include "drivers/as5600.hpp"
 #include "modm/math/geometry.hpp"
 #include "robots/robot_constants.hpp"
+#include "subsystems/subsystem.hpp"
 
 #include "double_yaw_motor.hpp"
 #include "drivers.hpp"
@@ -17,12 +18,13 @@ using driver::As5600;
 using modm::Vector3f;
 using tap::algorithms::ContiguousFloat;
 
-class TurretSubsystem : public tap::control::Subsystem
+class TurretSubsystem : public Subsystem
 {
 public:
     TurretSubsystem(src::Drivers* drivers);
     void initialize() override;
     void refresh() override;
+    bool hardwareOk() override;
 
     /// @brief Input target data from CV (relative to camera)
     void inputTargetData(Vector3f position, Vector3f velocity, Vector3f acceleration);

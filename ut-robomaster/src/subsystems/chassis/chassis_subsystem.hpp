@@ -4,6 +4,7 @@
 
 #include "modm/math/geometry.hpp"
 #include "robots/robot_constants.hpp"
+#include "subsystems/subsystem.hpp"
 #include "utils/motors/motor_controller.hpp"
 #include "utils/power_limiter/power_limiter.hpp"
 
@@ -15,12 +16,13 @@ using namespace tap::communication::sensors::imu;
 using namespace modm;
 using motors::MotorController;
 
-class ChassisSubsystem : public tap::control::Subsystem
+class ChassisSubsystem : public Subsystem
 {
 public:
     ChassisSubsystem(src::Drivers* drivers);
     void initialize() override;
     void refresh() override;
+    bool hardwareOk() override;
 
     void limitChassisPower();
 

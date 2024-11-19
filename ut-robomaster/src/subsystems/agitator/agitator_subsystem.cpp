@@ -1,5 +1,7 @@
 #include "agitator_subsystem.hpp"
 
+#include "subsystems/subsystem.hpp"
+
 namespace subsystems::agitator
 {
 using tap::algorithms::compareFloatClose;
@@ -44,9 +46,11 @@ void AgitatorSubsystem::refresh()
     return;
 #endif
 
+    setAmputated(!hardwareOk());
+
     float time = getTimeMilliseconds() / 1000.0f;
     float velocity = getShapedVelocity(time, 1.0f, 0.0f, ballsPerSecond);
-    bool killSwitch = drivers->isKillSwitched() || !flywheel->isActive();
+    bool killSwitch = drivers->isKillSwitched() || isAmputated() || !flywheel->isActive();
 
     agitator.setActive(!killSwitch);
     agitator.updateVelocity(velocity);
@@ -66,4 +70,14 @@ float AgitatorSubsystem::getShapedVelocity(float time, float a, float phi, float
 void AgitatorSubsystem::setBallsPerSecond(float bps) { ballsPerSecond = bps; }
 float AgitatorSubsystem::getPosition() { return agitator.measurePosition(); }
 float AgitatorSubsystem::getVelocity() { return agitator.measureVelocity(); }
+
+bool AgitatorSubsystem::hardwareOk()
+{
+#ifdef TARGET_HERO
+    return agitator.isOnline() && feeder.isOnline();
+#else
+    return agitator.isOnline();
+#endif
+}
+
 }  // namespace subsystems::agitator
