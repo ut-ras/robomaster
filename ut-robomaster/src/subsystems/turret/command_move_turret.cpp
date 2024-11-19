@@ -6,7 +6,11 @@ void CommandMoveTurret::initialize() { isCalibrated = false; }
 
 void CommandMoveTurret::execute()
 {
-    if (!isCalibrated && turret->getIsCalibrated())
+    if (drivers->isKillSwitched())
+    {
+        isCalibrated = false;
+    }
+    else if (!isCalibrated && turret->getIsCalibrated())
     {
         yaw = turret->getCurrentLocalYaw() + turret->getChassisYaw();
         pitch = turret->getCurrentLocalPitch();
