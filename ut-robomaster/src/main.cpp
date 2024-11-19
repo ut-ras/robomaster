@@ -42,6 +42,12 @@ static void updateIo(src::Drivers *drivers)
     drivers->remote.read();
 }
 
+static void updateImu(src::Drivers *drivers)
+{
+    drivers->bmi088.read();
+    drivers->bmi088.periodicIMUUpdate();
+}
+
 src::Drivers drivers;
 RobotControl control{&drivers};
 
@@ -61,7 +67,7 @@ int main()
 
         if (refreshTimer.execute())
         {
-            PROFILE(drivers.profiler, drivers.bmi088.periodicIMUUpdate, ());
+            PROFILE(drivers.profiler, updateImu, (&drivers));
             PROFILE(drivers.profiler, drivers.commandScheduler.run, ());
             PROFILE(drivers.profiler, drivers.djiMotorTxHandler.encodeAndSendCanData, ());
             PROFILE(drivers.profiler, drivers.terminalSerial.update, ());

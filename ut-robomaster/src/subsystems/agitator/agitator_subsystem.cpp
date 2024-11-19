@@ -4,13 +4,9 @@
 
 namespace subsystems::agitator
 {
-
 using tap::algorithms::compareFloatClose;
 using tap::arch::clock::getTimeMilliseconds;
 
-/**
- * AgitatorSubsystem class instantiation
- */
 #if defined(TARGET_STANDARD) || defined(TARGET_SENTRY)
 AgitatorSubsystem::AgitatorSubsystem(
     src::Drivers* drivers,

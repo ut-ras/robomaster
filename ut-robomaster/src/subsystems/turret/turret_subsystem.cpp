@@ -1,19 +1,11 @@
 #include "turret_subsystem.hpp"
 
-#include "tap/algorithms/ballistics.hpp"
-
 #include "modm/math.hpp"
 #include "robots/robot_constants.hpp"
 #include "subsystems/subsystem.hpp"
 
-namespace subsystems
+namespace subsystems::turret
 {
-namespace turret
-{
-using namespace tap::algorithms::ballistics;
-using communication::TurretData;
-using modm::Vector2f;
-
 TurretSubsystem::TurretSubsystem(src::Drivers* drivers)
     : Subsystem(drivers),
       drivers(drivers),
@@ -79,7 +71,7 @@ void TurretSubsystem::setTargetWorldAngles(float yaw, float pitch)
     targetWorldPitch = modm::min(modm::max(pitch, PITCH_MIN), PITCH_MAX);
 }
 
-float TurretSubsystem::getChassisYaw() { return modm::toRadian(drivers->bmi088.getYaw() - 180.0f); }
+float TurretSubsystem::getChassisYaw() { return modm::toRadian(drivers->bmi088.getYaw()); }
 
 float TurretSubsystem::getTargetLocalYaw() { return targetWorldYaw - getChassisYaw(); }
 
@@ -96,10 +88,4 @@ float TurretSubsystem::getCurrentLocalPitch()
 }
 
 bool TurretSubsystem::getIsCalibrated() { return isCalibrated; }
-
-void TurretSubsystem::runHardwareTests()
-{
-    // TODO
-}
-}  // namespace turret
-}  // namespace subsystems
+}  // namespace subsystems::turret

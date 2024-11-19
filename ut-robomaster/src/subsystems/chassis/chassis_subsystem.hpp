@@ -1,5 +1,4 @@
-#ifndef CHASSIS_SUBSYSTEM_HPP_
-#define CHASSIS_SUBSYSTEM_HPP_
+#pragma once
 
 #include "tap/control/subsystem.hpp"
 
@@ -11,28 +10,21 @@
 
 #include "drivers.hpp"
 
+namespace subsystems::chassis
+{
 using namespace tap::communication::sensors::imu;
 using namespace modm;
 using motors::MotorController;
 
-namespace subsystems
-{
-namespace chassis
-{
 class ChassisSubsystem : public Subsystem
 {
 public:
     ChassisSubsystem(src::Drivers* drivers);
-
     void initialize() override;
-
     void refresh() override;
+    bool hardwareOk() override;
 
     void limitChassisPower();
-
-    void runHardwareTests() override;
-
-    bool hardwareOk() override;
 
     /// @brief Update robot motion based on simple input controls. Inputs are scaled and corrected
     /// to avoid over-driving motors. This logic can be adjusted to create various input schemes.
@@ -43,8 +35,6 @@ public:
     /// @brief Reconstruct current velocities based on measured wheel motion.
     /// @return x,y is linear velocity (m/s) and z is angular velocity (rad/s)
     Vector3f measureVelocity();
-
-    const char* getName() override { return "Chassis subsystem"; }
 
 private:
     src::Drivers* drivers;
@@ -67,7 +57,4 @@ private:
     static constexpr float ENERGY_BUFFER_CRIT_THRESHOLD = 30.0f;
 #endif
 };
-}  // namespace chassis
-}  // namespace subsystems
-
-#endif
+}  // namespace subsystems::chassis

@@ -4,7 +4,6 @@
 #include "tap/control/subsystem.hpp"
 
 #include "drivers/as5600.hpp"
-#include "modm/math/filter/moving_average.hpp"
 #include "modm/math/geometry.hpp"
 #include "robots/robot_constants.hpp"
 #include "subsystems/subsystem.hpp"
@@ -13,13 +12,10 @@
 #include "drivers.hpp"
 #include "turret_motor.hpp"
 
-using modm::Vector3f;
-
-namespace subsystems
-{
-namespace turret
+namespace subsystems::turret
 {
 using driver::As5600;
+using modm::Vector3f;
 using tap::algorithms::ContiguousFloat;
 
 class TurretSubsystem : public Subsystem
@@ -27,35 +23,20 @@ class TurretSubsystem : public Subsystem
 public:
     TurretSubsystem(src::Drivers* drivers);
     void initialize() override;
+    void refresh() override;
+    bool hardwareOk() override;
 
     /// @brief Input target data from CV (relative to camera)
     void inputTargetData(Vector3f position, Vector3f velocity, Vector3f acceleration);
-
     void setTargetWorldAngles(float yaw, float pitch);
-
     float getChassisYaw();
-
     float getTargetLocalYaw();
-
     float getTargetLocalPitch();
-
     float getTargetWorldYaw() { return targetWorldYaw; }
-
     float getTargetWorldPitch() { return targetWorldPitch; }
-
     float getCurrentLocalYaw();
-
     float getCurrentLocalPitch();
-
     bool getIsCalibrated();
-
-    void refresh() override;
-
-    void runHardwareTests() override;
-
-    bool hardwareOk() override;
-
-    const char* getName() override { return "Turret subsystem"; }
 
 private:
     src::Drivers* drivers;
@@ -81,6 +62,4 @@ private:
 
     ContiguousFloat turretOffset;
 };
-
-}  // namespace turret
-}  // namespace subsystems
+}  // namespace subsystems::turret

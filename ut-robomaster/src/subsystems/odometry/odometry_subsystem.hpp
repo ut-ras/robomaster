@@ -15,12 +15,11 @@
 #include "utils/robot_comms.hpp"
 
 #include "drivers.hpp"
-namespace subsystems
-{
-namespace odometry
-{
 
+namespace subsystems::odometry
+{
 using chassis::ChassisSubsystem;
+using modm::Vector2f;
 using tap::algorithms::odometry::Odometry2DTracker;
 using turret::TurretSubsystem;
 
@@ -30,7 +29,7 @@ public:
     OdometrySubsystem(src::Drivers* drivers, ChassisSubsystem* chassis, TurretSubsystem* turret);
     void initialize() override;
     void refresh() override;
-    const char* getName() override { return "Odometry subsystem"; }
+    bool hardwareOk() override;
 
     Vector2f getPosition();
     Vector2f getLinearVelocity();
@@ -40,7 +39,6 @@ public:
 
     float getTurretLocalYaw();
     float getTurretLocalPitch();
-    bool hardwareOk() override;
 
 private:
     src::Drivers* drivers;
@@ -51,5 +49,4 @@ private:
     ChassisWorldYawObserver chassisYaw;
     Odometry2DTracker chassisTracker;
 };
-}  // namespace odometry
-}  // namespace subsystems
+}  // namespace subsystems::odometry

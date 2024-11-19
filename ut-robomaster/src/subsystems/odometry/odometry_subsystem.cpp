@@ -2,9 +2,8 @@
 
 #include "robots/robot_constants.hpp"
 #include "subsystems/subsystem.hpp"
-namespace subsystems
-{
-namespace odometry
+
+namespace subsystems::odometry
 {
 OdometrySubsystem::OdometrySubsystem(
     src::Drivers* drivers,
@@ -19,6 +18,7 @@ OdometrySubsystem::OdometrySubsystem(
       chassisTracker(&chassisYaw, &chassisDisplacement) {};
 
 void OdometrySubsystem::initialize() {};
+
 void OdometrySubsystem::refresh()
 {
     setAmputated(!hardwareOk());
@@ -41,5 +41,4 @@ float OdometrySubsystem::getChassisAngularVelocity() { return chassis->measureVe
 
 float OdometrySubsystem::getTurretLocalYaw() { return turret->getCurrentLocalPitch(); }
 float OdometrySubsystem::getTurretLocalPitch() { return turret->getCurrentLocalYaw(); }
-};  // namespace odometry
-}  // namespace subsystems
+}  // namespace subsystems::odometry

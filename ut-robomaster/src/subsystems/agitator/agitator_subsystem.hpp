@@ -10,9 +10,7 @@
 
 #include "drivers.hpp"
 
-namespace subsystems
-{
-namespace agitator
+namespace subsystems::agitator
 {
 using flywheel::FlywheelSubsystem;
 using motors::MotorController;
@@ -21,11 +19,7 @@ class AgitatorSubsystem : public Subsystem
 {
 public:
     AgitatorSubsystem(src::Drivers *drivers, FlywheelSubsystem *flywheel, MotorConfig motor);
-
-    ~AgitatorSubsystem() = default;
-
     void initialize() override;
-
     void refresh() override;
 
     float getShapedVelocity(float time, float a, float phi, float ballsPerSecond);
@@ -47,6 +41,4 @@ private:
     MotorController feeder;
 #endif
 };
-
-}  // namespace agitator
-}  // namespace subsystems
+}  // namespace subsystems::agitator
