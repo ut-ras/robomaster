@@ -24,7 +24,7 @@ using chassis::ChassisSubsystem;
 using tap::algorithms::odometry::Odometry2DTracker;
 using turret::TurretSubsystem;
 
-class OdometrySubsystem : public subsystems::Subsystem
+class OdometrySubsystem : public Subsystem
 {
 public:
     OdometrySubsystem(src::Drivers* drivers, ChassisSubsystem* chassis, TurretSubsystem* turret);

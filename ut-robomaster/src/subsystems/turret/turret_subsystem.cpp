@@ -15,7 +15,7 @@ using communication::TurretData;
 using modm::Vector2f;
 
 TurretSubsystem::TurretSubsystem(src::Drivers* drivers)
-    : subsystems::Subsystem(drivers),
+    : Subsystem(drivers),
       drivers(drivers),
 #if defined(TARGET_STANDARD) || defined(TARGET_HERO)
       yawEncoder(),

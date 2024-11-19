@@ -4,14 +4,14 @@ namespace subsystems::flywheel
 {
 #if defined(TARGET_STANDARD) || defined(TARGET_HERO)
 FlywheelSubsystem::FlywheelSubsystem(src::Drivers* drivers)
-    : subsystems::Subsystem(drivers),
+    : Subsystem(drivers),
       drivers(drivers),
       motors{{drivers, FLYWHEEL_L}, {drivers, FLYWHEEL_R}}
 {
 }
 #elif defined(TARGET_SENTRY)
 FlywheelSubsystem::FlywheelSubsystem(src::Drivers* drivers)
-    : subsystems::Subsystem(drivers),
+    : Subsystem(drivers),
       drivers(drivers),
       motors{
           {drivers, FLYWHEEL_TL},

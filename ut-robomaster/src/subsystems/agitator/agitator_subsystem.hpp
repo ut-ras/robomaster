@@ -17,7 +17,7 @@ namespace agitator
 using flywheel::FlywheelSubsystem;
 using motors::MotorController;
 
-class AgitatorSubsystem : public subsystems::Subsystem
+class AgitatorSubsystem : public Subsystem
 {
 public:
     AgitatorSubsystem(src::Drivers *drivers, FlywheelSubsystem *flywheel, MotorConfig motor);

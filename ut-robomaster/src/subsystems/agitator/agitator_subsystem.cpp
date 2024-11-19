@@ -16,7 +16,7 @@ AgitatorSubsystem::AgitatorSubsystem(
     src::Drivers* drivers,
     FlywheelSubsystem* flywheel,
     MotorConfig motor)
-    : subsystems::Subsystem(drivers),
+    : Subsystem(drivers),
       drivers(drivers),
       flywheel(flywheel),
       agitator{drivers, motor}
@@ -27,7 +27,7 @@ AgitatorSubsystem::AgitatorSubsystem(
     src::Drivers* drivers,
     FlywheelSubsystem* flywheel,
     MotorConfig motor)
-    : UTSubsystem(drivers),
+    : Subsystem(drivers),
       drivers(drivers),
       flywheel(flywheel),
       agitator{drivers, motor},
@@ -54,7 +54,7 @@ void AgitatorSubsystem::refresh()
 
     float time = getTimeMilliseconds() / 1000.0f;
     float velocity = getShapedVelocity(time, 1.0f, 0.0f, ballsPerSecond);
-    bool killSwitch = drivers->isKillSwitched() || !flywheel->isActive() || isAmputated();
+    bool killSwitch = drivers->isKillSwitched() || isAmputated() || !flywheel->isActive();
 
     agitator.setActive(!killSwitch);
     agitator.updateVelocity(velocity);

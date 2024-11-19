@@ -19,7 +19,7 @@ namespace subsystems
 {
 namespace chassis
 {
-class ChassisSubsystem : public subsystems::Subsystem
+class ChassisSubsystem : public Subsystem
 {
 public:
     ChassisSubsystem(src::Drivers* drivers);

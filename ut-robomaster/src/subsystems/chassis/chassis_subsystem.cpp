@@ -12,7 +12,7 @@ namespace subsystems
 namespace chassis
 {
 ChassisSubsystem::ChassisSubsystem(src::Drivers* drivers)
-    : subsystems::Subsystem(drivers),
+    : Subsystem(drivers),
       drivers(drivers),
       powerLimiter(drivers, ENERGY_BUFFER_LIMIT_THRESHOLD, ENERGY_BUFFER_CRIT_THRESHOLD),
       wheels{
