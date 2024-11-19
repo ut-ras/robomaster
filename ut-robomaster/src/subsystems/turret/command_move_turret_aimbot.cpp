@@ -6,6 +6,7 @@ namespace commands
 {
 using namespace tap::algorithms::ballistics;
 using communication::TurretData;
+using modm::Vector3f;
 
 void CommandMoveTurretAimbot::initialize() {}
 
@@ -40,7 +41,7 @@ void CommandMoveTurretAimbot::execute()
         targetVel = rotMat * targetVel;
         targetAcc = rotMat * targetAcc;
 
-        MeasuredKinematicState kinState{targetPos, targetVel, targetAcc};
+        SecondOrderKinematicState kinState{targetPos, targetVel, targetAcc};
 
         float turretPitch = 0.0f;
         float turretYaw = 0.0f;

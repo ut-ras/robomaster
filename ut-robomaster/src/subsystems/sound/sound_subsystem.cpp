@@ -1,8 +1,11 @@
 #include "sound_subsystem.hpp"
-namespace subsystems
+
+#include "tap/communication/sensors/buzzer/buzzer.hpp"
+
+namespace subsystems::sound
 {
-namespace sound
-{
+using tap::gpio::Pwm;
+
 SoundSubsystem::SoundSubsystem(src::Drivers* drivers)
     : tap::control::Subsystem(drivers),
       drivers(drivers)
@@ -10,7 +13,6 @@ SoundSubsystem::SoundSubsystem(src::Drivers* drivers)
 }
 
 void SoundSubsystem::initialize() {}
-
 void SoundSubsystem::refresh() {}
 
 void SoundSubsystem::silence() { tap::buzzer::silenceBuzzer(&drivers->pwm); }
@@ -18,7 +20,5 @@ void SoundSubsystem::silence() { tap::buzzer::silenceBuzzer(&drivers->pwm); }
 void SoundSubsystem::setBuzzerFrequency(int frequency)
 {
     tap::buzzer::playNote(&drivers->pwm, frequency);
-    // define keys with numerical frequencies
 }
-};  // namespace sound
-}  // namespace subsystems
+}  // namespace subsystems::sound
