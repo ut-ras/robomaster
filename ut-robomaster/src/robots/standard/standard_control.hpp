@@ -1,3 +1,4 @@
+#include "control/client-display/command_client_display.hpp"
 #include "robots/common/common_control_manual.hpp"
 #include "subsystems/agitator/command_agitator_continuous.hpp"
 
@@ -15,6 +16,8 @@ public:
 
         drivers->commandMapper.addMap(&leftMouseDown);
         drivers->commandMapper.addMap(&leftSwitchUp);
+
+        drivers->commandMapper.addMap(&hudTestKey);
     }
 
 private:
@@ -29,6 +32,8 @@ private:
         BarrelId::STANDARD1,
         true};
 
+    commands::CommandClientDisplay hudTest{drivers, &flywheel};
+
     // Mappings
     HoldCommandMapping leftMouseDown{
         drivers,
@@ -39,4 +44,6 @@ private:
         drivers,
         {&rotateAgitator_SwitchUp, &rotateFlywheel_SwitchMid},
         RemoteMapState(Remote::Switch::LEFT_SWITCH, Remote::SwitchState::UP)};
+
+    HoldCommandMapping hudTestKey{drivers, {&hudTest}, RemoteMapState({Remote::Key::Z})};
 };
