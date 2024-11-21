@@ -47,6 +47,12 @@ void CommandSentryPosition::execute()
         spin = 0.0f;
     }
 
+    // don't move for 10 sec
+    if (getTimeMilliseconds() - startup_time < 10000.f)
+    {
+        move = Vector2f(0.0f);
+    }
+
     if (drivers->isGameActive())
     {
         chassis->input(move, spin);
