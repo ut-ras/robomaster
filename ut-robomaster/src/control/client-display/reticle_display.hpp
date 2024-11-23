@@ -36,8 +36,8 @@ public:
 
 private:
     src::Drivers *drivers;
-    TurretSubsystem *turret;
     RefSerialTransmitter refSerialTransmitter;
+    TurretSubsystem *turret;
     const uint8_t graphicId[3] = {1, 0, 1};  // 3 byte identifier for this graphic element
     RefSerialData::Tx::Graphic1Message msg;
 

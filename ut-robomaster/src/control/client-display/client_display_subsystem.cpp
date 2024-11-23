@@ -4,9 +4,24 @@
 
 namespace subsystems::control
 {
-ClientDisplaySubsystem::ClientDisplaySubsystem(tap::Drivers *drivers) : Subsystem(drivers) {}
+ClientDisplaySubsystem::ClientDisplaySubsystem(src::Drivers* drivers, TurretSubsystem* turret)
+    : Subsystem(drivers),
+      drivers(drivers),
+      turret(turret),
+      currentGraphics(drivers)
+{
+}
 
-void ClientDisplaySubsystem::initialize() {}
+void ClientDisplaySubsystem::initialize()
+{
+    // graphic::graphic_circle circle2(drivers);
+    // graphic::graphic_circle* circle = new graphic::graphic_circle(drivers);
+    // graphic::graphic_reticle* reticle = new graphic::graphic_reticle(drivers, turret);
+    // currentGraphics.emplace_back(circle);
+    // currentGraphics = circle2;
+    // currentGraphics = reticle;
+    *numGraphics = 2;
+}
 
 void ClientDisplaySubsystem::refresh() {}
 

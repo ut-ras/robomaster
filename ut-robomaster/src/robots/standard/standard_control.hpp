@@ -13,6 +13,7 @@ public:
 
         agitator.initialize();
         drivers->commandScheduler.registerSubsystem(&agitator);
+        drivers->commandScheduler.registerSubsystem(&client);
 
         drivers->commandMapper.addMap(&leftMouseDown);
         drivers->commandMapper.addMap(&leftSwitchUp);
@@ -23,6 +24,7 @@ public:
 private:
     // Subsystems
     AgitatorSubsystem agitator{drivers, &flywheel, AGITATOR};
+    ClientDisplaySubsystem client{drivers, &turret};
 
     // Commands
     CommandAgitatorContinuous rotateAgitator_LeftMouse{drivers, &agitator, BarrelId::STANDARD1};
@@ -32,7 +34,7 @@ private:
         BarrelId::STANDARD1,
         true};
 
-    commands::CommandClientDisplay hudTest{drivers, &flywheel};
+    commands::CommandClientDisplay hudTest{drivers, &client};
 
     // Mappings
     HoldCommandMapping leftMouseDown{

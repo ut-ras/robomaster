@@ -1,0 +1,64 @@
+#pragma once
+
+#include "graphic_abstract.hpp"
+#include "subsystems/flywheel/flywheel_subsystem.hpp"
+
+using subsystems::flywheel::FlywheelSubsystem;
+using tap::communication::serial::RefSerialData;
+namespace graphic
+{
+
+class graphic_flywheel_on : public graphic_abstract
+{
+public:
+    graphic_flywheel_on(src::Drivers *drivers, FlywheelSubsystem *flywheel)
+        : graphic_abstract(drivers, 2), flywheel(flywheel) {};
+    void initialize() override
+    {
+        // restart();
+
+        RefSerialTransmitter::configGraphicGenerics(
+            &word_msg.graphicData,
+            graphicId,
+            RefSerialData::Tx::GRAPHIC_ADD,
+            0,
+            RefSerialData::Tx::GraphicColor::CYAN);
+
+        // RESOLUTION HAS TO BE 1920x1080 OR HUD WILL NOT WORK PROPERLY
+        // RefSerialTransmitter::configCircle(10, CENTER_X, CENTER_Y, CIRCLE_SIZE, &msg.graphicData);
+
+        RefSerialTransmitter::configCharacterMsg(100, 10, CENTER_X, CENTER_Y, "Flywheel on", &word_msg);
+    };
+
+    modm::ResumableResult<bool> run() override
+    {
+        RF_BEGIN();
+
+        RF_WAIT_UNTIL(drivers->refSerial.getRefSerialReceivingData());
+
+        // setup new graphic (GRAPHIC_ADD operation)
+        RF_CALL(refSerialTransmitter.sendGraphic(&word_msg));
+
+        while (true)
+        {
+            // msg.graphicData.operation = RefSerialData::Tx::GRAPHIC_MODIFY;
+            // msg.graphicData.lineWidth = 5.0f + 25.0f * t;
+            // msg.graphicData.radius = 100.0f + 300.0f * t;
+            // DROP_DISTANCE = this.turret.getBulletDropReticle();
+            // msg.graphicData.startY = CENTER_Y - turret->getBulletDropReticle();
+            ;  // startY is centerY
+
+            // modify existing graphic based on the ID (GRAPHIC_MODIFY operation)
+            // RF_CALL(refSerialTransmitter.sendGraphic(&msg));
+        }
+        RF_END_RETURN(true);
+    };
+
+private:
+    static constexpr uint16_t CENTER_X = 1920 / 4;
+    static constexpr uint16_t CENTER_Y = 1080 / 4;
+    RefSerialData::Tx::GraphicCharacterMessage word_msg;
+    FlywheelSubsystem* flywheel;
+};
+
+}  // namespace graphic
