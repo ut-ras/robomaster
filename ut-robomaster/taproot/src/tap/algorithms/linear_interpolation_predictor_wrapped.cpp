@@ -21,17 +21,35 @@
  * along with Taproot.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "subsystem_mock.hpp"
+#include "linear_interpolation_predictor_wrapped.hpp"
 
-namespace tap::mock
+namespace tap::algorithms
 {
-SubsystemMock::SubsystemMock(Drivers *drivers) : control::Subsystem(drivers)
+LinearInterpolationPredictorWrapped::LinearInterpolationPredictorWrapped(
+    float lowerBound,
+    float upperBound)
+    : lastUpdateCallTime(0),
+      previousValue(0.0f, lowerBound, upperBound),
+      slope(0.0f)
 {
-    // Most of the time tests expect that we don't have a test command
-    // for the subsystem. This makes tests cleaner
-    EXPECT_CALL(*this, getTestCommand)
-        .Times(testing::AnyNumber())
-        .WillRepeatedly(testing::Return(nullptr));
 }
-SubsystemMock::~SubsystemMock() {}
-}  // namespace tap::mock
+
+void LinearInterpolationPredictorWrapped::update(float newValue, uint32_t currTime)
+{
+    if (currTime <= lastUpdateCallTime)
+    {
+        slope = 0;
+        return;
+    }
+    slope = (previousValue.minDifference(newValue)) / (currTime - lastUpdateCallTime);
+    previousValue.setWrappedValue(newValue);
+    lastUpdateCallTime = currTime;
+}
+
+void LinearInterpolationPredictorWrapped::reset(float initialValue, uint32_t initialTime)
+{
+    previousValue.setWrappedValue(initialValue);
+    lastUpdateCallTime = initialTime;
+    slope = 0.0f;
+}
+}  // namespace tap::algorithms
