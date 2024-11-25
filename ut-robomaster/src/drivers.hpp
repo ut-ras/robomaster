@@ -21,6 +21,7 @@ public:
         return this->refSerial.getGameData().gameStage ==
                tap::communication::serial::RefSerialData::Rx::GameStage::IN_GAME;
     }
+
 };  // class Drivers
 
 }  // namespace src

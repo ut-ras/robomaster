@@ -10,6 +10,12 @@ void CommandSentryPosition::execute()
     Vector2f move = Vector2f(0.0f);
     float spin = 0.0f;
 
+    if (drivers->isGameActive() && !gameStarted)
+    {
+        gameStarted = true;
+        startup_time = getTimeMilliseconds();
+    }
+
     // if (prevTime == 0.0f)
     // {
     //     prev_time = getTimeMilliseconds();
@@ -42,13 +48,13 @@ void CommandSentryPosition::execute()
 
     spin = 1.0f;
 
-    if (getTimeMilliseconds() - startup_time < 35000.0f)
+    if (gameStarted && getTimeMilliseconds() - startup_time < 35000.0f)
     {
         spin = 0.0f;
     }
 
     // don't move for 10 sec
-    if (getTimeMilliseconds() - startup_time < 10000.f)
+    if (gameStarted && getTimeMilliseconds() - startup_time < 10000.f)
     {
         move = Vector2f(0.0f);
     }
