@@ -1,6 +1,6 @@
-#ifndef COMMAND_SENTRY_POSITION_HPP_
-#define COMMAND_SENTRY_POSITION_HPP_
+#pragma once
 
+#include "tap/architecture/timeout.hpp"
 #include "tap/control/command.hpp"
 
 #include "chassis_subsystem.hpp"
@@ -11,7 +11,7 @@ namespace commands
 using namespace tap::communication::serial;
 using namespace modm;
 using subsystems::chassis::ChassisSubsystem;
-using tap::arch::clock::getTimeMilliseconds;
+using tap::arch::MilliTimeout;
 
 class CommandSentryPosition : public tap::control::Command
 {
@@ -36,10 +36,6 @@ public:
 private:
     src::Drivers *drivers;
     ChassisSubsystem *chassis;
-    // bool isStarted = false;
-    // float startTime = 0.0f;
-    float startup_time = 0.0f;
+    MilliTimeout moveTimer;
 };
 }  // namespace commands
-
-#endif
