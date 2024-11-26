@@ -16,3 +16,5 @@ gcov-result
 docs/_build
 docs/api
 docs/doxyoutput
+
+.DS_Store

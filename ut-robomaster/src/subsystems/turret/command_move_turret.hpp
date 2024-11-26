@@ -13,10 +13,10 @@ namespace commands
 using subsystems::turret::TurretSubsystem;
 using tap::communication::serial::Remote;
 
-class CommandMoveTurretJoystick : public tap::control::Command
+class CommandMoveTurret : public tap::control::Command
 {
 public:
-    CommandMoveTurretJoystick(src::Drivers* drivers, TurretSubsystem* turret)
+    CommandMoveTurret(src::Drivers* drivers, TurretSubsystem* turret)
         : drivers(drivers),
           turret(turret)
     {
@@ -31,7 +31,7 @@ public:
 
     bool isFinished() const override;
 
-    const char* getName() const override { return "move turret joystick command"; }
+    const char* getName() const override { return "move turret command"; }
 
 private:
     src::Drivers* drivers;

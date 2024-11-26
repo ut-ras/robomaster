@@ -16,17 +16,19 @@ using namespace modm;
 using subsystems::chassis::ChassisSubsystem;
 using subsystems::turret::TurretSubsystem;
 
-class CommandMoveChassisKeyboard : public tap::control::Command
+class CommandMoveChassis : public tap::control::Command
 {
 public:
-    CommandMoveChassisKeyboard(
+    CommandMoveChassis(
         src::Drivers *drivers,
         ChassisSubsystem *chassis,
         TurretSubsystem *turret,
+        bool turretRelative = false,
         bool beyblade = false)
         : drivers(drivers),
           chassis(chassis),
           turret(turret),
+          turretRelative(turretRelative),
           beyblade(beyblade)
     {
         addSubsystemRequirement(chassis);
@@ -47,7 +49,11 @@ private:
     ChassisSubsystem *chassis;
     TurretSubsystem *turret;
 
-    Vector2f inputMove = Vector2f(0.0f);
+    Vector2f keyboardInputMove = Vector2f(0.0f);
+    const bool turretRelative = false;
     const bool beyblade = false;
+
+    bool applyKeyboardInput(Vector2f &moveOut, float &spinOut);
+    bool applyJoystickInput(Vector2f &moveOut, float &spinOut);
 };
 }  // namespace commands

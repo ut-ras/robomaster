@@ -3,15 +3,14 @@
 #include "tap/algorithms/math_user_utils.hpp"
 
 #include "robots/robot_constants.hpp"
+#include "subsystems/subsystem.hpp"
 
+namespace subsystems::chassis
+{
 using namespace tap::algorithms;
 
-namespace subsystems
-{
-namespace chassis
-{
 ChassisSubsystem::ChassisSubsystem(src::Drivers* drivers)
-    : tap::control::Subsystem(drivers),
+    : Subsystem(drivers),
       drivers(drivers),
       powerLimiter(drivers, ENERGY_BUFFER_LIMIT_THRESHOLD, ENERGY_BUFFER_CRIT_THRESHOLD),
       wheels{
@@ -31,9 +30,10 @@ void ChassisSubsystem::initialize()
 
 void ChassisSubsystem::refresh()
 {
+    setAmputated(!hardwareOk());
     for (int8_t i = 0; i < WHEELS; i++)
     {
-        wheels[i].setActive(!drivers->isKillSwitched());
+        wheels[i].setActive(!drivers->isKillSwitched() && !isAmputated());
         wheels[i].updateVelocity(targetWheelVels[i] / M_TWOPI);  // rad/s to rev/s
     }
 
@@ -66,9 +66,17 @@ void ChassisSubsystem::limitChassisPower()
     }
 }
 
-void ChassisSubsystem::runHardwareTests()
+bool ChassisSubsystem::hardwareOk()
 {
-    // TODO
+    for (int8_t i = 0; i < WHEELS; i++)
+    {
+        if (!wheels[i].isOnline())
+        {
+            return false;
+        }
+    }
+
+    return true;
 }
 
 void ChassisSubsystem::input(Vector2f move, float spin)
@@ -124,5 +132,4 @@ Vector3f ChassisSubsystem::measureVelocity()
     // Rotated -90 deg to match our reference frame
     return Vector3f(ya, -xa, wa) * WHEEL_RADIUS / 4.0f * M_TWOPI;
 }
-}  // namespace chassis
-}  // namespace subsystems
+}  // namespace subsystems::chassis

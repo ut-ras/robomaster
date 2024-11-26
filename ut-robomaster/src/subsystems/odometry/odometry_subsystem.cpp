@@ -1,24 +1,34 @@
 #include "odometry_subsystem.hpp"
 
 #include "robots/robot_constants.hpp"
-namespace subsystems
-{
-namespace odometry
+#include "subsystems/subsystem.hpp"
+
+namespace subsystems::odometry
 {
 OdometrySubsystem::OdometrySubsystem(
     src::Drivers* drivers,
     ChassisSubsystem* chassis,
     TurretSubsystem* turret)
-    : tap::control::Subsystem(drivers),
+    : Subsystem(drivers),
       drivers(drivers),
       chassis(chassis),
       turret(turret),
       chassisDisplacement(drivers, chassis),
       chassisYaw(drivers),
-      chassisTracker(&chassisYaw, &chassisDisplacement){};
+      chassisTracker(&chassisYaw, &chassisDisplacement) {};
 
-void OdometrySubsystem::initialize(){};
-void OdometrySubsystem::refresh() { chassisTracker.update(); }
+void OdometrySubsystem::initialize() {};
+
+void OdometrySubsystem::refresh()
+{
+    setAmputated(!hardwareOk());
+    if (!isAmputated())
+    {
+        chassisTracker.update();
+    }
+}
+
+bool OdometrySubsystem::hardwareOk() { return chassis->hardwareOk() && turret->hardwareOk(); }
 
 Vector2f OdometrySubsystem::getPosition()
 {
@@ -31,5 +41,4 @@ float OdometrySubsystem::getChassisAngularVelocity() { return chassis->measureVe
 
 float OdometrySubsystem::getTurretLocalYaw() { return turret->getCurrentLocalPitch(); }
 float OdometrySubsystem::getTurretLocalPitch() { return turret->getCurrentLocalYaw(); }
-};  // namespace odometry
-}  // namespace subsystems
+}  // namespace subsystems::odometry

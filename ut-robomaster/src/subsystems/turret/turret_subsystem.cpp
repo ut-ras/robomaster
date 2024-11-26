@@ -1,20 +1,13 @@
 #include "turret_subsystem.hpp"
 
-#include "tap/algorithms/ballistics.hpp"
-
 #include "modm/math.hpp"
 #include "robots/robot_constants.hpp"
+#include "subsystems/subsystem.hpp"
 
-namespace subsystems
+namespace subsystems::turret
 {
-namespace turret
-{
-using namespace tap::algorithms::ballistics;
-using communication::TurretData;
-using modm::Vector2f;
-
 TurretSubsystem::TurretSubsystem(src::Drivers* drivers)
-    : tap::control::Subsystem(drivers),
+    : Subsystem(drivers),
       drivers(drivers),
 #if defined(TARGET_STANDARD) || defined(TARGET_HERO)
       yawEncoder(),
@@ -26,6 +19,8 @@ TurretSubsystem::TurretSubsystem(src::Drivers* drivers)
       turretOffset(0.0f, 0.0f, M_TWOPI)
 {
 }
+
+bool TurretSubsystem::hardwareOk() { return yaw.isOnline() && pitch.isOnline(); }
 
 void TurretSubsystem::initialize()
 {
@@ -39,17 +34,19 @@ void TurretSubsystem::refresh()
     yawEncoder.update();
 #endif
 
+    setAmputated(!hardwareOk());
+
     yaw.updateMotorAngle();
     pitch.updateMotorAngle();
 
-    if (!isCalibrated && yaw.isOnline() && pitch.isOnline())
+    if (!isCalibrated && !isAmputated())
     {
         baseYaw = yaw.getAngle() / YAW_REDUCTION;
         basePitch = pitch.getAngle() / PITCH_REDUCTION - PITCH_MIN;
         isCalibrated = true;
     }
 
-    if (isCalibrated && !drivers->isKillSwitched())
+    if (isCalibrated && !drivers->isKillSwitched() && !isAmputated())
     {
         yaw.setAngle((baseYaw + getTargetLocalYaw()) * YAW_REDUCTION, DT);
         pitch.setAngle((basePitch + getTargetLocalPitch()) * PITCH_REDUCTION, DT);
@@ -74,7 +71,7 @@ void TurretSubsystem::setTargetWorldAngles(float yaw, float pitch)
     targetWorldPitch = modm::min(modm::max(pitch, PITCH_MIN), PITCH_MAX);
 }
 
-float TurretSubsystem::getChassisYaw() { return modm::toRadian(drivers->bmi088.getYaw() - 180.0f); }
+float TurretSubsystem::getChassisYaw() { return modm::toRadian(drivers->bmi088.getYaw()); }
 
 float TurretSubsystem::getTargetLocalYaw() { return targetWorldYaw - getChassisYaw(); }
 
@@ -91,10 +88,4 @@ float TurretSubsystem::getCurrentLocalPitch()
 }
 
 bool TurretSubsystem::getIsCalibrated() { return isCalibrated; }
-
-void TurretSubsystem::runHardwareTests()
-{
-    // TODO
-}
-}  // namespace turret
-}  // namespace subsystems
+}  // namespace subsystems::turret

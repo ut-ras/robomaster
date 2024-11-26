@@ -5,26 +5,21 @@
 
 #include "robots/robot_constants.hpp"
 #include "subsystems/flywheel/flywheel_subsystem.hpp"
+#include "subsystems/subsystem.hpp"
 #include "utils/motors/motor_controller.hpp"
 
 #include "drivers.hpp"
 
-namespace subsystems
-{
-namespace agitator
+namespace subsystems::agitator
 {
 using flywheel::FlywheelSubsystem;
 using motors::MotorController;
 
-class AgitatorSubsystem : public tap::control::Subsystem
+class AgitatorSubsystem : public Subsystem
 {
 public:
     AgitatorSubsystem(src::Drivers *drivers, FlywheelSubsystem *flywheel, MotorConfig motor);
-
-    ~AgitatorSubsystem() = default;
-
     void initialize() override;
-
     void refresh() override;
 
     float getShapedVelocity(float time, float a, float phi, float ballsPerSecond);
@@ -32,6 +27,8 @@ public:
 
     float getPosition();
     float getVelocity();
+
+    bool hardwareOk() override;
 
 private:
     src::Drivers *drivers;
@@ -44,6 +41,4 @@ private:
     MotorController feeder;
 #endif
 };
-
-}  // namespace agitator
-}  // namespace subsystems
+}  // namespace subsystems::agitator

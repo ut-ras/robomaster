@@ -3,7 +3,7 @@
 /*****************************************************************************/
 
 /*
- * Copyright (c) 2020-2021 Advanced Robotics at the University of Washington <robomstr@uw.edu>
+ * Copyright (c) 2022 Advanced Robotics at the University of Washington <robomstr@uw.edu>
  *
  * This file is part of Taproot.
  *
@@ -21,17 +21,25 @@
  * along with Taproot.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "subsystem_mock.hpp"
+#ifndef TAPROOT_UNJAM_COMMAND_INTERFACE_HPP_
+#define TAPROOT_UNJAM_COMMAND_INTERFACE_HPP_
 
-namespace tap::mock
+#include <cstdint>
+
+#include "tap/architecture/timeout.hpp"
+#include "tap/control/command.hpp"
+
+#include "../interfaces/integrable_setpoint_subsystem.hpp"
+
+namespace tap::control::setpoint
 {
-SubsystemMock::SubsystemMock(Drivers *drivers) : control::Subsystem(drivers)
+/**
+ * Command that attempts to unjam an agitator subsystem.
+ */
+class UnjamCommandInterface : public tap::control::Command
 {
-    // Most of the time tests expect that we don't have a test command
-    // for the subsystem. This makes tests cleaner
-    EXPECT_CALL(*this, getTestCommand)
-        .Times(testing::AnyNumber())
-        .WillRepeatedly(testing::Return(nullptr));
-}
-SubsystemMock::~SubsystemMock() {}
-}  // namespace tap::mock
+};
+
+}  // namespace tap::control::setpoint
+
+#endif  // TAPROOT_UNJAM_COMMAND_INTERFACE_HPP_
