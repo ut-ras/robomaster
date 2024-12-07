@@ -28,6 +28,7 @@ private:
     mutable Vector3f lastVel;   // m/s
     mutable Vector3f lastDisp;  // m
     mutable uint32_t lastTime;  // ms
+    mutable uint32_t prevTime = 0;
 };
 }  // namespace subsystems::odometry
 
