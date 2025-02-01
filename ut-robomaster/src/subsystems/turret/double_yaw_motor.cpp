@@ -3,17 +3,14 @@
 #include "tap/algorithms/math_user_utils.hpp"
 #include "tap/motor/dji_motor.hpp"
 
+#include "robots/robot_constants.hpp"
+
 namespace subsystems::turret
 {
-DoubleYawMotor::DoubleYawMotor(
-    src::Drivers *drivers,
-    MotorConfig motor1,
-    MotorConfig motor2,
-    Encoder *encoder)
+DoubleYawMotor::DoubleYawMotor(src::Drivers *drivers, MotorConfig motor1, MotorConfig motor2)
     : drivers(drivers),
       motor1(drivers, motor1.id, motor1.canBus, motor1.inverted, motor1.name),
       motor2(drivers, motor2.id, motor2.canBus, motor2.inverted, motor2.name),
-      encoder(encoder),
       velocityPid(motor1.velocityPidConstants),
       positionPid(motor1.positionPidConstants),
       setpoint(0.0f, 0.0f, 1.0f),
@@ -37,9 +34,8 @@ void DoubleYawMotor::reset()
 
 void DoubleYawMotor::updateMotorAngle()
 {
-    // float encoderAngle = encoder->getAngle();
     float encoderAngle = static_cast<float>(motor1.getEncoderUnwrapped()) /
-                         DjiMotor::ENC_RESOLUTION / M3508.gearRatio / 2.0f;
+                         DjiMotor::ENC_RESOLUTION / M3508.gearRatio / YAW_REDUCTION;
     currentAngle.setValue(encoderAngle);
 }
 

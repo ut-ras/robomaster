@@ -125,6 +125,8 @@ const MotorConfig
     YAW_L{M3508, MOTOR5, CAN_TURRET, false, "yaw left", {2.5f, 60.0f, 0.0f}, {45.0f, 0.0f, 0.0f}};
 const MotorConfig YAW_R{M3508, MOTOR6, CAN_TURRET, false, "yaw right", {}, {}};
 const MotorConfig PITCH{GM6020, MOTOR7, CAN_TURRET, false, "pitch", PID_VELOCITY_DEFAULT, {}};
+const float YAW_OFFSET = 0;
+const float PITCH_OFFSET = 0;
 
 // Velocities ----------------------------
 

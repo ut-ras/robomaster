@@ -57,9 +57,6 @@ private:
     TurretMotor pitch;
 
     float isCalibrated = false;
-    float basePitch = 0.0f;
     float baseYaw = 0.0f;
-
-    ContiguousFloat turretOffset;
 };
 }  // namespace subsystems::turret
