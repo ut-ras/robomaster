@@ -1,6 +1,7 @@
 #pragma once
 
 #include "modm/architecture/interface/i2c_device.hpp"
+#include "modm/math/geometry/angle.hpp"
 #include "modm/processing/protothread/protothread.hpp"
 
 #include "board.hpp"
@@ -36,7 +37,7 @@ public:
         PT_END();
     }
 
-    float getAngle() override { return angle / 4096.0f; }
+    float getAngle() override { return angle / 4096.0f * M_TWOPI; }
 
     bool isOnline() override { return online; }
 

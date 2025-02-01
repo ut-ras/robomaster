@@ -41,7 +41,10 @@ constexpr float NOZZLE_TO_PITCH = 0.18151f;   // distance from barrel nozzle to 
 constexpr float CAMERA_TO_BARRELS = 0.0427f;  // vertical ctc offset from camera lens to barrel (m)
 constexpr float CAMERA_X_OFFSET = -0.0335f;   // horizontal offset of main camera lens (m)
 
-static constexpr float YAW_REDUCTION = 1.0f;
+// static constexpr float YAW_OFFSET = 0.0293f;  // external encoder + motor encoder angles
+static constexpr float YAW_OFFSET = 0.0f;
+static constexpr float PITCH_OFFSET = 2.79f;
+static constexpr float YAW_REDUCTION = 2.0f;
 static constexpr float PITCH_REDUCTION = 1.0f;
 
 // Tuning constants -----------------------------------------------
@@ -123,8 +126,6 @@ const MotorConfig
     YAW_L{M3508, MOTOR5, CAN_TURRET, false, "yaw left", {2.5f, 60.0f, 0.0f}, {45.0f, 0.0f, 0.0f}};
 const MotorConfig YAW_R{M3508, MOTOR6, CAN_TURRET, false, "yaw right", {}, {}};
 const MotorConfig PITCH{GM6020, MOTOR7, CAN_TURRET, false, "pitch", PID_VELOCITY_DEFAULT, {}};
-const float YAW_OFFSET = 0;
-const float PITCH_OFFSET = 0;
 
 // Velocities -------------------------------------
 

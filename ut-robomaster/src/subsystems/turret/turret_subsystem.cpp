@@ -11,12 +11,11 @@ TurretSubsystem::TurretSubsystem(src::Drivers* drivers)
       drivers(drivers),
 #if defined(TARGET_STANDARD) || defined(TARGET_HERO)
       yawEncoder(),
-      yaw(drivers, YAW_L, YAW_R, &yawEncoder),
+      yaw(drivers, YAW_L, YAW_R),
 #else
       yaw(drivers, YAW, YAW_PID_CONFIG),
 #endif
-      pitch(drivers, PITCH, PITCH_PID_CONFIG),
-      turretOffset(0.0f, 0.0f, M_TWOPI)
+      pitch(drivers, PITCH, PITCH_PID_CONFIG)
 {
 }
 
@@ -39,17 +38,18 @@ void TurretSubsystem::refresh()
     yaw.updateMotorAngle();
     pitch.updateMotorAngle();
 
-    if (!isCalibrated && !isAmputated())
+    if (!isCalibrated && !isAmputated() && yawEncoder.isOnline())
     {
-        baseYaw = yaw.getAngle() / YAW_REDUCTION;
-        basePitch = pitch.getAngle() / PITCH_REDUCTION - PITCH_MIN;
+        baseYaw = yawEncoder.getAngle() - YAW_OFFSET - yaw.getAngle();
         isCalibrated = true;
+
+        setTargetWorldAngles(getCurrentLocalYaw() + getChassisYaw(), getCurrentLocalPitch());
     }
 
     if (isCalibrated && !drivers->isKillSwitched() && !isAmputated())
     {
-        yaw.setAngle((baseYaw + getTargetLocalYaw()) * YAW_REDUCTION, DT);
-        pitch.setAngle((basePitch + getTargetLocalPitch()) * PITCH_REDUCTION, DT);
+        yaw.setAngle(-baseYaw + getTargetLocalYaw(), DT);
+        pitch.setAngle((PITCH_OFFSET + getTargetLocalPitch()) * PITCH_REDUCTION, DT);
     }
     else
     {
@@ -79,12 +79,12 @@ float TurretSubsystem::getTargetLocalPitch() { return targetWorldPitch; }
 
 float TurretSubsystem::getCurrentLocalYaw()
 {
-    return !isCalibrated ? 0.0f : yaw.getAngle() / YAW_REDUCTION - baseYaw;
+    return !isCalibrated ? 0.0f : yaw.getAngle() + baseYaw;
 }
 
 float TurretSubsystem::getCurrentLocalPitch()
 {
-    return !isCalibrated ? 0.0f : pitch.getAngle() / PITCH_REDUCTION - basePitch;
+    return !isCalibrated ? 0.0f : pitch.getAngle() / PITCH_REDUCTION - PITCH_OFFSET;
 }
 
 bool TurretSubsystem::getIsCalibrated() { return isCalibrated; }
