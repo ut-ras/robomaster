@@ -30,12 +30,17 @@ bool ChassisDisplacementObserver::getVelocityChassisDisplacement(
     uint32_t currTime = tap::arch::clock::getTimeMicroseconds();
     if (prevTime != 0)
     {
-        velocity = chassis->measureVelocity();
+        modm::Vector3f myv = chassis->measureVelocity();
+        velocity->set(myv.x, myv.y, myv.z);
+
         //  velocity.set(chassisRelVel.x, chassisRelVel.y);
 
         // displacement->move(tickDisp);
-        displacement += velocity * (static_cast<float>(currTime - prevTime) / 1'000'000.0f);
-        }
+        float deltaT = (static_cast<float>(currTime - prevTime)) / 1'000'000.0f;
+        modm::Vector3f myDisp = myv * deltaT;
+        displacement->set(myDisp.x, myDisp.y, myDisp.z);
+        // displacement += velocity * (static_cast<float>(currTime - prevTime) / 1'000'000.0f);
+    }
 
     prevTime = currTime;
     // bmi088::Bmi088* imu = &drivers->bmi088;
@@ -66,6 +71,7 @@ bool ChassisDisplacementObserver::getVelocityChassisDisplacement(
     // *displacement = nowDisp;
 
     // return imu->getImuState() == ImuInterface::ImuState::IMU_CALIBRATED;
+    return true;
 }
 
 }  // namespace subsystems::odometry
