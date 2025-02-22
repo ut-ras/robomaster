@@ -1,5 +1,4 @@
 #include "subsystems/odometry/observer_displacement.hpp"
-
 #include "tap/architecture/clock.hpp"
 
 /*
@@ -34,11 +33,14 @@ bool ChassisDisplacementObserver::getVelocityChassisDisplacement(
         velocity->set(myv.x, myv.y, myv.z);
 
         //  velocity.set(chassisRelVel.x, chassisRelVel.y);
-
         // displacement->move(tickDisp);
         float deltaT = (static_cast<float>(currTime - prevTime)) / 1'000'000.0f;
-        modm::Vector3f myDisp = myv * deltaT;
+        modm::Vector3f myDisp = lastDisp + *velocity * DT;
+        lastDisp = myDisp;
         displacement->set(myDisp.x, myDisp.y, myDisp.z);
+        
+        // myDisp = *displacement + *velocity * (static_cast<float>(currTime - prevTime) / 1'000'000.0f);
+        // displacement->set(myDisp * (static_cast<float>(currTime - prevTime) / 1'000'000.0f));
         // displacement += velocity * (static_cast<float>(currTime - prevTime) / 1'000'000.0f);
     }
 

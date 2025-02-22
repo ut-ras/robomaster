@@ -4,6 +4,8 @@
 #include "tap/algorithms/odometry/odometry_2d_interface.hpp"
 #include "tap/algorithms/odometry/odometry_2d_tracker.hpp"
 #include "tap/control/subsystem.hpp"
+#include "tap/architecture/periodic_timer.hpp"
+
 
 #include "modm/math/geometry.hpp"
 #include "modm/math/geometry/location_2d.hpp"
@@ -48,5 +50,6 @@ private:
     ChassisDisplacementObserver chassisDisplacement;
     ChassisWorldYawObserver chassisYaw;
     Odometry2DTracker chassisTracker;
+    tap::arch::PeriodicMilliTimer refreshTimer{100};
 };
 }  // namespace subsystems::odometry
