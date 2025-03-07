@@ -11,7 +11,9 @@ public:
         CommonControlManual::initialize();
 
         agitator.initialize();
+        odometry.initialize();
         drivers->commandScheduler.registerSubsystem(&agitator);
+        drivers->commandScheduler.registerSubsystem(&odometry);
 
         drivers->commandMapper.addMap(&leftMouseDown);
         drivers->commandMapper.addMap(&leftSwitchUp);
@@ -20,6 +22,7 @@ public:
 private:
     // Subsystems
     AgitatorSubsystem agitator{drivers, &flywheel, AGITATOR};
+    OdometrySubsystem odometry{drivers, &chassis, &turret};
 
     // Commands
     CommandAgitatorContinuous rotateAgitator_LeftMouse{drivers, &agitator, BarrelId::STANDARD1};
