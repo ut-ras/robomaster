@@ -4,23 +4,20 @@
 
 namespace subsystems::control
 {
-ClientDisplaySubsystem::ClientDisplaySubsystem(src::Drivers* drivers, TurretSubsystem* turret)
+ClientDisplaySubsystem::ClientDisplaySubsystem(src::Drivers* drivers, TurretSubsystem* turret,  FlywheelSubsystem* flywheel)
     : Subsystem(drivers),
       drivers(drivers),
       turret(turret),
-      currentGraphics(drivers)
+      flywheel(flywheel),
+      circle(drivers),
+      reticle(drivers, ClientDisplaySubsystem::turret),
+      flywheel_on(drivers, ClientDisplaySubsystem::flywheel)
 {
 }
 
 void ClientDisplaySubsystem::initialize()
 {
-    // graphic::graphic_circle circle2(drivers);
-    // graphic::graphic_circle* circle = new graphic::graphic_circle(drivers);
-    // graphic::graphic_reticle* reticle = new graphic::graphic_reticle(drivers, turret);
-    // currentGraphics.emplace_back(circle);
-    // currentGraphics = circle2;
-    // currentGraphics = reticle;
-    *numGraphics = 2;
+    *numGraphics = 3;
 }
 
 void ClientDisplaySubsystem::refresh() {}

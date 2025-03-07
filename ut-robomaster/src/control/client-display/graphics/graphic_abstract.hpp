@@ -15,7 +15,7 @@ using modm::ResumableResult;
 namespace graphic
 {
 
-class graphic_abstract : protected NestedResumable<2>
+class graphic_abstract : protected NestedResumable<3>
 {
 public:
     graphic_abstract(src::Drivers* drivers, uint8_t id)
@@ -36,6 +36,8 @@ protected:
     RefSerialTransmitter refSerialTransmitter;
     uint8_t graphicId[3];  // 3 byte identifier for this graphic element
     RefSerialData::Tx::Graphic1Message msg;
+    RefSerialData::Tx::GraphicCharacterMessage word_msg;
+
 };
 
 }  // namespace graphic

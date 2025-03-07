@@ -7,7 +7,8 @@ namespace graphic
 class graphic_circle : public graphic_abstract
 {
 public:
-    graphic_circle(src::Drivers *drivers) : graphic_abstract(drivers, 1) {};
+    graphic_circle(src::Drivers *drivers) : 
+    graphic_abstract(drivers, 1) {};
     void initialize() override
     {
         // restart();

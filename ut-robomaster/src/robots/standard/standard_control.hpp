@@ -24,7 +24,7 @@ public:
 private:
     // Subsystems
     AgitatorSubsystem agitator{drivers, &flywheel, AGITATOR};
-    ClientDisplaySubsystem client{drivers, &turret};
+    ClientDisplaySubsystem client{drivers, &turret, &flywheel};
 
     // Commands
     CommandAgitatorContinuous rotateAgitator_LeftMouse{drivers, &agitator, BarrelId::STANDARD1};
