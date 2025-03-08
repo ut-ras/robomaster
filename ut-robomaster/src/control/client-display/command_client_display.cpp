@@ -10,18 +10,11 @@ void CommandClientDisplay::initialize()
     circle = client->getCircle();
     reticle = client->getReticle();
     flywheel_on = client->getFlywheelOn();
-    
-    circle->initialize();
-    reticle->initialize();
-    flywheel_on->initialize();
 }
 
 void CommandClientDisplay::execute() { run(); }
 
-void CommandClientDisplay::end(bool)
-{
-    tap::buzzer::silenceBuzzer(&drivers->pwm);
-}
+void CommandClientDisplay::end(bool) { tap::buzzer::silenceBuzzer(&drivers->pwm); }
 
 bool CommandClientDisplay::isFinished() const { return false; }
 
@@ -29,9 +22,22 @@ bool CommandClientDisplay::run()
 {
     PT_BEGIN();
 
-    // PT_CALL(circle->run());
-    PT_CALL(reticle->run());
-    PT_CALL(flywheel_on->run());
+    // Initialize
+    PT_WAIT_UNTIL(drivers->refSerial.getRefSerialReceivingData());
+    PT_CALL(circle->initialize());
+    PT_CALL(reticle->initialize());
+    PT_CALL(flywheel_on->initialize());
+
+    // Update
+    while (true)
+    {
+        PT_CALL(reticle->run());
+        PT_WAIT_UNTIL(hudTimer.execute());
+        PT_CALL(circle->run());
+        PT_WAIT_UNTIL(hudTimer.execute());
+        PT_CALL(flywheel_on->run());
+        PT_WAIT_UNTIL(hudTimer.execute());
+    }
 
     PT_END();
 }
