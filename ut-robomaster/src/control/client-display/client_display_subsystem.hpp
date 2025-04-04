@@ -9,6 +9,7 @@
 #include "control/client-display/graphics/graphic_abstract.hpp"
 #include "control/client-display/graphics/graphic_circle.hpp"
 #include "control/client-display/graphics/graphic_flywheel_on.hpp"
+#include "control/client-display/graphics/graphic_orientation.hpp"
 #include "control/client-display/graphics/graphic_reticle.hpp"
 #include "subsystems/flywheel/flywheel_subsystem.hpp"
 #include "subsystems/turret/turret_subsystem.hpp"
@@ -33,6 +34,7 @@ public:
     graphic::graphic_abstract* getCircle() { return &circle; };
     graphic::graphic_abstract* getReticle() { return &reticle; };
     graphic::graphic_abstract* getFlywheelOn() { return &flywheel_on; };
+    graphic::graphic_abstract* getOrientation() { return &orientation; };
 
     void runHardwareTests() override;
 
@@ -47,5 +49,6 @@ private:
     graphic::graphic_circle circle{drivers};
     graphic::graphic_reticle reticle{drivers, turret};
     graphic::graphic_flywheel_on flywheel_on{drivers, flywheel};
+    graphic::graphic_orientation orientation{drivers, turret};
 };
 }  // namespace subsystems::control

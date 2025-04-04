@@ -5,16 +5,18 @@ namespace commands
 
 void CommandClientDisplay::initialize()
 {
-    tap::buzzer::playNote(&drivers->pwm, 440);
+    // tap::buzzer::playNote(&drivers->pwm, 440);
 
     circle = client->getCircle();
     reticle = client->getReticle();
     flywheel_on = client->getFlywheelOn();
+    orientation = client->getOrientation();
+    restart();
 }
 
 void CommandClientDisplay::execute() { run(); }
 
-void CommandClientDisplay::end(bool) { tap::buzzer::silenceBuzzer(&drivers->pwm); }
+void CommandClientDisplay::end(bool) { /*tap::buzzer::silenceBuzzer(&drivers->pwm);*/ }
 
 bool CommandClientDisplay::isFinished() const { return false; }
 
@@ -27,6 +29,7 @@ bool CommandClientDisplay::run()
     PT_CALL(circle->initialize());
     PT_CALL(reticle->initialize());
     PT_CALL(flywheel_on->initialize());
+    PT_CALL(orientation->initialize());
 
     // Update
     while (true)
@@ -36,6 +39,8 @@ bool CommandClientDisplay::run()
         PT_CALL(circle->run());
         PT_WAIT_UNTIL(hudTimer.execute());
         PT_CALL(flywheel_on->run());
+        PT_WAIT_UNTIL(hudTimer.execute());
+        PT_CALL(orientation->run());
         PT_WAIT_UNTIL(hudTimer.execute());
     }
 

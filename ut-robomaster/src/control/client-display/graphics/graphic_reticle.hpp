@@ -37,10 +37,9 @@ public:
 
     modm::ResumableResult<bool> run() override
     {
-        float t = sinf(tap::arch::clock::getTimeMilliseconds() / 1000.0f * 3.0f) * 0.5f + 0.5f;
+        // float t = sinf(tap::arch::clock::getTimeMilliseconds() / 1000.0f * 3.0f) * 0.5f + 0.5f;
         RF_BEGIN();
 
-        // msg.graphicData.operation = RefSerialData::Tx::GRAPHIC_MODIFY;
         // // msg.graphicData.lineWidth = 5.0f + 25.0f * t;
         // // msg.graphicData.radius = 100.0f + 300.0f * t;
         // // DROP_DISTANCE = this.turret.getBulletDropReticle();
@@ -50,9 +49,13 @@ public:
         // // modify existing graphic based on the ID (GRAPHIC_MODIFY operation)
         // RF_CALL(refSerialTransmitter.sendGraphic(&msg));
 
+        // msg.graphicData.operation = RefSerialData::Tx::GRAPHIC_MODIFY;
+        // msg.graphicData.lineWidth = 5.0f + 25.0f * t;
+        // msg.graphicData.radius = 100.0f + 300.0f * t;
+
         msg.graphicData.operation = RefSerialData::Tx::GRAPHIC_MODIFY;
-        msg.graphicData.lineWidth = 5.0f + 25.0f * t;
-        msg.graphicData.radius = 100.0f + 300.0f * t;
+        msg.graphicData.startY = turret->getBulletDropReticle();
+
 
         // modify existing graphic based on the ID (GRAPHIC_MODIFY operation)
         RF_CALL(refSerialTransmitter.sendGraphic(&msg));

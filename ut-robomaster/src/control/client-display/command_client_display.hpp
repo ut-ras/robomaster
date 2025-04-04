@@ -48,6 +48,7 @@ private:
     graphic::graphic_abstract* circle;
     graphic::graphic_abstract* reticle;
     graphic::graphic_abstract* flywheel_on;
+    graphic::graphic_abstract* orientation;
     tap::arch::PeriodicMilliTimer hudTimer{50};
 };
 }  // namespace commands

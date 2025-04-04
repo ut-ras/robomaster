@@ -14,11 +14,10 @@ public:
         agitator.initialize();
         drivers->commandScheduler.registerSubsystem(&agitator);
         drivers->commandScheduler.registerSubsystem(&client);
+        client.setDefaultCommand(&hudTest);
 
         drivers->commandMapper.addMap(&leftMouseDown);
         drivers->commandMapper.addMap(&leftSwitchUp);
-
-        drivers->commandMapper.addMap(&hudTestKey);
     }
 
 private:
