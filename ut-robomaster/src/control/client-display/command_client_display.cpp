@@ -26,16 +26,16 @@ bool CommandClientDisplay::run()
 
     // Initialize
     PT_WAIT_UNTIL(drivers->refSerial.getRefSerialReceivingData());
+    // PT_CALL(reticle->initialize());
     PT_CALL(circle->initialize());
-    PT_CALL(reticle->initialize());
     PT_CALL(flywheel_on->initialize());
     PT_CALL(orientation->initialize());
 
     // Update
     while (true)
     {
-        PT_CALL(reticle->run());
-        PT_WAIT_UNTIL(hudTimer.execute());
+        // PT_CALL(reticle->run());
+        // PT_WAIT_UNTIL(hudTimer.execute());
         PT_CALL(circle->run());
         PT_WAIT_UNTIL(hudTimer.execute());
         PT_CALL(flywheel_on->run());
