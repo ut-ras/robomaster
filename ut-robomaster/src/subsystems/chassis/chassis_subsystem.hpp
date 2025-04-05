@@ -47,6 +47,7 @@ private:
     /// @param v Linear velocity (m/s)
     /// @param wZ Angular velocity (rad/s)
     void setMecanumWheelVelocities(Vector2f v, float wZ);
+    void setOmniVelocities(Vector2f v, float wZ);
 
     static constexpr float ENERGY_BUFFER_LIMIT_THRESHOLD = 60.0f;
 #if defined(TARGET_STANDARD)

@@ -109,6 +109,12 @@ void ChassisSubsystem::input(Vector2f move, float spin)
     setMecanumWheelVelocities(v, wZ);
 }
 
+// new for omniwheels
+void ChassisSubsystem::input(float omega1, float omega2, float omega3, float omega4)
+{
+    // add code to send targetWheelVels to motor controllers
+}
+
 void ChassisSubsystem::setMecanumWheelVelocities(Vector2f v, float wZ)
 {
     // our velocity is rotated 90 deg, so y is forward/back and x is left/right
@@ -116,6 +122,15 @@ void ChassisSubsystem::setMecanumWheelVelocities(Vector2f v, float wZ)
     targetWheelVels[1] = (-v.y + v.x - wZ * WHEEL_LXY) / WHEEL_RADIUS;  // rad/s
     targetWheelVels[2] = (-v.y + v.x + wZ * WHEEL_LXY) / WHEEL_RADIUS;  // rad/s
     targetWheelVels[3] = (-v.y - v.x - wZ * WHEEL_LXY) / WHEEL_RADIUS;  // rad/s
+}
+
+void ChassisSubsystem::setOmniVelocities(float omega1, float omega2, float omega3, float omega4)
+{
+    // fill in new set omni veloc
+    targetWheelVels[0] = omega1 * some_scaling_factor;  // I needa change this
+    targetWheelVels[1] = omega2 * some_scaling_factor;
+    targetWheelVels[2] = omega3 * some_scaling_factor;
+    targetWheelVels[3] = omega4 * some_scaling_factor;
 }
 
 Vector3f ChassisSubsystem::measureVelocity()
