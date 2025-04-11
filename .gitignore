@@ -18,3 +18,5 @@ docs/api
 docs/doxyoutput
 
 .DS_Store
+
+.idea/
