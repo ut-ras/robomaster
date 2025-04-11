@@ -7,19 +7,19 @@
 #include "tap/communication/serial/ref_serial_transmitter.hpp"
 #include "tap/control/command.hpp"
 
-#include "control/client-display/client_display_subsystem.hpp"
-#include "control/client-display/graphics/graphic_abstract.hpp"
+#include "graphics/graphic_abstract.hpp"
 #include "modm/processing/protothread.hpp"
 #include "modm/processing/resumable.hpp"
 #include "subsystems/flywheel/flywheel_subsystem.hpp"
 
+#include "client_display_subsystem.hpp"
 #include "drivers.hpp"
 
 using namespace tap::control;
 using namespace tap::communication::serial;
 
-using subsystems::control::ClientDisplaySubsystem;
 using subsystems::flywheel::FlywheelSubsystem;
+using subsystems::hud::ClientDisplaySubsystem;
 
 namespace commands
 {

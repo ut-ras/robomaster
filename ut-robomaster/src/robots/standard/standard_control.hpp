@@ -1,6 +1,10 @@
-#include "control/client-display/command_client_display.hpp"
 #include "robots/common/common_control_manual.hpp"
 #include "subsystems/agitator/command_agitator_continuous.hpp"
+#include "subsystems/hud/client_display_subsystem.hpp"
+#include "subsystems/hud/command_client_display.hpp"
+
+using commands::CommandClientDisplay;
+using subsystems::hud::ClientDisplaySubsystem;
 
 class StandardControl : CommonControlManual
 {

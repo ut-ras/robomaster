@@ -2,7 +2,7 @@
 
 #include "tap/communication/sensors/buzzer/buzzer.hpp"
 
-namespace subsystems::control
+namespace subsystems::hud
 {
 ClientDisplaySubsystem::ClientDisplaySubsystem(
     src::Drivers* drivers,
@@ -26,4 +26,4 @@ void ClientDisplaySubsystem::refresh() {}
 
 void ClientDisplaySubsystem::runHardwareTests() {}
 
-}  // namespace subsystems::control
+}  // namespace subsystems::hud

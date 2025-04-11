@@ -6,11 +6,11 @@
 #include "tap/control/command.hpp"
 #include "tap/control/subsystem.hpp"
 
-#include "control/client-display/graphics/graphic_abstract.hpp"
-#include "control/client-display/graphics/graphic_circle.hpp"
-#include "control/client-display/graphics/graphic_flywheel_on.hpp"
-#include "control/client-display/graphics/graphic_orientation.hpp"
-#include "control/client-display/graphics/graphic_reticle.hpp"
+#include "graphics/graphic_abstract.hpp"
+#include "graphics/graphic_circle.hpp"
+#include "graphics/graphic_flywheel_on.hpp"
+#include "graphics/graphic_orientation.hpp"
+#include "graphics/graphic_reticle.hpp"
 #include "subsystems/flywheel/flywheel_subsystem.hpp"
 #include "subsystems/turret/turret_subsystem.hpp"
 
@@ -19,7 +19,7 @@
 using subsystems::flywheel::FlywheelSubsystem;
 using subsystems::turret::TurretSubsystem;
 
-namespace subsystems::control
+namespace subsystems::hud
 {
 class ClientDisplaySubsystem : public tap::control::Subsystem
 {
@@ -51,4 +51,4 @@ private:
     graphic::graphic_flywheel_on flywheel_on{drivers, flywheel};
     graphic::graphic_orientation orientation{drivers, turret};
 };
-}  // namespace subsystems::control
+}  // namespace subsystems::hud
