@@ -1,6 +1,8 @@
 #pragma once
 #include <stdint.h>
 
+#include <string>
+
 namespace communication
 {
 
@@ -9,6 +11,7 @@ enum MessageTypes : uint8_t
     CV_MESSAGE_TYPE_ODOMETRY_DATA = 1,
     CV_MESSAGE_TYPE_TURRET_AIM = 2,
     CV_MESSAGE_TYPE_COLOR_DATA = 3,
+    CV_MESSAGE_TYPE_ECHO = 4,
 };
 
 enum ColorTypes : uint8_t

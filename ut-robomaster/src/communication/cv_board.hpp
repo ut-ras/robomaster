@@ -44,6 +44,11 @@ public:
     void sendMessage();
 
     /**
+     * Echo the message sent by the CV board to the CV board
+     */
+    void echoData(const ReceivedSerialMessage& message);
+
+    /**
      * Sends odometry data to the CV board
      */
     void sendOdometryData();
