@@ -2,8 +2,10 @@
 #include "subsystems/agitator/command_agitator_continuous.hpp"
 #include "subsystems/hud/client_display_subsystem.hpp"
 #include "subsystems/hud/command_client_display.hpp"
+#include "subsystems/hud/command_client_display_reset.hpp"
 
 using commands::CommandClientDisplay;
+using commands::CommandClientDisplayReset;
 using subsystems::hud::ClientDisplaySubsystem;
 
 class StandardControl : CommonControlManual
@@ -18,10 +20,11 @@ public:
         agitator.initialize();
         drivers->commandScheduler.registerSubsystem(&agitator);
         drivers->commandScheduler.registerSubsystem(&client);
-        client.setDefaultCommand(&hudTest);
+        client.setDefaultCommand(&hudDisplay);
 
         drivers->commandMapper.addMap(&leftMouseDown);
         drivers->commandMapper.addMap(&leftSwitchUp);
+        drivers->commandMapper.addMap(&hudResetKey);
     }
 
 private:
@@ -37,7 +40,8 @@ private:
         BarrelId::STANDARD1,
         true};
 
-    commands::CommandClientDisplay hudTest{drivers, &client};
+    commands::CommandClientDisplay hudDisplay{drivers, &client};
+    commands::CommandClientDisplayReset hudReset{drivers, &client};
 
     // Mappings
     HoldCommandMapping leftMouseDown{
@@ -50,5 +54,5 @@ private:
         {&rotateAgitator_SwitchUp, &rotateFlywheel_SwitchMid},
         RemoteMapState(Remote::Switch::LEFT_SWITCH, Remote::SwitchState::UP)};
 
-    HoldCommandMapping hudTestKey{drivers, {&hudTest}, RemoteMapState({Remote::Key::Z})};
+    ToggleCommandMapping hudResetKey{drivers, {&hudReset}, RemoteMapState({Remote::Key::Z})};
 };
