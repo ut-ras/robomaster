@@ -68,8 +68,8 @@ public:
         float a = -turret->getCurrentLocalYaw();
         float r = 100.0f;
 
-        float mx = 1920.0f / 2.0f;
-        float my = 1080.0f / 2.0f;
+        float mx = 150.0f;
+        float my = 700.0f;
 
         float ax = mx + cosf(a - M_PI_4) * r;
         float ay = my + sinf(a - M_PI_4) * r;

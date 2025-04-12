@@ -29,8 +29,6 @@ protected:
     src::Drivers* drivers;
     RefSerialTransmitter refSerialTransmitter;
     uint8_t graphicId[3];  // 3 byte identifier for this graphic element
-    RefSerialData::Tx::Graphic1Message msg;
-    RefSerialData::Tx::GraphicCharacterMessage word_msg;
 };
 
 }  // namespace graphic

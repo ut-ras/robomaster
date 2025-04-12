@@ -44,6 +44,7 @@ public:
     };
 
 private:
+    RefSerialData::Tx::Graphic1Message msg;
     float t = 10.0;
 };
 

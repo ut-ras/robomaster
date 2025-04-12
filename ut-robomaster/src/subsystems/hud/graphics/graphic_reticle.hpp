@@ -56,13 +56,13 @@ public:
         msg.graphicData.operation = RefSerialData::Tx::GRAPHIC_MODIFY;
         msg.graphicData.startY = turret->getBulletDropReticle();
 
-
         // modify existing graphic based on the ID (GRAPHIC_MODIFY operation)
         RF_CALL(refSerialTransmitter.sendGraphic(&msg));
         RF_END_RETURN(true);
     };
 
 private:
+    RefSerialData::Tx::Graphic1Message msg;
     static constexpr uint16_t CENTER_X = 1920 / 2;
     static constexpr uint16_t CENTER_Y = 1080 / 2;
     static constexpr uint16_t CIRCLE_SIZE = 100;
