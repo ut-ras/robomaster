@@ -24,8 +24,8 @@ void CVBoard::messageReceiveCallback(const ReceivedSerialMessage& message)
         case CV_MESSAGE_TYPE_TURRET_AIM:
             decodeTurretData(message);
             break;
-        case CV_MESSAGE_TYPE_ECHO:
-            echoData(message);
+        // case CV_MESSAGE_TYPE_ECHO:
+        // echoData(message);
         default:
             break;
     }
@@ -37,21 +37,21 @@ void CVBoard::sendMessage()
     sendColorData();
 }
 
-void CVBoard::echoData(const ReceivedSerialMessage& message)
-{
-    std::string data_string;
-    memcpy(&data_string, &message.data, sizeof(message.header.dataLength));
+// void CVBoard::echoData(const ReceivedSerialMessage& message)
+// {
+//     std::string data_string;
+//     memcpy(&data_string, &message.data, sizeof(message.header.dataLength));
 
-    DJISerial::SerialMessage<sizeof(data_string)> msg;
-    msg.messageType = CV_MESSAGE_TYPE_ECHO;
+//     DJISerial::SerialMessage<sizeof(data_string)> msg;
+//     msg.messageType = CV_MESSAGE_TYPE_ECHO;
 
-    std::string* data = reinterpret_cast<std::string*>(msg.data);
+//     std::string* data = reinterpret_cast<std::string*>(msg.data);
 
-    data = &data_string;
+//     data = &data_string;
 
-    msg.setCRC16();
-    drivers->uart.write(UART_PORT, reinterpret_cast<uint8_t*>(&msg), sizeof(msg));
-}
+//     msg.setCRC16();
+//     drivers->uart.write(UART_PORT, reinterpret_cast<uint8_t*>(&msg), sizeof(msg));
+// }
 
 void CVBoard::sendOdometryData()
 {

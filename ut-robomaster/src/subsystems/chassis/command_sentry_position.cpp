@@ -7,20 +7,51 @@ void CommandSentryPosition::initialize() { moveTimer.stop(); }
 
 void CommandSentryPosition::execute()
 {
-    // wait until game starts then wait some more to avoid excess drifting
-    if (drivers->isGameActive() && moveTimer.isStopped())
+    Remote *remote = &drivers->remote;
+
+    Vector2f inputMove = Vector2f(
+        remote->getChannel(Remote::Channel::RIGHT_HORIZONTAL),
+        remote->getChannel(Remote::Channel::RIGHT_VERTICAL));
+
+    float inputSpin = remote->getChannel(Remote::Channel::WHEEL);
+
+    float inputMoveLen = inputMove.getLength();
+    if (inputMoveLen < ANALOG_DEAD_ZONE)
     {
-        moveTimer.restart(10'000);  // 10s
+        inputMove = Vector2f(0.0f);
+    }
+    else
+    {
+        inputMove /= max(1.0f, inputMoveLen);  // clamp length
     }
 
-    if (!moveTimer.isExpired())
+    if (abs(inputSpin) < ANALOG_DEAD_ZONE)
     {
-        chassis->input(Vector2f(0.0f), 0.0f);
-        return;
+        inputSpin = 0.0f;
     }
 
-    // speen
-    chassis->input(Vector2f(0.0f), 1.0f);
+    // apply quadratic input ramping
+    inputMove *= inputMove.getLength();
+    inputSpin *= abs(inputSpin);
+
+    inputMove *= MAX_LINEAR_VEL;
+    inputSpin *= MAX_ANGULAR_VEL;
+
+    chassis->setOmniVelocities(inputMove, inputSpin);
+
+    // if (drivers->isGameActive() && moveTimer.isStopped())
+    // {
+    //     moveTimer.restart(10'000);  // 10s
+    // }
+
+    // if (!moveTimer.isExpired())
+    // {
+    //     chassis->input(Vector2f(0.0f), 0.0f);
+    //     return;
+    // }
+
+    // // speen
+    // chassis->input(Vector2f(0.0f), 1.0f);
 }
 
 void CommandSentryPosition::end(bool) { chassis->input(Vector2f(0.0f), 0.0f); }

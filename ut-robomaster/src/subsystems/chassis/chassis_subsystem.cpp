@@ -118,6 +118,14 @@ void ChassisSubsystem::setMecanumWheelVelocities(Vector2f v, float wZ)
     targetWheelVels[3] = (-v.y - v.x - wZ * WHEEL_LXY) / WHEEL_RADIUS;  // rad/s
 }
 
+void ChassisSubsystem::setOmniVelocities(Vector2f v, float wZ)
+{
+    targetWheelVels[0] = (v.y + v.x + wZ) / WHEEL_RADIUS;  // rad/s
+    targetWheelVels[1] = (v.y - v.x - wZ) / WHEEL_RADIUS;  // rad/s
+    targetWheelVels[2] = (v.y - v.x + wZ) / WHEEL_RADIUS;  // rad/s
+    targetWheelVels[3] = (v.y + v.x - wZ) / WHEEL_RADIUS;  // rad/s
+}
+
 Vector3f ChassisSubsystem::measureVelocity()
 {
     float w1 = wheels[0].measureVelocity();  // rev/s

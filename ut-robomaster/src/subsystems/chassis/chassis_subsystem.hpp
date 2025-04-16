@@ -36,6 +36,8 @@ public:
     /// @return x,y is linear velocity (m/s) and z is angular velocity (rad/s)
     Vector3f measureVelocity();
 
+    void setOmniVelocities(Vector2f v, float wZ);
+
 private:
     src::Drivers* drivers;
     power_limiter::PowerLimiter powerLimiter;
