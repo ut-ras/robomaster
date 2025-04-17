@@ -29,7 +29,8 @@ void TurretSubsystem::initialize()
 
 void TurretSubsystem::refresh()
 {
-    setAmputated(!hardwareOk());
+    // who needs hardware checks?
+    // setAmputated(!hardwareOk());
 
     yaw.updateMotorAngle();
     pitch.updateMotorAngle();
@@ -37,7 +38,7 @@ void TurretSubsystem::refresh()
 #if defined(TARGET_STANDARD) || defined(TARGET_HERO)
     yawEncoder.update();
 
-    if (!isCalibrated && !isAmputated() && yawEncoder.isOnline())
+    if (!isCalibrated && yawEncoder.isOnline())
     {
         baseYaw = yawEncoder.getAngle() - YAW_OFFSET - yaw.getAngle();
         isCalibrated = true;
@@ -54,7 +55,7 @@ void TurretSubsystem::refresh()
     }
 #endif
 
-    if (isCalibrated && !drivers->isKillSwitched() && !isAmputated())
+    if (isCalibrated && !drivers->isKillSwitched())
     {
         yaw.setAngle(-baseYaw + getTargetLocalYaw(), DT);
         pitch.setAngle((PITCH_OFFSET + getTargetLocalPitch()) * PITCH_REDUCTION, DT);

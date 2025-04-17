@@ -13,6 +13,8 @@ void CommandSentryPosition::execute()
         remote->getChannel(Remote::Channel::RIGHT_HORIZONTAL),
         remote->getChannel(Remote::Channel::RIGHT_VERTICAL));
 
+    inputMove *= -1;
+
     float inputSpin = remote->getChannel(Remote::Channel::WHEEL);
 
     float inputMoveLen = inputMove.getLength();

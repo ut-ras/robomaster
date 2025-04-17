@@ -26,6 +26,7 @@ void ChassisSubsystem::initialize()
     {
         wheels[i].initialize();
     }
+    logTimer.stop();
 }
 
 void ChassisSubsystem::refresh()

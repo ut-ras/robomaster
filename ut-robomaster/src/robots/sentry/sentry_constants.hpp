@@ -25,8 +25,8 @@ const Sound SOUND_STARTUP = SOUND_SMB_POWERUP;
 
 // chassis ------------
 static constexpr int WHEELS = 4;
-static constexpr float WHEEL_DISTANCE_X = 0.391f;  // meters
-static constexpr float WHEEL_DISTANCE_Y = 0.315f;  // meters
+static constexpr float WHEEL_DISTANCE_X = 0.346f;  // meters
+static constexpr float WHEEL_DISTANCE_Y = 0.346f;  // meters
 static constexpr float WHEEL_RADIUS = 0.1524f;     // meters
 static constexpr float WHEEL_LXY = (WHEEL_DISTANCE_X + WHEEL_DISTANCE_Y) / 2.0f;
 
