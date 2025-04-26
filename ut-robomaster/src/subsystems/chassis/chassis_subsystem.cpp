@@ -107,7 +107,11 @@ void ChassisSubsystem::input(Vector2f move, float spin)
         overdrive -= correction;
     }
 
+#if defined(TARGET_SENTRY)
+    setOmniVelocities(v, wZ);
+#else
     setMecanumWheelVelocities(v, wZ);
+#endif
 }
 
 void ChassisSubsystem::setMecanumWheelVelocities(Vector2f v, float wZ)
