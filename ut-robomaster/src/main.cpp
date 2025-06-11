@@ -1,5 +1,6 @@
 #include "tap/architecture/periodic_timer.hpp"
 #include "tap/architecture/profiler.hpp"
+#include "tap/motor/motorsim/dji_motor_sim_handler.hpp"
 
 #include "robots/robot_constants.hpp"
 #include "robots/robot_control.hpp"
@@ -33,7 +34,7 @@ static void initializeIo(src::Drivers *drivers)
 static void updateIo(src::Drivers *drivers)
 {
 #ifdef PLATFORM_HOSTED
-    tap::motorsim::SimHandler::updateSims();
+    tap::motor::motorsim::DjiMotorSimHandler::getInstance()->updateSims();
 #endif
 
     drivers->canRxHandler.pollCanData();
