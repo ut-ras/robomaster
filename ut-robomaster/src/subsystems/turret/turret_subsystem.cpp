@@ -40,8 +40,8 @@ void TurretSubsystem::refresh()
     Remote* remote = &drivers->remote;
     float h = remote->getChannel(Remote::Channel::LEFT_HORIZONTAL);
     float v = remote->getChannel(Remote::Channel::LEFT_VERTICAL);
-    yaw.setOutput(v);
-    pitch.motor.setDesiredOutput(GM6020.maxOutput * 0.5f);
+    yaw.setOutput(h);
+    pitch.motor.setDesiredOutput(GM6020.maxOutput * v);
 
     //     yaw.updateMotorAngle();
     //     pitch.updateMotorAngle();
