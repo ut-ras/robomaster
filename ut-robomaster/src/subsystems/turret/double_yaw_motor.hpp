@@ -1,7 +1,7 @@
 #pragma once
 
-#include "tap/algorithms/contiguous_float.hpp"
 #include "tap/algorithms/smooth_pid.hpp"
+#include "tap/algorithms/wrapped_float.hpp"
 #include "tap/motor/motor_interface.hpp"
 
 #include "utils/motors/motor_constants.hpp"
@@ -38,7 +38,7 @@ private:
     DjiMotor motor2;
     motor_controller::Pid velocityPid;
     motor_controller::Pid positionPid;
-    ContiguousFloat setpoint;
-    ContiguousFloat currentAngle;
+    WrappedFloat setpoint;
+    WrappedFloat currentAngle;
 };
 }  // namespace subsystems::turret

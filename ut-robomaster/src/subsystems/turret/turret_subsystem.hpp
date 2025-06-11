@@ -1,6 +1,6 @@
 #pragma once
 
-#include "tap/algorithms/contiguous_float.hpp"
+#include "tap/algorithms/wrapped_float.hpp"
 #include "tap/control/subsystem.hpp"
 
 #include "drivers/as5600.hpp"
@@ -16,7 +16,7 @@ namespace subsystems::turret
 {
 using driver::As5600;
 using modm::Vector3f;
-using tap::algorithms::ContiguousFloat;
+using tap::algorithms::WrappedFloat;
 
 class TurretSubsystem : public Subsystem
 {

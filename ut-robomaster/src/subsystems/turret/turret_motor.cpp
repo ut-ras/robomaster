@@ -34,25 +34,25 @@ void TurretMotor::updateMotorAngle()
 
         unwrappedAngle = static_cast<float>(encoderValue) * M_TWOPI /
                          static_cast<float>(DjiMotor::ENC_RESOLUTION);
-        currentAngle.setValue(unwrappedAngle);
+        currentAngle.setWrappedValue(unwrappedAngle);
     }
 }
 
 void TurretMotor::setAngle(float desiredAngle, float dt)
 {
-    setpoint.setValue(desiredAngle);
+    setpoint.setWrappedValue(desiredAngle);
 
-    float positionControllerError =
-        ContiguousFloat(currentAngle.getValue(), 0, M_TWOPI).difference(setpoint.getValue());
+    float positionControllerError = WrappedFloat(currentAngle.getWrappedValue(), 0, M_TWOPI)
+                                        .minDifference(setpoint.getWrappedValue());
     float output =
         pid.runController(positionControllerError, (M_TWOPI / 60.0f) * motor.getShaftRPM(), dt);
 
     motor.setDesiredOutput(output);
 }
 
-float TurretMotor::getAngle() { return currentAngle.getValue(); }
+float TurretMotor::getAngle() { return currentAngle.getWrappedValue(); }
 
-float TurretMotor::getSetpoint() { return setpoint.getValue(); }
+float TurretMotor::getSetpoint() { return setpoint.getWrappedValue(); }
 
 bool TurretMotor::isOnline() { return motor.isMotorOnline(); }
 }  // namespace subsystems::turret

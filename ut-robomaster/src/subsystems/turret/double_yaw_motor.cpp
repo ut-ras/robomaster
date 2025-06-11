@@ -36,15 +36,15 @@ void DoubleYawMotor::updateMotorAngle()
 {
     float encoderAngle = static_cast<float>(motor1.getEncoderUnwrapped()) /
                          DjiMotor::ENC_RESOLUTION / M3508.gearRatio / YAW_REDUCTION;
-    currentAngle.setValue(encoderAngle);
+    currentAngle.setWrappedValue(encoderAngle);
 }
 
 void DoubleYawMotor::setAngle(float desiredAngle, float dt)
 {
-    setpoint.setValue(desiredAngle / M_TWOPI);
+    setpoint.setWrappedValue(desiredAngle / M_TWOPI);
 
-    float positionError =
-        ContiguousFloat(currentAngle.getValue(), 0, 1.0f).difference(setpoint.getValue());
+    float positionError = WrappedFloat(currentAngle.getWrappedValue(), 0, 1.0f)
+                              .minDifference(setpoint.getWrappedValue());
 
     // account for chassis rotation
     float disturbance = drivers->bmi088.getGz() / 360.0f;  // rev / s
@@ -54,7 +54,7 @@ void DoubleYawMotor::setAngle(float desiredAngle, float dt)
     setVelocity(targetVelocity, dt);
 }
 
-float DoubleYawMotor::getAngle() { return currentAngle.getValue() * M_TWOPI; }
+float DoubleYawMotor::getAngle() { return currentAngle.getWrappedValue() * M_TWOPI; }
 
 void DoubleYawMotor::setVelocity(float velocity, float dt)
 {
@@ -78,6 +78,6 @@ void DoubleYawMotor::setOutput(float output)
 
 float DoubleYawMotor::getOutput() { return motor1.getOutputDesired() / M3508.maxOutput; }
 
-float DoubleYawMotor::getSetpoint() { return setpoint.getValue(); }
+float DoubleYawMotor::getSetpoint() { return setpoint.getWrappedValue(); }
 bool DoubleYawMotor::isOnline() { return motor1.isMotorOnline() && motor2.isMotorOnline(); }
 }  // namespace subsystems::turret
