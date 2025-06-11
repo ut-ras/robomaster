@@ -27,9 +27,11 @@ public:
     float getSetpoint();
     bool isOnline();
 
+    DjiMotor motor;
+
 private:
     src::Drivers *drivers;
-    DjiMotor motor;
+    // DjiMotor motor;
     SmoothPid pid;
     ContiguousFloat setpoint;
     float unwrappedAngle = 0;

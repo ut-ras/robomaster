@@ -9,8 +9,8 @@ TurretMotor::TurretMotor(
     src::Drivers *drivers,
     MotorConfig motorConfig,
     const SmoothPidConfig &pidConfig)
-    : drivers(drivers),
-      motor(drivers, motorConfig.id, motorConfig.canBus, motorConfig.inverted, motorConfig.name),
+    : motor(drivers, motorConfig.id, motorConfig.canBus, motorConfig.inverted, motorConfig.name),
+      drivers(drivers),
       pid(pidConfig),
       setpoint(0.0f, 0.0f, M_TWOPI),
       currentAngle(0.0f, 0.0f, M_TWOPI)

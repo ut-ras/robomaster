@@ -1,11 +1,14 @@
 #include "turret_subsystem.hpp"
 
+#include "tap/communication/serial/remote.hpp"
+
 #include "modm/math.hpp"
 #include "robots/robot_constants.hpp"
 #include "subsystems/subsystem.hpp"
 
 namespace subsystems::turret
 {
+using tap::communication::serial::Remote;
 TurretSubsystem::TurretSubsystem(src::Drivers* drivers)
     : Subsystem(drivers),
       drivers(drivers),
@@ -29,42 +32,50 @@ void TurretSubsystem::initialize()
 
 void TurretSubsystem::refresh()
 {
+    // yaw.setOutput(0.5f);
+    // pitch.motor.setDesiredOutput(M3508.maxOutput * 0.5);
     // who needs hardware checks?
     // setAmputated(!hardwareOk());
 
-    yaw.updateMotorAngle();
-    pitch.updateMotorAngle();
+    Remote* remote = &drivers->remote;
+    float h = remote->getChannel(Remote::Channel::LEFT_HORIZONTAL);
+    float v = remote->getChannel(Remote::Channel::LEFT_VERTICAL);
+    yaw.setOutput(v);
+    pitch.motor.setDesiredOutput(GM6020.maxOutput * 0.5f);
 
-#if defined(TARGET_STANDARD) || defined(TARGET_HERO)
-    yawEncoder.update();
+    //     yaw.updateMotorAngle();
+    //     pitch.updateMotorAngle();
 
-    if (!isCalibrated && yawEncoder.isOnline())
-    {
-        baseYaw = yawEncoder.getAngle() - YAW_OFFSET - yaw.getAngle();
-        isCalibrated = true;
+    // #if defined(TARGET_STANDARD) || defined(TARGET_HERO)
+    //     yawEncoder.update();
 
-        setTargetWorldAngles(getCurrentLocalYaw() + getChassisYaw(), getCurrentLocalPitch());
-    }
-#else
-    if (!isCalibrated && !isAmputated())
-    {
-        baseYaw = -YAW_OFFSET;
-        isCalibrated = true;
+    //     if (!isCalibrated && yawEncoder.isOnline())
+    //     {
+    //         baseYaw = yawEncoder.getAngle() - YAW_OFFSET - yaw.getAngle();
+    //         isCalibrated = true;
 
-        setTargetWorldAngles(getCurrentLocalYaw() + getChassisYaw(), getCurrentLocalPitch());
-    }
-#endif
+    //         setTargetWorldAngles(getCurrentLocalYaw() + getChassisYaw(), getCurrentLocalPitch());
+    //     }
+    // #else
+    //     if (!isCalibrated && !isAmputated())
+    //     {
+    //         baseYaw = -YAW_OFFSET;
+    //         isCalibrated = true;
 
-    if (isCalibrated && !drivers->isKillSwitched())
-    {
-        yaw.setAngle(-baseYaw + getTargetLocalYaw(), DT);
-        pitch.setAngle((PITCH_OFFSET + getTargetLocalPitch()) * PITCH_REDUCTION, DT);
-    }
-    else
-    {
-        yaw.reset();
-        pitch.reset();
-    }
+    //         setTargetWorldAngles(getCurrentLocalYaw() + getChassisYaw(), getCurrentLocalPitch());
+    //     }
+    // #endif
+
+    //     if (isCalibrated && !drivers->isKillSwitched())
+    //     {
+    //         yaw.setAngle(-baseYaw + getTargetLocalYaw(), DT);
+    //         pitch.setAngle((PITCH_OFFSET + getTargetLocalPitch()) * PITCH_REDUCTION, DT);
+    //     }
+    //     else
+    //     {
+    //         yaw.reset();
+    //         pitch.reset();
+    //     }
 }
 
 void TurretSubsystem::inputTargetData(Vector3f position, Vector3f velocity, Vector3f acceleration)

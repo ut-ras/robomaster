@@ -107,7 +107,7 @@ constexpr CanBus CAN_SHOOTER = CanBus::CAN_BUS2;
 // chassis
 const MotorConfig WHEEL_LF{M3508, MOTOR2, CAN_WHEELS, true, "left front wheel", PID_WHEELS, {}};
 const MotorConfig WHEEL_RF{M3508, MOTOR1, CAN_WHEELS, false, "right front wheel", PID_WHEELS, {}};
-const MotorConfig WHEEL_LB{M3508, MOTOR7, CAN_WHEELS, true, "left back wheel", PID_WHEELS, {}};
+const MotorConfig WHEEL_LB{M3508, MOTOR3, CAN_WHEELS, true, "left back wheel", PID_WHEELS, {}};
 const MotorConfig WHEEL_RB{M3508, MOTOR4, CAN_WHEELS, false, "right back wheel", PID_WHEELS, {}};
 
 // flywheels
@@ -125,7 +125,7 @@ const MotorConfig FEEDER{M2006, MOTOR2, CAN_SHOOTER, false, "feeder", PID_FEEDER
 const MotorConfig
     YAW_L{M3508, MOTOR5, CAN_TURRET, false, "yaw left", {2.5f, 60.0f, 0.0f}, {45.0f, 0.0f, 0.0f}};
 const MotorConfig YAW_R{M3508, MOTOR6, CAN_TURRET, false, "yaw right", {}, {}};
-const MotorConfig PITCH{GM6020, MOTOR3, CAN_TURRET, false, "pitch", PID_VELOCITY_DEFAULT, {}};
+const MotorConfig PITCH{GM6020, MOTOR7, CAN_TURRET, false, "pitch", PID_VELOCITY_DEFAULT, {}};
 const float YAW_OFFSET = 0;
 const float PITCH_OFFSET = 0;
 
@@ -141,7 +141,7 @@ static constexpr float MAX_LINEAR_VEL = WHEEL_MAX_VEL * WHEEL_RADIUS;           
 static constexpr float MAX_ANGULAR_VEL = WHEEL_MAX_VEL * WHEEL_RADIUS / WHEEL_LXY;  // rad/s
 
 const float TARGET_PROJECTILE_VELOCITY = 16;  // m/s
-const float FLYWHEEL_SPEED = 190.0f;
+const float FLYWHEEL_SPEED = 47.5f;
 
 const float BALLS_PER_SEC = 4.0f;
 const float BALLS_PER_REV = 6.0f;
