@@ -53,7 +53,7 @@ public:
     /**
      * @param[in] value: value to initialize with (doesn't have to be wrapped)
      * @param[in] lowerBound: lower wrapping bound, must be less than `upperBound`
-     * @param[in] lowerBound: upper wrapping bound, must be higher than `lowerBound`
+     * @param[in] upperBound: upper wrapping bound, must be higher than `lowerBound`
      */
     WrappedFloat(float value, float lowerBound, float upperBound);
 
