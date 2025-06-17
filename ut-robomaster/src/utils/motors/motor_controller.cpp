@@ -50,15 +50,15 @@ bool MotorController::isOnline() { return motor.isMotorOnline(); }
 
 float MotorController::measurePosition()
 {
-    int64_t encoderVal = motor.getEncoderUnwrapped();
-    float units = static_cast<float>(encoderVal) / DjiMotor::ENC_RESOLUTION;
+    int64_t encoderVal = motor.getEncoder()->getPosition().getUnwrappedValue();
+    float units = static_cast<float>(encoderVal) / DjiMotorEncoder::ENC_RESOLUTION;
     float turns = units / constants.gearRatio;  // revs
     return turns;
 }
 
 float MotorController::measureVelocity()
 {
-    int16_t rpm = motor.getShaftRPM() / constants.gearRatio;
+    int16_t rpm = motor.getInternalEncoder().getShaftRPM() / constants.gearRatio;
     float rps = rpm / 60.0f;  // revs / sec
     return rps;
 }

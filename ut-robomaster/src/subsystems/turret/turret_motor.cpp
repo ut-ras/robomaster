@@ -27,13 +27,14 @@ void TurretMotor::reset()
 
 void TurretMotor::updateMotorAngle()
 {
-    uint16_t encoderValue = motor.getEncoderWrapped();
+    // uint16_t encoderValue = motor.getEncoderWrapped();
+    uint16_t encoderValue = motor.getEncoder()->getPosition().getWrappedValue();
     if (lastUpdatedEncoderValue != encoderValue)
     {
         lastUpdatedEncoderValue = encoderValue;
 
         unwrappedAngle = static_cast<float>(encoderValue) * M_TWOPI /
-                         static_cast<float>(DjiMotor::ENC_RESOLUTION);
+                         static_cast<float>(DjiMotorEncoder::ENC_RESOLUTION);
         currentAngle.setWrappedValue(unwrappedAngle);
     }
 }
@@ -44,8 +45,10 @@ void TurretMotor::setAngle(float desiredAngle, float dt)
 
     float positionControllerError = WrappedFloat(currentAngle.getWrappedValue(), 0, M_TWOPI)
                                         .minDifference(setpoint.getWrappedValue());
-    float output =
-        pid.runController(positionControllerError, (M_TWOPI / 60.0f) * motor.getShaftRPM(), dt);
+    float output = pid.runController(
+        positionControllerError,
+        (M_TWOPI / 60.0f) * motor.getInternalEncoder().getShaftRPM(),
+        dt);
 
     motor.setDesiredOutput(output);
 }
