@@ -10,51 +10,51 @@ void CommandSentryPosition::initialize() { keyboardInputMove = Vector2f(0.0f); }
 
 void CommandSentryPosition::execute()
 {
-    float yawAngle = turret->getTargetLocalYaw();
-    Vector2f inputMove = Vector2f(0.0f);
-    float inputSpin = 0.0f;
+    // float yawAngle = turret->getTargetLocalYaw();
+    // Vector2f inputMove = Vector2f(0.0f);
+    // float inputSpin = 0.0f;
 
-    // get keyboard input
-    float keyboardInputSpin;
-    bool hasKeyboardInput = applyKeyboardInput(keyboardInputMove, keyboardInputSpin);
+    // // get keyboard input
+    // float keyboardInputSpin;
+    // bool hasKeyboardInput = applyKeyboardInput(keyboardInputMove, keyboardInputSpin);
 
-    // get joystick input
-    Vector2f joystickInputMove;
-    float joystickInputSpin;
-    bool hasJoystickInput = applyJoystickInput(joystickInputMove, joystickInputSpin);
+    // // get joystick input
+    // Vector2f joystickInputMove;
+    // float joystickInputSpin;
+    // bool hasJoystickInput = applyJoystickInput(joystickInputMove, joystickInputSpin);
 
-    // decide which input source to use (keyboard has inertia)
-    if (!hasKeyboardInput && hasJoystickInput)
-    {
-        inputMove = joystickInputMove;
-        inputSpin = joystickInputSpin;
-    }
-    else
-    {
-        inputMove = keyboardInputMove;
-        inputSpin = keyboardInputSpin;
-    }
+    // // decide which input source to use (keyboard has inertia)
+    // if (!hasKeyboardInput && hasJoystickInput)
+    // {
+    //     inputMove = joystickInputMove;
+    //     inputSpin = joystickInputSpin;
+    // }
+    // else
+    // {
+    //     inputMove = keyboardInputMove;
+    //     inputSpin = keyboardInputSpin;
+    // }
 
-    // auto-align chassis to turret when moving
-    if (inputMove.getLengthSquared() > 0.0f && inputSpin == 0.0f)
-    {
-        inputSpin = calculateAutoAlignCorrection(yawAngle, CHASSIS_AUTOALIGN_ANGLE) *
-                    CHASSIS_AUTOALIGN_FACTOR;
-    }
+    // // auto-align chassis to turret when moving
+    // if (inputMove.getLengthSquared() > 0.0f && inputSpin == 0.0f)
+    // {
+    //     inputSpin = calculateAutoAlignCorrection(yawAngle, CHASSIS_AUTOALIGN_ANGLE) *
+    //                 CHASSIS_AUTOALIGN_FACTOR;
+    // }
 
-    // override spin input while beyblading
-    if (beyblade)
-    {
-        inputSpin = 1.0f;
-    }
+    // // override spin input while beyblading
+    // if (beyblade)
+    // {
+    //     inputSpin = 1.0f;
+    // }
 
-    // rotate movement vector relative to turret
-    if (turretRelative)
-    {
-        inputMove = inputMove.rotate(yawAngle);
-    }
+    // // rotate movement vector relative to turret
+    // if (turretRelative)
+    // {
+    //     inputMove = inputMove.rotate(yawAngle);
+    // }
 
-    chassis->input(inputMove, inputSpin);
+    // chassis->input(inputMove, inputSpin);
 
     // if (drivers->isGameActive() && moveTimer.isStopped())
     // {
@@ -68,13 +68,12 @@ void CommandSentryPosition::execute()
     // }
 
     // // speen
-    // chassis->input(Vector2f(0.0f), 1.0f);
+    chassis->input(Vector2f(0.0f), 1.0f);
 }
 
 void CommandSentryPosition::end(bool) { chassis->input(Vector2f(0.0f), 0.0f); }
 
 bool CommandSentryPosition::isFinished() const { return false; }
-
 
 bool CommandSentryPosition::applyKeyboardInput(Vector2f &inputMove, float &inputSpin)
 {
@@ -107,8 +106,6 @@ bool CommandSentryPosition::applyKeyboardInput(Vector2f &inputMove, float &input
     return rawMoveInput != Vector2f(0.0f);
 }
 
-
-
 bool CommandSentryPosition::applyJoystickInput(Vector2f &inputMove, float &inputSpin)
 {
     Remote *remote = &drivers->remote;
@@ -140,6 +137,5 @@ bool CommandSentryPosition::applyJoystickInput(Vector2f &inputMove, float &input
 
     return inputMove != Vector2f(0.0f) || inputSpin != 0.0f;
 }
-
 
 }  // namespace commands
