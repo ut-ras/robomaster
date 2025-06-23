@@ -35,9 +35,9 @@ void OdometrySubsystem::refresh()
     if (refreshTimer.execute())
     {
 
-        drivers->rtt.plot(3, getPosition().getX()); //problematic function
-        drivers->rtt.plot(2, getPosition().getY()); //problematic function
-        drivers->rtt.plot(1, getLinearVelocity().getX());
+        drivers->rtt.plot(1, getPosition().getX()); 
+        drivers->rtt.plot(2, getPosition().getY()); 
+        // drivers->rtt.plot(3, getLinearVelocity().getX());
     }
 }
 

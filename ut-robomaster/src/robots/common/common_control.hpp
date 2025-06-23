@@ -11,6 +11,7 @@
 #include "subsystems/sound/command_play_sound.hpp"
 #include "subsystems/sound/sound_subsystem.hpp"
 #include "subsystems/turret/turret_subsystem.hpp"
+#include "subsystems/odometry/odometry_subsystem.hpp"
 #include "utils/power_limiter/barrel_cooldown.hpp"
 
 #include "drivers.hpp"
@@ -23,6 +24,7 @@ using namespace subsystems::agitator;
 using namespace subsystems::flywheel;
 using namespace subsystems::turret;
 using namespace subsystems::sound;
+using namespace subsystems::odometry;
 
 using namespace commands;
 using power_limiter::BarrelId;
