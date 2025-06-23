@@ -26,6 +26,9 @@ void CVBoard::messageReceiveCallback(const ReceivedSerialMessage& message)
             break;
         // case CV_MESSAGE_TYPE_ECHO:
         // echoData(message);
+        case CV_MESSAGE_TYPE_POSITION_REQUEST:
+            decodePositionRequest(message);
+            break;
         default:
             break;
     }
@@ -37,7 +40,7 @@ void CVBoard::sendMessage()
     sendColorData();
 }
 
-// void CVBoard::echoData(const ReceivedSerialMessage& message)
+//  void CVBoard::echoData(const ReceivedSerialMessage& message)
 // {
 //     std::string data_string;
 //     memcpy(&data_string, &message.data, sizeof(message.header.dataLength));
@@ -95,6 +98,17 @@ bool CVBoard::decodeTurretData(const ReceivedSerialMessage& message)
     return false;
 }
 
+bool CVBoard::decodePositionRequest(const ReceivedSerialMessage& message)
+{
+    if (message.header.dataLength == sizeof(lastPositionRequest))
+    {
+        memcpy(&lastPositionRequest, &message.data, sizeof(lastPositionRequest));
+        return true;
+    }
+    return false;
+}
+
 bool CVBoard::isOnline() const { return !offlineTimeout.isExpired(); }
 const TurretData& CVBoard::getTurretData() const { return lastTurretData; }
+const PositionRequest& CVBoard::getPositionRequest() const { return lastPositionRequest; }
 }  // namespace communication

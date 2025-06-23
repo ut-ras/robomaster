@@ -12,6 +12,7 @@ enum MessageTypes : uint8_t
     CV_MESSAGE_TYPE_TURRET_AIM = 2,
     CV_MESSAGE_TYPE_COLOR_DATA = 3,
     CV_MESSAGE_TYPE_ECHO = 4,
+    CV_MESSAGE_TYPE_POSITION_REQUEST = 5,
 };
 
 enum ColorTypes : uint8_t
@@ -36,6 +37,13 @@ struct TurretData
     float zAcc;
 
     bool hasTarget;
+} modm_packed;
+
+struct PositionRequest
+{
+    float x_requested;
+    float y_requested;
+    uint64_t time_sent;
 } modm_packed;
 
 struct OdometryData

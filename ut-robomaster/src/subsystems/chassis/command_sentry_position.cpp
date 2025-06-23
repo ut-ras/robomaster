@@ -3,10 +3,11 @@
 namespace commands
 {
 
+using namespace communication;
 // old ard code
-// void CommandSentryPosition::initialize() { moveTimer.stop(); }
+void CommandSentryPosition::initialize() { moveTimer.stop(); }
 
-void CommandSentryPosition::initialize() { keyboardInputMove = Vector2f(0.0f); }
+// void CommandSentryPosition::initialize() { keyboardInputMove = Vector2f(0.0f); }
 
 void CommandSentryPosition::execute()
 {
@@ -56,18 +57,22 @@ void CommandSentryPosition::execute()
 
     // chassis->input(inputMove, inputSpin);
 
-    // if (drivers->isGameActive() && moveTimer.isStopped())
-    // {
-    //     moveTimer.restart(10'000);  // 10s
-    // }
+    if (drivers->isGameActive() && moveTimer.isStopped())
+    {
+        moveTimer.restart(5'000);  // 5 secs
+    }
 
-    // if (!moveTimer.isExpired())
-    // {
-    //     chassis->input(Vector2f(0.0f), 0.0f);
-    //     return;
-    // }
+    if (!moveTimer.isExpired())
+    {
+        chassis->input(Vector2f(0.0f), 1.0f);  // spin!
+        return;
+    }
 
-    // // speen
+    PositionRequest pos = drivers->cvBoard.getPositionRequest();
+    drivers->rtt << "x_pos = " << pos.x_requested << ", y_pos = " << pos.y_requested
+                 << ", time_sent = " << (float)pos.time_sent;
+
+    // speen
     chassis->input(Vector2f(0.0f), 1.0f);
 }
 
