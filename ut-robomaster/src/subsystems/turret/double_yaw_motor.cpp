@@ -34,8 +34,9 @@ void DoubleYawMotor::reset()
 
 void DoubleYawMotor::updateMotorAngle()
 {
-    float encoderAngle = static_cast<float>(motor1.getEncoder()->getPosition().getWrappedValue()) /
-                         DjiMotorEncoder::ENC_RESOLUTION / M3508.gearRatio / YAW_REDUCTION;
+    float encoderAngle =
+        static_cast<float>(motor1.getInternalEncoder().getEncoder().getUnwrappedValue()) /
+        DjiMotorEncoder::ENC_RESOLUTION / M3508.gearRatio / YAW_REDUCTION;
     currentAngle.setWrappedValue(encoderAngle);
 }
 
@@ -47,8 +48,8 @@ void DoubleYawMotor::setAngle(float desiredAngle, float dt)
                               .minDifference(setpoint.getWrappedValue());
 
     // account for chassis rotation
-    float disturbance = drivers->bmi088.getGz() / 360.0f;  // rev / s
-    disturbance *= 2.0f;                                   // seems to help?
+    float disturbance = drivers->bmi088.getGz() / 2.0f / PI;  // rev / s
+    disturbance *= 2.0f;                                      // seems to help?
 
     float targetVelocity = positionPid.update(positionError, dt, false) - disturbance;
     setVelocity(targetVelocity, dt);

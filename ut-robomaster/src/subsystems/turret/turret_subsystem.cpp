@@ -32,20 +32,6 @@ void TurretSubsystem::initialize()
 
 void TurretSubsystem::refresh()
 {
-    // yaw.setOutput(0.5f);
-    // pitch.motor.setDesiredOutput(M3508.maxOutput * 0.5);
-    // who needs hardware checks?
-    // setAmputated(!hardwareOk());
-
-#if defined(TARGET_HERO)
-    Remote* remote = &drivers->remote;
-    float h = remote->getChannel(Remote::Channel::LEFT_HORIZONTAL);
-    float v = remote->getChannel(Remote::Channel::LEFT_VERTICAL);
-    yaw.setOutput(h);
-    pitch.motor.setDesiredOutput(GM6020.maxOutput * v);
-    return;
-#endif
-
     yaw.updateMotorAngle();
     pitch.updateMotorAngle();
 
@@ -54,7 +40,11 @@ void TurretSubsystem::refresh()
 
     if (!isCalibrated && yawEncoder.isOnline())
     {
+#if defined(TARGET_HERO)
+        baseYaw = -yaw.getAngle();
+#else
         baseYaw = yawEncoder.getAngle() - YAW_OFFSET - yaw.getAngle();
+#endif
         isCalibrated = true;
 
         setTargetWorldAngles(getCurrentLocalYaw() + getChassisYaw(), getCurrentLocalPitch());
@@ -94,7 +84,7 @@ void TurretSubsystem::setTargetWorldAngles(float yaw, float pitch)
     targetWorldPitch = modm::min(modm::max(pitch, PITCH_MIN), PITCH_MAX);
 }
 
-float TurretSubsystem::getChassisYaw() { return modm::toRadian(drivers->bmi088.getYaw()); }
+float TurretSubsystem::getChassisYaw() { return drivers->bmi088.getYaw(); }
 
 float TurretSubsystem::getTargetLocalYaw() { return targetWorldYaw - getChassisYaw(); }
 

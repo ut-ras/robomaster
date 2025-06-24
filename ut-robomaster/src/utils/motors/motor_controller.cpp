@@ -50,7 +50,7 @@ bool MotorController::isOnline() { return motor.isMotorOnline(); }
 
 float MotorController::measurePosition()
 {
-    int64_t encoderVal = motor.getEncoder()->getPosition().getUnwrappedValue();
+    int64_t encoderVal = motor.getInternalEncoder().getEncoder().getUnwrappedValue();
     float units = static_cast<float>(encoderVal) / DjiMotorEncoder::ENC_RESOLUTION;
     float turns = units / constants.gearRatio;  // revs
     return turns;

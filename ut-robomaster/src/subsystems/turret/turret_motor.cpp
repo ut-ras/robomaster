@@ -28,7 +28,7 @@ void TurretMotor::reset()
 void TurretMotor::updateMotorAngle()
 {
     // uint16_t encoderValue = motor.getEncoderWrapped();
-    uint16_t encoderValue = motor.getEncoder()->getPosition().getWrappedValue();
+    uint16_t encoderValue = motor.getInternalEncoder().getEncoder().getUnwrappedValue();
     if (lastUpdatedEncoderValue != encoderValue)
     {
         lastUpdatedEncoderValue = encoderValue;
