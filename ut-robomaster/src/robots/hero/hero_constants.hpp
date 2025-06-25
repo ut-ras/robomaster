@@ -41,8 +41,10 @@ constexpr float CAMERA_TO_PITCH = 0.0f;    // distance from main camera lens to 
 constexpr float NOZZLE_TO_PITCH = 0.0f;    // distance from barrel nozzle to pitch axis (m)
 constexpr float CAMERA_TO_BARRELS = 0.0f;  // vertical ctc offset from camera lens to barrel (m)
 constexpr float CAMERA_X_OFFSET = 0.0f;    // horizontal offset of main camera lens (m)
-constexpr float PITCH_MIN = -0.3349f;      // rad
-constexpr float PITCH_MAX = 0.3534f;       // rad
+constexpr float PITCH_MIN = 0.15f;         // rad
+constexpr float PITCH_MAX = 0.60f;         // rad
+const float YAW_OFFSET = 0;                // deprecated on hero until gear ratios are fixed
+const float PITCH_OFFSET = 1.90f;
 
 static constexpr float YAW_REDUCTION = 2.005459491f;
 static constexpr float PITCH_REDUCTION = 1.0f;
@@ -126,8 +128,6 @@ const MotorConfig
     YAW_L{M3508, MOTOR5, CAN_TURRET, false, "yaw left", {2.5f, 60.0f, 0.0f}, {45.0f, 0.0f, 0.0f}};
 const MotorConfig YAW_R{M3508, MOTOR6, CAN_TURRET, false, "yaw right", {}, {}};
 const MotorConfig PITCH{GM6020, MOTOR7, CAN_TURRET, false, "pitch", PID_VELOCITY_DEFAULT, {}};
-const float YAW_OFFSET = 0;
-const float PITCH_OFFSET = 0;
 
 // Velocities ----------------------------
 
@@ -141,7 +141,7 @@ static constexpr float MAX_LINEAR_VEL = WHEEL_MAX_VEL * WHEEL_RADIUS;           
 static constexpr float MAX_ANGULAR_VEL = WHEEL_MAX_VEL * WHEEL_RADIUS / WHEEL_LXY;  // rad/s
 
 const float TARGET_PROJECTILE_VELOCITY = 16;  // m/s
-const float FLYWHEEL_SPEED = 47.5f;
+const float FLYWHEEL_SPEED = 190.0f;
 
 const float BALLS_PER_SEC = 4.0f;
 const float BALLS_PER_REV = 6.0f;

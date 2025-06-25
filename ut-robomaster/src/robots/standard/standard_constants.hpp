@@ -42,7 +42,7 @@ constexpr float CAMERA_TO_BARRELS = 0.0427f;  // vertical ctc offset from camera
 constexpr float CAMERA_X_OFFSET = -0.0335f;   // horizontal offset of main camera lens (m)
 
 // static constexpr float YAW_OFFSET = 0.0293f;  // external encoder + motor encoder angles
-static constexpr float YAW_OFFSET = 0.0f;
+static constexpr float YAW_OFFSET = -2.3f;
 static constexpr float PITCH_OFFSET = 2.79f;
 static constexpr float YAW_REDUCTION = 2.0f;
 static constexpr float PITCH_REDUCTION = 1.0f;
