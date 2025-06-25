@@ -41,7 +41,8 @@ void CVBoard::sendOdometryData()
     message.messageType = CV_MESSAGE_TYPE_ODOMETRY_DATA;
 
     // TODO: Implement sending of data once odometry module is finished
-
+    OdometryData* data = reinterpret_cast<OdometryData*>(message.data);
+    // data->xPos = odometry->getPosition().getX();
     message.setCRC16();
     drivers->uart.write(UART_PORT, reinterpret_cast<uint8_t*>(&message), sizeof(message));
 }

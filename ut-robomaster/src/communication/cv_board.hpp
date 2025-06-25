@@ -4,7 +4,7 @@
 #include "tap/communication/serial/dji_serial.hpp"
 #include "tap/communication/serial/uart.hpp"
 #include "tap/util_macros.hpp"
-
+#include "subsystems/odometry/odometry_subsystem.hpp"
 #include "cv_message.hpp"
 
 namespace src
@@ -14,6 +14,9 @@ class Drivers;
 namespace communication
 {
 using tap::communication::serial::Uart;
+using subsystems::odometry::OdometrySubsystem;
+using subsystems::chassis::ChassisSubsystem;
+using subsystems::turret::TurretSubsystem;
 
 class CVBoard : public tap::communication::serial::DJISerial
 {
@@ -83,6 +86,11 @@ private:
 
     /** Last turret aiming data received from the CV board */
     TurretData lastTurretData;
+    
+    //used for getting odom data
+    ChassisSubsystem* chassis;
+    TurretSubsystem* turret;
+    OdometrySubsystem *odom;
 
     /** UART port used to communicate with the CV board */
     static constexpr Uart::UartPort UART_PORT = Uart::Uart1;

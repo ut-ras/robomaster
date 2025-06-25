@@ -2,13 +2,14 @@
 #define SUBSYSTEMS_ODOMETRY_OBSERVER_DISPLACEMENT_HPP_
 
 #include "tap/algorithms/odometry/chassis_displacement_observer_interface.hpp"
-
 #include "subsystems/chassis/chassis_subsystem.hpp"
 
 #include "drivers.hpp"
 
+
 namespace subsystems::odometry
 {
+
 using modm::Vector3f;
 using tap::algorithms::odometry::ChassisDisplacementObserverInterface;
 using namespace tap::communication::sensors::imu;
@@ -28,6 +29,7 @@ private:
     mutable Vector3f lastVel;   // m/s
     mutable Vector3f lastDisp;  // m
     mutable uint32_t lastTime;  // ms
+    mutable uint32_t prevTime = 0;
 };
 }  // namespace subsystems::odometry
 

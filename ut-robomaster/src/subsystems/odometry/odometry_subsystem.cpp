@@ -21,10 +21,23 @@ void OdometrySubsystem::initialize() {};
 
 void OdometrySubsystem::refresh()
 {
+    Vector3f lastAcc;  // m/s^2
+
     setAmputated(!hardwareOk());
     if (!isAmputated())
     {
         chassisTracker.update();
+    }
+
+    // Vector3f velocity = chassis->measureVelocity();   // m/s^2
+    // chassisDisplacement.getVelocityChassisDisplacement(&velocity, &lastAcc);
+
+    if (refreshTimer.execute())
+    {
+
+        drivers->rtt.plot(1, getPosition().getX()); 
+        drivers->rtt.plot(2, getPosition().getY()); 
+        // drivers->rtt.plot(3, getLinearVelocity().getX());
     }
 }
 
