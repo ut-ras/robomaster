@@ -21,7 +21,7 @@ class MotorController
 public:
     MotorController(src::Drivers* drivers, const MotorConfig motor)
         : constants(motor.constants),
-          motor(drivers, motor.id, motor.canBus, motor.inverted, motor.name),
+          motor(drivers, motor.id, motor.canBus, motor.inverted, motor.name, motor.currentControl),
           velocityPid(motor.velocityPidConstants),
           positionPid(motor.positionPidConstants)
     {

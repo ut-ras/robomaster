@@ -100,14 +100,25 @@ constexpr CanBus CAN_TURRET = CanBus::CAN_BUS1;
 constexpr CanBus CAN_SHOOTER = CanBus::CAN_BUS2;
 
 // chassis
-const MotorConfig WHEEL_LF{M3508, MOTOR2, CAN_WHEELS, true, "left front wheel", PID_WHEELS, {}};
-const MotorConfig WHEEL_RF{M3508, MOTOR1, CAN_WHEELS, false, "right front wheel", PID_WHEELS, {}};
-const MotorConfig WHEEL_LB{M3508, MOTOR3, CAN_WHEELS, true, "left back wheel", PID_WHEELS, {}};
-const MotorConfig WHEEL_RB{M3508, MOTOR4, CAN_WHEELS, false, "right back wheel", PID_WHEELS, {}};
+const MotorConfig
+    WHEEL_LF{M3508, MOTOR2, CAN_WHEELS, true, "left front wheel", PID_WHEELS, {}, false};
+const MotorConfig
+    WHEEL_RF{M3508, MOTOR1, CAN_WHEELS, false, "right front wheel", PID_WHEELS, {}, false};
+const MotorConfig
+    WHEEL_LB{M3508, MOTOR3, CAN_WHEELS, true, "left back wheel", PID_WHEELS, {}, false};
+const MotorConfig
+    WHEEL_RB{M3508, MOTOR4, CAN_WHEELS, false, "right back wheel", PID_WHEELS, {}, false};
 
 // flywheels
-const MotorConfig
-    FLYWHEEL_TL{M3508_NOGEARBOX, MOTOR3, CAN_SHOOTER, true, "flywheel top left", PID_FLYWHEEL, {}};
+const MotorConfig FLYWHEEL_TL{
+    M3508_NOGEARBOX,
+    MOTOR3,
+    CAN_SHOOTER,
+    true,
+    "flywheel top left",
+    PID_FLYWHEEL,
+    {},
+    false};
 const MotorConfig FLYWHEEL_TR{
     M3508_NOGEARBOX,
     MOTOR4,
@@ -115,7 +126,8 @@ const MotorConfig FLYWHEEL_TR{
     false,
     "flywheel top right",
     PID_FLYWHEEL,
-    {}};
+    {},
+    false};
 const MotorConfig FLYWHEEL_BL{
     M3508_NOGEARBOX,
     MOTOR5,
@@ -123,7 +135,8 @@ const MotorConfig FLYWHEEL_BL{
     false,
     "flywheel bottom left",
     PID_FLYWHEEL,
-    {}};
+    {},
+    false};
 const MotorConfig FLYWHEEL_BR{
     M3508_NOGEARBOX,
     MOTOR6,
@@ -131,15 +144,19 @@ const MotorConfig FLYWHEEL_BR{
     true,
     "flywheel bottom right",
     PID_FLYWHEEL,
-    {}};
+    {},
+    false};
 
 // agitator
-const MotorConfig AGITATOR_L{M2006, MOTOR1, CAN_SHOOTER, false, "agitator left", PID_AGITATOR, {}};
-const MotorConfig AGITATOR_R{M2006, MOTOR2, CAN_SHOOTER, true, "agitator right", PID_AGITATOR, {}};
+const MotorConfig
+    AGITATOR_L{M2006, MOTOR1, CAN_SHOOTER, false, "agitator left", PID_AGITATOR, {}, false};
+const MotorConfig
+    AGITATOR_R{M2006, MOTOR2, CAN_SHOOTER, true, "agitator right", PID_AGITATOR, {}, false};
 
 // turret
-const MotorConfig YAW{GM6020, MOTOR6, CAN_TURRET, false, "yaw", PID_VELOCITY_DEFAULT, {}};
-const MotorConfig PITCH{GM6020, MOTOR7, CAN_TURRET, false, "pitch", PID_VELOCITY_DEFAULT, {}};
+const MotorConfig YAW{GM6020, MOTOR6, CAN_TURRET, false, "yaw", PID_VELOCITY_DEFAULT, {}, false};
+const MotorConfig
+    PITCH{GM6020, MOTOR7, CAN_TURRET, false, "pitch", PID_VELOCITY_DEFAULT, {}, false};
 const float YAW_OFFSET = 0;
 const float PITCH_OFFSET = 0;
 

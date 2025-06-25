@@ -35,6 +35,9 @@ void TurretSubsystem::refresh()
     yaw.updateMotorAngle();
     pitch.updateMotorAngle();
 
+    drivers->rtt << "pitch: " << pitch.getAngle();
+    drivers->rtt.endl();
+
 #if defined(TARGET_STANDARD) || defined(TARGET_HERO)
     yawEncoder.update();
 
@@ -62,7 +65,11 @@ void TurretSubsystem::refresh()
     if (isCalibrated && !drivers->isKillSwitched())
     {
         yaw.setAngle(-baseYaw + getTargetLocalYaw(), DT);
+        // pitch.motor.setDesiredOutput(GM6020.maxOutput - 1);
         pitch.setAngle((PITCH_OFFSET + getTargetLocalPitch()) * PITCH_REDUCTION, DT);
+        drivers->rtt << "target pitch angle "
+                     << (PITCH_OFFSET + getTargetLocalPitch()) * PITCH_REDUCTION;
+        drivers->rtt.endl();
     }
     else
     {
