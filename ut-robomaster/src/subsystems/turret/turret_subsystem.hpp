@@ -37,6 +37,9 @@ public:
     float getCurrentLocalYaw();
     float getCurrentLocalPitch();
     bool getIsCalibrated();
+    float getMotorAngle();
+
+    void setBaseYaw(float by);
 
 private:
     src::Drivers* drivers;

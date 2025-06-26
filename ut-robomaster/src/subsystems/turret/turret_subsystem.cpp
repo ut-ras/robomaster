@@ -32,6 +32,7 @@ void TurretSubsystem::initialize()
 
 void TurretSubsystem::refresh()
 {
+    // drivers->rtt << "absoluate yaw enc: " << yawEncoder.getAngle() << "\n";
     yaw.updateMotorAngle();
     pitch.updateMotorAngle();
 
@@ -53,7 +54,7 @@ void TurretSubsystem::refresh()
         setTargetWorldAngles(getCurrentLocalYaw() + getChassisYaw(), getCurrentLocalPitch());
     }
 #else
-    if (!isCalibrated && !isAmputated())
+    if (!isCalibrated)
     {
         baseYaw = -YAW_OFFSET;
         isCalibrated = true;
@@ -77,6 +78,10 @@ void TurretSubsystem::refresh()
         pitch.reset();
     }
 }
+
+void TurretSubsystem::setBaseYaw(float by) { baseYaw = by; }
+
+float TurretSubsystem::getMotorAngle() { return -yaw.getAngle(); }
 
 void TurretSubsystem::inputTargetData(Vector3f position, Vector3f velocity, Vector3f acceleration)
 {

@@ -2,6 +2,7 @@
 
 #include "tap/algorithms/smooth_pid.hpp"
 #include "tap/communication/can/can_bus.hpp"
+#include "tap/communication/serial/ref_serial.hpp"
 #include "tap/motor/dji_motor.hpp"
 
 #include "modm/container/pair.hpp"
@@ -13,6 +14,7 @@ using motor_controller::PidConstants;
 using tap::can::CanBus;
 using namespace tap::motor;
 using namespace motors;
+using tap::communication::serial::RefSerial;
 
 // General constants ------------------------------------------------
 
@@ -184,4 +186,21 @@ const float UNJAM_SPEED = 15.0f;          // rev/s
 
 // Heat Buffers -------------------------------------
 
-const uint16_t BARREL_HEAT_BUFFER = 20.0f;
+const uint16_t BARREL_HEAT_BUFFER_1V1 = 50;
+const uint16_t BARREL_HEAT_BUFFER_3V3[10] = {
+    40,  // Level 1
+    50,  // Level 2
+    50,  // Level 3
+    50,  // Level 4
+    50,  // Level 5
+    50,  // Level 6
+    50,  // Level 7
+    50,  // Level 8
+    50,  // Level 9
+    50   // Level 10
+};
+
+constexpr bool DEBUG_HEAT_BUFFER_ENABLED = true;
+const RefSerial::Rx::GameType DEBUG_HEAT_BUFFER_GAME_TYPE =
+    RefSerial::Rx::GameType::ROBOMASTER_RMUL_3V3;
+const uint8_t DEBUG_HEAT_BUFFER_ROBOT_LEVEL = 1;

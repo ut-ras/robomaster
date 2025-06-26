@@ -57,23 +57,29 @@ void CommandSentryPosition::execute()
 
     // chassis->input(inputMove, inputSpin);
 
-    if (drivers->isGameActive() && moveTimer.isStopped())
-    {
-        moveTimer.restart(5'000);  // 5 secs
-    }
+    //     if (drivers->isGameActive() && moveTimer.isStopped())
+    //     {
+    //         moveTimer.restart(5'000);  // 5 secs
+    //     }
 
-    if (!moveTimer.isExpired())
-    {
-        chassis->input(Vector2f(0.0f), 1.0f);  // spin!
-        return;
-    }
+    //     if (!moveTimer.isExpired())
+    //     {
+    //         chassis->input(Vector2f(0.0f), 1.0f);  // spin!
+    //         return;
+    //     }
 
-    PositionRequest pos = drivers->cvBoard.getPositionRequest();
-    drivers->rtt << "x_pos = " << pos.x_requested << ", y_pos = " << pos.y_requested
-                 << ", time_sent = " << (float)pos.time_sent;
+    //     PositionRequest pos = drivers->cvBoard.getPositionRequest();
+    //     drivers->rtt << "x_pos = " << pos.x_requested << ", y_pos = " << pos.y_requested
+    //                  << ", time_sent = " << (float)pos.time_sent;
 
-    // speen
-    chassis->input(Vector2f(0.0f), 1.0f);
+    //     // speen
+
+    // Remote *remote = &drivers->remote;
+    // float pwr = remote->getChannel(Remote::Channel::RIGHT_VERTICAL);
+    // float truePwr = pwr < ANALOG_DEAD_ZONE && !drivers->isKillSwitched() ? 0 : pwr * 0.5;
+    // chassis->input(Vector2f(0.0f), truePwr);
+
+    chassis->input(Vector2f(0.0f), 0.0f);
 }
 
 void CommandSentryPosition::end(bool) { chassis->input(Vector2f(0.0f), 0.0f); }

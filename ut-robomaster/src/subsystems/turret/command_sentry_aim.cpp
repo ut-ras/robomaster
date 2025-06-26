@@ -7,13 +7,18 @@ void CommandSentryAim::initialize() {}
 void CommandSentryAim::execute()
 {
     // turret->setTargetWorldAngles(turret->getChassisYaw(), 0.0f);
-    if (turret->getTargetLocalYaw() <= -55.0f)
+    // if (turret->getTargetLocalYaw() <= -55.0f)
+    // {
+    //     turret->setTargetWorldAngles(50.0f, 10.0f);
+    // }
+    // else
+    // {
+    // turret->setTargetWorldAngles(-50.0f, -10.0f);
+    // }
+
+    if (!drivers->isKillSwitched())
     {
         turret->setTargetWorldAngles(50.0f, 10.0f);
-    }
-    else
-    {
-        turret->setTargetWorldAngles(-50.0f, -10.0f);
     }
 
     /*

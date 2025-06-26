@@ -2,6 +2,7 @@
 
 #include "tap/algorithms/smooth_pid.hpp"
 #include "tap/communication/can/can_bus.hpp"
+#include "tap/communication/serial/ref_serial.hpp"
 #include "tap/motor/dji_motor.hpp"
 
 #include "modm/container/pair.hpp"
@@ -13,6 +14,7 @@ using motor_controller::PidConstants;
 using tap::can::CanBus;
 using namespace tap::motor;
 using namespace motors;
+using tap::communication::serial::RefSerial;
 
 // General constants ------------------------------------------------
 
@@ -97,8 +99,8 @@ static constexpr float YAW_INPUT_SCALE = 4.0f;
 static constexpr float PITCH_INPUT_SCALE = 5.0f;
 #endif
 
-static constexpr float MOUSE_SENS_YAW = 0.0045f;
-static constexpr float MOUSE_SENS_PITCH = 0.002f;
+static constexpr float MOUSE_SENS_YAW = 0.0090f;
+static constexpr float MOUSE_SENS_PITCH = 0.0025f;
 
 // Motor Constants -------------------------------------
 
@@ -187,4 +189,21 @@ const float UNJAM_SPEED = 12.0f;          // rev/s
 
 // Heat Buffers ---------------------------
 
-const uint16_t BARREL_HEAT_BUFFER = 100.0f;
+const uint16_t BARREL_HEAT_BUFFER_1V1 = 100;
+const uint16_t BARREL_HEAT_BUFFER_3V3[10] = {
+    100,  // Level 1
+    100,  // Level 2
+    100,  // Level 3
+    100,  // Level 4
+    100,  // Level 5
+    100,  // Level 6
+    100,  // Level 7
+    100,  // Level 8
+    100,  // Level 9
+    100   // Level 10
+};
+
+constexpr bool DEBUG_HEAT_BUFFER_ENABLED = true;
+const RefSerial::Rx::GameType DEBUG_HEAT_BUFFER_GAME_TYPE =
+    RefSerial::Rx::GameType::ROBOMASTER_RMUL_3V3;
+const uint8_t DEBUG_HEAT_BUFFER_ROBOT_LEVEL = 1;

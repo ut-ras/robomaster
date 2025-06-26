@@ -41,7 +41,7 @@ void CommandMoveChassis::execute()
     // override spin input while beyblading
     if (beyblade)
     {
-        inputSpin = 1.0f;
+        inputSpin = 0.5f;
     }
 
     // rotate movement vector relative to turret
@@ -61,7 +61,14 @@ bool CommandMoveChassis::applyKeyboardInput(Vector2f &inputMove, float &inputSpi
 {
     Remote *remote = &drivers->remote;
 
-    inputSpin = 0.0f;  // no keyboard spin controls
+    if (remote->keyPressed(Remote::Key::E)) {
+        inputSpin = 0.5f;
+    } else if (remote->keyPressed(Remote::Key::Q)) {
+        inputSpin = -0.5f;
+    } else {
+        inputSpin = 0.0f;
+    }
+    // inputSpin = 0.0f;  // no keyboard spin controls
 
     Vector2f rawMoveInput = Vector2f(
         remote->keyPressed(Remote::Key::D) - remote->keyPressed(Remote::Key::A),
