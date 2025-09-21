@@ -1,11 +1,9 @@
 #pragma once
 
-// #include "tap/architecture/timeout.hpp"
+#include "tap/architecture/timeout.hpp"
 #include "tap/control/command.hpp"
 
 #include "robots/robot_constants.hpp"
-// this is older sentry code dont know why it had chopped path
-// #include "chassis_subsystem.hpp"
 #include "subsystems/chassis/chassis_subsystem.hpp"
 #include "subsystems/turret/turret_subsystem.hpp"
 #include "utils/chassis_auto_align.hpp"
@@ -51,8 +49,9 @@ public:
 private:
     src::Drivers *drivers;
     ChassisSubsystem *chassis;
-    MilliTimeout moveTimer;
     TurretSubsystem *turret;
+
+    MilliTimeout moveTimer;
 
     Vector2f keyboardInputMove = Vector2f(0.0f);
     const bool turretRelative = false;

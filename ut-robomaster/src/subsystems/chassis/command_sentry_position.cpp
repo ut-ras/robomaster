@@ -4,7 +4,7 @@ namespace commands
 {
 
 using namespace communication;
-// old ard code
+
 void CommandSentryPosition::initialize() { moveTimer.stop(); }
 
 // void CommandSentryPosition::initialize() { keyboardInputMove = Vector2f(0.0f); }
