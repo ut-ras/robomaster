@@ -13,6 +13,8 @@ enum MessageTypes : uint8_t
     CV_MESSAGE_TYPE_COLOR_DATA = 3,
     CV_MESSAGE_TYPE_ECHO = 4,
     CV_MESSAGE_TYPE_POSITION_REQUEST = 5,
+    CV_MESSAGE_TYPE_HEALTH_DATA = 6,
+    CV_MESSAGE_TYPE_AMMUNITION_DATA = 7,
 };
 
 enum ColorTypes : uint8_t
@@ -63,6 +65,19 @@ struct OdometryData
 struct ColorData
 {
     ColorTypes color;
+
+} modm_packed;
+
+struct HealthData
+{
+    float health;
+
+} modm_packed;
+
+struct AmmunitionData
+{
+    float ammo;
+
 } modm_packed;
 
 }  // namespace communication

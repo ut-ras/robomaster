@@ -59,6 +59,16 @@ public:
     void sendColorData();
 
     /**
+     * Sends robot health data to the CV board
+     */
+    void sendHealthData();
+
+    /**
+     * Sends robot ammunition data to the CV board
+     */
+    void sendAmmunitionData();
+
+    /**
      * Decodes the turret aiming data received from the CV board and stores it in lastTurretData
      *
      * @param message The message received from the CV board

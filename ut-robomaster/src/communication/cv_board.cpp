@@ -38,6 +38,7 @@ void CVBoard::sendMessage()
 {
     sendOdometryData();
     sendColorData();
+    sendHealthData();
 }
 
 //  void CVBoard::echoData(const ReceivedSerialMessage& message)
@@ -82,6 +83,24 @@ void CVBoard::sendColorData()
     {
         data->color = COLOR_UNKNOWN;
     }
+
+    message.setCRC16();
+    drivers->uart.write(UART_PORT, reinterpret_cast<uint8_t*>(&message), sizeof(message));
+}
+
+void CVBoard::sendHealthData()
+{
+    DJISerial::SerialMessage<sizeof(HealthData)> message;
+    message.messageType = CV_MESSAGE_TYPE_HEALTH_DATA;
+
+    message.setCRC16();
+    drivers->uart.write(UART_PORT, reinterpret_cast<uint8_t*>(&message), sizeof(message));
+}
+
+void CVBoard::sendAmmunitionData()
+{
+    DJISerial::SerialMessage<sizeof(AmmunitionData)> message;
+    message.messageType = CV_MESSAGE_TYPE_AMMUNITION_DATA;
 
     message.setCRC16();
     drivers->uart.write(UART_PORT, reinterpret_cast<uint8_t*>(&message), sizeof(message));
