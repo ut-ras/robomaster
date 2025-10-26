@@ -74,7 +74,7 @@ void FlywheelIndicator::initialize()
         RefSerialData::Tx::GraphicColor::GREEN);
 
     // ADJUST APPEARANCE \/ \/
-    RefSerialTransmitter::configCircle(50, 1920 / 2, 1080 / 2, 200, &msg.graphicData[0]);
+    RefSerialTransmitter::configCircle(50, 1920 / 3, 1080 / 3, 200, &msg.graphicData[0]);
 }
 
 namespace commands
@@ -90,14 +90,12 @@ void CommandClientDisplay::restartHud()
 bool CommandClientDisplay::run()
 {
     PT_BEGIN();
-    
+
     if (!this->isRunning())
     {
         restart();
         this->restartHud();
     }
-
-    
 
     PT_WAIT_UNTIL(drivers->refSerial.getRefSerialReceivingData());
 
