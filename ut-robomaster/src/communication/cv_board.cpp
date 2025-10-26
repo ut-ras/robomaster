@@ -33,8 +33,9 @@ void CVBoard::messageReceiveCallback(const ReceivedSerialMessage& message)
 
 void CVBoard::sendMessage()
 {
+    // Odometry Data currently has a dummy message
     sendOdometryData();
-    sendColorData();
+    // sendColorData();
 }
 
 void CVBoard::echoData(const ReceivedSerialMessage& message)
@@ -45,9 +46,10 @@ void CVBoard::echoData(const ReceivedSerialMessage& message)
     DJISerial::SerialMessage<sizeof(data_string)> msg;
     msg.messageType = CV_MESSAGE_TYPE_ECHO;
 
-    std::string* data = reinterpret_cast<std::string*>(msg.data);
+    // std::string* data = reinterpret_cast<std::string*>(msg.data);
+    // data = &data_string;
 
-    data = &data_string;
+    memcpy(&msg.data, &data_string, message.header.dataLength);
 
     msg.setCRC16();
     drivers->uart.write(UART_PORT, reinterpret_cast<uint8_t*>(&msg), sizeof(msg));
@@ -59,6 +61,29 @@ void CVBoard::sendOdometryData()
     message.messageType = CV_MESSAGE_TYPE_ODOMETRY_DATA;
 
     // TODO: Implement sending of data once odometry module is finished
+
+    // Create dummy message
+    // struct OdometryData
+    // {
+    //     float xPos;
+    //     float yPos;
+    //     float zPos;
+
+    //     float chassisPitch;
+    //     float chassisYaw;
+    //     float chassisRoll;
+
+    //     float turretPitch;
+    //     float turretYaw;
+    // } modm_packed;
+    OdometryData dummyOdom = {1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0};
+    // Convert data into bytes to send (uart.write() handles the sending of message and num of bytes
+    // to transmit across UART PORT) Conversion of databytes handled with memcpy, &message.data is
+    // already is data buff array
+    memcpy(
+        &message.data,
+        &dummyOdom,
+        sizeof(OdometryData));  // Size of the DataType being copied over
 
     message.setCRC16();
     drivers->uart.write(UART_PORT, reinterpret_cast<uint8_t*>(&message), sizeof(message));

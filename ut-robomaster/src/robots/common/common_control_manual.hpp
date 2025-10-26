@@ -23,6 +23,7 @@ protected:
         // Mouse and Keyboard
         drivers->commandMapper.addMap(&keyRToggled);
         drivers->commandMapper.addMap(&keyGToggled);
+        drivers->commandMapper.addMap(&keyFToggled);
 
         // Controller
         drivers->commandMapper.addMap(&leftSwitchMid);
@@ -41,6 +42,9 @@ protected:
 
     CommandMoveTurret look{drivers, &turret};
 
+    // CV Send Test Command
+    CommandMoveTurretAimbot moveTurretAimbot{drivers, &turret};
+
     // Keyboard mappings
     ToggleCommandMapping keyRToggled{drivers, {&moveBeyblade}, RemoteMapState({Remote::Key::R})};
 
@@ -54,4 +58,10 @@ protected:
         drivers,
         {&rotateFlywheel_SwitchUp},
         RemoteMapState(Remote::Switch::LEFT_SWITCH, Remote::SwitchState::MID)};
+
+    // CV Send Test Mapping to Keyboard F
+    ToggleCommandMapping keyFToggled{
+        drivers,
+        {&moveTurretAimbot},
+        RemoteMapState({Remote::Key::F})};
 };

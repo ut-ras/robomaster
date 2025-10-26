@@ -18,8 +18,8 @@ static void initializeIo(src::Drivers *drivers)
     drivers->can.initialize();
     drivers->errorController.init();
     drivers->remote.initialize();
-    drivers->refSerial.initialize();
-    // drivers->cvBoard.initialize();
+    // drivers->refSerial.initialize();
+    drivers->cvBoard.initialize();
     drivers->terminalSerial.initialize();
     drivers->schedulerTerminalHandler.init();
     drivers->djiMotorTerminalSerialHandler.init();
@@ -37,8 +37,8 @@ static void updateIo(src::Drivers *drivers)
 #endif
 
     drivers->canRxHandler.pollCanData();
-    drivers->refSerial.updateSerial();
-    // drivers->cvBoard.updateSerial();
+    // drivers->refSerial.updateSerial();
+    drivers->cvBoard.updateSerial();
     drivers->remote.read();
 }
 

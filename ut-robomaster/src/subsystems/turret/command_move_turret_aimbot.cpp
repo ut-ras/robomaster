@@ -12,6 +12,15 @@ void CommandMoveTurretAimbot::initialize() {}
 
 void CommandMoveTurretAimbot::execute()
 {
+    // Run if the CV board is online
+    if (!drivers->cvBoard.isOnline()) return;
+
+    // Send stream of data regardless if it's old or new odometry data (testing)
+    // main.cpp should invoke sending from the UART PORT buffer to the CV board
+    // CommandMoveTurretAimbot should update the information to to the buffer
+    drivers->cvBoard.sendMessage();
+    return;  // Override remaining code
+
     // only run if the CV board is online
     if (!drivers->cvBoard.isOnline()) return;
 
