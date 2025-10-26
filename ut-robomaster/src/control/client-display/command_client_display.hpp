@@ -21,12 +21,12 @@ using subsystems::control::ClientDisplaySubsystem;
 class BeybladeIndicator : protected modm::Resumable<2>
 {
 private:
-    const uint8_t *graphicName = (const uint8_t *)"\x00\x00\x01";
-    RefSerialTransmitter &refSerialTransmitter;
+    const uint8_t* graphicName = (const uint8_t*)"\x00\x00\x01";
+    RefSerialTransmitter& refSerialTransmitter;
     RefSerialData::Tx::Graphic5Message msg;
 
 public:
-    explicit BeybladeIndicator(RefSerialTransmitter &refSerialTransmitter)
+    explicit BeybladeIndicator(RefSerialTransmitter& refSerialTransmitter)
         : refSerialTransmitter(refSerialTransmitter)
     {
     }
@@ -40,12 +40,12 @@ public:
 class FlywheelIndicator : protected modm::Resumable<2>
 {
 private:
-    const uint8_t *graphicName = (const uint8_t *)"\x00\x00\x02";
-    RefSerialTransmitter &refSerialTransmitter;
+    const uint8_t* graphicName = (const uint8_t*)"\x00\x00\x02";
+    RefSerialTransmitter& refSerialTransmitter;
     RefSerialData::Tx::Graphic5Message msg;
 
 public:
-    explicit FlywheelIndicator(RefSerialTransmitter &refSerialTransmitter)
+    explicit FlywheelIndicator(RefSerialTransmitter& refSerialTransmitter)
         : refSerialTransmitter(refSerialTransmitter)
     {
     }
@@ -60,7 +60,7 @@ namespace commands
 class CommandClientDisplay : public Command, modm::pt::Protothread
 {
 private:
-    src::Drivers *drivers;
+    src::Drivers* drivers;
     RefSerialTransmitter refSerialTransmitter;
     BeybladeIndicator beybladeIndicator;
     FlywheelIndicator flywheelIndicator;
@@ -69,7 +69,7 @@ private:
     void restartHud();
 
 public:
-    CommandClientDisplay(src::Drivers *drivers, ChassisSubsystem *chassis)
+    CommandClientDisplay(src::Drivers* drivers, ChassisSubsystem* chassis)
         : Command(),
           drivers(drivers),
           refSerialTransmitter(drivers),
@@ -81,7 +81,7 @@ public:
 
     bool run();
 
-    const char *getName() const override { return "client display"; }
+    const char* getName() const override { return "client display"; }
     void initialize() override
     {
         tap::buzzer::playNote(&drivers->pwm, 880);

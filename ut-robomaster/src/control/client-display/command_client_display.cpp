@@ -19,15 +19,17 @@ Caleb's Beyblade indicator
 modm::ResumableResult<void> BeybladeIndicator::sendInitialGraphics()
 {
     // The number represents the index of the resumable function in this class
-
-    return refSerialTransmitter.sendGraphic(&msg);
+    RF_BEGIN(0);
+    RF_CALL(refSerialTransmitter.sendGraphic(&msg));
+    RF_END();
 }
 
 modm::ResumableResult<void> BeybladeIndicator::update()
 {
     // This is the second resumable function so its index is 1
-
-    return refSerialTransmitter.sendGraphic(&msg);
+    RF_BEGIN(1);
+    RF_CALL(refSerialTransmitter.sendGraphic(&msg));
+    RF_END();
 }
 
 void BeybladeIndicator::initialize()
@@ -49,15 +51,17 @@ George's Flywheel indicator
 modm::ResumableResult<void> FlywheelIndicator::sendInitialGraphics()
 {
     // The number represents the index of the resumable function in this class
-
-    return refSerialTransmitter.sendGraphic(&msg);
+    RF_BEGIN(0);
+    RF_CALL(refSerialTransmitter.sendGraphic(&msg));
+    RF_END();
 }
 
 modm::ResumableResult<void> FlywheelIndicator::update()
 {
     // This is the second resumable function so its index is 1
-
-    return refSerialTransmitter.sendGraphic(&msg);
+    RF_BEGIN(1);
+    RF_CALL(refSerialTransmitter.sendGraphic(&msg));
+    RF_END();
 }
 
 void FlywheelIndicator::initialize()
@@ -85,24 +89,27 @@ void CommandClientDisplay::restartHud()
 
 bool CommandClientDisplay::run()
 {
+    PT_BEGIN();
+    
     if (!this->isRunning())
     {
         restart();
         this->restartHud();
     }
 
-    PT_BEGIN();
+    
 
     PT_WAIT_UNTIL(drivers->refSerial.getRefSerialReceivingData());
 
     // Initial draws
-    PT_AWAIT_RESUMABLE(beybladeIndicator.sendInitialGraphics());
-    PT_AWAIT_RESUMABLE(flywheelIndicator.sendInitialGraphics());
+    PT_CALL(beybladeIndicator.sendInitialGraphics());
+    PT_CALL(flywheelIndicator.sendInitialGraphics());
 
     while (!this->restarting)
     {
-        PT_AWAIT_RESUMABLE(beybladeIndicator.update());
-        PT_AWAIT_RESUMABLE(flywheelIndicator.update());
+        PT_CALL(beybladeIndicator.update());
+        PT_CALL(flywheelIndicator.update());
+
         PT_YIELD();
     }
 
