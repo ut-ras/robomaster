@@ -110,9 +110,13 @@ void ChassisSubsystem::input(Vector2f move, float spin)
 }
 
 // new for omniwheels
-void ChassisSubsystem::input(float omega1, float omega2, float omega3, float omega4)
+void ChassisSubsystem::input(Vector2f v, float wZ)
 {
-    // add code to send targetWheelVels to motor controllers
+    setOmniVelocities(v, wZ);
+    for (int8_t i = 0; i < WHEELS; i++)
+    {
+        wheels[i].updateVelocity(targetWheelVels[i]);
+    }
 }
 
 void ChassisSubsystem::setMecanumWheelVelocities(Vector2f v, float wZ)
@@ -124,13 +128,20 @@ void ChassisSubsystem::setMecanumWheelVelocities(Vector2f v, float wZ)
     targetWheelVels[3] = (-v.y - v.x - wZ * WHEEL_LXY) / WHEEL_RADIUS;  // rad/s
 }
 
-void ChassisSubsystem::setOmniVelocities(float omega1, float omega2, float omega3, float omega4)
+void ChassisSubsystem::setOmniVelocities(Vector2f v, float wZ)
 {
-    // fill in new set omni veloc
-    targetWheelVels[0] = omega1 * some_scaling_factor;  // I needa change this
-    targetWheelVels[1] = omega2 * some_scaling_factor;
-    targetWheelVels[2] = omega3 * some_scaling_factor;
-    targetWheelVels[3] = omega4 * some_scaling_factor;
+    targetWheelVels[0] =
+        (OMNIWHEEL_SCALINGFACTOR * (v.x + v.y + wZ * (WHEEL_DISTANCE_X + WHEEL_DISTANCE_Y))) /
+        WHEEL_RADIUS;  // Revs/S
+    targetWheelVels[1] =
+        (OMNIWHEEL_SCALINGFACTOR * (-v.x + v.y + wZ * (-WHEEL_DISTANCE_X + WHEEL_DISTANCE_Y))) /
+        WHEEL_RADIUS;
+    targetWheelVels[2] =
+        (OMNIWHEEL_SCALINGFACTOR * (-v.x - v.y + wZ * (-WHEEL_DISTANCE_X - WHEEL_DISTANCE_Y))) /
+        WHEEL_RADIUS;
+    targetWheelVels[3] =
+        (OMNIWHEEL_SCALINGFACTOR * (v.x - v.y + wZ * (-WHEEL_DISTANCE_X + WHEEL_DISTANCE_Y))) /
+        WHEEL_RADIUS;
 }
 
 Vector3f ChassisSubsystem::measureVelocity()
