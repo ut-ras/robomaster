@@ -79,13 +79,45 @@ bool ChassisSubsystem::hardwareOk()
     return true;
 }
 
-void ChassisSubsystem::input(Vector2f move, float spin)
+// void ChassisSubsystem::input(Vector2f move, float spin)
+// {
+//     Vector2f v = move * MAX_LINEAR_VEL;
+//     float wZ = spin * MAX_ANGULAR_VEL;
+
+//     float linearTerm = (abs(v.x) + abs(v.y)) / WHEEL_RADIUS;
+//     float angularTerm = abs(wZ) * WHEEL_LXY / WHEEL_RADIUS;
+
+//     // overdrive error
+//     float overdrive = max(linearTerm + angularTerm - WHEEL_MAX_VEL, 0.0f);
+
+//     // angular velocity correction
+//     if (angularTerm > 0.0f)
+//     {
+//         float correction = min(angularTerm, overdrive);
+//         wZ *= 1.0f - correction / angularTerm;
+//         overdrive -= correction;
+//     }
+
+//     // linear velocity correction
+//     if (linearTerm > 0.0f)
+//     {
+//         float correction = min(linearTerm, overdrive);
+//         v *= 1.0f - correction / linearTerm;
+//         overdrive -= correction;
+//     }
+
+//     setMecanumWheelVelocities(v, wZ);
+// }
+
+// new for omniwheels
+void ChassisSubsystem::input(Vector2f move, float spin)  // TEST
 {
     Vector2f v = move * MAX_LINEAR_VEL;
     float wZ = spin * MAX_ANGULAR_VEL;
 
-    float linearTerm = (abs(v.x) + abs(v.y)) / WHEEL_RADIUS;
-    float angularTerm = abs(wZ) * WHEEL_LXY / WHEEL_RADIUS;
+    float linearTerm = ((abs(v.x) + abs(v.y)) * OMNIWHEEL_SCALINGFACTOR) / WHEEL_RADIUS;
+    float angularTerm =
+        (abs(wZ) * (WHEEL_DISTANCE_X + WHEEL_DISTANCE_Y) * OMNIWHEEL_SCALINGFACTOR) / WHEEL_RADIUS;
 
     // overdrive error
     float overdrive = max(linearTerm + angularTerm - WHEEL_MAX_VEL, 0.0f);
@@ -105,18 +137,7 @@ void ChassisSubsystem::input(Vector2f move, float spin)
         v *= 1.0f - correction / linearTerm;
         overdrive -= correction;
     }
-
-    setMecanumWheelVelocities(v, wZ);
-}
-
-// new for omniwheels
-void ChassisSubsystem::input(Vector2f v, float wZ)
-{
     setOmniVelocities(v, wZ);
-    for (int8_t i = 0; i < WHEELS; i++)
-    {
-        wheels[i].updateVelocity(targetWheelVels[i]);
-    }
 }
 
 void ChassisSubsystem::setMecanumWheelVelocities(Vector2f v, float wZ)
@@ -128,7 +149,7 @@ void ChassisSubsystem::setMecanumWheelVelocities(Vector2f v, float wZ)
     targetWheelVels[3] = (-v.y - v.x - wZ * WHEEL_LXY) / WHEEL_RADIUS;  // rad/s
 }
 
-void ChassisSubsystem::setOmniVelocities(Vector2f v, float wZ)
+void ChassisSubsystem::setOmniVelocities(Vector2f v, float wZ)  // TEST
 {
     targetWheelVels[0] =
         (OMNIWHEEL_SCALINGFACTOR * (v.x + v.y + wZ * (WHEEL_DISTANCE_X + WHEEL_DISTANCE_Y))) /
@@ -144,7 +165,7 @@ void ChassisSubsystem::setOmniVelocities(Vector2f v, float wZ)
         WHEEL_RADIUS;
 }
 
-Vector3f ChassisSubsystem::measureVelocity()
+Vector3f ChassisSubsystem::measureVelocity()  // TEST
 {
     float w1 = wheels[0].measureVelocity();  // rev/s
     float w2 = wheels[1].measureVelocity();  // rev/s
