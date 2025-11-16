@@ -34,7 +34,12 @@ void ChassisSubsystem::refresh()
     for (int8_t i = 0; i < WHEELS; i++)
     {
         wheels[i].setActive(!drivers->isKillSwitched() && !isAmputated());
-        wheels[i].updateVelocity(targetWheelVels[i] / M_TWOPI);  // rad/s to rev/s
+        // wheels[i].setOutput(targetWheelVels[i]);
+        // wheels[i].updateVelocity(targetWheelVels[i] / M_TWOPI);  // rad/s to rev/s
+        wheels[i].setOutput(targetWheelVels[i] / M_TWOPI);  // for testing only
+
+        drivers->rtt << "THE ACTUAL VELOCITY FOR MOTOR" << i
+                     << " is: " << wheels[i].measureVelocity() << "\n";
     }
 
     limitChassisPower();
@@ -137,7 +142,12 @@ void ChassisSubsystem::input(Vector2f move, float spin)  // TEST
         v *= 1.0f - correction / linearTerm;
         overdrive -= correction;
     }
+#if defined(TARGET_SENTRY)
     setOmniVelocities(v, wZ);
+#endif
+#if defined(TARGET_STANDARD) || defined(TARGET_HERO)
+    setMecanumWheelVelocities(v, wZ);
+#endif
 }
 
 void ChassisSubsystem::setMecanumWheelVelocities(Vector2f v, float wZ)
@@ -163,6 +173,17 @@ void ChassisSubsystem::setOmniVelocities(Vector2f v, float wZ)  // TEST
     targetWheelVels[3] =
         (OMNIWHEEL_SCALINGFACTOR * (v.x - v.y + wZ * (-WHEEL_DISTANCE_X + WHEEL_DISTANCE_Y))) /
         WHEEL_RADIUS;
+
+    // targetWheelVels[0] = (OMNIWHEEL_SCALINGFACTOR * (v.x + v.y + wZ)) / WHEEL_RADIUS;  // Revs/S
+    // targetWheelVels[1] = (OMNIWHEEL_SCALINGFACTOR * (-v.x + v.y - wZ)) / WHEEL_RADIUS;
+    // targetWheelVels[2] = (-1 * OMNIWHEEL_SCALINGFACTOR * (-v.x - v.y + wZ)) / WHEEL_RADIUS;
+    // targetWheelVels[3] = (-1 * OMNIWHEEL_SCALINGFACTOR * (v.x - v.y - wZ)) / WHEEL_RADIUS;
+    drivers->rtt << "Omni Vels: " << targetWheelVels[0] << ", " << targetWheelVels[1] << ", "
+                 << targetWheelVels[2] << ", " << targetWheelVels[3] << "v.x" << v.x << "v.y" << v.y
+                 << "wZ" << wZ;
+    // drivers->rtt << "v.x scaled: " << (OMNIWHEEL_SCALINGFACTOR * (v.x)) / WHEEL_RADIUS
+    //              << "v.y scaled: " << (OMNIWHEEL_SCALINGFACTOR * (v.y)) / WHEEL_RADIUS
+    //              << "wZ scaled: " << (OMNIWHEEL_SCALINGFACTOR * (wZ)) / WHEEL_RADIUS << "\n";
 }
 
 Vector3f ChassisSubsystem::measureVelocity()  // TEST

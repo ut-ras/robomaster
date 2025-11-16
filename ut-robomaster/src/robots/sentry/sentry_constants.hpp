@@ -29,6 +29,7 @@ static constexpr float WHEEL_DISTANCE_X = 0.391f;  // meters
 static constexpr float WHEEL_DISTANCE_Y = 0.315f;  // meters
 static constexpr float WHEEL_RADIUS = 0.1524f;     // meters
 static constexpr float WHEEL_LXY = (WHEEL_DISTANCE_X + WHEEL_DISTANCE_Y) / 2.0f;
+static constexpr float OMNIWHEEL_SCALINGFACTOR = 1;  // cos(pi/4) for omniwheel
 
 // flywheels -----------
 static constexpr int FLYWHEELS = 4;

@@ -6,7 +6,7 @@
 class SentryControl : CommonControlManual
 {
 public:
-    SentryControl(src::Drivers *drivers) : CommonControlManual(drivers) {}
+    SentryControl(src::Drivers* drivers) : CommonControlManual(drivers) {}
 
     void initialize()
     {
@@ -20,8 +20,7 @@ public:
 
         drivers->commandMapper.addMap(&leftMouseDown);
         drivers->commandMapper.addMap(&leftSwitchUp);
-
-        chassis.setDefaultCommand(&sentryPosition);
+        chassis.setDefaultCommand(&move_chassis);
         turret.setDefaultCommand(&sentryAim);
     }
 
@@ -34,7 +33,9 @@ private:
     CommandAgitatorContinuous rotateAgitatorL{drivers, &agitatorL, BarrelId::STANDARD1};
     CommandAgitatorContinuous rotateAgitatorR{drivers, &agitatorR, BarrelId::STANDARD2};
 
-    CommandSentryPosition sentryPosition{drivers, &chassis};
+    // CommandSentryPosition sentryPosition{drivers, &chassis};
+    // CommandMoveChassis move_chassis{drivers, &chassis};
+    CommandMoveChassis move_chassis{drivers, &chassis, &turret, true, false};
     CommandSentryAim sentryAim{drivers, &turret};
 
     // Mappings

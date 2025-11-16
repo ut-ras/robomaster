@@ -32,11 +32,11 @@ void CommandMoveChassis::execute()
     }
 
     // auto-align chassis to turret when moving
-    if (inputMove.getLengthSquared() > 0.0f && inputSpin == 0.0f)
-    {
-        inputSpin = calculateAutoAlignCorrection(yawAngle, CHASSIS_AUTOALIGN_ANGLE) *
-                    CHASSIS_AUTOALIGN_FACTOR;
-    }
+    // if (inputMove.getLengthSquared() > 0.0f && inputSpin == 0.0f)
+    // {
+    //     inputSpin = calculateAutoAlignCorrection(yawAngle, CHASSIS_AUTOALIGN_ANGLE) *
+    //                 CHASSIS_AUTOALIGN_FACTOR;
+    // }
 
     // override spin input while beyblading
     if (beyblade)
@@ -45,10 +45,10 @@ void CommandMoveChassis::execute()
     }
 
     // rotate movement vector relative to turret
-    if (turretRelative)
-    {
-        inputMove = inputMove.rotate(yawAngle);
-    }
+    // if (turretRelative)
+    // {
+    //     inputMove = inputMove.rotate(yawAngle);
+    // }
 
     chassis->input(inputMove, inputSpin);
 }
@@ -57,9 +57,9 @@ void CommandMoveChassis::end(bool) { chassis->input(Vector2f(0.0f), 0.0f); }
 
 bool CommandMoveChassis::isFinished() const { return false; }
 
-bool CommandMoveChassis::applyKeyboardInput(Vector2f &inputMove, float &inputSpin)
+bool CommandMoveChassis::applyKeyboardInput(Vector2f& inputMove, float& inputSpin)
 {
-    Remote *remote = &drivers->remote;
+    Remote* remote = &drivers->remote;
 
     inputSpin = 0.0f;  // no keyboard spin controls
 
@@ -88,15 +88,18 @@ bool CommandMoveChassis::applyKeyboardInput(Vector2f &inputMove, float &inputSpi
     return rawMoveInput != Vector2f(0.0f);
 }
 
-bool CommandMoveChassis::applyJoystickInput(Vector2f &inputMove, float &inputSpin)
+bool CommandMoveChassis::applyJoystickInput(Vector2f& inputMove, float& inputSpin)
 {
-    Remote *remote = &drivers->remote;
+    Remote* remote = &drivers->remote;
 
     inputMove = Vector2f(
         remote->getChannel(Remote::Channel::RIGHT_HORIZONTAL),
         remote->getChannel(Remote::Channel::RIGHT_VERTICAL));
 
     inputSpin = remote->getChannel(Remote::Channel::WHEEL);
+
+    drivers->rtt << "Chassis Input Move: (" << inputMove.getX() << ", " << inputMove.getY()
+                 << ") Spin: " << inputSpin << "\n";
 
     float inputMoveLen = inputMove.getLength();
     if (inputMoveLen < ANALOG_DEAD_ZONE)
