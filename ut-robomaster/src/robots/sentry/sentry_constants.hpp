@@ -101,9 +101,9 @@ constexpr CanBus CAN_TURRET = CanBus::CAN_BUS1;
 constexpr CanBus CAN_SHOOTER = CanBus::CAN_BUS2;
 
 // chassis
-const MotorConfig WHEEL_LF{M3508, MOTOR2, CAN_WHEELS, true, "left front wheel", PID_WHEELS, {}};
+const MotorConfig WHEEL_LF{M3508, MOTOR2, CAN_WHEELS, false, "left front wheel", PID_WHEELS, {}};
 const MotorConfig WHEEL_RF{M3508, MOTOR1, CAN_WHEELS, false, "right front wheel", PID_WHEELS, {}};
-const MotorConfig WHEEL_LB{M3508, MOTOR3, CAN_WHEELS, true, "left back wheel", PID_WHEELS, {}};
+const MotorConfig WHEEL_LB{M3508, MOTOR3, CAN_WHEELS, false, "left back wheel", PID_WHEELS, {}};
 const MotorConfig WHEEL_RB{M3508, MOTOR4, CAN_WHEELS, false, "right back wheel", PID_WHEELS, {}};
 
 // flywheels
