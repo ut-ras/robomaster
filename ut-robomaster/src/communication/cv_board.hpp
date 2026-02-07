@@ -5,14 +5,22 @@
 #include "tap/communication/serial/uart.hpp"
 #include "tap/util_macros.hpp"
 
+#include "serial/spi.hpp"
+
 #include "cv_message.hpp"
+
+#define CV_SPI  // Communicate to CV board via SPI (instead of UART)
 
 namespace src
 {
+
 class Drivers;
 }
+
 namespace communication
 {
+
+using src::communication::serial::Spi;
 using tap::communication::serial::Uart;
 
 class CVBoard : public tap::communication::serial::DJISerial
@@ -28,7 +36,7 @@ public:
      * Note: Uart1 is utilized by the terminal serial; to ensure smooth operation,
      * comment out the initialize and update calls in main
      */
-    void initialize();
+    void initialize();  // TODO
 
     /**
      * Processes messages received from the CV board
@@ -89,11 +97,13 @@ private:
     /** Last turret aiming data received from the CV board */
     TurretData lastTurretData;
 
-    /** UART port used to communicate with the CV board */
+/** SPI or UART port used to communicate with the CV board */
+#ifdef CV_SPI
+    static constexpr Spi::SpiPort SPI_PORT = Spi::Spi2;  // Custom Spi port (8 pin connector)
+#else
     static constexpr Uart::UartPort UART_PORT = Uart::Uart1;
-
-    /** Baud rate of the UART line */
     static constexpr uint32_t BAUD_RATE = 115200;
+#endif
 
     /** Time to wait between messages before considering the CV board offline */
     static constexpr uint16_t OFFLINE_TIMEOUT_MS = 2000;

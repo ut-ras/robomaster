@@ -4,6 +4,16 @@
 
 namespace communication
 {
+#ifdef CV_SPI
+CVBoard::CVBoard(src::Drivers* drivers)
+    : DJISerial(drivers, SPI_PORT),
+      drivers(drivers),
+      lastTurretData(),
+      offlineTimeout()
+{
+    lastTurretData.hasTarget = false;
+}
+#else  // UART
 CVBoard::CVBoard(src::Drivers* drivers)
     : DJISerial(drivers, UART_PORT),
       drivers(drivers),
@@ -12,8 +22,16 @@ CVBoard::CVBoard(src::Drivers* drivers)
 {
     lastTurretData.hasTarget = false;
 }
+#endif
 
-void CVBoard::initialize() { drivers->uart.init<UART_PORT, BAUD_RATE>(); }
+void CVBoard::initialize()
+{
+#ifdef CV_SPI
+    drivers->spi.init();
+#else  // UART
+    drivers->uart.init<UART_PORT, BAUD_RATE>();
+#endif
+}
 
 void CVBoard::messageReceiveCallback(const ReceivedSerialMessage& message)
 {
