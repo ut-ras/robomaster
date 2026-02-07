@@ -87,7 +87,10 @@ bool Spi::write(SpiPort port, uint8_t data)
         case SpiPort::Spi1:
             return false;
         case SpiPort::Spi2:
-            SpiHal::write(data);
+            // Shouldn't this be SPIHal1 ? -Jiyan
+
+            SpiHal1::write(data);  // The data should be 8 or 16 bits for this function
+
             return true;
         default:
             return false;
@@ -107,7 +110,7 @@ bool Spi::write(SpiPort port, uint16_t data)
         case SpiPort::Spi1:
             return false;
         case SpiPort::Spi2:
-            SpiHal::write(data);
+            SpiHal1::write(data);
             return true;
         default:
             return false;
