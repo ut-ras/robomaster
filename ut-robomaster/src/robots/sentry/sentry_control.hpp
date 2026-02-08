@@ -34,7 +34,7 @@ private:
     CommandAgitatorContinuous rotateAgitatorL{drivers, &agitatorL, BarrelId::STANDARD1};
     CommandAgitatorContinuous rotateAgitatorR{drivers, &agitatorR, BarrelId::STANDARD2};
 
-    CommandSentryPosition sentryPosition{drivers, &chassis};
+    CommandSentryPosition sentryPosition{drivers, &chassis, &turret};
     CommandSentryAim sentryAim{drivers, &turret};
 
     // Mappings

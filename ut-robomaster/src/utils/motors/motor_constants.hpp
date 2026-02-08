@@ -24,6 +24,7 @@ struct MotorConfig
     const char* const name;
     PidConstants velocityPidConstants;
     PidConstants positionPidConstants;
+    bool currentControl;
 };
 
 // C620 controller (16384 = 20A)

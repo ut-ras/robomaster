@@ -1,7 +1,7 @@
 #pragma once
 
-#include "tap/algorithms/contiguous_float.hpp"
 #include "tap/algorithms/smooth_pid.hpp"
+#include "tap/algorithms/wrapped_float.hpp"
 #include "tap/motor/motor_interface.hpp"
 
 #include "utils/motors/motor_constants.hpp"
@@ -27,13 +27,15 @@ public:
     float getSetpoint();
     bool isOnline();
 
+    DjiMotor motor;
+
 private:
     src::Drivers *drivers;
-    DjiMotor motor;
+    // DjiMotor motor;
     SmoothPid pid;
-    ContiguousFloat setpoint;
+    WrappedFloat setpoint;
     float unwrappedAngle = 0;
-    ContiguousFloat currentAngle;
+    WrappedFloat currentAngle;
     float lastUpdatedEncoderValue = 0;
 };
 }  // namespace subsystems::turret

@@ -2,6 +2,7 @@
 #define SUBSYSTEMS_ODOMETRY_OBSERVER_DISPLACEMENT_HPP_
 
 #include "tap/algorithms/odometry/chassis_displacement_observer_interface.hpp"
+#include "tap/architecture/clock.hpp"
 
 #include "subsystems/chassis/chassis_subsystem.hpp"
 

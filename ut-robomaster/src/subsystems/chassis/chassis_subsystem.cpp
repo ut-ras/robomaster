@@ -26,6 +26,7 @@ void ChassisSubsystem::initialize()
     {
         wheels[i].initialize();
     }
+    logTimer.stop();
 }
 
 void ChassisSubsystem::refresh()
@@ -106,7 +107,11 @@ void ChassisSubsystem::input(Vector2f move, float spin)
         overdrive -= correction;
     }
 
+#if defined(TARGET_SENTRY)
+    setOmniVelocities(v, wZ);
+#else
     setMecanumWheelVelocities(v, wZ);
+#endif
 }
 
 void ChassisSubsystem::setMecanumWheelVelocities(Vector2f v, float wZ)
@@ -116,6 +121,14 @@ void ChassisSubsystem::setMecanumWheelVelocities(Vector2f v, float wZ)
     targetWheelVels[1] = (-v.y + v.x - wZ * WHEEL_LXY) / WHEEL_RADIUS;  // rad/s
     targetWheelVels[2] = (-v.y + v.x + wZ * WHEEL_LXY) / WHEEL_RADIUS;  // rad/s
     targetWheelVels[3] = (-v.y - v.x - wZ * WHEEL_LXY) / WHEEL_RADIUS;  // rad/s
+}
+
+void ChassisSubsystem::setOmniVelocities(Vector2f v, float wZ)
+{
+    targetWheelVels[0] = (v.y + v.x + wZ) / WHEEL_RADIUS;  // rad/s
+    targetWheelVels[1] = (v.y - v.x - wZ) / WHEEL_RADIUS;  // rad/s
+    targetWheelVels[2] = (v.y - v.x + wZ) / WHEEL_RADIUS;  // rad/s
+    targetWheelVels[3] = (v.y + v.x - wZ) / WHEEL_RADIUS;  // rad/s
 }
 
 Vector3f ChassisSubsystem::measureVelocity()

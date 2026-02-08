@@ -75,6 +75,18 @@ public:
     bool decodeTurretData(const ReceivedSerialMessage& message);
 
     /**
+     * Decode a request to move to a position.
+     * @param message message from CV board
+     * @return true if valid, false otherwise
+     */
+    bool decodePositionRequest(const ReceivedSerialMessage& message);
+
+    /**
+     * Fetch the position request from the CV board
+     */
+    const PositionRequest& getPositionRequest() const;
+
+    /**
      * @return true if a message has been received within the last OFFLINE_TIMEOUT_MS milliseconds,
      * false if otherwise
      */
@@ -97,10 +109,12 @@ private:
     /** Last turret aiming data received from the CV board */
     TurretData lastTurretData;
 
-/** SPI or UART port used to communicate with the CV board */
-#ifdef CV_SPI
-    static constexpr Spi::SpiPort SPI_PORT = Spi::Spi2;  // Custom Spi port (8 pin connector)
-#else
+    PositionRequest lastPositionRequest = {
+        .x_requested = -999.9f,
+        .y_requested = -999.9f,
+        .time_sent = 0xdeadbeef};
+
+    /** UART port used to communicate with the CV board */
     static constexpr Uart::UartPort UART_PORT = Uart::Uart1;
     static constexpr uint32_t BAUD_RATE = 115200;
 #endif
