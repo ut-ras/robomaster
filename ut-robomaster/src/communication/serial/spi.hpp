@@ -78,18 +78,17 @@ public:
      * @tparam baudrate desired baud rate in Hz.
      * @tparam parity @see `Parity`.
      */
-    template <
-        SpiPort port,
-        modm::baudrate_t baudrate,
-        // DEV BOARD TYPE-C behaves as SPI Slave Device
-        MasterSelection masterselection = MasterSelection::Slave,
-        DataMode datamode,
-        DataOrder dataorder,
-        DataSize datasize,
-        Prescaler prescaler>
+    template <SpiPort port, modm::baudrate_t baudrate>
     void init()
     {
 #ifndef PLATFORM_HOSTED
+        // ADDITIONAL CONFIGS:
+        // MasterSelection masterselection = MasterSelection::Slave,
+        // DataMode datamode,
+        // DataOrder dataorder,
+        // DataSize datasize,
+        // Prescaler prescaler
+
         if constexpr (port == SpiPort::Spi1)
         {
             // Do nothing
