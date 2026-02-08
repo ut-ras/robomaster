@@ -9,7 +9,7 @@ CVBoard::CVBoard(src::Drivers* drivers)
     : DJISerial(drivers, SPI_PORT),
       drivers(drivers),
       lastTurretData(),
-      offlineTimeout()>
+      offlineTimeout()
 {
     lastTurretData.hasTarget = false;
 }
@@ -27,7 +27,10 @@ CVBoard::CVBoard(src::Drivers* drivers)
 void CVBoard::initialize()
 {
 #ifdef CV_SPI
-    drivers->spi.init();
+    modm::baudrate_t baudrate;
+    // TODO -- Carolyn
+    spi.init<SPI_PORT, baudrate>();
+
 #else  // UART
     drivers->uart.init<UART_PORT, BAUD_RATE>();
 #endif
@@ -105,8 +108,12 @@ void CVBoard::sendOdometryData()
         &dummyOdom,
         sizeof(OdometryData));  // Size of the DataType being copied over
 
+#ifdef CV_SPI
+// Needs SPI write -- Jiyan
+#else
     message.setCRC16();
     drivers->uart.write(UART_PORT, reinterpret_cast<uint8_t*>(&message), sizeof(message));
+#endif
 }
 
 void CVBoard::sendColorData()
@@ -124,9 +131,12 @@ void CVBoard::sendColorData()
     {
         data->color = COLOR_UNKNOWN;
     }
-
+#ifdef CV_SPI
+// Needs SPI write
+#else
     message.setCRC16();
     drivers->uart.write(UART_PORT, reinterpret_cast<uint8_t*>(&message), sizeof(message));
+#endif
 }
 
 bool CVBoard::decodeTurretData(const ReceivedSerialMessage& message)
