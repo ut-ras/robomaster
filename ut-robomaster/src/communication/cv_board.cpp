@@ -6,7 +6,7 @@ namespace communication
 {
 #ifdef CV_SPI
 CVBoard::CVBoard(src::Drivers* drivers)
-    : DJISerial(drivers, SPI_PORT),
+    : DJISerial(drivers, Uart::Uart1),  // Bogus init (just to sit here)
       drivers(drivers),
       lastTurretData(),
       offlineTimeout()
@@ -27,11 +27,9 @@ CVBoard::CVBoard(src::Drivers* drivers)
 void CVBoard::initialize()
 {
 #ifdef CV_SPI
-    modm::baudrate_t baudrate;
-    // TODO -- Carolyn
-    spi.init<SPI_PORT, baudrate>();
-
-#else  // UART
+    // Default to Spi2
+    spi.init<SPI_PORT, 1'000'000>();  // 1 MHz for now (just guessing)
+#else                                 // UART
     drivers->uart.init<UART_PORT, BAUD_RATE>();
 #endif
 }
@@ -80,11 +78,6 @@ void CVBoard::sendMessage()
 
 void CVBoard::sendOdometryData()
 {
-    DJISerial::SerialMessage<sizeof(OdometryData)> message;
-    message.messageType = CV_MESSAGE_TYPE_ODOMETRY_DATA;
-
-    // TODO: Implement sending of data once odometry module is finished
-
     // Create dummy message
     // struct OdometryData
     // {
@@ -100,6 +93,24 @@ void CVBoard::sendOdometryData()
     //     float turretYaw;
     // } modm_packed;
     OdometryData dummyOdom = {1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0};
+
+#ifdef CV_SPI
+    // Check if can send message
+    if (spi.isTransmitRegisterEmpty(SPI_PORT) == false)
+    {
+        auto* bytes = reinterpret_cast<uint8_t*>(&dummyOdom);
+        constexpr size_t len = sizeof(OdometryData);
+
+        // Can send message
+        for (size_t i = 0; i < len; ++i)
+        {
+            spi.write(SPI_PORT, bytes[i]);
+        }
+    }
+#else
+    DJISerial::SerialMessage<sizeof(OdometryData)> message;
+    message.messageType = CV_MESSAGE_TYPE_ODOMETRY_DATA;
+
     // Convert data into bytes to send (uart.write() handles the sending of message and num of bytes
     // to transmit across UART PORT) Conversion of databytes handled with memcpy, &message.data is
     // already is data buff array
@@ -108,9 +119,6 @@ void CVBoard::sendOdometryData()
         &dummyOdom,
         sizeof(OdometryData));  // Size of the DataType being copied over
 
-#ifdef CV_SPI
-// Needs SPI write -- Jiyan
-#else
     message.setCRC16();
     drivers->uart.write(UART_PORT, reinterpret_cast<uint8_t*>(&message), sizeof(message));
 #endif
@@ -118,10 +126,27 @@ void CVBoard::sendOdometryData()
 
 void CVBoard::sendColorData()
 {
+#ifdef CV_SPI
+    // TODO: To fix
+    OdometryData dummyOdom = {1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0};
+    // Check if can send message
+    if (spi.isTransmitRegisterEmpty(SPI_PORT) == false)
+    {
+        auto* bytes = reinterpret_cast<uint8_t*>(&dummyOdom);
+        constexpr size_t len = sizeof(OdometryData);
+
+        // Can send message
+        for (size_t i = 0; i < len; ++i)
+        {
+            spi.write(SPI_PORT, bytes[i]);
+        }
+    }
+#else
     DJISerial::SerialMessage<sizeof(ColorData)> message;
     message.messageType = CV_MESSAGE_TYPE_COLOR_DATA;
 
     ColorData* data = reinterpret_cast<ColorData*>(message.data);
+
     if (drivers->refSerial.getRefSerialReceivingData())
     {
         bool isBlue = drivers->refSerial.isBlueTeam(drivers->refSerial.getRobotData().robotId);
@@ -131,9 +156,7 @@ void CVBoard::sendColorData()
     {
         data->color = COLOR_UNKNOWN;
     }
-#ifdef CV_SPI
-// Needs SPI write
-#else
+
     message.setCRC16();
     drivers->uart.write(UART_PORT, reinterpret_cast<uint8_t*>(&message), sizeof(message));
 #endif

@@ -119,10 +119,7 @@ private:
         .y_requested = -999.9f,
         .time_sent = 0xdeadbeef};
 
-#ifdef CV_SPI
-    /** SPI port used to communicate with the CV board */
-    static constexpr Spi::SpiPort SPI_PORT = Spi::Spi2;
-#else
+#ifndef CV_SPI
     /** UART port used to communicate with the CV board */
     static constexpr Uart::UartPort UART_PORT = Uart::Uart1;
     static constexpr uint32_t BAUD_RATE = 115200;
