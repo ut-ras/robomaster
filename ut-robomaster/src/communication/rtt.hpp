@@ -1,6 +1,9 @@
 #include "modm/io.hpp"
 #include "modm/platform/rtt/rtt.hpp"
 
+namespace src
+{
+
 namespace communication
 {
 using modm::platform::Rtt;
@@ -43,3 +46,4 @@ private:
     Rtt rtt_plot3{3};
 };
 }  // namespace communication
+}  // namespace src

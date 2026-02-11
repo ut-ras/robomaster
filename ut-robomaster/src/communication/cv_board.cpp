@@ -1,6 +1,8 @@
 #include "cv_board.hpp"
 
 #include "drivers.hpp"
+namespace src
+{
 
 namespace communication
 {
@@ -187,3 +189,4 @@ bool CVBoard::isOnline() const { return !offlineTimeout.isExpired(); }
 const TurretData& CVBoard::getTurretData() const { return lastTurretData; }
 const PositionRequest& CVBoard::getPositionRequest() const { return lastPositionRequest; }
 }  // namespace communication
+}  // namespace src
