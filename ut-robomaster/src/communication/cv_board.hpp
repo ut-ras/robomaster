@@ -15,7 +15,6 @@ namespace src
 {
 
 class Drivers;
-}
 
 namespace communication
 {
@@ -132,3 +131,4 @@ private:
     tap::arch::MilliTimeout offlineTimeout;
 };
 }  // namespace communication
+}  // namespace src

@@ -2,6 +2,8 @@
 #include <stdint.h>
 
 #include <string>
+namespace src
+{
 
 namespace communication
 {
@@ -66,3 +68,4 @@ struct ColorData
 } modm_packed;
 
 }  // namespace communication
+}  // namespace src

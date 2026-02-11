@@ -39,6 +39,8 @@
 #include "tap/board/board.hpp"
 #include "tap/util_macros.hpp"
 
+#include "/workspaces/robomaster/ut-robomaster/taproot/modm/src/modm/math/units.hpp"  // Jiyan- Imported this to be able to give the spi init template the pct value
+
 namespace src::communication::serial
 {
 /**
@@ -103,7 +105,7 @@ public:
 
             modm::platform::SpiMaster1::connect<GpioB13::Sck, GpioB14::Miso, GpioB15::Mosi>();
             modm::platform::SpiMaster1::
-                initialize<SystemClock::Spi2, baudrate, percent_t tolerance = pct(5)>();
+                initialize<Board::SystemClock::Spi2, baudrate, modm::pct(5)>();
         }
 #endif
     }
@@ -126,7 +128,7 @@ public:
      *
      * @return `true` if a byte was received, `false` otherwise.
      */
-    mockable bool Spi::read(SpiPort port, uint16_t* data);
+    mockable bool read(SpiPort port, uint16_t* data);
 
     /**
      * Pushes a single byte on clk edge.
