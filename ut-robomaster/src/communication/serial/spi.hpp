@@ -104,8 +104,10 @@ public:
             // GpioB15 -- MOSI
 
             modm::platform::SpiMaster1::connect<GpioB13::Sck, GpioB14::Miso, GpioB15::Mosi>();
-            modm::platform::SpiMaster1::
-                initialize<Board::SystemClock::Spi2, baudrate, modm::pct(5)>();
+            modm::platform::SpiMaster1::initialize<
+                Board::SystemClock,
+                baudrate>();  // the tolerance argument for the template has a default value, and
+                              // the first parameter should be of type systemclock, not SPI -- Jiyan
         }
 #endif
     }
