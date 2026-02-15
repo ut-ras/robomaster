@@ -1,9 +1,9 @@
 #include "command_sentry_position.hpp"
 
-using namespace src::communication;
 namespace commands
 {
 
+using namespace communication;
 // old ard code
 void CommandSentryPosition::initialize() { moveTimer.stop(); }
 
@@ -86,9 +86,9 @@ void CommandSentryPosition::end(bool) { chassis->input(Vector2f(0.0f), 0.0f); }
 
 bool CommandSentryPosition::isFinished() const { return false; }
 
-bool CommandSentryPosition::applyKeyboardInput(Vector2f& inputMove, float& inputSpin)
+bool CommandSentryPosition::applyKeyboardInput(Vector2f &inputMove, float &inputSpin)
 {
-    Remote* remote = &drivers->remote;
+    Remote *remote = &drivers->remote;
 
     inputSpin = 0.0f;  // no keyboard spin controls
 
@@ -117,9 +117,9 @@ bool CommandSentryPosition::applyKeyboardInput(Vector2f& inputMove, float& input
     return rawMoveInput != Vector2f(0.0f);
 }
 
-bool CommandSentryPosition::applyJoystickInput(Vector2f& inputMove, float& inputSpin)
+bool CommandSentryPosition::applyJoystickInput(Vector2f &inputMove, float &inputSpin)
 {
-    Remote* remote = &drivers->remote;
+    Remote *remote = &drivers->remote;
 
     inputMove = Vector2f(
         remote->getChannel(Remote::Channel::RIGHT_HORIZONTAL),

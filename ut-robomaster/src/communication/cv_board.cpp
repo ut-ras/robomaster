@@ -101,7 +101,7 @@ void CVBoard::sendOdometryData()
 
 #ifdef CV_SPI
     // Check if can send message
-    if (spi.isTransmitRegisterEmpty(serial::Spi::SpiPort::Spi2) == false)
+    if (spi.isTransmitRegisterEmpty(SPI_PORT) == false)
     {
         auto* bytes = reinterpret_cast<uint8_t*>(&dummyOdom);
         constexpr size_t len = sizeof(OdometryData);
@@ -109,7 +109,7 @@ void CVBoard::sendOdometryData()
         // Can send message
         for (size_t i = 0; i < len; ++i)
         {
-            spi.write(serial::Spi::SpiPort::Spi2, bytes[i]);
+            spi.write(SPI_PORT, bytes[i]);
         }
     }
 #else
@@ -135,7 +135,7 @@ void CVBoard::sendColorData()
     // TODO: To fix
     OdometryData dummyOdom = {1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0};
     // Check if can send message
-    if (spi.isTransmitRegisterEmpty(serial::Spi::SpiPort::Spi2) == false)
+    if (spi.isTransmitRegisterEmpty(SPI_PORT) == false)
     {
         auto* bytes = reinterpret_cast<uint8_t*>(&dummyOdom);
         constexpr size_t len = sizeof(OdometryData);
@@ -143,7 +143,7 @@ void CVBoard::sendColorData()
         // Can send message
         for (size_t i = 0; i < len; ++i)
         {
-            spi.write(serial::Spi::SpiPort::Spi2, bytes[i]);
+            spi.write(SPI_PORT, bytes[i]);
         }
     }
 #else
