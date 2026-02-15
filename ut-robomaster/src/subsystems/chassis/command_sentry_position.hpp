@@ -24,9 +24,9 @@ class CommandSentryPosition : public tap::control::Command
 {
 public:
     CommandSentryPosition(
-        src::Drivers *drivers,
-        ChassisSubsystem *chassis,
-        TurretSubsystem *turret,
+        src::Drivers* drivers,
+        ChassisSubsystem* chassis,
+        TurretSubsystem* turret,
         bool turretRelative = false,
         bool beyblade = false)
         : drivers(drivers),
@@ -46,19 +46,19 @@ public:
 
     bool isFinished() const override;
 
-    const char *getName() const override { return "sentry position command"; }
+    const char* getName() const override { return "sentry position command"; }
 
 private:
-    src::Drivers *drivers;
-    ChassisSubsystem *chassis;
+    src::Drivers* drivers;
+    ChassisSubsystem* chassis;
     MilliTimeout moveTimer;
-    TurretSubsystem *turret;
+    TurretSubsystem* turret;
 
     Vector2f keyboardInputMove = Vector2f(0.0f);
     const bool turretRelative = false;
     const bool beyblade = false;
 
-    bool applyKeyboardInput(Vector2f &moveOut, float &spinOut);
-    bool applyJoystickInput(Vector2f &moveOut, float &spinOut);
+    bool applyKeyboardInput(Vector2f& moveOut, float& spinOut);
+    bool applyJoystickInput(Vector2f& moveOut, float& spinOut);
 };
 }  // namespace commands

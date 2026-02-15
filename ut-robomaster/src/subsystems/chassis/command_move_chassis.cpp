@@ -57,15 +57,20 @@ void CommandMoveChassis::end(bool) { chassis->input(Vector2f(0.0f), 0.0f); }
 
 bool CommandMoveChassis::isFinished() const { return false; }
 
-bool CommandMoveChassis::applyKeyboardInput(Vector2f &inputMove, float &inputSpin)
+bool CommandMoveChassis::applyKeyboardInput(Vector2f& inputMove, float& inputSpin)
 {
-    Remote *remote = &drivers->remote;
+    Remote* remote = &drivers->remote;
 
-    if (remote->keyPressed(Remote::Key::E)) {
+    if (remote->keyPressed(Remote::Key::E))
+    {
         inputSpin = 0.5f;
-    } else if (remote->keyPressed(Remote::Key::Q)) {
+    }
+    else if (remote->keyPressed(Remote::Key::Q))
+    {
         inputSpin = -0.5f;
-    } else {
+    }
+    else
+    {
         inputSpin = 0.0f;
     }
     // inputSpin = 0.0f;  // no keyboard spin controls
@@ -95,9 +100,9 @@ bool CommandMoveChassis::applyKeyboardInput(Vector2f &inputMove, float &inputSpi
     return rawMoveInput != Vector2f(0.0f);
 }
 
-bool CommandMoveChassis::applyJoystickInput(Vector2f &inputMove, float &inputSpin)
+bool CommandMoveChassis::applyJoystickInput(Vector2f& inputMove, float& inputSpin)
 {
-    Remote *remote = &drivers->remote;
+    Remote* remote = &drivers->remote;
 
     inputMove = Vector2f(
         remote->getChannel(Remote::Channel::RIGHT_HORIZONTAL),

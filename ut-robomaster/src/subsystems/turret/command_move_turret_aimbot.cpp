@@ -5,8 +5,8 @@
 namespace commands
 {
 using namespace tap::algorithms::ballistics;
-using communication::TurretData;
 using modm::Vector3f;
+using src::communication::TurretData;
 
 void CommandMoveTurretAimbot::initialize() {}
 

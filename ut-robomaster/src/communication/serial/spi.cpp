@@ -42,10 +42,10 @@ bool Spi::read(SpiPort port, uint8_t* data)
     switch (port)
     {
         case SpiPort::Spi1:
-            // Do nothing
+            // Do nothing, IMU
             return false;
         case SpiPort::Spi2:
-            SpiHal1::read(*data);
+            SpiHal2::read(*data);
             return true;
         default:
             return false;
@@ -63,11 +63,11 @@ bool Spi::read(SpiPort port, uint16_t* data)
     switch (port)
     {
         case SpiPort::Spi1:
-            // Do nothing
+            // Do nothing, IMU
             return false;
         case SpiPort::Spi2:
             // Cycle through the buffer
-            SpiHal1::read(*data);
+            SpiHal2::read(*data);
             return true;
         default:
             return false;
@@ -85,11 +85,10 @@ bool Spi::write(SpiPort port, uint8_t data)
     switch (port)
     {
         case SpiPort::Spi1:
+            // Do nothing, IMU
             return false;
         case SpiPort::Spi2:
-            // Shouldn't this be SPIHal1 ? -Jiyan
-
-            SpiHal1::write(data);  // The data should be 8 or 16 bits for this function
+            SpiHal2::write(data);  // The data should be 8 or 16 bits for this function
 
             return true;
         default:
@@ -108,9 +107,10 @@ bool Spi::write(SpiPort port, uint16_t data)
     switch (port)
     {
         case SpiPort::Spi1:
+            // Do nothing, IMU
             return false;
         case SpiPort::Spi2:
-            SpiHal1::write(data);
+            SpiHal2::write(data);
             return true;
         default:
             return false;
@@ -128,9 +128,10 @@ bool Spi::isReceiveRegisterNotEmpty(SpiPort port)
     switch (port)
     {
         case SpiPort::Spi1:
+            // Do nothing, IMU
             return false;
         case SpiPort::Spi2:
-            return SpiHal1::isReceiveRegisterNotEmpty();
+            return SpiHal2::isReceiveRegisterNotEmpty();
         default:
             return false;
     }
@@ -147,9 +148,10 @@ bool Spi::isTransmitRegisterEmpty(SpiPort port)
     switch (port)
     {
         case SpiPort::Spi1:
+            // Do nothing, IMU
             return false;
         case SpiPort::Spi2:
-            return SpiHal1::isTransmitRegisterEmpty();
+            return SpiHal2::isTransmitRegisterEmpty();
         default:
             return false;
     }

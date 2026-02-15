@@ -29,10 +29,6 @@ public:
     DISALLOW_COPY_AND_ASSIGN(CVBoard);
     virtual ~CVBoard() = default;
 
-#ifdef CV_SPI
-    static Spi spi;
-#endif
-
     /**
      * Initializes the UART line and callback interface, UART defaults to Uart1
      * Also inits the SPI line, SPI defaults to SPI2 (custom pin header)
@@ -118,11 +114,14 @@ private:
         .y_requested = -999.9f,
         .time_sent = 0xdeadbeef};
 
-#ifndef CV_SPI
+    // Spi port, can be left unused
+    static Spi spi_interface;
+    static constexpr Spi::SpiPort SPI_PORT = Spi::SpiPort::Spi2;
+
+    // Unused for now
     /** UART port used to communicate with the CV board */
     static constexpr Uart::UartPort UART_PORT = Uart::Uart1;
     static constexpr uint32_t BAUD_RATE = 115200;
-#endif
 
     /** Time to wait between messages before considering the CV board offline */
     static constexpr uint16_t OFFLINE_TIMEOUT_MS = 2000;

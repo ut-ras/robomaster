@@ -29,17 +29,12 @@
 
 #ifndef PLATFORM_HOSTED
 #include "modm/platform.hpp"
-// vvv Functions implemented on top of SpiBase/ HAL (setting dataSize, dataOrder, etc.)
 #include "modm/platform/spi/spi_master_1.hpp"
-// vvv Do not uncomment, useful for reference only
-// #include "modm/platform/spi/spi_base.hpp"
-// #include "modm/platform/spi/spi_hal_1.hpp"
+#include "modm/platform/spi/spi_master_2.hpp"
 #endif
 
 #include "tap/board/board.hpp"
 #include "tap/util_macros.hpp"
-
-#include "/workspaces/robomaster/ut-robomaster/taproot/modm/src/modm/math/units.hpp"  // Jiyan- Imported this to be able to give the spi init template the pct value
 
 namespace src::communication::serial
 {
@@ -53,7 +48,7 @@ class Spi
 public:
     enum SpiPort
     {
-        Spi1,  // ?
+        Spi1,  // IMU
         Spi2,  // Custom SPI port on DEV BOARD TYPE-C, 8 PIN connector
     };
 
@@ -93,7 +88,7 @@ public:
 
         if constexpr (port == SpiPort::Spi1)
         {
-            // Do nothing
+            // Do nothing, IMU
         }
         if constexpr (port == SpiPort::Spi2)
         {
@@ -106,10 +101,9 @@ public:
             modm::platform::SpiMaster2::connect<GpioB13::Sck, GpioB14::Miso, GpioB15::Mosi>();
             modm::platform::SpiMaster2::initialize<
                 Board::SystemClock,
-                baudrate,
-                modm::pct(30)>();  // the tolerance argument for the template has a default value,
-                                   // and the first parameter should be of type systemclock, not SPI
-                                   // -- Jiyan
+                baudrate>();  // the tolerance argument for the template has a default value,
+                              // and the first parameter should be of type systemclock, not SPI
+                              // -- Jiyan
         }
 #endif
     }

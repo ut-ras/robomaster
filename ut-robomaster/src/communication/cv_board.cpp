@@ -6,16 +6,7 @@ namespace src
 
 namespace communication
 {
-#ifdef CV_SPI
-CVBoard::CVBoard(src::Drivers* drivers)
-    : DJISerial(drivers, Uart::Uart1),  // Bogus init (just to sit here)
-      drivers(drivers),
-      lastTurretData(),
-      offlineTimeout()
-{
-    lastTurretData.hasTarget = false;
-}
-#else  // UART
+
 CVBoard::CVBoard(src::Drivers* drivers)
     : DJISerial(drivers, UART_PORT),
       drivers(drivers),
@@ -24,17 +15,17 @@ CVBoard::CVBoard(src::Drivers* drivers)
 {
     lastTurretData.hasTarget = false;
 }
-#endif
 
 void CVBoard::initialize()
 {
 #ifdef CV_SPI
     // Default to Spi2
-    spi.init<serial::Spi::SpiPort::Spi2, 1'312'500>();  // 1 MHz for now (just guessing) // Jiyan's
-                                                        // note: I changed this to set is at the
-                                                        // enum value but not sure if it'll work.
-                                                        // Needs clarification
-#else                                                   // UART
+    spi_interface.init<serial::Spi::SpiPort::Spi2, 1'312'500>();  // 1 MHz for now (just guessing)
+                                                                  // // Jiyan's note: I changed
+                                                                  // this to set is at the enum
+                                                                  // value but not sure if it'll
+                                                                  // work. Needs clarification
+#else                                                             // UART
     drivers->uart.init<UART_PORT, BAUD_RATE>();
 #endif
 }
@@ -101,7 +92,7 @@ void CVBoard::sendOdometryData()
 
 #ifdef CV_SPI
     // Check if can send message
-    if (spi.isTransmitRegisterEmpty(SPI_PORT) == false)
+    if (spi_interface.isTransmitRegisterEmpty(SPI_PORT) == false)
     {
         auto* bytes = reinterpret_cast<uint8_t*>(&dummyOdom);
         constexpr size_t len = sizeof(OdometryData);
@@ -109,7 +100,7 @@ void CVBoard::sendOdometryData()
         // Can send message
         for (size_t i = 0; i < len; ++i)
         {
-            spi.write(SPI_PORT, bytes[i]);
+            spi_interface.write(SPI_PORT, bytes[i]);
         }
     }
 #else
@@ -135,7 +126,7 @@ void CVBoard::sendColorData()
     // TODO: To fix
     OdometryData dummyOdom = {1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0};
     // Check if can send message
-    if (spi.isTransmitRegisterEmpty(SPI_PORT) == false)
+    if (spi_interface.isTransmitRegisterEmpty(SPI_PORT) == false)
     {
         auto* bytes = reinterpret_cast<uint8_t*>(&dummyOdom);
         constexpr size_t len = sizeof(OdometryData);
@@ -143,7 +134,7 @@ void CVBoard::sendColorData()
         // Can send message
         for (size_t i = 0; i < len; ++i)
         {
-            spi.write(SPI_PORT, bytes[i]);
+            spi_interface.write(SPI_PORT, bytes[i]);
         }
     }
 #else

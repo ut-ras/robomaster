@@ -88,7 +88,7 @@ public:
      */
     float BMI088_OFFSET_SAMPLES = 1000;
 
-    Bmi088(tap::Drivers *drivers);
+    Bmi088(tap::Drivers* drivers);
 
     /**
      * Starts and configures the bmi088. Blocks for < 200 ms.
@@ -128,7 +128,7 @@ public:
      */
     mockable void requestRecalibration();
 
-    inline const char *getName() const final_mockable { return "bmi088"; }
+    inline const char* getName() const final_mockable { return "bmi088"; }
 
     mockable inline float getYaw() final_mockable { return mahonyAlgorithm.getYaw(); }
     mockable inline float getPitch() final_mockable { return mahonyAlgorithm.getPitch(); }
@@ -185,7 +185,7 @@ private:
         float temperature;
     } data;
 
-    tap::Drivers *drivers;
+    tap::Drivers* drivers;
 
     ImuState imuState = ImuState::IMU_NOT_CONNECTED;
 
