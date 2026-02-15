@@ -10,7 +10,7 @@
 
 // Place any sort of input/output initialization here. For example, place
 // serial init stuff here.
-static void initializeIo(src::Drivers *drivers)
+static void initializeIo(src::Drivers* drivers)
 {
     drivers->analog.init();
     drivers->pwm.init();
@@ -25,13 +25,13 @@ static void initializeIo(src::Drivers *drivers)
     drivers->schedulerTerminalHandler.init();
     drivers->djiMotorTerminalSerialHandler.init();
     drivers->bmi088.initialize(IMU_SAMPLE_FREQUENCY, IMU_KP, IMU_KI);
-    drivers->bmi088.requestCalibration();
+    drivers->bmi088.requestRecalibration();
 }
 
 // Anything that you would like to be called place here. It will be called
 // very frequently. Use PeriodicMilliTimers if you don't want something to be
 // called as frequently.
-static void updateIo(src::Drivers *drivers)
+static void updateIo(src::Drivers* drivers)
 {
 #ifdef PLATFORM_HOSTED
     tap::motor::motorsim::DjiMotorSimHandler::getInstance()->updateSims();
@@ -43,7 +43,7 @@ static void updateIo(src::Drivers *drivers)
     drivers->remote.read();
 }
 
-static void updateImu(src::Drivers *drivers)
+static void updateImu(src::Drivers* drivers)
 {
     drivers->bmi088.read();
     drivers->bmi088.periodicIMUUpdate();

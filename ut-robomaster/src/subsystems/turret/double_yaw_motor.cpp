@@ -7,7 +7,7 @@
 
 namespace subsystems::turret
 {
-DoubleYawMotor::DoubleYawMotor(src::Drivers *drivers, MotorConfig motor1, MotorConfig motor2)
+DoubleYawMotor::DoubleYawMotor(src::Drivers* drivers, MotorConfig motor1, MotorConfig motor2)
     : drivers(drivers),
       motor1(drivers, motor1.id, motor1.canBus, motor1.inverted, motor1.name),
       motor2(drivers, motor2.id, motor2.canBus, motor2.inverted, motor2.name),
@@ -37,6 +37,7 @@ void DoubleYawMotor::updateMotorAngle()
     float encoderAngle =
         static_cast<float>(motor1.getInternalEncoder().getEncoder().getUnwrappedValue()) /
         DjiMotorEncoder::ENC_RESOLUTION / M3508.gearRatio / YAW_REDUCTION;
+
     currentAngle.setWrappedValue(encoderAngle);
 }
 

@@ -30,7 +30,7 @@ void CVBoard::initialize()
 {
 #ifdef CV_SPI
     // Default to Spi2
-    spi.init<serial::Spi::SpiPort::Spi2, 1'000'000>();  // 1 MHz for now (just guessing) // Jiyan's
+    spi.init<serial::Spi::SpiPort::Spi2, 1'312'500>();  // 1 MHz for now (just guessing) // Jiyan's
                                                         // note: I changed this to set is at the
                                                         // enum value but not sure if it'll work.
                                                         // Needs clarification
