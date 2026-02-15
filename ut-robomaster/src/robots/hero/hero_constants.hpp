@@ -2,6 +2,7 @@
 
 #include "tap/algorithms/smooth_pid.hpp"
 #include "tap/communication/can/can_bus.hpp"
+#include "tap/communication/serial/ref_serial.hpp"
 #include "tap/motor/dji_motor.hpp"
 
 #include "modm/container/pair.hpp"
@@ -13,6 +14,7 @@ using motor_controller::PidConstants;
 using tap::can::CanBus;
 using namespace tap::motor;
 using namespace motors;
+using tap::communication::serial::RefSerial;
 
 // General constants ------------------------------------------------
 
@@ -41,10 +43,12 @@ constexpr float CAMERA_TO_PITCH = 0.0f;    // distance from main camera lens to 
 constexpr float NOZZLE_TO_PITCH = 0.0f;    // distance from barrel nozzle to pitch axis (m)
 constexpr float CAMERA_TO_BARRELS = 0.0f;  // vertical ctc offset from camera lens to barrel (m)
 constexpr float CAMERA_X_OFFSET = 0.0f;    // horizontal offset of main camera lens (m)
-constexpr float PITCH_MIN = -0.3349f;      // rad
-constexpr float PITCH_MAX = 0.3534f;       // rad
+constexpr float PITCH_MIN = 0.15f;         // rad
+constexpr float PITCH_MAX = 0.60f;         // rad
+const float YAW_OFFSET = 0;                // deprecated on hero until gear ratios are fixed
+const float PITCH_OFFSET = 1.90f;
 
-static constexpr float YAW_REDUCTION = 1.0f;
+static constexpr float YAW_REDUCTION = 2.005459491f;
 static constexpr float PITCH_REDUCTION = 1.0f;
 
 // Tuning Constants -----------------------------------
@@ -95,8 +99,8 @@ static constexpr float YAW_INPUT_SCALE = 4.0f;
 static constexpr float PITCH_INPUT_SCALE = 5.0f;
 #endif
 
-static constexpr float MOUSE_SENS_YAW = 0.0045f;
-static constexpr float MOUSE_SENS_PITCH = 0.002f;
+static constexpr float MOUSE_SENS_YAW = 0.0090f;
+static constexpr float MOUSE_SENS_PITCH = 0.0025f;
 
 // Motor Constants -------------------------------------
 
@@ -105,28 +109,60 @@ constexpr CanBus CAN_TURRET = CanBus::CAN_BUS1;
 constexpr CanBus CAN_SHOOTER = CanBus::CAN_BUS2;
 
 // chassis
-const MotorConfig WHEEL_LF{M3508, MOTOR2, CAN_WHEELS, true, "left front wheel", PID_WHEELS, {}};
-const MotorConfig WHEEL_RF{M3508, MOTOR1, CAN_WHEELS, false, "right front wheel", PID_WHEELS, {}};
-const MotorConfig WHEEL_LB{M3508, MOTOR3, CAN_WHEELS, true, "left back wheel", PID_WHEELS, {}};
-const MotorConfig WHEEL_RB{M3508, MOTOR4, CAN_WHEELS, false, "right back wheel", PID_WHEELS, {}};
+const MotorConfig
+    WHEEL_LF{M3508, MOTOR2, CAN_WHEELS, true, "left front wheel", PID_WHEELS, {}, false};
+const MotorConfig
+    WHEEL_RF{M3508, MOTOR1, CAN_WHEELS, false, "right front wheel", PID_WHEELS, {}, false};
+const MotorConfig
+    WHEEL_LB{M3508, MOTOR3, CAN_WHEELS, true, "left back wheel", PID_WHEELS, {}, false};
+const MotorConfig
+    WHEEL_RB{M3508, MOTOR4, CAN_WHEELS, false, "right back wheel", PID_WHEELS, {}, false};
 
 // flywheels
-const MotorConfig
-    FLYWHEEL_L{M3508_NOGEARBOX, MOTOR3, CAN_SHOOTER, false, "flywheel left", PID_FLYWHEEL, {}};
-const MotorConfig
-    FLYWHEEL_R{M3508_NOGEARBOX, MOTOR4, CAN_SHOOTER, true, "flywheel right", PID_FLYWHEEL, {}};
+const MotorConfig FLYWHEEL_L{
+    M3508_NOGEARBOX,
+    MOTOR3,
+    CAN_SHOOTER,
+    false,
+    "flywheel left",
+    PID_FLYWHEEL,
+    {},
+    false};
+const MotorConfig FLYWHEEL_R{
+    M3508_NOGEARBOX,
+    MOTOR4,
+    CAN_SHOOTER,
+    true,
+    "flywheel right",
+    PID_FLYWHEEL,
+    {},
+    false};
 
 // agitator
-const MotorConfig AGITATOR{M3508, MOTOR1, CAN_SHOOTER, false, "agitator", PID_AGITATOR, {}};
-const MotorConfig FEEDER{M2006, MOTOR2, CAN_SHOOTER, false, "feeder", PID_FEEDER, {}};
+const MotorConfig AGITATOR{
+    M3508,
+    MOTOR1,
+    CAN_SHOOTER,
+    false,
+    "agitator",
+    PID_AGITATOR,
+    {},
+    false};  // water wheel
+const MotorConfig FEEDER{M2006, MOTOR2, CAN_SHOOTER, false, "feeder", PID_FEEDER, {}, false};
 
 // turret
+const MotorConfig YAW_L{
+    M3508,
+    MOTOR5,
+    CAN_TURRET,
+    false,
+    "yaw left",
+    {2.5f, 60.0f, 0.0f},
+    {45.0f, 0.0f, 0.0f},
+    false};
+const MotorConfig YAW_R{M3508, MOTOR6, CAN_TURRET, false, "yaw right", {}, {}, false};
 const MotorConfig
-    YAW_L{M3508, MOTOR5, CAN_TURRET, false, "yaw left", {2.5f, 60.0f, 0.0f}, {45.0f, 0.0f, 0.0f}};
-const MotorConfig YAW_R{M3508, MOTOR6, CAN_TURRET, false, "yaw right", {}, {}};
-const MotorConfig PITCH{GM6020, MOTOR7, CAN_TURRET, false, "pitch", PID_VELOCITY_DEFAULT, {}};
-const float YAW_OFFSET = 0;
-const float PITCH_OFFSET = 0;
+    PITCH{GM6020, MOTOR7, CAN_TURRET, false, "pitch", PID_VELOCITY_DEFAULT, {}, false};
 
 // Velocities ----------------------------
 
@@ -153,4 +189,21 @@ const float UNJAM_SPEED = 12.0f;          // rev/s
 
 // Heat Buffers ---------------------------
 
-const uint16_t BARREL_HEAT_BUFFER = 100.0f;
+const uint16_t BARREL_HEAT_BUFFER_1V1 = 100;
+const uint16_t BARREL_HEAT_BUFFER_3V3[10] = {
+    100,  // Level 1
+    100,  // Level 2
+    100,  // Level 3
+    100,  // Level 4
+    100,  // Level 5
+    100,  // Level 6
+    100,  // Level 7
+    100,  // Level 8
+    100,  // Level 9
+    100   // Level 10
+};
+
+constexpr bool DEBUG_HEAT_BUFFER_ENABLED = true;
+const RefSerial::Rx::GameType DEBUG_HEAT_BUFFER_GAME_TYPE =
+    RefSerial::Rx::GameType::ROBOMASTER_RMUL_3V3;
+const uint8_t DEBUG_HEAT_BUFFER_ROBOT_LEVEL = 1;

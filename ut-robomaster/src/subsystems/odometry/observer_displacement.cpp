@@ -29,8 +29,10 @@ bool ChassisDisplacementObserver::getVelocityChassisDisplacement(
 
     // TODO: Depending on when this subsystem gets initialized,
     //   the first time this function runs, deltaT might be large
-    auto nowTime = imu->getPrevIMUDataReceivedTime();  // Units of us
-    auto dt = (nowTime - lastTime) / 1e6f;             // Want units of s
+    // auto nowTime = tap::arch::clock::getTimeMicroseconds();  // units of us
+    auto nowTime = tap::arch::clock::getTimeMilliseconds();  // ms
+    auto dt = (nowTime - lastTime) / 1000.0f;                // sec
+    // auto dt = (nowTime - lastTime) / 1e6f;  // Want units of s
 
     // z is 0 since we're moving on the x-y plane and gravity affects z
     Vector3f nowAcc{imu->getAx(), imu->getAy(), 0.0f};

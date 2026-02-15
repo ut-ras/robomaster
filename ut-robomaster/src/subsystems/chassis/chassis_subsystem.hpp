@@ -9,6 +9,7 @@
 #include "utils/power_limiter/power_limiter.hpp"
 
 #include "drivers.hpp"
+using tap::arch::MilliTimeout;
 
 namespace subsystems::chassis
 {
@@ -36,11 +37,14 @@ public:
     /// @return x,y is linear velocity (m/s) and z is angular velocity (rad/s)
     Vector3f measureVelocity();
 
+    void setOmniVelocities(Vector2f v, float wZ);
+
 private:
     src::Drivers* drivers;
     power_limiter::PowerLimiter powerLimiter;
     MotorController wheels[WHEELS];
     float targetWheelVels[WHEELS] = {0.0f, 0.0f, 0.0f, 0.0f};
+    MilliTimeout logTimer;
 
     /// @brief Calculate and set wheel velocities for desired robot motion (based on
     /// https://research.ijcaonline.org/volume113/number3/pxc3901586.pdf).

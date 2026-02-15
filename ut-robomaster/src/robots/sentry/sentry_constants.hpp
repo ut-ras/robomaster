@@ -2,6 +2,7 @@
 
 #include "tap/algorithms/smooth_pid.hpp"
 #include "tap/communication/can/can_bus.hpp"
+#include "tap/communication/serial/ref_serial.hpp"
 #include "tap/motor/dji_motor.hpp"
 
 #include "modm/container/pair.hpp"
@@ -13,6 +14,7 @@ using motor_controller::PidConstants;
 using tap::can::CanBus;
 using namespace tap::motor;
 using namespace motors;
+using tap::communication::serial::RefSerial;
 
 // General constants ------------------------------------------------
 
@@ -25,8 +27,8 @@ const Sound SOUND_STARTUP = SOUND_SMB_POWERUP;
 
 // chassis ------------
 static constexpr int WHEELS = 4;
-static constexpr float WHEEL_DISTANCE_X = 0.391f;  // meters
-static constexpr float WHEEL_DISTANCE_Y = 0.315f;  // meters
+static constexpr float WHEEL_DISTANCE_X = 0.346f;  // meters
+static constexpr float WHEEL_DISTANCE_Y = 0.346f;  // meters
 static constexpr float WHEEL_RADIUS = 0.1524f;     // meters
 static constexpr float WHEEL_LXY = (WHEEL_DISTANCE_X + WHEEL_DISTANCE_Y) / 2.0f;
 
@@ -100,14 +102,25 @@ constexpr CanBus CAN_TURRET = CanBus::CAN_BUS1;
 constexpr CanBus CAN_SHOOTER = CanBus::CAN_BUS2;
 
 // chassis
-const MotorConfig WHEEL_LF{M3508, MOTOR2, CAN_WHEELS, true, "left front wheel", PID_WHEELS, {}};
-const MotorConfig WHEEL_RF{M3508, MOTOR1, CAN_WHEELS, false, "right front wheel", PID_WHEELS, {}};
-const MotorConfig WHEEL_LB{M3508, MOTOR3, CAN_WHEELS, true, "left back wheel", PID_WHEELS, {}};
-const MotorConfig WHEEL_RB{M3508, MOTOR4, CAN_WHEELS, false, "right back wheel", PID_WHEELS, {}};
+const MotorConfig
+    WHEEL_LF{M3508, MOTOR2, CAN_WHEELS, true, "left front wheel", PID_WHEELS, {}, false};
+const MotorConfig
+    WHEEL_RF{M3508, MOTOR1, CAN_WHEELS, false, "right front wheel", PID_WHEELS, {}, false};
+const MotorConfig
+    WHEEL_LB{M3508, MOTOR3, CAN_WHEELS, true, "left back wheel", PID_WHEELS, {}, false};
+const MotorConfig
+    WHEEL_RB{M3508, MOTOR4, CAN_WHEELS, false, "right back wheel", PID_WHEELS, {}, false};
 
 // flywheels
-const MotorConfig
-    FLYWHEEL_TL{M3508_NOGEARBOX, MOTOR3, CAN_SHOOTER, true, "flywheel top left", PID_FLYWHEEL, {}};
+const MotorConfig FLYWHEEL_TL{
+    M3508_NOGEARBOX,
+    MOTOR3,
+    CAN_SHOOTER,
+    true,
+    "flywheel top left",
+    PID_FLYWHEEL,
+    {},
+    false};
 const MotorConfig FLYWHEEL_TR{
     M3508_NOGEARBOX,
     MOTOR4,
@@ -115,7 +128,8 @@ const MotorConfig FLYWHEEL_TR{
     false,
     "flywheel top right",
     PID_FLYWHEEL,
-    {}};
+    {},
+    false};
 const MotorConfig FLYWHEEL_BL{
     M3508_NOGEARBOX,
     MOTOR5,
@@ -123,7 +137,8 @@ const MotorConfig FLYWHEEL_BL{
     false,
     "flywheel bottom left",
     PID_FLYWHEEL,
-    {}};
+    {},
+    false};
 const MotorConfig FLYWHEEL_BR{
     M3508_NOGEARBOX,
     MOTOR6,
@@ -131,15 +146,19 @@ const MotorConfig FLYWHEEL_BR{
     true,
     "flywheel bottom right",
     PID_FLYWHEEL,
-    {}};
+    {},
+    false};
 
 // agitator
-const MotorConfig AGITATOR_L{M2006, MOTOR1, CAN_SHOOTER, false, "agitator left", PID_AGITATOR, {}};
-const MotorConfig AGITATOR_R{M2006, MOTOR2, CAN_SHOOTER, true, "agitator right", PID_AGITATOR, {}};
+const MotorConfig
+    AGITATOR_L{M2006, MOTOR1, CAN_SHOOTER, false, "agitator left", PID_AGITATOR, {}, false};
+const MotorConfig
+    AGITATOR_R{M2006, MOTOR2, CAN_SHOOTER, true, "agitator right", PID_AGITATOR, {}, false};
 
 // turret
-const MotorConfig YAW{GM6020, MOTOR6, CAN_TURRET, false, "yaw", PID_VELOCITY_DEFAULT, {}};
-const MotorConfig PITCH{GM6020, MOTOR7, CAN_TURRET, false, "pitch", PID_VELOCITY_DEFAULT, {}};
+const MotorConfig YAW{GM6020, MOTOR6, CAN_TURRET, false, "yaw", PID_VELOCITY_DEFAULT, {}, false};
+const MotorConfig
+    PITCH{GM6020, MOTOR7, CAN_TURRET, false, "pitch", PID_VELOCITY_DEFAULT, {}, false};
 const float YAW_OFFSET = 0;
 const float PITCH_OFFSET = 0;
 
@@ -167,4 +186,21 @@ const float UNJAM_SPEED = 15.0f;          // rev/s
 
 // Heat Buffers -------------------------------------
 
-const uint16_t BARREL_HEAT_BUFFER = 20.0f;
+const uint16_t BARREL_HEAT_BUFFER_1V1 = 50;
+const uint16_t BARREL_HEAT_BUFFER_3V3[10] = {
+    40,  // Level 1
+    50,  // Level 2
+    50,  // Level 3
+    50,  // Level 4
+    50,  // Level 5
+    50,  // Level 6
+    50,  // Level 7
+    50,  // Level 8
+    50,  // Level 9
+    50   // Level 10
+};
+
+constexpr bool DEBUG_HEAT_BUFFER_ENABLED = true;
+const RefSerial::Rx::GameType DEBUG_HEAT_BUFFER_GAME_TYPE =
+    RefSerial::Rx::GameType::ROBOMASTER_RMUL_3V3;
+const uint8_t DEBUG_HEAT_BUFFER_ROBOT_LEVEL = 1;

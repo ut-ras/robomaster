@@ -40,7 +40,10 @@ public:
 
     Vector(const Vector& other) : coordinates_(CMSISMat(other.coordinates_)) {}
 
-    Vector(CMSISMat<3, 1>& coordinates) : coordinates_(CMSISMat(coordinates)) {}
+    /**
+     * Costly copy constructor
+     */
+    Vector(const CMSISMat<3, 1>& coordinates) : coordinates_(CMSISMat(coordinates)) {}
 
     Vector(CMSISMat<3, 1>&& coordinates) : coordinates_(std::move(coordinates)) {}
 
@@ -56,9 +59,17 @@ public:
         return *this;
     }
 
-    inline Vector operator+(const Vector& other) const;
-
     inline Vector operator+(const Position& other) const;
+
+    inline Vector operator+(const Vector& other) const
+    {
+        return Vector(this->coordinates_ + other.coordinates_);
+    }
+
+    inline Vector operator-(const Vector& other) const
+    {
+        return Vector(this->coordinates_ - other.coordinates_);
+    }
 
     inline Vector operator*(const float scale) const { return Vector(this->coordinates_ * scale); }
 
@@ -74,6 +85,9 @@ public:
     const inline CMSISMat<3, 1>& coordinates() const { return coordinates_; }
 
     inline float magnitude() const { return sqrt(dot(*this, *this)); }
+
+    friend class Transform;
+    friend class DynamicPosition;
 
 private:
     CMSISMat<3, 1> coordinates_;

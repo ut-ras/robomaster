@@ -10,8 +10,8 @@ const uint32_t REFRESH_PERIOD = 2;              // ms
 constexpr float DT = REFRESH_PERIOD / 1000.0f;  // refresh delta time (s)
 
 const float ANALOG_DEAD_ZONE = 0.1f;
-const float KEYBOARD_ACCEL = 5.0f;
-const float KEYBOARD_DECEL = 5.0f;
+const float KEYBOARD_ACCEL = 3.5f;
+const float KEYBOARD_DECEL = 3.5f;
 const float CHASSIS_AUTOALIGN_FACTOR = 0.5f;
 const float CHASSIS_AUTOALIGN_ANGLE = M_PI;
 

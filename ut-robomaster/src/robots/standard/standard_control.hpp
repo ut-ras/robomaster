@@ -1,5 +1,6 @@
 #include "robots/common/common_control_manual.hpp"
 #include "subsystems/agitator/command_agitator_continuous.hpp"
+#include "subsystems/turret/command_recalibrate_turret.hpp"
 
 class StandardControl : CommonControlManual
 {
@@ -29,6 +30,8 @@ private:
         BarrelId::STANDARD1,
         true};
 
+    CommandRecalibrateTurret recalibrateTurret_mmb{drivers, &turret};
+
     // Mappings
     HoldCommandMapping leftMouseDown{
         drivers,
@@ -39,4 +42,9 @@ private:
         drivers,
         {&rotateAgitator_SwitchUp, &rotateFlywheel_SwitchMid},
         RemoteMapState(Remote::Switch::LEFT_SWITCH, Remote::SwitchState::UP)};
+
+    PressCommandMapping rightMousePress{
+        drivers,
+        {&recalibrateTurret_mmb},
+        RemoteMapState(RemoteMapState::MouseButton::RIGHT)};
 };

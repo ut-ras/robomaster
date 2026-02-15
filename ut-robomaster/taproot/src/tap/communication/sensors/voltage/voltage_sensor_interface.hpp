@@ -21,35 +21,24 @@
  * along with Taproot.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "linear_interpolation_predictor_contiguous.hpp"
+#ifndef TAPROOT_VOLTAGE_SENSOR_INTERFACE_HPP_
+#define TAPROOT_VOLTAGE_SENSOR_INTERFACE_HPP_
 
-namespace tap::algorithms
-{
-LinearInterpolationPredictorContiguous::LinearInterpolationPredictorContiguous(
-    float lowerBound,
-    float upperBound)
-    : lastUpdateCallTime(0),
-      previousValue(0.0f, lowerBound, upperBound),
-      slope(0.0f)
-{
-}
+#include "tap/communication/sensors/sensor_interface.hpp"
 
-void LinearInterpolationPredictorContiguous::update(float newValue, uint32_t currTime)
+namespace tap::communication::sensors::voltage
 {
-    if (currTime <= lastUpdateCallTime)
-    {
-        slope = 0;
-        return;
-    }
-    slope = (previousValue.difference(newValue)) / (currTime - lastUpdateCallTime);
-    previousValue.setValue(newValue);
-    lastUpdateCallTime = currTime;
-}
+/**
+ * Interface for a generic voltage sensor.
+ */
+class VoltageSensorInterface : public tap::communication::sensors::SensorInterface
+{
+public:
+    /**
+     * @return The voltage read by the voltage sensor, in millivolts.
+     */
+    virtual float getVoltageMv() const = 0;
+};
+}  // namespace tap::communication::sensors::voltage
 
-void LinearInterpolationPredictorContiguous::reset(float initialValue, uint32_t initialTime)
-{
-    previousValue.setValue(initialValue);
-    lastUpdateCallTime = initialTime;
-    slope = 0.0f;
-}
-}  // namespace tap::algorithms
+#endif  // TAPROOT_CURRENT_SENSOR_INTERFACE_HPP_

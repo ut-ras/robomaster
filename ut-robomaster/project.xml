@@ -32,6 +32,7 @@
     <option name="taproot:modm-project.xml:modm_hal_modules">
       modm:platform:i2c:2
       modm:platform:rtt
+      modm:platform:spi:2
     </option>
 
     <option name="taproot:modm-project.xml:modm_hal_options">

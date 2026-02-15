@@ -46,11 +46,12 @@ void AgitatorSubsystem::refresh()
     return;
 #endif
 
-    setAmputated(!hardwareOk());
+    // setAmputated(!hardwareOk());
 
     float time = getTimeMilliseconds() / 1000.0f;
     float velocity = getShapedVelocity(time, 1.0f, 0.0f, ballsPerSecond);
-    bool killSwitch = drivers->isKillSwitched() || isAmputated() || !flywheel->isActive();
+    // bool killSwitch = drivers->isKillSwitched() || isAmputated() || !flywheel->isActive();
+    bool killSwitch = drivers->isKillSwitched();
 
     agitator.setActive(!killSwitch);
     agitator.updateVelocity(velocity);

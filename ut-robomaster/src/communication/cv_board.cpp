@@ -24,6 +24,11 @@ void CVBoard::messageReceiveCallback(const ReceivedSerialMessage& message)
         case CV_MESSAGE_TYPE_TURRET_AIM:
             decodeTurretData(message);
             break;
+        // case CV_MESSAGE_TYPE_ECHO:
+        // echoData(message);
+        case CV_MESSAGE_TYPE_POSITION_REQUEST:
+            decodePositionRequest(message);
+            break;
         default:
             break;
     }
@@ -34,6 +39,22 @@ void CVBoard::sendMessage()
     sendOdometryData();
     sendColorData();
 }
+
+//  void CVBoard::echoData(const ReceivedSerialMessage& message)
+// {
+//     std::string data_string;
+//     memcpy(&data_string, &message.data, sizeof(message.header.dataLength));
+
+//     DJISerial::SerialMessage<sizeof(data_string)> msg;
+//     msg.messageType = CV_MESSAGE_TYPE_ECHO;
+
+//     std::string* data = reinterpret_cast<std::string*>(msg.data);
+
+//     data = &data_string;
+
+//     msg.setCRC16();
+//     drivers->uart.write(UART_PORT, reinterpret_cast<uint8_t*>(&msg), sizeof(msg));
+// }
 
 void CVBoard::sendOdometryData()
 {
@@ -77,6 +98,17 @@ bool CVBoard::decodeTurretData(const ReceivedSerialMessage& message)
     return false;
 }
 
+bool CVBoard::decodePositionRequest(const ReceivedSerialMessage& message)
+{
+    if (message.header.dataLength == sizeof(lastPositionRequest))
+    {
+        memcpy(&lastPositionRequest, &message.data, sizeof(lastPositionRequest));
+        return true;
+    }
+    return false;
+}
+
 bool CVBoard::isOnline() const { return !offlineTimeout.isExpired(); }
 const TurretData& CVBoard::getTurretData() const { return lastTurretData; }
+const PositionRequest& CVBoard::getPositionRequest() const { return lastPositionRequest; }
 }  // namespace communication

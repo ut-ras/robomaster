@@ -62,6 +62,7 @@
     <module>modm:platform:adc:3</module>
     <module>modm:platform:i2c:2</module>
     <module>modm:platform:rtt</module>
+    <module>modm:platform:spi:2</module>
 
   </modules>
 </library>
