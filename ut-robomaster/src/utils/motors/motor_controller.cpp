@@ -58,6 +58,8 @@ float MotorController::measurePosition()
 
 float MotorController::measureVelocity()
 {
+    // vvv Original code before taproot update
+    // int16_t rpm = motor.getEncoderWrapped().getShaftRPM() / constants.gearRatio;
     int16_t rpm = motor.getInternalEncoder().getShaftRPM() / constants.gearRatio;
     float rps = rpm / 60.0f;  // revs / sec
     return rps;

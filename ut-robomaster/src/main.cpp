@@ -25,7 +25,10 @@ static void initializeIo(src::Drivers* drivers)
     drivers->schedulerTerminalHandler.init();
     drivers->djiMotorTerminalSerialHandler.init();
     drivers->bmi088.initialize(IMU_SAMPLE_FREQUENCY, IMU_KP, IMU_KI);
-    drivers->bmi088.requestRecalibration();
+
+    // vvv Original code before taproot update
+    // drivers->bmi088.requestRecalibration();
+    drivers->bmi088.requestCalibration();
 }
 
 // Anything that you would like to be called place here. It will be called

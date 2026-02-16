@@ -115,7 +115,7 @@ private:
         .time_sent = 0xdeadbeef};
 
     // Spi port, can be left unused
-    static Spi spi_interface;
+    Spi spi_interface;
     static constexpr Spi::SpiPort SPI_PORT = Spi::SpiPort::Spi2;
 
     // Unused for now
