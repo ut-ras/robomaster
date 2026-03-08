@@ -60,5 +60,8 @@ private:
     float targetY = 0.0f;
     float currentX = 0.0f;
     float currentY = 0.0f;
+
+    Vector2f target;
+    Vector2f current;
 };
 }  // namespace commands

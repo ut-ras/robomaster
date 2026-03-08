@@ -20,9 +20,9 @@ class CommandMoveChassis : public tap::control::Command
 {
 public:
     CommandMoveChassis(
-        src::Drivers *drivers,
-        ChassisSubsystem *chassis,
-        TurretSubsystem *turret,
+        src::Drivers* drivers,
+        ChassisSubsystem* chassis,
+        TurretSubsystem* turret,
         bool turretRelative = false,
         bool beyblade = false)
         : drivers(drivers),
@@ -42,18 +42,18 @@ public:
 
     bool isFinished() const override;
 
-    const char *getName() const override { return "move chassis command"; }
+    const char* getName() const override { return "move chassis command"; }
 
 private:
-    src::Drivers *drivers;
-    ChassisSubsystem *chassis;
-    TurretSubsystem *turret;
+    src::Drivers* drivers;
+    ChassisSubsystem* chassis;
+    TurretSubsystem* turret;
 
     Vector2f keyboardInputMove = Vector2f(0.0f);
     const bool turretRelative = false;
     const bool beyblade = false;
 
-    bool applyKeyboardInput(Vector2f &moveOut, float &spinOut);
-    bool applyJoystickInput(Vector2f &moveOut, float &spinOut);
+    bool applyKeyboardInput(Vector2f& moveOut, float& spinOut);
+    bool applyJoystickInput(Vector2f& moveOut, float& spinOut);
 };
 }  // namespace commands

@@ -1,0 +1,30 @@
+#include "command_move_to_point.hpp"
+
+namespace commands
+{
+void CommandMoveToPoint::initialize() { keyboardInputMove = Vector2f(0.0f); }
+
+void CommandMoveToPoint::execute()
+{  
+    uint8_t killctr = 10;
+
+    Vector2f movementVector = target - current;
+
+    while (movementVector.getLength() > 0.1f && killctr > 0)
+    {
+        Vector2f direction = movementVector.normalized();
+        chassis->input(direction, 0.0f);
+
+        current;  // Update current position here
+        movementVector = target - current;
+        killctr--;
+    }
+
+    chassis->input(Vector2f(0.0f), 0.0f);
+}
+
+void CommandMoveToPoint::end(bool) { chassis->input(Vector2f(0.0f), 0.0f); }
+
+bool CommandMoveToPoint::isFinished() const { return false; }
+
+}  // namespace commands

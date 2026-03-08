@@ -161,17 +161,21 @@ void ChassisSubsystem::setMecanumWheelVelocities(Vector2f v, float wZ)
 
 void ChassisSubsystem::setOmniVelocities(Vector2f v, float wZ)  // TEST
 {
-    targetWheelVels[0] =
-        (OMNIWHEEL_SCALINGFACTOR * (v.x + v.y + wZ * (WHEEL_DISTANCE_X + WHEEL_DISTANCE_Y))) /
+    uint8_t front_right = 0;
+    uint8_t front_left = 1;
+    uint8_t back_left = 2;
+    uint8_t back_right = 3;
+    targetWheelVels[front_right] =
+        (OMNIWHEEL_SCALINGFACTOR * (-v.x + v.y + wZ * (WHEEL_DISTANCE_X + WHEEL_DISTANCE_Y))) /
         WHEEL_RADIUS;  // Revs/S
-    targetWheelVels[1] =
-        (OMNIWHEEL_SCALINGFACTOR * (-v.x + v.y + wZ * (-WHEEL_DISTANCE_X + WHEEL_DISTANCE_Y))) /
+    targetWheelVels[front_left] =
+        (OMNIWHEEL_SCALINGFACTOR * (v.x + v.y + wZ * (-WHEEL_DISTANCE_X + WHEEL_DISTANCE_Y))) /
         WHEEL_RADIUS;
-    targetWheelVels[2] =
-        (OMNIWHEEL_SCALINGFACTOR * (-v.x - v.y + wZ * (-WHEEL_DISTANCE_X - WHEEL_DISTANCE_Y))) /
+    targetWheelVels[back_left] =
+        (OMNIWHEEL_SCALINGFACTOR * (-v.x + v.y + wZ * (-WHEEL_DISTANCE_X - WHEEL_DISTANCE_Y))) /
         WHEEL_RADIUS;
-    targetWheelVels[3] =
-        (OMNIWHEEL_SCALINGFACTOR * (v.x - v.y + wZ * (-WHEEL_DISTANCE_X + WHEEL_DISTANCE_Y))) /
+    targetWheelVels[back_right] =
+        (OMNIWHEEL_SCALINGFACTOR * (v.x + v.y + wZ * (-WHEEL_DISTANCE_X + WHEEL_DISTANCE_Y))) /
         WHEEL_RADIUS;
 
     // targetWheelVels[0] = (OMNIWHEEL_SCALINGFACTOR * (v.x + v.y + wZ)) / WHEEL_RADIUS;  // Revs/S
