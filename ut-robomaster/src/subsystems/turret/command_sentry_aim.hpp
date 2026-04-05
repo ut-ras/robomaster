@@ -4,8 +4,6 @@
 #include "tap/control/command.hpp"
 
 #include "communication/cv_board.hpp"
-#include "robots/robot_constants.hpp"
-#include "robots/sentry/sentry_constants.hpp"
 #include "subsystems/turret/turret_subsystem.hpp"
 
 #include "drivers.hpp"
@@ -35,7 +33,6 @@ public:
 private:
     src::Drivers* drivers;
     TurretSubsystem* turret;
-    uint8_t lastTurretDataIndex = 0;
 
     // Scanning state
     float scanYaw = 0.0f;
@@ -54,3 +51,9 @@ private:
 };
 
 }  // namespace commands
+
+///////////////////////////////////////////////
+// # Only rebuilds changed files (~10 seconds)
+// scons build robot=TARGET_SENTRY -j8
+// scons run robot=TARGET_SENTRY
+///////////////////////////////////////////////
