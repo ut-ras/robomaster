@@ -4,6 +4,8 @@
 #include "tap/control/command.hpp"
 
 #include "communication/cv_board.hpp"
+#include "robots/robot_constants.hpp"
+#include "robots/sentry/sentry_constants.hpp"
 #include "subsystems/turret/turret_subsystem.hpp"
 
 #include "drivers.hpp"
