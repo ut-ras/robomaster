@@ -16,7 +16,9 @@ using namespace motors;
 
 // General constants ------------------------------------------------
 
-constexpr bool USE_BALLISTICS = false;
+// CHANGED FROM FALSE to TRUE 04/03/2026 - allows compile time ballistics calculations that count
+// for projectile drop and target movement when calculating turret angles
+constexpr bool USE_BALLISTICS = true;
 constexpr int BALLISTIC_ITERATIONS = 2;
 
 const Sound SOUND_STARTUP = SOUND_SMB_POWERUP;
