@@ -31,6 +31,8 @@
 #include "modm/platform.hpp"
 #include "modm/platform/spi/spi_master_1.hpp"
 #include "modm/platform/spi/spi_master_2.hpp"
+
+#include "spislave.hpp"
 #endif
 
 #include "tap/board/board.hpp"
@@ -98,12 +100,25 @@ public:
             // GpioB14 -- MISO
             // GpioB15 -- MOSI
 
-            modm::platform::SpiMaster2::connect<GpioB13::Sck, GpioB14::Miso, GpioB15::Mosi>();
-            modm::platform::SpiMaster2::initialize<
-                Board::SystemClock,
-                baudrate>();  // the tolerance argument for the template has a default value,
-                              // and the first parameter should be of type systemclock, not SPI
-                              // -- Jiyan
+            // modm::platform::SpiMaster2::connect<GpioB13::Sck, GpioB14::Miso, GpioB15::Mosi>();
+
+            modm::platform::SpiSlave2::connect<GpioB13::Sck, GpioB14::Miso, GpioB15::Mosi>();
+            // GpioB12::setInput(modm::platform::Gpio::InputType::Floating);
+            GpioB12::setAlternateFunction(5);
+            modm::platform::SpiHal2::initialize(
+                modm::platform::SpiBase::Prescaler::Div2,
+                modm::platform::SpiBase::MasterSelection::Slave,
+                modm::platform::SpiBase::DataMode::Mode0,
+                modm::platform::SpiBase::DataOrder::MsbFirst,
+                modm::platform::SpiBase::DataSize::Bit8);
+
+            // modm::platform::SpiMaster2::initialize<
+            //    Board::SystemClock,
+            //    baudrate>();  // help
+            //  the baudrate should be multiples of the frequency at which the
+            //  bus that contains SPI is updated, or something like that.
+            //  Otherwise, the compiler throws an assertion error
+            //  -- Jiyan
         }
 #endif
     }

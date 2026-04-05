@@ -1,81 +1,105 @@
 {
-  "version": "0.2.0",
-  "configurations": [
-    {
-      "name": "Debug Hardware",
-      "type": "cortex-debug",
-      "request": "launch",
-      "servertype": "openocd",
-      "configFiles": [
-        "ut-robomaster/openocd.cfg"
-      ],
-      "cwd": "${workspaceRoot}",
-      "preLaunchTask": "Connect to Robot",
-      "executable": "ut-robomaster/build/hardware/scons-debug/ut-robomaster.elf",
-      "device": "STM32F427II",
-      "liveWatch": {
-        "enabled": true,
-        "samplesPerSecond": 10
-      },
-      "rttConfig": {
-        "enabled": true,
-        "address": "0x20000000",
-        "searchSize": 131072,
-        "searchId": "modm.rtt.modm",
-        "polling_interval": 10,
-        "decoders": [
-          {
-            "port": 0,
-            "type": "console",
-            "logfile": "${workspaceRoot}/ut-robomaster/rtt.log"
-          },
-          {
-            "port": 1,
-            "type": "graph",
-            "encoding": "float",
-            "graphId": "1"
-          },
-          {
-            "port": 2,
-            "type": "graph",
-            "encoding": "float",
-            "graphId": "2"
-          },
-          {
-            "port": 3,
-            "type": "graph",
-            "encoding": "float",
-            "graphId": "3"
-          }
-        ],
-      },
-      "graphConfig": [
+    "version": "0.2.0",
+    "configurations": [
         {
-          "label": "RTT Data",
-          "timespan": 30,
-          "type": "realtime",
-          "annotate": false,
-          "maximum": 1,
-          "minimum": -1,
-          "plots": [
-            {
-              "graphId": "1",
-              "label": "Plot 1",
-              "color": "#ff0000"
+            "name": "Debug Hardware",
+            "type": "cortex-debug",
+            "request": "launch",
+            "servertype": "openocd",
+            "configFiles": [
+                "ut-robomaster/openocd.cfg"
+            ],
+            "cwd": "${workspaceRoot}",
+            "preLaunchTask": "Connect to Robot",
+            "executable": "ut-robomaster/build/hardware/scons-debug/ut-robomaster.elf",
+            "device": "STM32F427II",
+            "liveWatch": {
+                "enabled": true,
+                "samplesPerSecond": 10
             },
-            {
-              "graphId": "2",
-              "label": "Plot 2",
-              "color": "#00ff00"
+            "rttConfig": {
+                "enabled": true,
+                "address": "0x20000000",
+                "searchSize": 131072,
+                "searchId": "modm.rtt.modm",
+                "polling_interval": 10,
+                "decoders": [
+                    {
+                        "port": 0,
+                        "type": "console",
+                        "logfile": "${workspaceRoot}/ut-robomaster/rtt.log"
+                    },
+                    {
+                        "port": 1,
+                        "type": "graph",
+                        "encoding": "float",
+                        "graphId": "1"
+                    },
+                    {
+                        "port": 2,
+                        "type": "graph",
+                        "encoding": "float",
+                        "graphId": "2"
+                    },
+                    {
+                        "port": 3,
+                        "type": "graph",
+                        "encoding": "float",
+                        "graphId": "3"
+                    }
+                ]
             },
-            {
-              "graphId": "3",
-              "label": "Plot 3",
-              "color": "#0000ff"
-            }
-          ]
+            "graphConfig": [
+                {
+                    "label": "RTT Data",
+                    "timespan": 30,
+                    "type": "realtime",
+                    "annotate": false,
+                    "maximum": 1,
+                    "minimum": -1,
+                    "plots": [
+                        {
+                            "graphId": "1",
+                            "label": "Plot 1",
+                            "color": "#ff0000"
+                        },
+                        {
+                            "graphId": "2",
+                            "label": "Plot 2",
+                            "color": "#00ff00"
+                        },
+                        {
+                            "graphId": "3",
+                            "label": "Plot 3",
+                            "color": "#0000ff"
+                        }
+                    ]
+                }
+            ]
         },
-      ]
-    },
-  ]
+        {
+            "name": "(gdb) Launch",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "enter program name, for example ${workspaceFolder}/a.out",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${fileDirname}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                },
+                {
+                    "description": "Set Disassembly Flavor to Intel",
+                    "text": "-gdb-set disassembly-flavor intel",
+                    "ignoreFailures": true
+                }
+            ]
+        }
+    ]
 }

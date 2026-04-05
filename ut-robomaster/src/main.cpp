@@ -42,7 +42,8 @@ static void updateIo(src::Drivers* drivers)
 
     drivers->canRxHandler.pollCanData();
     // drivers->refSerial.updateSerial();
-    drivers->cvBoard.updateSerial();
+    // drivers->cvBoard.updateSerial();
+
     drivers->remote.read();
 }
 
@@ -51,6 +52,8 @@ static void updateImu(src::Drivers* drivers)
     drivers->bmi088.read();
     drivers->bmi088.periodicIMUUpdate();
 }
+
+static void updateSpi(src::Drivers* drivers) { drivers->cvBoard.sendOdometryData(); }
 
 src::Drivers drivers;
 RobotControl control{&drivers};
@@ -72,6 +75,7 @@ int main()
         if (refreshTimer.execute())
         {
             PROFILE(drivers.profiler, updateImu, (&drivers));
+            PROFILE(drivers.profiler, updateSpi, (&drivers));
             PROFILE(drivers.profiler, drivers.commandScheduler.run, ());
             PROFILE(drivers.profiler, drivers.djiMotorTxHandler.encodeAndSendCanData, ());
             PROFILE(drivers.profiler, drivers.terminalSerial.update, ());

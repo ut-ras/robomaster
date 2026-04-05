@@ -20,7 +20,7 @@ void CVBoard::initialize()
 {
 #ifdef CV_SPI
     // Default to Spi2
-    spi_interface.init<serial::Spi::SpiPort::Spi2, 1'312'500>();  // 1 MHz for now (just guessing)
+    spi_interface.init<serial::Spi::SpiPort::Spi2, 1'320'000>();  // 1 MHz for now (just guessing)
                                                                   // // Jiyan's note: I changed
                                                                   // this to set is at the enum
                                                                   // value but not sure if it'll
@@ -89,20 +89,41 @@ void CVBoard::sendOdometryData()
     //     float turretYaw;
     // } modm_packed;
     OdometryData dummyOdom = {1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0};
+    OdometryMessage dummyOdomMessage;
+    dummyOdomMessage.odometryData = dummyOdom;
 
 #ifdef CV_SPI
-    // Check if can send message
-    if (spi_interface.isTransmitRegisterEmpty(SPI_PORT) == false)
-    {
-        auto* bytes = reinterpret_cast<uint8_t*>(&dummyOdom);
-        constexpr size_t len = sizeof(OdometryData);
 
-        // Can send message
-        for (size_t i = 0; i < len; ++i)
+    /*uint8_t* data_stream =
+        reinterpret_cast<uint8_t*>(&dummyOdomMessage);  // Prepare the data to send it as a stream
+    for (uint8_t i = 0; i < sizeof(dummyOdom); i++)
+    {
+        if (spi_interface.isTransmitRegisterEmpty(SPI_PORT) == false)
         {
-            spi_interface.write(SPI_PORT, bytes[i]);
+            i--;
+            continue;
         }
+        spi_interface.write(SPI_PORT, data_stream[i]);
+    }*/
+
+    // Check if can send message
+    if (spi_interface.isTransmitRegisterEmpty(SPI_PORT) == true)
+    {
+        /* uint8_t* data_stream =
+            reinterpret_cast<uint8_t*>(&dummyOdom);  // Prepare the data to send it as a stream
+        for (uint8_t i = 0; i < sizeof(data_stream); i++)
+        {
+            if (i == 0)
+            {
+                // Send the first 2 bytes that indicate the beginning of the communication
+            }
+            spi_interface.write(SPI_PORT, data_stream[i]);
+        } */
+        static uint8_t var = 32;
+        spi_interface.write(SPI_PORT, var);
+        var++;
     }
+
 #else
     DJISerial::SerialMessage<sizeof(OdometryData)> message;
     message.messageType = CV_MESSAGE_TYPE_ODOMETRY_DATA;
@@ -126,16 +147,10 @@ void CVBoard::sendColorData()
     // TODO: To fix
     OdometryData dummyOdom = {1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0};
     // Check if can send message
-    if (spi_interface.isTransmitRegisterEmpty(SPI_PORT) == false)
+    if (spi_interface.isTransmitRegisterEmpty(SPI_PORT) == false && GpioB12::read() == true)
     {
-        auto* bytes = reinterpret_cast<uint8_t*>(&dummyOdom);
-        constexpr size_t len = sizeof(OdometryData);
-
-        // Can send message
-        for (size_t i = 0; i < len; ++i)
-        {
-            spi_interface.write(SPI_PORT, bytes[i]);
-        }
+        uint16_t var = 35;
+        spi_interface.write(SPI_PORT, var);
     }
 #else
     DJISerial::SerialMessage<sizeof(ColorData)> message;

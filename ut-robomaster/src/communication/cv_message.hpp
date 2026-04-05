@@ -15,6 +15,10 @@ enum MessageTypes : uint8_t
     CV_MESSAGE_TYPE_COLOR_DATA = 3,
     CV_MESSAGE_TYPE_ECHO = 4,
     CV_MESSAGE_TYPE_POSITION_REQUEST = 5,
+    CV_MESSAGE_BEGIN = 70,
+    CV_MESSAGE_END =
+        57,  // The begin and end header bytes are inverted versions of each other in binary.
+
 };
 
 enum ColorTypes : uint8_t
@@ -60,6 +64,13 @@ struct OdometryData
 
     float turretPitch;
     float turretYaw;
+} modm_packed;
+
+struct OdometryMessage
+{
+    uint8_t startByte = CV_MESSAGE_BEGIN;
+    OdometryData odometryData;
+    uint8_t endByte = CV_MESSAGE_END;
 } modm_packed;
 
 struct ColorData
