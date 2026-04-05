@@ -41,7 +41,7 @@ private:
     // Tracking state
     bool hasActiveTarget = false;
     float targetLockTimer = 0.0f;
-    uint32_t lastCVDataIndex = 0;
+    uint8_t lastTurretDataIndex = 0;  // tracks last CV packet index seen
 
     // Tunable parameters
     static constexpr float SCAN_SPEED = 0.3f;           // rad/s
