@@ -6,26 +6,28 @@
 #include "tap/util_macros.hpp"
 
 #include "serial/spi.hpp"
-// #include "subsystems/odometry/odometry_subsystem.hpp"
 
 #include "cv_message.hpp"
 #include "rtt.hpp"
 
 #define CV_SPI  // Communicate to CV board via SPI (instead of UART)
 
+// Forward declaration to avoid circular dependency with drivers.hpp
+namespace subsystems::odometry
+{
+class OdometrySubsystem;
+}  // namespace subsystems::odometry
+
 namespace src
 {
 
 class Drivers;
-class OdometrySubsystem;
 
 namespace communication
 {
-// class OdometrySubsystem;
 
 using src::communication::serial::Spi;
 using subsystems::odometry::OdometrySubsystem;
-// class subsystems::odometry::OdometrySubsystem;
 using tap::communication::serial::Uart;
 
 class CVBoard : public tap::communication::serial::DJISerial
