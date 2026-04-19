@@ -11,7 +11,7 @@ namespace src
 class Drivers : public tap::Drivers
 {
 public:
-    Drivers() : tap::Drivers(), cvBoard(this), rtt() {}
+    Drivers() : tap::Drivers(), cvBoard(this, nullptr   ), rtt() {}
     communication::CVBoard cvBoard;
     communication::RttStream rtt;
 

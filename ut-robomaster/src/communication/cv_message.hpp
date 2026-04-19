@@ -54,16 +54,10 @@ struct PositionRequest
 
 struct OdometryData
 {
+    float health;
     float xPos;
     float yPos;
-    float zPos;
 
-    float chassisPitch;
-    float chassisYaw;
-    float chassisRoll;
-
-    float turretPitch;
-    float turretYaw;
 } modm_packed;
 
 struct OdometryMessage

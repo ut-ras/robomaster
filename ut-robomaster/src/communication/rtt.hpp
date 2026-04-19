@@ -1,3 +1,4 @@
+#pragma once
 #include "modm/io.hpp"
 #include "modm/platform/rtt/rtt.hpp"
 
@@ -15,7 +16,7 @@ public:
 
     /// @brief Send raw binary data to RTT channel for plotting and analysis
     /// @param channel Binary RTT channel to send to (1, 2, or 3)
-    void plot(uint8_t channel, float32_t val)
+    void plot(uint8_t channel, float val)
     {
         Rtt* rtt = nullptr;
 

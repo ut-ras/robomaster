@@ -36,8 +36,8 @@ void TurretSubsystem::refresh()
     yaw.updateMotorAngle();
     pitch.updateMotorAngle();
 
-    drivers->rtt << "pitch: " << pitch.getAngle();
-    drivers->rtt.endl();
+    // drivers->rtt << "pitch: " << pitch.getAngle();
+    // drivers->rtt.endl();
 
 #if defined(TARGET_STANDARD) || defined(TARGET_HERO)
     yawEncoder.update();

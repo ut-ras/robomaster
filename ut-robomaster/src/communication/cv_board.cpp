@@ -1,17 +1,25 @@
+
 #include "cv_board.hpp"
 
+#include "tap/communication/serial/ref_serial_data.hpp"
+
+#include "subsystems/odometry/odometry_subsystem.hpp"
+
 #include "drivers.hpp"
+#include "rtt.hpp"
 namespace src
 {
 
 namespace communication
 {
 
-CVBoard::CVBoard(src::Drivers* drivers)
+CVBoard::CVBoard(src::Drivers* drivers, OdometrySubsystem* odometry)
     : DJISerial(drivers, UART_PORT),
       drivers(drivers),
       lastTurretData(),
-      offlineTimeout()
+      offlineTimeout(),
+      odometry(odometry)
+
 {
     lastTurretData.hasTarget = false;
 }
@@ -46,6 +54,21 @@ void CVBoard::messageReceiveCallback(const ReceivedSerialMessage& message)
             break;
         default:
             break;
+    }
+}
+
+void CVBoard::printSPIMessage()
+{
+    // First, check if you can read
+    if (spi_interface.isReceiveRegisterNotEmpty(SPI_PORT))  // A message was received
+    {
+        // Read the message
+        uint8_t message;
+        spi_interface.read(SPI_PORT, &message);
+        drivers->rtt << message
+                     << '\n';  // To be able to do this, I had to create an rtt stream object in
+                               // the cv_board.hpp file, for more details, I believe a guide on
+                               // how to use rtt is available on modm's website -- Jiyan
     }
 }
 
@@ -88,24 +111,33 @@ void CVBoard::sendOdometryData()
     //     float turretPitch;
     //     float turretYaw;
     // } modm_packed;
-    OdometryData dummyOdom = {1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0};
+
+    OdometryData dummyOdom = {1.0, 2.0, 3.0};
     OdometryMessage dummyOdomMessage;
+    tap::communication::serial::RefSerialData::Rx::RobotData robotData =
+        drivers->refSerial.getRobotData();  // obtain robot data
+
+    // Prepare the main message body
+
+    dummyOdom.health = robotData.currentHp;
+
     dummyOdomMessage.odometryData = dummyOdom;
 
 #ifdef CV_SPI
 
-    /*uint8_t* data_stream =
+    uint8_t* data_stream =
         reinterpret_cast<uint8_t*>(&dummyOdomMessage);  // Prepare the data to send it as a stream
-    for (uint8_t i = 0; i < sizeof(dummyOdom); i++)
+    for (uint8_t i = 0; i < sizeof(dummyOdomMessage); i++)
     {
         if (spi_interface.isTransmitRegisterEmpty(SPI_PORT) == false)
         {
             i--;
             continue;
+            // Wait until the register becomes available if can't transmit
         }
         spi_interface.write(SPI_PORT, data_stream[i]);
-    }*/
-
+    }
+    /*
     // Check if can send message
     if (spi_interface.isTransmitRegisterEmpty(SPI_PORT) == true)
     {
@@ -118,11 +150,12 @@ void CVBoard::sendOdometryData()
                 // Send the first 2 bytes that indicate the beginning of the communication
             }
             spi_interface.write(SPI_PORT, data_stream[i]);
-        } */
-        static uint8_t var = 32;
-        spi_interface.write(SPI_PORT, var);
-        var++;
-    }
+        }
+    static uint8_t var = 78;
+    spi_interface.write(SPI_PORT, var);
+    var++;
+}
+*/
 
 #else
     DJISerial::SerialMessage<sizeof(OdometryData)> message;
@@ -145,7 +178,7 @@ void CVBoard::sendColorData()
 {
 #ifdef CV_SPI
     // TODO: To fix
-    OdometryData dummyOdom = {1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0};
+    OdometryData dummyOdom = {1.0, 2.0, 3.0};
     // Check if can send message
     if (spi_interface.isTransmitRegisterEmpty(SPI_PORT) == false && GpioB12::read() == true)
     {

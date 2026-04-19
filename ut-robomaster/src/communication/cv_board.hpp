@@ -6,8 +6,10 @@
 #include "tap/util_macros.hpp"
 
 #include "serial/spi.hpp"
+// #include "subsystems/odometry/odometry_subsystem.hpp"
 
 #include "cv_message.hpp"
+#include "rtt.hpp"
 
 #define CV_SPI  // Communicate to CV board via SPI (instead of UART)
 
@@ -15,20 +17,25 @@ namespace src
 {
 
 class Drivers;
+class OdometrySubsystem;
 
 namespace communication
 {
+// class OdometrySubsystem;
 
 using src::communication::serial::Spi;
+using subsystems::odometry::OdometrySubsystem;
+// class subsystems::odometry::OdometrySubsystem;
 using tap::communication::serial::Uart;
 
 class CVBoard : public tap::communication::serial::DJISerial
 {
 public:
-    CVBoard(src::Drivers* drivers);
+    CVBoard(src::Drivers* drivers, OdometrySubsystem* odometry);
     DISALLOW_COPY_AND_ASSIGN(CVBoard);
     virtual ~CVBoard() = default;
 
+    void setOdometry(OdometrySubsystem* odom) { odometry = odom; }
     /**
      * Initializes the UART line and callback interface, UART defaults to Uart1
      * Also inits the SPI line, SPI defaults to SPI2 (custom pin header)
@@ -46,6 +53,10 @@ public:
      */
     void messageReceiveCallback(const ReceivedSerialMessage& completeMessage) override;
 
+    /*
+        Reads messages from the CV board
+    */
+    void printSPIMessage();
     /**
      * Sends messages to the CV board
      */
@@ -105,6 +116,7 @@ public:
 
 private:
     src::Drivers* drivers;
+    OdometrySubsystem* odometry;
 
     /** Last turret aiming data received from the CV board */
     TurretData lastTurretData;

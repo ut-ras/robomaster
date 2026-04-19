@@ -43,7 +43,7 @@ static void updateIo(src::Drivers* drivers)
     drivers->canRxHandler.pollCanData();
     // drivers->refSerial.updateSerial();
     // drivers->cvBoard.updateSerial();
-
+    drivers->cvBoard.printSPIMessage();
     drivers->remote.read();
 }
 

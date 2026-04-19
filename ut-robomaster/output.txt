@@ -1,0 +1,1261 @@
+/home/ubuntu/.local/bin/scons:104: DeprecationWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html
+  import pkg_resources
+scons: Reading SConscript files ...
+Configured 8 parallel build jobs (-j8), ['TARGET_STANDARD']
+scons: done reading SConscript files.
+scons: Building targets ...
+Compiling C++·· build/hardware/scons-debug/src/communication/cv_board.o
+Compiling C++·· build/hardware/scons-debug/src/main.o
+Compiling C++·· build/hardware/scons-debug/src/subsystems/agitator/agitator_subsystem.o
+Compiling C++·· build/hardware/scons-debug/src/subsystems/agitator/command_agitator_burst.o
+Compiling C++·· build/hardware/scons-debug/src/subsystems/agitator/command_agitator_burst_alternating.o
+Compiling C++·· build/hardware/scons-debug/src/subsystems/agitator/command_agitator_continuous.o
+Compiling C++·· build/hardware/scons-debug/src/subsystems/chassis/chassis_subsystem.o
+Compiling C++·· build/hardware/scons-debug/src/subsystems/agitator/command_unjam_agitator.o
+src/communication/cv_board.cpp:141:9: warning: "/*" within comment [-Wcomment]
+  141 |         /* uint8_t* data_stream =
+      |          
+In file included from src/subsystems/chassis/chassis_subsystem.hpp:8,
+                 from src/subsystems/odometry/odometry_subsystem.hpp:10,
+                 from src/communication/cv_board.hpp:9,
+                 from src/drivers.hpp:6,
+                 from src/subsystems/subsystem.hpp:4,
+                 from src/subsystems/flywheel/flywheel_subsystem.hpp:6,
+                 from src/subsystems/agitator/agitator_subsystem.hpp:7,
+                 from src/subsystems/agitator/command_agitator_burst.hpp:6,
+                 from src/subsystems/agitator/command_agitator_burst.cpp:1:
+src/utils/motors/motor_controller.hpp:22:33: error: expected ')' before '*' token
+   22 |     MotorController(src::Drivers* drivers, const MotorConfig motor)
+      |                    ~            ^
+      |                                 )
+In file included from src/subsystems/chassis/chassis_subsystem.hpp:8,
+                 from src/subsystems/odometry/odometry_subsystem.hpp:10,
+                 from src/communication/cv_board.hpp:9,
+                 from src/drivers.hpp:6,
+                 from src/subsystems/subsystem.hpp:4,
+                 from src/subsystems/flywheel/flywheel_subsystem.hpp:6,
+                 from src/subsystems/agitator/agitator_subsystem.hpp:7,
+                 from src/subsystems/agitator/command_unjam_agitator.hpp:6,
+                 from src/subsystems/agitator/command_unjam_agitator.cpp:1:
+src/utils/motors/motor_controller.hpp:22:33: error: expected ')' before '*' token
+   22 |     MotorController(src::Drivers* drivers, const MotorConfig motor)
+      |                    ~            ^
+      |                                 )
+In file included from src/subsystems/odometry/odometry_subsystem.hpp:10,
+                 from src/communication/cv_board.hpp:9,
+                 from src/drivers.hpp:6,
+                 from src/subsystems/subsystem.hpp:4,
+                 from src/subsystems/flywheel/flywheel_subsystem.hpp:6,
+                 from src/subsystems/agitator/agitator_subsystem.hpp:7,
+                 from src/subsystems/agitator/command_agitator_burst.hpp:6,
+                 from src/subsystems/agitator/command_agitator_burst.cpp:1:
+src/subsystems/chassis/chassis_subsystem.hpp:21:1: error: expected class-name before '{' token
+   21 | {
+      | ^
+src/subsystems/chassis/chassis_subsystem.hpp:23:34: error: expected ')' before '*' token
+   23 |     ChassisSubsystem(src::Drivers* drivers);
+      |                     ~            ^
+      |                                  )
+src/subsystems/chassis/chassis_subsystem.hpp:43:10: error: 'Drivers' in namespace 'src' does not name a type
+   43 |     src::Drivers* drivers;
+      |          ^~~~~~~
+src/subsystems/chassis/chassis_subsystem.hpp:24:10: error: 'void subsystems::chassis::ChassisSubsystem::initialize()' marked 'override', but does not override
+   24 |     void initialize() override;
+      |          ^~~~~~~~~~
+In file included from src/subsystems/odometry/odometry_subsystem.hpp:10,
+                 from src/communication/cv_board.hpp:9,
+                 from src/drivers.hpp:6,
+                 from src/subsystems/subsystem.hpp:4,
+                 from src/subsystems/flywheel/flywheel_subsystem.hpp:6,
+                 from src/subsystems/agitator/agitator_subsystem.hpp:7,
+                 from src/subsystems/agitator/command_unjam_agitator.hpp:6,
+                 from src/subsystems/agitator/command_unjam_agitator.cpp:1:
+src/subsystems/chassis/chassis_subsystem.hpp:21:1: error: expected class-name before '{' token
+   21 | {
+      | ^
+src/subsystems/chassis/chassis_subsystem.hpp:25:10: error: 'void subsystems::chassis::ChassisSubsystem::refresh()' marked 'override', but does not override
+   25 |     void refresh() override;
+      |          ^~~~~~~
+src/subsystems/chassis/chassis_subsystem.hpp:26:10: error: 'bool subsystems::chassis::ChassisSubsystem::hardwareOk()' marked 'override', but does not override
+   26 |     bool hardwareOk() override;
+      |          ^~~~~~~~~~
+src/subsystems/chassis/chassis_subsystem.hpp:23:34: error: expected ')' before '*' token
+   23 |     ChassisSubsystem(src::Drivers* drivers);
+      |                     ~            ^
+      |                                  )
+src/subsystems/chassis/chassis_subsystem.hpp:43:10: error: 'Drivers' in namespace 'src' does not name a type
+   43 |     src::Drivers* drivers;
+      |          ^~~~~~~
+src/subsystems/chassis/chassis_subsystem.hpp:24:10: error: 'void subsystems::chassis::ChassisSubsystem::initialize()' marked 'override', but does not override
+   24 |     void initialize() override;
+      |          ^~~~~~~~~~
+src/subsystems/chassis/chassis_subsystem.hpp:25:10: error: 'void subsystems::chassis::ChassisSubsystem::refresh()' marked 'override', but does not override
+   25 |     void refresh() override;
+      |          ^~~~~~~
+src/subsystems/chassis/chassis_subsystem.hpp:26:10: error: 'bool subsystems::chassis::ChassisSubsystem::hardwareOk()' marked 'override', but does not override
+   26 |     bool hardwareOk() override;
+      |          ^~~~~~~~~~
+In file included from src/subsystems/odometry/odometry_subsystem.hpp:11,
+                 from src/communication/cv_board.hpp:9,
+                 from src/drivers.hpp:6,
+                 from src/subsystems/subsystem.hpp:4,
+                 from src/subsystems/flywheel/flywheel_subsystem.hpp:6,
+                 from src/subsystems/agitator/agitator_subsystem.hpp:7,
+                 from src/subsystems/agitator/command_unjam_agitator.hpp:6,
+                 from src/subsystems/agitator/command_unjam_agitator.cpp:1:
+src/subsystems/odometry/observer_displacement.hpp:20:45: error: expected ')' before '*' token
+   20 |     ChassisDisplacementObserver(src::Drivers* drivers, chassis::ChassisSubsystem* chassis);
+      |                                ~            ^
+      |                                             )
+src/subsystems/odometry/observer_displacement.hpp:25:10: error: 'Drivers' in namespace 'src' does not name a type
+   25 |     src::Drivers* drivers;
+      |          ^~~~~~~
+In file included from src/subsystems/odometry/odometry_subsystem.hpp:11,
+                 from src/communication/cv_board.hpp:9,
+                 from src/drivers.hpp:6,
+                 from src/subsystems/subsystem.hpp:4,
+                 from src/subsystems/flywheel/flywheel_subsystem.hpp:6,
+                 from src/subsystems/agitator/agitator_subsystem.hpp:7,
+                 from src/subsystems/agitator/command_agitator_burst.hpp:6,
+                 from src/subsystems/agitator/command_agitator_burst.cpp:1:
+src/subsystems/odometry/observer_displacement.hpp:20:45: error: expected ')' before '*' token
+   20 |     ChassisDisplacementObserver(src::Drivers* drivers, chassis::ChassisSubsystem* chassis);
+      |                                ~            ^
+      |                                             )
+src/subsystems/odometry/observer_displacement.hpp:25:10: error: 'Drivers' in namespace 'src' does not name a type
+   25 |     src::Drivers* drivers;
+      |          ^~~~~~~
+In file included from src/subsystems/odometry/odometry_subsystem.hpp:12,
+                 from src/communication/cv_board.hpp:9,
+                 from src/drivers.hpp:6,
+                 from src/subsystems/subsystem.hpp:4,
+                 from src/subsystems/flywheel/flywheel_subsystem.hpp:6,
+                 from src/subsystems/agitator/agitator_subsystem.hpp:7,
+                 from src/subsystems/agitator/command_agitator_burst.hpp:6,
+                 from src/subsystems/agitator/command_agitator_burst.cpp:1:
+src/subsystems/odometry/observer_yaw_world.hpp:21:41: error: expected ')' before '*' token
+   21 |     ChassisWorldYawObserver(src::Drivers* drivers);
+      |                            ~            ^
+      |                                         )
+src/subsystems/odometry/observer_yaw_world.hpp:26:10: error: 'Drivers' in namespace 'src' does not name a type
+   26 |     src::Drivers* drivers;
+      |          ^~~~~~~
+In file included from src/subsystems/odometry/odometry_subsystem.hpp:12,
+                 from src/communication/cv_board.hpp:9,
+                 from src/drivers.hpp:6,
+                 from src/subsystems/subsystem.hpp:4,
+                 from src/subsystems/flywheel/flywheel_subsystem.hpp:6,
+                 from src/subsystems/agitator/agitator_subsystem.hpp:7,
+                 from src/subsystems/agitator/command_unjam_agitator.hpp:6,
+                 from src/subsystems/agitator/command_unjam_agitator.cpp:1:
+src/subsystems/odometry/observer_yaw_world.hpp:21:41: error: expected ')' before '*' token
+   21 |     ChassisWorldYawObserver(src::Drivers* drivers);
+      |                            ~            ^
+      |                                         )
+src/subsystems/odometry/observer_yaw_world.hpp:26:10: error: 'Drivers' in namespace 'src' does not name a type
+   26 |     src::Drivers* drivers;
+      |          ^~~~~~~
+In file included from src/subsystems/turret/turret_subsystem.hpp:11,
+                 from src/subsystems/odometry/odometry_subsystem.hpp:14,
+                 from src/communication/cv_board.hpp:9,
+                 from src/drivers.hpp:6,
+                 from src/subsystems/subsystem.hpp:4,
+                 from src/subsystems/flywheel/flywheel_subsystem.hpp:6,
+                 from src/subsystems/agitator/agitator_subsystem.hpp:7,
+                 from src/subsystems/agitator/command_agitator_burst.hpp:6,
+                 from src/subsystems/agitator/command_agitator_burst.cpp:1:
+src/subsystems/turret/double_yaw_motor.hpp:21:32: error: expected ')' before '*' token
+   21 |     DoubleYawMotor(src::Drivers *drivers, MotorConfig motor1, MotorConfig motor2);
+      |                   ~            ^~
+      |                                )
+src/subsystems/turret/double_yaw_motor.hpp:36:10: error: 'Drivers' in namespace 'src' does not name a type
+   36 |     src::Drivers *drivers;
+      |          ^~~~~~~
+In file included from src/subsystems/turret/turret_subsystem.hpp:11,
+                 from src/subsystems/odometry/odometry_subsystem.hpp:14,
+                 from src/communication/cv_board.hpp:9,
+                 from src/drivers.hpp:6,
+                 from src/subsystems/subsystem.hpp:4,
+                 from src/subsystems/flywheel/flywheel_subsystem.hpp:6,
+                 from src/subsystems/agitator/agitator_subsystem.hpp:7,
+                 from src/subsystems/agitator/command_unjam_agitator.hpp:6,
+                 from src/subsystems/agitator/command_unjam_agitator.cpp:1:
+src/subsystems/turret/double_yaw_motor.hpp:21:32: error: expected ')' before '*' token
+   21 |     DoubleYawMotor(src::Drivers *drivers, MotorConfig motor1, MotorConfig motor2);
+      |                   ~            ^~
+      |                                )
+src/subsystems/turret/double_yaw_motor.hpp:36:10: error: 'Drivers' in namespace 'src' does not name a type
+   36 |     src::Drivers *drivers;
+      |          ^~~~~~~
+In file included from src/subsystems/turret/turret_subsystem.hpp:13,
+                 from src/subsystems/odometry/odometry_subsystem.hpp:14,
+                 from src/communication/cv_board.hpp:9,
+                 from src/drivers.hpp:6,
+                 from src/subsystems/subsystem.hpp:4,
+                 from src/subsystems/flywheel/flywheel_subsystem.hpp:6,
+                 from src/subsystems/agitator/agitator_subsystem.hpp:7,
+                 from src/subsystems/agitator/command_agitator_burst.hpp:6,
+                 from src/subsystems/agitator/command_agitator_burst.cpp:1:
+src/subsystems/turret/turret_motor.hpp:20:29: error: expected ')' before '*' token
+   20 |     TurretMotor(src::Drivers *drivers, MotorConfig motor, const SmoothPidConfig &pidConfig);
+      |                ~            ^~
+      |                             )
+src/subsystems/turret/turret_motor.hpp:33:10: error: 'Drivers' in namespace 'src' does not name a type
+   33 |     src::Drivers *drivers;
+      |          ^~~~~~~
+In file included from src/subsystems/turret/turret_subsystem.hpp:13,
+                 from src/subsystems/odometry/odometry_subsystem.hpp:14,
+                 from src/communication/cv_board.hpp:9,
+                 from src/drivers.hpp:6,
+                 from src/subsystems/subsystem.hpp:4,
+                 from src/subsystems/flywheel/flywheel_subsystem.hpp:6,
+                 from src/subsystems/agitator/agitator_subsystem.hpp:7,
+                 from src/subsystems/agitator/command_unjam_agitator.hpp:6,
+                 from src/subsystems/agitator/command_unjam_agitator.cpp:1:
+src/subsystems/turret/turret_motor.hpp:20:29: error: expected ')' before '*' token
+   20 |     TurretMotor(src::Drivers *drivers, MotorConfig motor, const SmoothPidConfig &pidConfig);
+      |                ~            ^~
+      |                             )
+src/subsystems/turret/turret_motor.hpp:33:10: error: 'Drivers' in namespace 'src' does not name a type
+   33 |     src::Drivers *drivers;
+      |          ^~~~~~~
+In file included from src/subsystems/odometry/odometry_subsystem.hpp:14,
+                 from src/communication/cv_board.hpp:9,
+                 from src/drivers.hpp:6,
+                 from src/subsystems/subsystem.hpp:4,
+                 from src/subsystems/flywheel/flywheel_subsystem.hpp:6,
+                 from src/subsystems/agitator/agitator_subsystem.hpp:7,
+                 from src/subsystems/agitator/command_agitator_burst.hpp:6,
+                 from src/subsystems/agitator/command_agitator_burst.cpp:1:
+src/subsystems/turret/turret_subsystem.hpp:22:1: error: expected class-name before '{' token
+   22 | {
+      | ^
+In file included from src/subsystems/odometry/odometry_subsystem.hpp:14,
+                 from src/communication/cv_board.hpp:9,
+                 from src/drivers.hpp:6,
+                 from src/subsystems/subsystem.hpp:4,
+                 from src/subsystems/flywheel/flywheel_subsystem.hpp:6,
+                 from src/subsystems/agitator/agitator_subsystem.hpp:7,
+                 from src/subsystems/agitator/command_unjam_agitator.hpp:6,
+                 from src/subsystems/agitator/command_unjam_agitator.cpp:1:
+src/subsystems/turret/turret_subsystem.hpp:22:1: error: expected class-name before '{' token
+   22 | {
+      | ^
+src/subsystems/turret/turret_subsystem.hpp:24:33: error: expected ')' before '*' token
+   24 |     TurretSubsystem(src::Drivers* drivers);
+      |                    ~            ^
+      |                                 )
+src/subsystems/turret/turret_subsystem.hpp:24:33: error: expected ')' before '*' token
+   24 |     TurretSubsystem(src::Drivers* drivers);
+      |                    ~            ^
+      |                                 )
+src/subsystems/turret/turret_subsystem.hpp:45:10: error: 'Drivers' in namespace 'src' does not name a type
+   45 |     src::Drivers* drivers;
+      |          ^~~~~~~
+src/subsystems/turret/turret_subsystem.hpp:45:10: error: 'Drivers' in namespace 'src' does not name a type
+   45 |     src::Drivers* drivers;
+      |          ^~~~~~~
+src/subsystems/turret/turret_subsystem.hpp:25:10: error: 'void subsystems::turret::TurretSubsystem::initialize()' marked 'override', but does not override
+   25 |     void initialize() override;
+      |          ^~~~~~~~~~
+src/subsystems/turret/turret_subsystem.hpp:25:10: error: 'void subsystems::turret::TurretSubsystem::initialize()' marked 'override', but does not override
+   25 |     void initialize() override;
+      |          ^~~~~~~~~~
+src/subsystems/turret/turret_subsystem.hpp:26:10: error: 'void subsystems::turret::TurretSubsystem::refresh()' marked 'override', but does not override
+   26 |     void refresh() override;
+      |          ^~~~~~~
+src/subsystems/turret/turret_subsystem.hpp:26:10: error: 'void subsystems::turret::TurretSubsystem::refresh()' marked 'override', but does not override
+   26 |     void refresh() override;
+      |          ^~~~~~~
+src/subsystems/turret/turret_subsystem.hpp:27:10: error: 'bool subsystems::turret::TurretSubsystem::hardwareOk()' marked 'override', but does not override
+   27 |     bool hardwareOk() override;
+      |          ^~~~~~~~~~
+src/subsystems/turret/turret_subsystem.hpp:27:10: error: 'bool subsystems::turret::TurretSubsystem::hardwareOk()' marked 'override', but does not override
+   27 |     bool hardwareOk() override;
+      |          ^~~~~~~~~~
+In file included from src/communication/cv_board.hpp:9,
+                 from src/drivers.hpp:6,
+                 from src/subsystems/subsystem.hpp:4,
+                 from src/subsystems/flywheel/flywheel_subsystem.hpp:6,
+                 from src/subsystems/agitator/agitator_subsystem.hpp:7,
+                 from src/subsystems/agitator/command_unjam_agitator.hpp:6,
+                 from src/subsystems/agitator/command_unjam_agitator.cpp:1:
+src/subsystems/odometry/odometry_subsystem.hpp:27:1: error: expected class-name before '{' token
+   27 | {
+      | ^
+In file included from src/communication/cv_board.hpp:9,
+                 from src/drivers.hpp:6,
+                 from src/subsystems/subsystem.hpp:4,
+                 from src/subsystems/flywheel/flywheel_subsystem.hpp:6,
+                 from src/subsystems/agitator/agitator_subsystem.hpp:7,
+                 from src/subsystems/agitator/command_agitator_burst.hpp:6,
+                 from src/subsystems/agitator/command_agitator_burst.cpp:1:
+src/subsystems/odometry/odometry_subsystem.hpp:27:1: error: expected class-name before '{' token
+   27 | {
+      | ^
+src/subsystems/odometry/odometry_subsystem.hpp:29:35: error: expected ')' before '*' token
+   29 |     OdometrySubsystem(src::Drivers* drivers, ChassisSubsystem* chassis, TurretSubsystem* turret);
+      |                      ~            ^
+      |                                   )
+src/subsystems/odometry/odometry_subsystem.hpp:29:35: error: expected ')' before '*' token
+   29 |     OdometrySubsystem(src::Drivers* drivers, ChassisSubsystem* chassis, TurretSubsystem* turret);
+      |                      ~            ^
+      |                                   )
+src/subsystems/odometry/odometry_subsystem.hpp:44:10: error: 'Drivers' in namespace 'src' does not name a type
+   44 |     src::Drivers* drivers;
+      |          ^~~~~~~
+src/subsystems/odometry/odometry_subsystem.hpp:30:10: error: 'void subsystems::odometry::OdometrySubsystem::initialize()' marked 'override', but does not override
+   30 |     void initialize() override;
+      |          ^~~~~~~~~~
+src/subsystems/odometry/odometry_subsystem.hpp:44:10: error: 'Drivers' in namespace 'src' does not name a type
+   44 |     src::Drivers* drivers;
+      |          ^~~~~~~
+src/subsystems/odometry/odometry_subsystem.hpp:31:10: error: 'void subsystems::odometry::OdometrySubsystem::refresh()' marked 'override', but does not override
+   31 |     void refresh() override;
+      |          ^~~~~~~
+src/subsystems/odometry/odometry_subsystem.hpp:32:10: error: 'bool subsystems::odometry::OdometrySubsystem::hardwareOk()' marked 'override', but does not override
+   32 |     bool hardwareOk() override;
+      |          ^~~~~~~~~~
+src/subsystems/odometry/odometry_subsystem.hpp:30:10: error: 'void subsystems::odometry::OdometrySubsystem::initialize()' marked 'override', but does not override
+   30 |     void initialize() override;
+      |          ^~~~~~~~~~
+src/subsystems/odometry/odometry_subsystem.hpp:31:10: error: 'void subsystems::odometry::OdometrySubsystem::refresh()' marked 'override', but does not override
+   31 |     void refresh() override;
+      |          ^~~~~~~
+src/subsystems/odometry/odometry_subsystem.hpp:32:10: error: 'bool subsystems::odometry::OdometrySubsystem::hardwareOk()' marked 'override', but does not override
+   32 |     bool hardwareOk() override;
+      |          ^~~~~~~~~~
+In file included from src/subsystems/chassis/chassis_subsystem.hpp:8,
+                 from src/subsystems/odometry/odometry_subsystem.hpp:10,
+                 from src/communication/cv_board.hpp:9,
+                 from src/drivers.hpp:6,
+                 from src/subsystems/subsystem.hpp:4,
+                 from src/subsystems/flywheel/flywheel_subsystem.hpp:6,
+                 from src/subsystems/agitator/agitator_subsystem.hpp:7,
+                 from src/subsystems/agitator/agitator_subsystem.cpp:1:
+src/utils/motors/motor_controller.hpp:22:33: error: expected ')' before '*' token
+   22 |     MotorController(src::Drivers* drivers, const MotorConfig motor)
+      |                    ~            ^
+      |                                 )
+In file included from src/subsystems/chassis/chassis_subsystem.hpp:8,
+                 from src/subsystems/odometry/odometry_subsystem.hpp:10,
+                 from src/communication/cv_board.hpp:9,
+                 from src/drivers.hpp:6,
+                 from src/subsystems/subsystem.hpp:4,
+                 from src/subsystems/flywheel/flywheel_subsystem.hpp:6,
+                 from src/subsystems/agitator/agitator_subsystem.hpp:7,
+                 from src/subsystems/agitator/command_agitator_burst_alternating.hpp:7,
+                 from src/subsystems/agitator/command_agitator_burst_alternating.cpp:1:
+src/utils/motors/motor_controller.hpp:22:33: error: expected ')' before '*' token
+   22 |     MotorController(src::Drivers* drivers, const MotorConfig motor)
+      |                    ~            ^
+      |                                 )
+In file included from src/subsystems/odometry/odometry_subsystem.hpp:10,
+                 from src/communication/cv_board.hpp:9,
+                 from src/drivers.hpp:6,
+                 from src/subsystems/subsystem.hpp:4,
+                 from src/subsystems/flywheel/flywheel_subsystem.hpp:6,
+                 from src/subsystems/agitator/agitator_subsystem.hpp:7,
+                 from src/subsystems/agitator/command_agitator_burst_alternating.hpp:7,
+                 from src/subsystems/agitator/command_agitator_burst_alternating.cpp:1:
+src/subsystems/chassis/chassis_subsystem.hpp:21:1: error: expected class-name before '{' token
+   21 | {
+      | ^
+src/subsystems/chassis/chassis_subsystem.hpp:23:34: error: expected ')' before '*' token
+   23 |     ChassisSubsystem(src::Drivers* drivers);
+      |                     ~            ^
+      |                                  )
+src/subsystems/chassis/chassis_subsystem.hpp:43:10: error: 'Drivers' in namespace 'src' does not name a type
+   43 |     src::Drivers* drivers;
+      |          ^~~~~~~
+src/subsystems/chassis/chassis_subsystem.hpp:24:10: error: 'void subsystems::chassis::ChassisSubsystem::initialize()' marked 'override', but does not override
+   24 |     void initialize() override;
+      |          ^~~~~~~~~~
+src/subsystems/chassis/chassis_subsystem.hpp:25:10: error: 'void subsystems::chassis::ChassisSubsystem::refresh()' marked 'override', but does not override
+   25 |     void refresh() override;
+      |          ^~~~~~~
+In file included from src/subsystems/odometry/odometry_subsystem.hpp:10,
+                 from src/communication/cv_board.hpp:9,
+                 from src/drivers.hpp:6,
+                 from src/subsystems/subsystem.hpp:4,
+                 from src/subsystems/flywheel/flywheel_subsystem.hpp:6,
+                 from src/subsystems/agitator/agitator_subsystem.hpp:7,
+                 from src/subsystems/agitator/agitator_subsystem.cpp:1:
+src/subsystems/chassis/chassis_subsystem.hpp:21:1: error: expected class-name before '{' token
+   21 | {
+      | ^
+src/subsystems/chassis/chassis_subsystem.hpp:26:10: error: 'bool subsystems::chassis::ChassisSubsystem::hardwareOk()' marked 'override', but does not override
+   26 |     bool hardwareOk() override;
+      |          ^~~~~~~~~~
+src/subsystems/chassis/chassis_subsystem.hpp:23:34: error: expected ')' before '*' token
+   23 |     ChassisSubsystem(src::Drivers* drivers);
+      |                     ~            ^
+      |                                  )
+src/subsystems/chassis/chassis_subsystem.hpp:43:10: error: 'Drivers' in namespace 'src' does not name a type
+   43 |     src::Drivers* drivers;
+      |          ^~~~~~~
+src/subsystems/chassis/chassis_subsystem.hpp:24:10: error: 'void subsystems::chassis::ChassisSubsystem::initialize()' marked 'override', but does not override
+   24 |     void initialize() override;
+      |          ^~~~~~~~~~
+src/subsystems/chassis/chassis_subsystem.hpp:25:10: error: 'void subsystems::chassis::ChassisSubsystem::refresh()' marked 'override', but does not override
+   25 |     void refresh() override;
+      |          ^~~~~~~
+src/subsystems/chassis/chassis_subsystem.hpp:26:10: error: 'bool subsystems::chassis::ChassisSubsystem::hardwareOk()' marked 'override', but does not override
+   26 |     bool hardwareOk() override;
+      |          ^~~~~~~~~~
+In file included from src/subsystems/odometry/odometry_subsystem.hpp:11,
+                 from src/communication/cv_board.hpp:9,
+                 from src/drivers.hpp:6,
+                 from src/subsystems/subsystem.hpp:4,
+                 from src/subsystems/flywheel/flywheel_subsystem.hpp:6,
+                 from src/subsystems/agitator/agitator_subsystem.hpp:7,
+                 from src/subsystems/agitator/command_agitator_burst_alternating.hpp:7,
+                 from src/subsystems/agitator/command_agitator_burst_alternating.cpp:1:
+src/subsystems/odometry/observer_displacement.hpp:20:45: error: expected ')' before '*' token
+   20 |     ChassisDisplacementObserver(src::Drivers* drivers, chassis::ChassisSubsystem* chassis);
+      |                                ~            ^
+      |                                             )
+src/subsystems/odometry/observer_displacement.hpp:25:10: error: 'Drivers' in namespace 'src' does not name a type
+   25 |     src::Drivers* drivers;
+      |          ^~~~~~~
+In file included from src/subsystems/odometry/odometry_subsystem.hpp:11,
+                 from src/communication/cv_board.hpp:9,
+                 from src/drivers.hpp:6,
+                 from src/subsystems/subsystem.hpp:4,
+                 from src/subsystems/flywheel/flywheel_subsystem.hpp:6,
+                 from src/subsystems/agitator/agitator_subsystem.hpp:7,
+                 from src/subsystems/agitator/agitator_subsystem.cpp:1:
+src/subsystems/odometry/observer_displacement.hpp:20:45: error: expected ')' before '*' token
+   20 |     ChassisDisplacementObserver(src::Drivers* drivers, chassis::ChassisSubsystem* chassis);
+      |                                ~            ^
+      |                                             )
+src/subsystems/odometry/observer_displacement.hpp:25:10: error: 'Drivers' in namespace 'src' does not name a type
+   25 |     src::Drivers* drivers;
+      |          ^~~~~~~
+In file included from src/subsystems/odometry/odometry_subsystem.hpp:12,
+                 from src/communication/cv_board.hpp:9,
+                 from src/drivers.hpp:6,
+                 from src/subsystems/subsystem.hpp:4,
+                 from src/subsystems/flywheel/flywheel_subsystem.hpp:6,
+                 from src/subsystems/agitator/agitator_subsystem.hpp:7,
+                 from src/subsystems/agitator/command_agitator_burst_alternating.hpp:7,
+                 from src/subsystems/agitator/command_agitator_burst_alternating.cpp:1:
+src/subsystems/odometry/observer_yaw_world.hpp:21:41: error: expected ')' before '*' token
+   21 |     ChassisWorldYawObserver(src::Drivers* drivers);
+      |                            ~            ^
+      |                                         )
+src/subsystems/odometry/observer_yaw_world.hpp:26:10: error: 'Drivers' in namespace 'src' does not name a type
+   26 |     src::Drivers* drivers;
+      |          ^~~~~~~
+In file included from src/subsystems/odometry/odometry_subsystem.hpp:12,
+                 from src/communication/cv_board.hpp:9,
+                 from src/drivers.hpp:6,
+                 from src/subsystems/subsystem.hpp:4,
+                 from src/subsystems/flywheel/flywheel_subsystem.hpp:6,
+                 from src/subsystems/agitator/agitator_subsystem.hpp:7,
+                 from src/subsystems/agitator/agitator_subsystem.cpp:1:
+src/subsystems/odometry/observer_yaw_world.hpp:21:41: error: expected ')' before '*' token
+   21 |     ChassisWorldYawObserver(src::Drivers* drivers);
+      |                            ~            ^
+      |                                         )
+src/subsystems/odometry/observer_yaw_world.hpp:26:10: error: 'Drivers' in namespace 'src' does not name a type
+   26 |     src::Drivers* drivers;
+      |          ^~~~~~~
+In file included from src/subsystems/turret/turret_subsystem.hpp:11,
+                 from src/subsystems/odometry/odometry_subsystem.hpp:14,
+                 from src/communication/cv_board.hpp:9,
+                 from src/drivers.hpp:6,
+                 from src/subsystems/subsystem.hpp:4,
+                 from src/subsystems/flywheel/flywheel_subsystem.hpp:6,
+                 from src/subsystems/agitator/agitator_subsystem.hpp:7,
+                 from src/subsystems/agitator/command_agitator_burst_alternating.hpp:7,
+                 from src/subsystems/agitator/command_agitator_burst_alternating.cpp:1:
+src/subsystems/turret/double_yaw_motor.hpp:21:32: error: expected ')' before '*' token
+   21 |     DoubleYawMotor(src::Drivers *drivers, MotorConfig motor1, MotorConfig motor2);
+      |                   ~            ^~
+      |                                )
+In file included from src/subsystems/turret/turret_subsystem.hpp:11,
+                 from src/subsystems/odometry/odometry_subsystem.hpp:14,
+                 from src/communication/cv_board.hpp:9,
+                 from src/drivers.hpp:6,
+                 from src/subsystems/subsystem.hpp:4,
+                 from src/subsystems/flywheel/flywheel_subsystem.hpp:6,
+                 from src/subsystems/agitator/agitator_subsystem.hpp:7,
+                 from src/subsystems/agitator/agitator_subsystem.cpp:1:
+src/subsystems/turret/double_yaw_motor.hpp:21:32: error: expected ')' before '*' token
+   21 |     DoubleYawMotor(src::Drivers *drivers, MotorConfig motor1, MotorConfig motor2);
+      |                   ~            ^~
+      |                                )
+src/subsystems/turret/double_yaw_motor.hpp:36:10: error: 'Drivers' in namespace 'src' does not name a type
+   36 |     src::Drivers *drivers;
+      |          ^~~~~~~
+src/subsystems/turret/double_yaw_motor.hpp:36:10: error: 'Drivers' in namespace 'src' does not name a type
+   36 |     src::Drivers *drivers;
+      |          ^~~~~~~
+In file included from src/subsystems/turret/turret_subsystem.hpp:13,
+                 from src/subsystems/odometry/odometry_subsystem.hpp:14,
+                 from src/communication/cv_board.hpp:9,
+                 from src/drivers.hpp:6,
+                 from src/subsystems/subsystem.hpp:4,
+                 from src/subsystems/flywheel/flywheel_subsystem.hpp:6,
+                 from src/subsystems/agitator/agitator_subsystem.hpp:7,
+                 from src/subsystems/agitator/command_agitator_burst_alternating.hpp:7,
+                 from src/subsystems/agitator/command_agitator_burst_alternating.cpp:1:
+src/subsystems/turret/turret_motor.hpp:20:29: error: expected ')' before '*' token
+   20 |     TurretMotor(src::Drivers *drivers, MotorConfig motor, const SmoothPidConfig &pidConfig);
+      |                ~            ^~
+      |                             )
+In file included from src/subsystems/turret/turret_subsystem.hpp:13,
+                 from src/subsystems/odometry/odometry_subsystem.hpp:14,
+                 from src/communication/cv_board.hpp:9,
+                 from src/drivers.hpp:6,
+                 from src/subsystems/subsystem.hpp:4,
+                 from src/subsystems/flywheel/flywheel_subsystem.hpp:6,
+                 from src/subsystems/agitator/agitator_subsystem.hpp:7,
+                 from src/subsystems/agitator/agitator_subsystem.cpp:1:
+src/subsystems/turret/turret_motor.hpp:20:29: error: expected ')' before '*' token
+   20 |     TurretMotor(src::Drivers *drivers, MotorConfig motor, const SmoothPidConfig &pidConfig);
+      |                ~            ^~
+      |                             )
+src/subsystems/turret/turret_motor.hpp:33:10: error: 'Drivers' in namespace 'src' does not name a type
+   33 |     src::Drivers *drivers;
+      |          ^~~~~~~
+src/subsystems/turret/turret_motor.hpp:33:10: error: 'Drivers' in namespace 'src' does not name a type
+   33 |     src::Drivers *drivers;
+      |          ^~~~~~~
+In file included from src/subsystems/odometry/odometry_subsystem.hpp:14,
+                 from src/communication/cv_board.hpp:9,
+                 from src/drivers.hpp:6,
+                 from src/subsystems/subsystem.hpp:4,
+                 from src/subsystems/flywheel/flywheel_subsystem.hpp:6,
+                 from src/subsystems/agitator/agitator_subsystem.hpp:7,
+                 from src/subsystems/agitator/agitator_subsystem.cpp:1:
+src/subsystems/turret/turret_subsystem.hpp:22:1: error: expected class-name before '{' token
+   22 | {
+      | ^
+In file included from src/subsystems/odometry/odometry_subsystem.hpp:14,
+                 from src/communication/cv_board.hpp:9,
+                 from src/drivers.hpp:6,
+                 from src/subsystems/subsystem.hpp:4,
+                 from src/subsystems/flywheel/flywheel_subsystem.hpp:6,
+                 from src/subsystems/agitator/agitator_subsystem.hpp:7,
+                 from src/subsystems/agitator/command_agitator_burst_alternating.hpp:7,
+                 from src/subsystems/agitator/command_agitator_burst_alternating.cpp:1:
+src/subsystems/turret/turret_subsystem.hpp:22:1: error: expected class-name before '{' token
+   22 | {
+      | ^
+src/subsystems/turret/turret_subsystem.hpp:24:33: error: expected ')' before '*' token
+   24 |     TurretSubsystem(src::Drivers* drivers);
+      |                    ~            ^
+      |                                 )
+src/subsystems/turret/turret_subsystem.hpp:24:33: error: expected ')' before '*' token
+   24 |     TurretSubsystem(src::Drivers* drivers);
+      |                    ~            ^
+      |                                 )
+src/subsystems/turret/turret_subsystem.hpp:45:10: error: 'Drivers' in namespace 'src' does not name a type
+   45 |     src::Drivers* drivers;
+      |          ^~~~~~~
+src/subsystems/turret/turret_subsystem.hpp:45:10: error: 'Drivers' in namespace 'src' does not name a type
+   45 |     src::Drivers* drivers;
+      |          ^~~~~~~
+src/subsystems/turret/turret_subsystem.hpp:25:10: error: 'void subsystems::turret::TurretSubsystem::initialize()' marked 'override', but does not override
+   25 |     void initialize() override;
+      |          ^~~~~~~~~~
+src/subsystems/turret/turret_subsystem.hpp:26:10: error: 'void subsystems::turret::TurretSubsystem::refresh()' marked 'override', but does not override
+   26 |     void refresh() override;
+      |          ^~~~~~~
+src/subsystems/turret/turret_subsystem.hpp:25:10: error: 'void subsystems::turret::TurretSubsystem::initialize()' marked 'override', but does not override
+   25 |     void initialize() override;
+      |          ^~~~~~~~~~
+src/subsystems/turret/turret_subsystem.hpp:26:10: error: 'void subsystems::turret::TurretSubsystem::refresh()' marked 'override', but does not override
+   26 |     void refresh() override;
+      |          ^~~~~~~
+src/subsystems/turret/turret_subsystem.hpp:27:10: error: 'bool subsystems::turret::TurretSubsystem::hardwareOk()' marked 'override', but does not override
+   27 |     bool hardwareOk() override;
+      |          ^~~~~~~~~~
+src/subsystems/turret/turret_subsystem.hpp:27:10: error: 'bool subsystems::turret::TurretSubsystem::hardwareOk()' marked 'override', but does not override
+   27 |     bool hardwareOk() override;
+      |          ^~~~~~~~~~
+In file included from src/communication/cv_board.hpp:9,
+                 from src/drivers.hpp:6,
+                 from src/subsystems/subsystem.hpp:4,
+                 from src/subsystems/flywheel/flywheel_subsystem.hpp:6,
+                 from src/subsystems/agitator/agitator_subsystem.hpp:7,
+                 from src/subsystems/agitator/command_agitator_burst_alternating.hpp:7,
+                 from src/subsystems/agitator/command_agitator_burst_alternating.cpp:1:
+src/subsystems/odometry/odometry_subsystem.hpp:27:1: error: expected class-name before '{' token
+   27 | {
+      | ^
+src/subsystems/odometry/odometry_subsystem.hpp:29:35: error: expected ')' before '*' token
+   29 |     OdometrySubsystem(src::Drivers* drivers, ChassisSubsystem* chassis, TurretSubsystem* turret);
+      |                      ~            ^
+      |                                   )
+src/subsystems/odometry/odometry_subsystem.hpp:44:10: error: 'Drivers' in namespace 'src' does not name a type
+   44 |     src::Drivers* drivers;
+      |          ^~~~~~~
+In file included from src/communication/cv_board.hpp:9,
+                 from src/drivers.hpp:6,
+                 from src/subsystems/subsystem.hpp:4,
+                 from src/subsystems/flywheel/flywheel_subsystem.hpp:6,
+                 from src/subsystems/agitator/agitator_subsystem.hpp:7,
+                 from src/subsystems/agitator/agitator_subsystem.cpp:1:
+src/subsystems/odometry/odometry_subsystem.hpp:27:1: error: expected class-name before '{' token
+   27 | {
+      | ^
+src/subsystems/odometry/odometry_subsystem.hpp:30:10: error: 'void subsystems::odometry::OdometrySubsystem::initialize()' marked 'override', but does not override
+   30 |     void initialize() override;
+      |          ^~~~~~~~~~
+src/subsystems/odometry/odometry_subsystem.hpp:29:35: error: expected ')' before '*' token
+   29 |     OdometrySubsystem(src::Drivers* drivers, ChassisSubsystem* chassis, TurretSubsystem* turret);
+      |                      ~            ^
+      |                                   )
+src/subsystems/odometry/odometry_subsystem.hpp:44:10: error: 'Drivers' in namespace 'src' does not name a type
+   44 |     src::Drivers* drivers;
+      |          ^~~~~~~
+src/subsystems/odometry/odometry_subsystem.hpp:30:10: error: 'void subsystems::odometry::OdometrySubsystem::initialize()' marked 'override', but does not override
+   30 |     void initialize() override;
+      |          ^~~~~~~~~~
+src/subsystems/odometry/odometry_subsystem.hpp:31:10: error: 'void subsystems::odometry::OdometrySubsystem::refresh()' marked 'override', but does not override
+   31 |     void refresh() override;
+      |          ^~~~~~~
+src/subsystems/odometry/odometry_subsystem.hpp:32:10: error: 'bool subsystems::odometry::OdometrySubsystem::hardwareOk()' marked 'override', but does not override
+   32 |     bool hardwareOk() override;
+      |          ^~~~~~~~~~
+src/subsystems/odometry/odometry_subsystem.hpp:31:10: error: 'void subsystems::odometry::OdometrySubsystem::refresh()' marked 'override', but does not override
+   31 |     void refresh() override;
+      |          ^~~~~~~
+src/subsystems/odometry/odometry_subsystem.hpp:32:10: error: 'bool subsystems::odometry::OdometrySubsystem::hardwareOk()' marked 'override', but does not override
+   32 |     bool hardwareOk() override;
+      |          ^~~~~~~~~~
+src/subsystems/agitator/agitator_subsystem.cpp: In constructor 'subsystems::agitator::AgitatorSubsystem::AgitatorSubsystem(src::Drivers*, subsystems::flywheel::FlywheelSubsystem*, motors::MotorConfig)':
+src/subsystems/agitator/agitator_subsystem.cpp:18:30: error: no matching function for call to 'motors::MotorController::MotorController(<brace-enclosed initializer list>)'
+   18 |       agitator{drivers, motor}
+      |                              ^
+In file included from src/subsystems/chassis/chassis_subsystem.hpp:8,
+                 from src/subsystems/odometry/odometry_subsystem.hpp:10,
+                 from src/communication/cv_board.hpp:9,
+                 from src/drivers.hpp:6,
+                 from src/subsystems/subsystem.hpp:4,
+                 from src/subsystems/flywheel/flywheel_subsystem.hpp:6,
+                 from src/subsystems/agitator/agitator_subsystem.hpp:7,
+                 from src/subsystems/agitator/agitator_subsystem.cpp:1:
+src/utils/motors/motor_controller.hpp:19:7: note: candidate: 'motors::MotorController::MotorController()' (deleted)
+   19 | class MotorController
+      |       ^~~~~~~~~~~~~~~
+src/utils/motors/motor_controller.hpp:19:7: note:   candidate expects 0 arguments, 2 provided
+src/utils/motors/motor_controller.hpp:19:7: note: candidate: 'motors::MotorController::MotorController(const motors::MotorController&)' (deleted)
+src/utils/motors/motor_controller.hpp:19:7: note:   candidate expects 1 argument, 2 provided
+src/utils/motors/motor_controller.hpp:19:7: note: candidate: 'motors::MotorController::MotorController(motors::MotorController&&)' (deleted)
+src/utils/motors/motor_controller.hpp:19:7: note:   candidate expects 1 argument, 2 provided
+In file included from src/subsystems/chassis/chassis_subsystem.hpp:8,
+                 from src/subsystems/odometry/odometry_subsystem.hpp:10,
+                 from src/communication/cv_board.hpp:9,
+                 from src/drivers.hpp:6,
+                 from src/subsystems/subsystem.hpp:4,
+                 from src/subsystems/flywheel/flywheel_subsystem.hpp:6,
+                 from src/subsystems/agitator/agitator_subsystem.hpp:7,
+                 from src/subsystems/agitator/command_agitator_continuous.hpp:7,
+                 from src/subsystems/agitator/command_agitator_continuous.cpp:1:
+src/utils/motors/motor_controller.hpp:22:33: error: expected ')' before '*' token
+   22 |     MotorController(src::Drivers* drivers, const MotorConfig motor)
+      |                    ~            ^
+      |                                 )
+In file included from src/subsystems/subsystem.hpp:4,
+                 from src/subsystems/chassis/chassis_subsystem.hpp:7,
+                 from src/subsystems/odometry/odometry_subsystem.hpp:10,
+                 from src/communication/cv_board.hpp:9,
+                 from src/communication/cv_board.cpp:1:
+src/drivers.hpp:15:20: error: 'CVBoard' in namespace 'src::communication' does not name a type
+   15 |     communication::CVBoard cvBoard;
+      |                    ^~~~~~~
+src/drivers.hpp: In constructor 'src::Drivers::Drivers()':
+src/drivers.hpp:14:33: error: class 'src::Drivers' does not have any field named 'cvBoard'
+   14 |     Drivers() : tap::Drivers(), cvBoard(this), rtt() {}
+      |                                 ^~~~~~~
+In file included from src/subsystems/odometry/odometry_subsystem.hpp:10,
+                 from src/communication/cv_board.hpp:9,
+                 from src/drivers.hpp:6,
+                 from src/subsystems/subsystem.hpp:4,
+                 from src/subsystems/flywheel/flywheel_subsystem.hpp:6,
+                 from src/subsystems/agitator/agitator_subsystem.hpp:7,
+                 from src/subsystems/agitator/command_agitator_continuous.hpp:7,
+                 from src/subsystems/agitator/command_agitator_continuous.cpp:1:
+src/subsystems/chassis/chassis_subsystem.hpp:21:1: error: expected class-name before '{' token
+   21 | {
+      | ^
+src/subsystems/chassis/chassis_subsystem.hpp:23:34: error: expected ')' before '*' token
+   23 |     ChassisSubsystem(src::Drivers* drivers);
+      |                     ~            ^
+      |                                  )
+src/subsystems/chassis/chassis_subsystem.hpp:43:10: error: 'Drivers' in namespace 'src' does not name a type
+   43 |     src::Drivers* drivers;
+      |          ^~~~~~~
+src/subsystems/chassis/chassis_subsystem.hpp:24:10: error: 'void subsystems::chassis::ChassisSubsystem::initialize()' marked 'override', but does not override
+   24 |     void initialize() override;
+      |          ^~~~~~~~~~
+src/subsystems/chassis/chassis_subsystem.hpp:25:10: error: 'void subsystems::chassis::ChassisSubsystem::refresh()' marked 'override', but does not override
+   25 |     void refresh() override;
+      |          ^~~~~~~
+src/subsystems/chassis/chassis_subsystem.hpp:26:10: error: 'bool subsystems::chassis::ChassisSubsystem::hardwareOk()' marked 'override', but does not override
+   26 |     bool hardwareOk() override;
+      |          ^~~~~~~~~~
+In file included from src/subsystems/odometry/odometry_subsystem.hpp:11,
+                 from src/communication/cv_board.hpp:9,
+                 from src/drivers.hpp:6,
+                 from src/subsystems/subsystem.hpp:4,
+                 from src/subsystems/flywheel/flywheel_subsystem.hpp:6,
+                 from src/subsystems/agitator/agitator_subsystem.hpp:7,
+                 from src/subsystems/agitator/command_agitator_continuous.hpp:7,
+                 from src/subsystems/agitator/command_agitator_continuous.cpp:1:
+src/subsystems/odometry/observer_displacement.hpp:20:45: error: expected ')' before '*' token
+   20 |     ChassisDisplacementObserver(src::Drivers* drivers, chassis::ChassisSubsystem* chassis);
+      |                                ~            ^
+      |                                             )
+src/subsystems/odometry/observer_displacement.hpp:25:10: error: 'Drivers' in namespace 'src' does not name a type
+   25 |     src::Drivers* drivers;
+      |          ^~~~~~~
+In file included from src/subsystems/odometry/odometry_subsystem.hpp:12,
+                 from src/communication/cv_board.hpp:9,
+                 from src/drivers.hpp:6,
+                 from src/subsystems/subsystem.hpp:4,
+                 from src/subsystems/flywheel/flywheel_subsystem.hpp:6,
+                 from src/subsystems/agitator/agitator_subsystem.hpp:7,
+                 from src/subsystems/agitator/command_agitator_continuous.hpp:7,
+                 from src/subsystems/agitator/command_agitator_continuous.cpp:1:
+src/subsystems/odometry/observer_yaw_world.hpp:21:41: error: expected ')' before '*' token
+   21 |     ChassisWorldYawObserver(src::Drivers* drivers);
+      |                            ~            ^
+      |                                         )
+src/subsystems/odometry/observer_yaw_world.hpp:26:10: error: 'Drivers' in namespace 'src' does not name a type
+   26 |     src::Drivers* drivers;
+      |          ^~~~~~~
+src/communication/cv_board.cpp: In member function 'void src::communication::CVBoard::sendColorData()':
+src/communication/cv_board.cpp:178:18: warning: unused variable 'dummyOdom' [-Wunused-variable]
+  178 |     OdometryData dummyOdom = {1.0, 2.0, 3.0};
+      |                  ^~~~~~~~~
+In file included from src/subsystems/turret/turret_subsystem.hpp:11,
+                 from src/subsystems/odometry/odometry_subsystem.hpp:14,
+                 from src/communication/cv_board.hpp:9,
+                 from src/drivers.hpp:6,
+                 from src/subsystems/subsystem.hpp:4,
+                 from src/subsystems/flywheel/flywheel_subsystem.hpp:6,
+                 from src/subsystems/agitator/agitator_subsystem.hpp:7,
+                 from src/subsystems/agitator/command_agitator_continuous.hpp:7,
+                 from src/subsystems/agitator/command_agitator_continuous.cpp:1:
+src/subsystems/turret/double_yaw_motor.hpp:21:32: error: expected ')' before '*' token
+   21 |     DoubleYawMotor(src::Drivers *drivers, MotorConfig motor1, MotorConfig motor2);
+      |                   ~            ^~
+      |                                )
+src/subsystems/turret/double_yaw_motor.hpp:36:10: error: 'Drivers' in namespace 'src' does not name a type
+   36 |     src::Drivers *drivers;
+      |          ^~~~~~~
+In file included from src/subsystems/turret/turret_subsystem.hpp:13,
+                 from src/subsystems/odometry/odometry_subsystem.hpp:14,
+                 from src/communication/cv_board.hpp:9,
+                 from src/drivers.hpp:6,
+                 from src/subsystems/subsystem.hpp:4,
+                 from src/subsystems/flywheel/flywheel_subsystem.hpp:6,
+                 from src/subsystems/agitator/agitator_subsystem.hpp:7,
+                 from src/subsystems/agitator/command_agitator_continuous.hpp:7,
+                 from src/subsystems/agitator/command_agitator_continuous.cpp:1:
+src/subsystems/turret/turret_motor.hpp:20:29: error: expected ')' before '*' token
+   20 |     TurretMotor(src::Drivers *drivers, MotorConfig motor, const SmoothPidConfig &pidConfig);
+      |                ~            ^~
+      |                             )
+src/subsystems/turret/turret_motor.hpp:33:10: error: 'Drivers' in namespace 'src' does not name a type
+   33 |     src::Drivers *drivers;
+      |          ^~~~~~~
+In file included from src/subsystems/odometry/odometry_subsystem.hpp:14,
+                 from src/communication/cv_board.hpp:9,
+                 from src/drivers.hpp:6,
+                 from src/subsystems/subsystem.hpp:4,
+                 from src/subsystems/flywheel/flywheel_subsystem.hpp:6,
+                 from src/subsystems/agitator/agitator_subsystem.hpp:7,
+                 from src/subsystems/agitator/command_agitator_continuous.hpp:7,
+                 from src/subsystems/agitator/command_agitator_continuous.cpp:1:
+src/subsystems/turret/turret_subsystem.hpp:22:1: error: expected class-name before '{' token
+   22 | {
+      | ^
+src/subsystems/turret/turret_subsystem.hpp:24:33: error: expected ')' before '*' token
+   24 |     TurretSubsystem(src::Drivers* drivers);
+      |                    ~            ^
+      |                                 )
+src/subsystems/turret/turret_subsystem.hpp:45:10: error: 'Drivers' in namespace 'src' does not name a type
+   45 |     src::Drivers* drivers;
+      |          ^~~~~~~
+src/subsystems/turret/turret_subsystem.hpp:25:10: error: 'void subsystems::turret::TurretSubsystem::initialize()' marked 'override', but does not override
+   25 |     void initialize() override;
+      |          ^~~~~~~~~~
+src/subsystems/turret/turret_subsystem.hpp:26:10: error: 'void subsystems::turret::TurretSubsystem::refresh()' marked 'override', but does not override
+   26 |     void refresh() override;
+      |          ^~~~~~~
+src/subsystems/turret/turret_subsystem.hpp:27:10: error: 'bool subsystems::turret::TurretSubsystem::hardwareOk()' marked 'override', but does not override
+   27 |     bool hardwareOk() override;
+      |          ^~~~~~~~~~
+In file included from src/communication/cv_board.hpp:9,
+                 from src/drivers.hpp:6,
+                 from src/subsystems/subsystem.hpp:4,
+                 from src/subsystems/flywheel/flywheel_subsystem.hpp:6,
+                 from src/subsystems/agitator/agitator_subsystem.hpp:7,
+                 from src/subsystems/agitator/command_agitator_continuous.hpp:7,
+                 from src/subsystems/agitator/command_agitator_continuous.cpp:1:
+src/subsystems/odometry/odometry_subsystem.hpp:27:1: error: expected class-name before '{' token
+   27 | {
+      | ^
+src/subsystems/odometry/odometry_subsystem.hpp:29:35: error: expected ')' before '*' token
+   29 |     OdometrySubsystem(src::Drivers* drivers, ChassisSubsystem* chassis, TurretSubsystem* turret);
+      |                      ~            ^
+      |                                   )
+src/subsystems/odometry/odometry_subsystem.hpp:44:10: error: 'Drivers' in namespace 'src' does not name a type
+   44 |     src::Drivers* drivers;
+      |          ^~~~~~~
+src/subsystems/odometry/odometry_subsystem.hpp:30:10: error: 'void subsystems::odometry::OdometrySubsystem::initialize()' marked 'override', but does not override
+   30 |     void initialize() override;
+      |          ^~~~~~~~~~
+src/subsystems/odometry/odometry_subsystem.hpp:31:10: error: 'void subsystems::odometry::OdometrySubsystem::refresh()' marked 'override', but does not override
+   31 |     void refresh() override;
+      |          ^~~~~~~
+src/subsystems/odometry/odometry_subsystem.hpp:32:10: error: 'bool subsystems::odometry::OdometrySubsystem::hardwareOk()' marked 'override', but does not override
+   32 |     bool hardwareOk() override;
+      |          ^~~~~~~~~~
+In file included from src/subsystems/odometry/odometry_subsystem.hpp:11,
+                 from src/communication/cv_board.hpp:9,
+                 from src/drivers.hpp:6,
+                 from src/subsystems/subsystem.hpp:4,
+                 from src/subsystems/chassis/chassis_subsystem.hpp:7,
+                 from src/subsystems/chassis/chassis_subsystem.cpp:1:
+src/subsystems/odometry/observer_displacement.hpp:20:45: error: expected ')' before '*' token
+   20 |     ChassisDisplacementObserver(src::Drivers* drivers, chassis::ChassisSubsystem* chassis);
+      |                                ~            ^
+      |                                             )
+src/subsystems/odometry/observer_displacement.hpp:25:10: error: 'Drivers' in namespace 'src' does not name a type
+   25 |     src::Drivers* drivers;
+      |          ^~~~~~~
+src/subsystems/odometry/observer_displacement.hpp:26:5: error: 'chassis' does not name a type; did you mean 'class'?
+   26 |     chassis::ChassisSubsystem* chassis;
+      |     ^~~~~~~
+      |     class
+In file included from src/subsystems/odometry/odometry_subsystem.hpp:12,
+                 from src/communication/cv_board.hpp:9,
+                 from src/drivers.hpp:6,
+                 from src/subsystems/subsystem.hpp:4,
+                 from src/subsystems/chassis/chassis_subsystem.hpp:7,
+                 from src/subsystems/chassis/chassis_subsystem.cpp:1:
+src/subsystems/odometry/observer_yaw_world.hpp:21:41: error: expected ')' before '*' token
+   21 |     ChassisWorldYawObserver(src::Drivers* drivers);
+      |                            ~            ^
+      |                                         )
+src/subsystems/odometry/observer_yaw_world.hpp:26:10: error: 'Drivers' in namespace 'src' does not name a type
+   26 |     src::Drivers* drivers;
+      |          ^~~~~~~
+In file included from src/subsystems/turret/turret_subsystem.hpp:11,
+                 from src/subsystems/odometry/odometry_subsystem.hpp:14,
+                 from src/communication/cv_board.hpp:9,
+                 from src/drivers.hpp:6,
+                 from src/subsystems/subsystem.hpp:4,
+                 from src/subsystems/chassis/chassis_subsystem.hpp:7,
+                 from src/subsystems/chassis/chassis_subsystem.cpp:1:
+src/subsystems/turret/double_yaw_motor.hpp:21:32: error: expected ')' before '*' token
+   21 |     DoubleYawMotor(src::Drivers *drivers, MotorConfig motor1, MotorConfig motor2);
+      |                   ~            ^~
+      |                                )
+In file included from src/subsystems/chassis/chassis_subsystem.hpp:8,
+                 from src/subsystems/odometry/odometry_subsystem.hpp:10,
+                 from src/communication/cv_board.hpp:9,
+                 from src/drivers.hpp:6,
+                 from src/subsystems/subsystem.hpp:4,
+                 from src/subsystems/flywheel/flywheel_subsystem.hpp:6,
+                 from src/subsystems/agitator/agitator_subsystem.hpp:7,
+                 from src/robots/common/common_control.hpp:8,
+                 from src/robots/common/common_control_manual.hpp:7,
+                 from src/robots/standard/standard_control.hpp:1,
+                 from src/robots/robot_control.hpp:2,
+                 from src/main.cpp:6:
+src/utils/motors/motor_controller.hpp:22:33: error: expected ')' before '*' token
+   22 |     MotorController(src::Drivers* drivers, const MotorConfig motor)
+      |                    ~            ^
+      |                                 )
+src/subsystems/turret/double_yaw_motor.hpp:36:10: error: 'Drivers' in namespace 'src' does not name a type
+   36 |     src::Drivers *drivers;
+      |          ^~~~~~~
+In file included from src/subsystems/turret/turret_subsystem.hpp:13,
+                 from src/subsystems/odometry/odometry_subsystem.hpp:14,
+                 from src/communication/cv_board.hpp:9,
+                 from src/drivers.hpp:6,
+                 from src/subsystems/subsystem.hpp:4,
+                 from src/subsystems/chassis/chassis_subsystem.hpp:7,
+                 from src/subsystems/chassis/chassis_subsystem.cpp:1:
+src/subsystems/turret/turret_motor.hpp:20:29: error: expected ')' before '*' token
+   20 |     TurretMotor(src::Drivers *drivers, MotorConfig motor, const SmoothPidConfig &pidConfig);
+      |                ~            ^~
+      |                             )
+src/subsystems/turret/turret_motor.hpp:33:10: error: 'Drivers' in namespace 'src' does not name a type
+   33 |     src::Drivers *drivers;
+      |          ^~~~~~~
+In file included from src/subsystems/odometry/odometry_subsystem.hpp:10,
+                 from src/communication/cv_board.hpp:9,
+                 from src/drivers.hpp:6,
+                 from src/subsystems/subsystem.hpp:4,
+                 from src/subsystems/flywheel/flywheel_subsystem.hpp:6,
+                 from src/subsystems/agitator/agitator_subsystem.hpp:7,
+                 from src/robots/common/common_control.hpp:8,
+                 from src/robots/common/common_control_manual.hpp:7,
+                 from src/robots/standard/standard_control.hpp:1,
+                 from src/robots/robot_control.hpp:2,
+                 from src/main.cpp:6:
+src/subsystems/chassis/chassis_subsystem.hpp:21:1: error: expected class-name before '{' token
+   21 | {
+      | ^
+src/subsystems/chassis/chassis_subsystem.hpp:23:34: error: expected ')' before '*' token
+   23 |     ChassisSubsystem(src::Drivers* drivers);
+      |                     ~            ^
+      |                                  )
+src/subsystems/chassis/chassis_subsystem.hpp:43:10: error: 'Drivers' in namespace 'src' does not name a type
+   43 |     src::Drivers* drivers;
+      |          ^~~~~~~
+In file included from src/subsystems/odometry/odometry_subsystem.hpp:14,
+                 from src/communication/cv_board.hpp:9,
+                 from src/drivers.hpp:6,
+                 from src/subsystems/subsystem.hpp:4,
+                 from src/subsystems/chassis/chassis_subsystem.hpp:7,
+                 from src/subsystems/chassis/chassis_subsystem.cpp:1:
+src/subsystems/turret/turret_subsystem.hpp:22:1: error: expected class-name before '{' token
+   22 | {
+      | ^
+src/subsystems/chassis/chassis_subsystem.hpp:24:10: error: 'void subsystems::chassis::ChassisSubsystem::initialize()' marked 'override', but does not override
+   24 |     void initialize() override;
+      |          ^~~~~~~~~~
+src/subsystems/chassis/chassis_subsystem.hpp:25:10: error: 'void subsystems::chassis::ChassisSubsystem::refresh()' marked 'override', but does not override
+   25 |     void refresh() override;
+      |          ^~~~~~~
+src/subsystems/turret/turret_subsystem.hpp:24:33: error: expected ')' before '*' token
+   24 |     TurretSubsystem(src::Drivers* drivers);
+      |                    ~            ^
+      |                                 )
+src/subsystems/chassis/chassis_subsystem.hpp:26:10: error: 'bool subsystems::chassis::ChassisSubsystem::hardwareOk()' marked 'override', but does not override
+   26 |     bool hardwareOk() override;
+      |          ^~~~~~~~~~
+src/subsystems/turret/turret_subsystem.hpp:45:10: error: 'Drivers' in namespace 'src' does not name a type
+   45 |     src::Drivers* drivers;
+      |          ^~~~~~~
+src/subsystems/turret/turret_subsystem.hpp:25:10: error: 'void subsystems::turret::TurretSubsystem::initialize()' marked 'override', but does not override
+   25 |     void initialize() override;
+      |          ^~~~~~~~~~
+src/subsystems/turret/turret_subsystem.hpp:26:10: error: 'void subsystems::turret::TurretSubsystem::refresh()' marked 'override', but does not override
+   26 |     void refresh() override;
+      |          ^~~~~~~
+src/subsystems/turret/turret_subsystem.hpp:27:10: error: 'bool subsystems::turret::TurretSubsystem::hardwareOk()' marked 'override', but does not override
+   27 |     bool hardwareOk() override;
+      |          ^~~~~~~~~~
+In file included from src/subsystems/odometry/odometry_subsystem.hpp:11,
+                 from src/communication/cv_board.hpp:9,
+                 from src/drivers.hpp:6,
+                 from src/subsystems/subsystem.hpp:4,
+                 from src/subsystems/flywheel/flywheel_subsystem.hpp:6,
+                 from src/subsystems/agitator/agitator_subsystem.hpp:7,
+                 from src/robots/common/common_control.hpp:8,
+                 from src/robots/common/common_control_manual.hpp:7,
+                 from src/robots/standard/standard_control.hpp:1,
+                 from src/robots/robot_control.hpp:2,
+                 from src/main.cpp:6:
+src/subsystems/odometry/observer_displacement.hpp:20:45: error: expected ')' before '*' token
+   20 |     ChassisDisplacementObserver(src::Drivers* drivers, chassis::ChassisSubsystem* chassis);
+      |                                ~            ^
+      |                                             )
+src/subsystems/odometry/observer_displacement.hpp:25:10: error: 'Drivers' in namespace 'src' does not name a type
+   25 |     src::Drivers* drivers;
+      |          ^~~~~~~
+In file included from src/communication/cv_board.hpp:9,
+                 from src/drivers.hpp:6,
+                 from src/subsystems/subsystem.hpp:4,
+                 from src/subsystems/chassis/chassis_subsystem.hpp:7,
+                 from src/subsystems/chassis/chassis_subsystem.cpp:1:
+src/subsystems/odometry/odometry_subsystem.hpp:21:7: error: 'chassis' has not been declared
+   21 | using chassis::ChassisSubsystem;
+      |       ^~~~~~~
+src/subsystems/odometry/odometry_subsystem.hpp:27:1: error: expected class-name before '{' token
+   27 | {
+      | ^
+src/subsystems/odometry/odometry_subsystem.hpp:29:35: error: expected ')' before '*' token
+   29 |     OdometrySubsystem(src::Drivers* drivers, ChassisSubsystem* chassis, TurretSubsystem* turret);
+      |                      ~            ^
+      |                                   )
+src/subsystems/odometry/odometry_subsystem.hpp:44:10: error: 'Drivers' in namespace 'src' does not name a type
+   44 |     src::Drivers* drivers;
+      |          ^~~~~~~
+In file included from src/subsystems/odometry/odometry_subsystem.hpp:12,
+                 from src/communication/cv_board.hpp:9,
+                 from src/drivers.hpp:6,
+                 from src/subsystems/subsystem.hpp:4,
+                 from src/subsystems/flywheel/flywheel_subsystem.hpp:6,
+                 from src/subsystems/agitator/agitator_subsystem.hpp:7,
+                 from src/robots/common/common_control.hpp:8,
+                 from src/robots/common/common_control_manual.hpp:7,
+                 from src/robots/standard/standard_control.hpp:1,
+                 from src/robots/robot_control.hpp:2,
+                 from src/main.cpp:6:
+src/subsystems/odometry/observer_yaw_world.hpp:21:41: error: expected ')' before '*' token
+   21 |     ChassisWorldYawObserver(src::Drivers* drivers);
+      |                            ~            ^
+      |                                         )
+src/subsystems/odometry/observer_yaw_world.hpp:26:10: error: 'Drivers' in namespace 'src' does not name a type
+   26 |     src::Drivers* drivers;
+      |          ^~~~~~~
+In file included from src/subsystems/turret/turret_subsystem.hpp:11,
+                 from src/subsystems/odometry/odometry_subsystem.hpp:14,
+                 from src/communication/cv_board.hpp:9,
+                 from src/drivers.hpp:6,
+                 from src/subsystems/subsystem.hpp:4,
+                 from src/subsystems/flywheel/flywheel_subsystem.hpp:6,
+                 from src/subsystems/agitator/agitator_subsystem.hpp:7,
+                 from src/robots/common/common_control.hpp:8,
+                 from src/robots/common/common_control_manual.hpp:7,
+                 from src/robots/standard/standard_control.hpp:1,
+                 from src/robots/robot_control.hpp:2,
+                 from src/main.cpp:6:
+src/subsystems/turret/double_yaw_motor.hpp:21:32: error: expected ')' before '*' token
+   21 |     DoubleYawMotor(src::Drivers *drivers, MotorConfig motor1, MotorConfig motor2);
+      |                   ~            ^~
+      |                                )
+src/subsystems/turret/double_yaw_motor.hpp:36:10: error: 'Drivers' in namespace 'src' does not name a type
+   36 |     src::Drivers *drivers;
+      |          ^~~~~~~
+src/subsystems/odometry/odometry_subsystem.hpp:45:5: error: 'ChassisSubsystem' does not name a type
+   45 |     ChassisSubsystem* chassis;
+      |     ^~~~~~~~~~~~~~~~
+src/subsystems/odometry/odometry_subsystem.hpp:30:10: error: 'void subsystems::odometry::OdometrySubsystem::initialize()' marked 'override', but does not override
+   30 |     void initialize() override;
+      |          ^~~~~~~~~~
+src/subsystems/odometry/odometry_subsystem.hpp:31:10: error: 'void subsystems::odometry::OdometrySubsystem::refresh()' marked 'override', but does not override
+   31 |     void refresh() override;
+      |          ^~~~~~~
+src/subsystems/odometry/odometry_subsystem.hpp:32:10: error: 'bool subsystems::odometry::OdometrySubsystem::hardwareOk()' marked 'override', but does not override
+   32 |     bool hardwareOk() override;
+      |          ^~~~~~~~~~
+In file included from src/subsystems/turret/turret_subsystem.hpp:13,
+                 from src/subsystems/odometry/odometry_subsystem.hpp:14,
+                 from src/communication/cv_board.hpp:9,
+                 from src/drivers.hpp:6,
+                 from src/subsystems/subsystem.hpp:4,
+                 from src/subsystems/flywheel/flywheel_subsystem.hpp:6,
+                 from src/subsystems/agitator/agitator_subsystem.hpp:7,
+                 from src/robots/common/common_control.hpp:8,
+                 from src/robots/common/common_control_manual.hpp:7,
+                 from src/robots/standard/standard_control.hpp:1,
+                 from src/robots/robot_control.hpp:2,
+                 from src/main.cpp:6:
+src/subsystems/turret/turret_motor.hpp:20:29: error: expected ')' before '*' token
+   20 |     TurretMotor(src::Drivers *drivers, MotorConfig motor, const SmoothPidConfig &pidConfig);
+      |                ~            ^~
+      |                             )
+src/subsystems/turret/turret_motor.hpp:33:10: error: 'Drivers' in namespace 'src' does not name a type
+   33 |     src::Drivers *drivers;
+      |          ^~~~~~~
+In file included from src/subsystems/odometry/odometry_subsystem.hpp:14,
+                 from src/communication/cv_board.hpp:9,
+                 from src/drivers.hpp:6,
+                 from src/subsystems/subsystem.hpp:4,
+                 from src/subsystems/flywheel/flywheel_subsystem.hpp:6,
+                 from src/subsystems/agitator/agitator_subsystem.hpp:7,
+                 from src/robots/common/common_control.hpp:8,
+                 from src/robots/common/common_control_manual.hpp:7,
+                 from src/robots/standard/standard_control.hpp:1,
+                 from src/robots/robot_control.hpp:2,
+                 from src/main.cpp:6:
+src/subsystems/turret/turret_subsystem.hpp:22:1: error: expected class-name before '{' token
+   22 | {
+      | ^
+src/subsystems/turret/turret_subsystem.hpp:24:33: error: expected ')' before '*' token
+   24 |     TurretSubsystem(src::Drivers* drivers);
+      |                    ~            ^
+      |                                 )
+src/subsystems/turret/turret_subsystem.hpp:45:10: error: 'Drivers' in namespace 'src' does not name a type
+   45 |     src::Drivers* drivers;
+      |          ^~~~~~~
+src/subsystems/turret/turret_subsystem.hpp:25:10: error: 'void subsystems::turret::TurretSubsystem::initialize()' marked 'override', but does not override
+   25 |     void initialize() override;
+      |          ^~~~~~~~~~
+src/subsystems/turret/turret_subsystem.hpp:26:10: error: 'void subsystems::turret::TurretSubsystem::refresh()' marked 'override', but does not override
+   26 |     void refresh() override;
+      |          ^~~~~~~
+src/subsystems/turret/turret_subsystem.hpp:27:10: error: 'bool subsystems::turret::TurretSubsystem::hardwareOk()' marked 'override', but does not override
+   27 |     bool hardwareOk() override;
+      |          ^~~~~~~~~~
+In file included from src/communication/cv_board.hpp:9,
+                 from src/drivers.hpp:6,
+                 from src/subsystems/subsystem.hpp:4,
+                 from src/subsystems/flywheel/flywheel_subsystem.hpp:6,
+                 from src/subsystems/agitator/agitator_subsystem.hpp:7,
+                 from src/robots/common/common_control.hpp:8,
+                 from src/robots/common/common_control_manual.hpp:7,
+                 from src/robots/standard/standard_control.hpp:1,
+                 from src/robots/robot_control.hpp:2,
+                 from src/main.cpp:6:
+src/subsystems/odometry/odometry_subsystem.hpp:27:1: error: expected class-name before '{' token
+   27 | {
+      | ^
+src/subsystems/odometry/odometry_subsystem.hpp:29:35: error: expected ')' before '*' token
+   29 |     OdometrySubsystem(src::Drivers* drivers, ChassisSubsystem* chassis, TurretSubsystem* turret);
+      |                      ~            ^
+      |                                   )
+src/subsystems/odometry/odometry_subsystem.hpp:44:10: error: 'Drivers' in namespace 'src' does not name a type
+   44 |     src::Drivers* drivers;
+      |          ^~~~~~~
+src/subsystems/odometry/odometry_subsystem.hpp:30:10: error: 'void subsystems::odometry::OdometrySubsystem::initialize()' marked 'override', but does not override
+   30 |     void initialize() override;
+      |          ^~~~~~~~~~
+src/subsystems/odometry/odometry_subsystem.hpp:31:10: error: 'void subsystems::odometry::OdometrySubsystem::refresh()' marked 'override', but does not override
+   31 |     void refresh() override;
+      |          ^~~~~~~
+src/subsystems/odometry/odometry_subsystem.hpp:32:10: error: 'bool subsystems::odometry::OdometrySubsystem::hardwareOk()' marked 'override', but does not override
+   32 |     bool hardwareOk() override;
+      |          ^~~~~~~~~~
+In file included from src/robots/common/common_control_manual.hpp:7,
+                 from src/robots/standard/standard_control.hpp:1,
+                 from src/robots/robot_control.hpp:2,
+                 from src/main.cpp:6:
+src/robots/common/common_control.hpp:58:37: error: could not convert '{((CommonControl*)this)->CommonControl::drivers}' from '<brace-enclosed initializer list>' to 'subsystems::chassis::ChassisSubsystem'
+   58 |     ChassisSubsystem chassis{drivers};
+      |                                     ^
+      |                                     |
+      |                                     <brace-enclosed initializer list>
+src/robots/common/common_control.hpp:60:35: error: could not convert '{((CommonControl*)this)->CommonControl::drivers}' from '<brace-enclosed initializer list>' to 'subsystems::turret::TurretSubsystem'
+   60 |     TurretSubsystem turret{drivers};
+      |                                   ^
+      |                                   |
+      |                                   <brace-enclosed initializer list>
+src/robots/common/common_control.hpp: In member function 'void CommonControl::initialize()':
+src/robots/common/common_control.hpp:46:53: error: cannot convert 'subsystems::chassis::ChassisSubsystem*' to 'tap::control::Subsystem*'
+   46 |         drivers->commandScheduler.registerSubsystem(&chassis);
+      |                                                     ^~~~~~~~
+      |                                                     |
+      |                                                     subsystems::chassis::ChassisSubsystem*
+In file included from taproot/src/tap/drivers.hpp:64,
+                 from src/drivers.hpp:4,
+                 from src/subsystems/subsystem.hpp:4,
+                 from src/subsystems/flywheel/flywheel_subsystem.hpp:6,
+                 from src/subsystems/agitator/agitator_subsystem.hpp:7,
+                 from src/robots/common/common_control.hpp:8,
+                 from src/robots/common/common_control_manual.hpp:7,
+                 from src/robots/standard/standard_control.hpp:1,
+                 from src/robots/robot_control.hpp:2,
+                 from src/main.cpp:6:
+taproot/src/tap/control/command_scheduler.hpp:200:48: note:   initializing argument 1 of 'void tap::control::CommandScheduler::registerSubsystem(tap::control::Subsystem*)'
+  200 |     mockable void registerSubsystem(Subsystem* subsystem);
+      |                                     ~~~~~~~~~~~^~~~~~~~~
+In file included from src/robots/common/common_control_manual.hpp:7,
+                 from src/robots/standard/standard_control.hpp:1,
+                 from src/robots/robot_control.hpp:2,
+                 from src/main.cpp:6:
+src/robots/common/common_control.hpp:48:53: error: cannot convert 'subsystems::turret::TurretSubsystem*' to 'tap::control::Subsystem*'
+   48 |         drivers->commandScheduler.registerSubsystem(&turret);
+      |                                                     ^~~~~~~
+      |                                                     |
+      |                                                     subsystems::turret::TurretSubsystem*
+In file included from taproot/src/tap/drivers.hpp:64,
+                 from src/drivers.hpp:4,
+                 from src/subsystems/subsystem.hpp:4,
+                 from src/subsystems/flywheel/flywheel_subsystem.hpp:6,
+                 from src/subsystems/agitator/agitator_subsystem.hpp:7,
+                 from src/robots/common/common_control.hpp:8,
+                 from src/robots/common/common_control_manual.hpp:7,
+                 from src/robots/standard/standard_control.hpp:1,
+                 from src/robots/robot_control.hpp:2,
+                 from src/main.cpp:6:
+taproot/src/tap/control/command_scheduler.hpp:200:48: note:   initializing argument 1 of 'void tap::control::CommandScheduler::registerSubsystem(tap::control::Subsystem*)'
+  200 |     mockable void registerSubsystem(Subsystem* subsystem);
+      |                                     ~~~~~~~~~~~^~~~~~~~~
+In file included from src/robots/common/common_control_manual.hpp:8,
+                 from src/robots/standard/standard_control.hpp:1,
+                 from src/robots/robot_control.hpp:2,
+                 from src/main.cpp:6:
+src/subsystems/chassis/command_move_chassis.hpp: In constructor 'commands::CommandMoveChassis::CommandMoveChassis(src::Drivers*, subsystems::chassis::ChassisSubsystem*, subsystems::turret::TurretSubsystem*, bool, bool)':
+src/subsystems/chassis/command_move_chassis.hpp:34:33: error: cannot convert 'subsystems::chassis::ChassisSubsystem*' to 'tap::control::Subsystem*'
+   34 |         addSubsystemRequirement(chassis);
+      |                                 ^~~~~~~
+      |                                 |
+      |                                 subsystems::chassis::ChassisSubsystem*
+In file included from src/subsystems/sound/command_play_sound.hpp:5,
+                 from src/robots/common/common_control.hpp:12,
+                 from src/robots/common/common_control_manual.hpp:7,
+                 from src/robots/standard/standard_control.hpp:1,
+                 from src/robots/robot_control.hpp:2,
+                 from src/main.cpp:6:
+taproot/src/tap/control/command.hpp:79:54: note:   initializing argument 1 of 'void tap::control::Command::addSubsystemRequirement(tap::control::Subsystem*)'
+   79 |     mockable void addSubsystemRequirement(Subsystem* requirement);
+      |                                           ~~~~~~~~~~~^~~~~~~~~~~
+In file included from src/robots/common/common_control_manual.hpp:11,
+                 from src/robots/standard/standard_control.hpp:1,
+                 from src/robots/robot_control.hpp:2,
+                 from src/main.cpp:6:
+src/subsystems/turret/command_move_turret.hpp: In constructor 'commands::CommandMoveTurret::CommandMoveTurret(src::Drivers*, subsystems::turret::TurretSubsystem*)':
+src/subsystems/turret/command_move_turret.hpp:23:33: error: cannot convert 'subsystems::turret::TurretSubsystem*' to 'tap::control::Subsystem*'
+   23 |         addSubsystemRequirement(turret);
+      |                                 ^~~~~~
+      |                                 |
+      |                                 subsystems::turret::TurretSubsystem*
+In file included from src/subsystems/sound/command_play_sound.hpp:5,
+                 from src/robots/common/common_control.hpp:12,
+                 from src/robots/common/common_control_manual.hpp:7,
+                 from src/robots/standard/standard_control.hpp:1,
+                 from src/robots/robot_control.hpp:2,
+                 from src/main.cpp:6:
+taproot/src/tap/control/command.hpp:79:54: note:   initializing argument 1 of 'void tap::control::Command::addSubsystemRequirement(tap::control::Subsystem*)'
+   79 |     mockable void addSubsystemRequirement(Subsystem* requirement);
+      |                                           ~~~~~~~~~~~^~~~~~~~~~~
+In file included from src/robots/common/common_control_manual.hpp:12,
+                 from src/robots/standard/standard_control.hpp:1,
+                 from src/robots/robot_control.hpp:2,
+                 from src/main.cpp:6:
+src/subsystems/turret/command_move_turret_aimbot.hpp: In constructor 'commands::CommandMoveTurretAimbot::CommandMoveTurretAimbot(src::Drivers*, subsystems::turret::TurretSubsystem*)':
+src/subsystems/turret/command_move_turret_aimbot.hpp:23:33: error: cannot convert 'subsystems::turret::TurretSubsystem*' to 'tap::control::Subsystem*'
+   23 |         addSubsystemRequirement(turret);
+      |                                 ^~~~~~
+      |                                 |
+      |                                 subsystems::turret::TurretSubsystem*
+In file included from src/subsystems/sound/command_play_sound.hpp:5,
+                 from src/robots/common/common_control.hpp:12,
+                 from src/robots/common/common_control_manual.hpp:7,
+                 from src/robots/standard/standard_control.hpp:1,
+                 from src/robots/robot_control.hpp:2,
+                 from src/main.cpp:6:
+taproot/src/tap/control/command.hpp:79:54: note:   initializing argument 1 of 'void tap::control::Command::addSubsystemRequirement(tap::control::Subsystem*)'
+   79 |     mockable void addSubsystemRequirement(Subsystem* requirement);
+      |                                           ~~~~~~~~~~~^~~~~~~~~~~
+In file included from src/robots/standard/standard_control.hpp:1,
+                 from src/robots/robot_control.hpp:2,
+                 from src/main.cpp:6:
+src/robots/common/common_control_manual.hpp: In member function 'void CommonControlManual::initialize()':
+src/robots/common/common_control_manual.hpp:31:17: error: 'class subsystems::chassis::ChassisSubsystem' has no member named 'setDefaultCommand'
+   31 |         chassis.setDefaultCommand(&move);
+      |                 ^~~~~~~~~~~~~~~~~
+src/robots/common/common_control_manual.hpp:32:16: error: 'class subsystems::turret::TurretSubsystem' has no member named 'setDefaultCommand'
+   32 |         turret.setDefaultCommand(&look);
+      |                ^~~~~~~~~~~~~~~~~
+In file included from src/robots/standard/standard_control.hpp:3,
+                 from src/robots/robot_control.hpp:2,
+                 from src/main.cpp:6:
+src/subsystems/turret/command_recalibrate_turret.hpp: In constructor 'commands::CommandRecalibrateTurret::CommandRecalibrateTurret(src::Drivers*, subsystems::turret::TurretSubsystem*)':
+src/subsystems/turret/command_recalibrate_turret.hpp:22:33: error: cannot convert 'subsystems::turret::TurretSubsystem*' to 'tap::control::Subsystem*'
+   22 |         addSubsystemRequirement(turret);
+      |                                 ^~~~~~
+      |                                 |
+      |                                 subsystems::turret::TurretSubsystem*
+In file included from src/subsystems/sound/command_play_sound.hpp:5,
+                 from src/robots/common/common_control.hpp:12,
+                 from src/robots/common/common_control_manual.hpp:7,
+                 from src/robots/standard/standard_control.hpp:1,
+                 from src/robots/robot_control.hpp:2,
+                 from src/main.cpp:6:
+taproot/src/tap/control/command.hpp:79:54: note:   initializing argument 1 of 'void tap::control::Command::addSubsystemRequirement(tap::control::Subsystem*)'
+   79 |     mockable void addSubsystemRequirement(Subsystem* requirement);
+      |                                           ~~~~~~~~~~~^~~~~~~~~~~
+scons: *** [build/hardware/scons-debug/src/subsystems/agitator/command_unjam_agitator.o] Error 1
+scons: *** [build/hardware/scons-debug/src/subsystems/agitator/command_agitator_burst.o] Error 1
+scons: *** [build/hardware/scons-debug/src/subsystems/agitator/command_agitator_burst_alternating.o] Error 1
+scons: *** [build/hardware/scons-debug/src/subsystems/agitator/agitator_subsystem.o] Error 1
+scons: *** [build/hardware/scons-debug/src/subsystems/agitator/command_agitator_continuous.o] Error 1
+scons: *** [build/hardware/scons-debug/src/subsystems/chassis/chassis_subsystem.o] Error 1
+scons: *** [build/hardware/scons-debug/src/communication/cv_board.o] Error 1
+scons: *** [build/hardware/scons-debug/src/main.o] Error 1
+scons: building terminated because of errors.
