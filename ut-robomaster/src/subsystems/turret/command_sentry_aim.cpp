@@ -10,12 +10,28 @@ using modm::Vector3f;
 
 void CommandSentryAim::initialize()
 {
-    // Reset index so we process fresh data on activation
     lastTurretDataIndex = 0;
+    testSeqIndex = 0;
+    testSeqTicks = 0;
 }
 
 void CommandSentryAim::execute()
 {
+    // Boot test sequence: move through hardcoded poses before CV takes over.
+    // Each pose is held for TICKS_PER_POSE ticks (~20 s at 500 Hz).
+    if (testSeqIndex < NUM_TEST_POSES)
+    {
+        const TestPose& pose = TEST_POSES[testSeqIndex];
+        turret->setTargetWorldAngles(turret->getChassisYaw() + pose.localYaw, pose.pitch);
+
+        if (++testSeqTicks >= TICKS_PER_POSE)
+        {
+            testSeqTicks = 0;
+            testSeqIndex++;
+        }
+        return;
+    }
+
     // Guard 1: CV board must be communicating
     if (!drivers->cvBoard.isOnline()) return;
 
